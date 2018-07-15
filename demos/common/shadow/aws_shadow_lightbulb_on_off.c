@@ -434,6 +434,8 @@ static void prvShadowInitTask( void * pvParameters )
 
     ( void ) pvParameters;
 
+    vTaskDelay(10000);	// todo: this is renesas issue.
+
     /* Initialize the update queue and Shadow client; set all pending updates to false. */
     xUpdateQueue = xQueueCreateStatic( shadowDemoUPDATE_QUEUE_LENGTH,
                                        sizeof( ShadowQueueData_t ),

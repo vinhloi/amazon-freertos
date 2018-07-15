@@ -1,0 +1,8 @@
+Please generate source files of following modules according to the aws_demos.scfg in the project.
+
+r_bsp
+r_cmt_rx
+r_ether_rx
+r_flash_rx
+
+Best regards

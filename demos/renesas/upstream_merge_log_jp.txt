@@ -1,0 +1,326 @@
+--------------------------------------------------------------------------
+upstream merge log (only Japanese language)
+--------------------------------------------------------------------------
+
+--------------------------------------------------------------------------
+2018/05/18
+
+Follow upstream v1.2.5 by NoMaY
+
+● CC-RX & e2 studio
+
+後で書く
+
+● CC-RX & CS+ for CC
+
+renesas-rx-experiment-20180406のCS+プロジェクトに対して以下の変更を行った。
+(今回のみ前々版のものを使用)
+
+◎ demos\renesas\rx65n-envision-kit\ccrx-csplus\aws_demos.mtpj (CS+で読み込んでCS+のGUI上で変更)
+
+aws_demos.scfgは今回のCC-RX & e2 studioのものをコピーして使用
+
+(1) ファイルツリーの修正
+
+(1-0) ファイルツリーをe2 studio(つまりAmazon FreeRTOSの本家でのEclipseベースIDEのST AC6やTI CCS)に似せる
+
+e2 studioのプロジェクトエクスプローラとCS+のプロジェクトツリーウィンドウを見比べながら修正
+今回のみの予定
+
+(1-1) ファイルツリーをupstreamに追従させる
+
+e2 studioでrcpcファイルを生成させて前回のものと今回のものを比較するとファイルツリーの登録状況の差分が判ります。
+
+・以下の変更に追従
+
+　amazon-freertos-1.2.3\lib\third_party\mcu_vendor\vendor\DriverLibName\DriverLibVersion\
+　→amazon-freertos-1.2.5\lib\third_party\mcu_vendor\vendor\driver_library\driver_library_version\
+　地道に、項目名の変更と、ファイルの登録のやり直し(パスの情報の変更は不可な為)、を行う
+
+・以下の削除に追従
+
+　lib\include\private\aws_greengrass_lib_private.h
+　lib\include\private\aws_mqtt_lib_private.h
+　lib\pkcs11\portable\renesas\rx65n-envision-kit\pkcs11.c
+
+・以下の追加に追従
+
+　demos\renesas\rx65n-envision-kit\common\config_files\aws_pkcs11_config.h
+　lib\include\private\aws_ota_agent_internal.h
+　lib\include\private\aws_ota_cbor_internal.h
+　lib\pkcs11\mbedtls\aws_pkcs11_mbedtls.c
+　lib\pkcs11\portable\renesas\rx65n-envision-kit\aws_pkcs11_pal.c
+　lib\third_party\mbedtls\include\mbedtls\rsa_internal.h
+　lib\third_party\mbedtls\library\rsa_internal.c
+
+(1-2) ファイルツリーを今回のソースに追従させる
+
+e2 studioでrcpcファイルを生成させて前回のものと今回のものを比較するとファイルツリーの登録状況の差分が判ります。
+
+・以下の削除に追従
+
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\lcd_conf.c
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\r_ascii.c
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\r_ascii.h
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\r_simple_graphic.c
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\r_simple_graphic_if.h
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\rx65n_envision_kit_aws.c
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\FreeRTOS_user\freertos_usr_func.c
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\FreeRTOS_user\freertos_usr_func.h
+
+・以下の追加に追従
+
+　lib\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\RX\ether_callback.c
+　demos\renesas\rx65n-envision-kit\common\application_code\entropy_hardware_poll.c
+　demos\renesas\rx65n-envision-kit\common\application_code\freertos_usr_func.c
+　demos\renesas\rx65n-envision-kit\common\application_code\freertos_usr_func.h
+　demos\renesas\rx65n-envision-kit\common\application_code\rskrx65n_uart.c
+　demos\renesas\rx65n-envision-kit\common\application_code\rskrx65n_uart.h
+
+(2) インクルードパスの修正
+
+CS+のパス編集ダイアログで入力する時に[存在しないパスを許可する]のチェックボックスにマークを付けて入力して下さい。
+
+(2-1) インクルードパスをupstreamに追従させる
+
+・今回はなし
+
+(2-2) インクルードパスを今回のソースに追従させる
+
+・以下のフォルダ削除に追従
+
+　demos\renesas\rx65n-envision-kit\ccrx-csplus\src\FreeRTOS_user\
+
+・修正後のインクルードパス(一度コード生成を行っています)
+
+src\smc_gen\r_sci_rx\src\targets\rx65n
+src\smc_gen\r_sci_rx\src
+src\smc_gen\r_sci_rx\ref
+src\smc_gen\r_sci_rx
+src\smc_gen\r_byteq\src
+src\smc_gen\r_byteq\ref
+src\smc_gen\r_byteq
+src\smc_gen\r_flash_rx\src\targets\rx65n
+src\smc_gen\r_flash_rx\src\flash_type_4
+src\smc_gen\r_flash_rx\src\flash_type_3
+src\smc_gen\r_flash_rx\src\flash_type_2
+src\smc_gen\r_flash_rx\src\flash_type_1
+src\smc_gen\r_flash_rx\src
+src\smc_gen\r_flash_rx\ref
+src\smc_gen\r_flash_rx
+src\smc_gen\r_ether_rx\src\phy
+src\smc_gen\r_ether_rx\src
+src\smc_gen\r_ether_rx\ref
+src\smc_gen\r_ether_rx
+src\smc_gen\r_cmt_rx\ref
+src\smc_gen\r_cmt_rx
+src\smc_gen\r_pincfg
+src\smc_gen\r_config
+src\smc_gen\r_bsp\mcu\rx65n\register_access
+src\smc_gen\r_bsp\mcu\rx65n
+src\smc_gen\r_bsp\mcu\all
+src\smc_gen\r_bsp\board\generic_rx65n
+src\smc_gen\r_bsp
+src\smc_gen\general
+.
+..\common\config_files
+..\common\application_code
+..\common\application_code\renesas_code
+..\..\..\..\demos\common\include
+..\..\..\..\lib\include
+..\..\..\..\lib\include\private
+..\..\..\..\lib\FreeRTOS\portable\Renesas\RX600v2
+..\..\..\..\lib\FreeRTOS-Plus-TCP\source\protocols\include
+..\..\..\..\lib\FreeRTOS-Plus-TCP\include
+..\..\..\..\lib\FreeRTOS-Plus-TCP\source\portable\Compiler\Renesas
+..\..\..\..\lib\ota\portable\renesas\rx65n-envision-kit
+..\..\..\..\lib\third_party\jsmn
+..\..\..\..\lib\third_party\pkcs11
+..\..\..\..\lib\third_party\tinycbor
+..\..\..\..\lib\third_party\mbedtls\include
+src\realtime_OS_pkg\r_bsp_rtos
+src\realtime_OS_pkg\r_bsp_rtos\board\rskrx65n_2mb
+src\realtime_OS_pkg\r_bsp_rtos\mcu\rx65n\register_access
+src\realtime_OS_pkg\r_cmt_rtos_rx
+src\realtime_OS_pkg\r_cmt_rtos_rx\src
+src
+
+(3) リンク順の修正
+
+aws_demos.mtlsファイル(UTF-8,CR+LF,BOM付)をエディタで修正してCS+のリンク順設定ダイアログでインポートして下さい。
+e2 studioで生成させたrcpcファイルの<LinkOrder>と</LinkOrder>の間に出力されているobjファイルの順番と同じにします。
+(aws_demos.libは除去しておいて下さい。(含まれていてもエラーにはなりません。))
+
+(4) セクション配置設定の変更
+
+B_1,R_1,B_2,R_2,B,R/00800000,B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,SU,SI/00840000,C_1,C_2,C,C$*,D*,W*,L,P*/FFE00000,EXCEPTVECT/FFFFFF80,RESETVECT/FFFFFFFC
+
+(5) 一括ビルドを行う設定を[はい]に戻す
+
+スマートコンフィグレータでコード生成を行うと強制的に[いいえ]になってしまうので随時[はい]に戻します。
+
+(6) 使用するデバッグツールをRX E2 Liteに変更
+
+今回のみの予定
+
+◎ demos\renesas\rx65n-rsk\ccrx-csplus\aws_demos.mtpj (CS+で読み込んでCS+のGUI上で変更)
+
+aws_demos.scfgは今回のCC-RX & e2 studioのものをコピーして使用
+
+(1) ファイルツリーの修正
+
+(1-0) ファイルツリーをe2 studio(つまりAmazon FreeRTOSの本家でのEclipseベースIDEのST AC6やTI CCS)に似せる
+
+e2 studioのプロジェクトエクスプローラとCS+のプロジェクトツリーウィンドウを見比べながら修正
+今回のみの予定
+
+(1-1) ファイルツリーをupstream v1.2.5に追従させる
+
+e2 studioでrcpcファイルを生成させて前回のものと今回のものを比較するとファイルツリーの登録状況の差分が判ります。
+
+・以下の変更に追従
+
+　amazon-freertos-1.2.3\lib\third_party\mcu_vendor\vendor\DriverLibName\DriverLibVersion\
+　→amazon-freertos-1.2.5\lib\third_party\mcu_vendor\vendor\driver_library\driver_library_version\
+　地道に、項目名の変更と、ファイルの登録のやり直し(パスの情報の変更は不可な為)、を行う
+
+・以下の削除に追従
+
+　lib\include\private\aws_greengrass_lib_private.h
+　lib\include\private\aws_mqtt_lib_private.h
+　lib\pkcs11\portable\renesas\rx65n-rsk\pkcs11.c
+
+・以下の追加に追従
+
+　demos\renesas\rx65n-rsk\common\config_files\aws_pkcs11_config.h
+　lib\include\private\aws_ota_agent_internal.h
+　lib\include\private\aws_ota_cbor_internal.h
+　lib\pkcs11\mbedtls\aws_pkcs11_mbedtls.c
+　lib\pkcs11\portable\renesas\rx65n-rsk\aws_pkcs11_pal.c
+　lib\third_party\mbedtls\include\mbedtls\rsa_internal.h
+　lib\third_party\mbedtls\library\rsa_internal.c
+
+(1-2) ファイルツリーを今回のソースに追従させる
+
+e2 studioでrcpcファイルを生成させて前回のものと今回のものを比較するとファイルツリーの登録状況の差分が判ります。
+
+・以下の削除に追従
+
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\lcd_conf.c
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\r_ascii.c
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\r_ascii.h
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\r_simple_graphic.c
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\r_simple_graphic_if.h
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\rx65n_rsk_aws.c
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\FreeRTOS_user\freertos_usr_func.c
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\FreeRTOS_user\freertos_usr_func.h
+
+・以下の追加に追従
+
+　lib\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\RX\ether_callback.c
+　demos\renesas\rx65n-rsk\common\application_code\entropy_hardware_poll.c
+　demos\renesas\rx65n-rsk\common\application_code\freertos_usr_func.c
+　demos\renesas\rx65n-rsk\common\application_code\freertos_usr_func.h
+　demos\renesas\rx65n-rsk\common\application_code\rskrx65n_uart.c
+　demos\renesas\rx65n-rsk\common\application_code\rskrx65n_uart.h
+
+(2) インクルードパスの修正
+
+CS+のパス編集ダイアログで入力する時に[存在しないパスを許可する]のチェックボックスにマークを付けて入力して下さい。
+
+(2-1) インクルードパスをupstreamに追従させる
+
+・今回はなし
+
+(2-2) インクルードパスを今回のソースに追従させる
+
+・以下のフォルダ削除に追従
+
+　demos\renesas\rx65n-rsk\ccrx-csplus\src\FreeRTOS_user\
+
+・修正後のインクルードパス(一度コード生成を行っています)
+
+src\smc_gen\r_sci_rx\src\targets\rx65n
+src\smc_gen\r_sci_rx\src
+src\smc_gen\r_sci_rx\ref
+src\smc_gen\r_sci_rx
+src\smc_gen\r_byteq\src
+src\smc_gen\r_byteq\ref
+src\smc_gen\r_byteq
+src\smc_gen\r_flash_rx\src\targets\rx65n
+src\smc_gen\r_flash_rx\src\flash_type_4
+src\smc_gen\r_flash_rx\src\flash_type_3
+src\smc_gen\r_flash_rx\src\flash_type_2
+src\smc_gen\r_flash_rx\src\flash_type_1
+src\smc_gen\r_flash_rx\src
+src\smc_gen\r_flash_rx\ref
+src\smc_gen\r_flash_rx
+src\smc_gen\r_ether_rx\src\phy
+src\smc_gen\r_ether_rx\src
+src\smc_gen\r_ether_rx\ref
+src\smc_gen\r_ether_rx
+src\smc_gen\r_cmt_rx\ref
+src\smc_gen\r_cmt_rx
+src\smc_gen\r_pincfg
+src\smc_gen\r_config
+src\smc_gen\r_bsp\mcu\rx65n\register_access
+src\smc_gen\r_bsp\mcu\rx65n
+src\smc_gen\r_bsp\mcu\all
+src\smc_gen\r_bsp\board\generic_rx65n
+src\smc_gen\r_bsp
+src\smc_gen\general
+.
+..\common\config_files
+..\common\application_code
+..\common\application_code\renesas_code
+..\..\..\..\demos\common\include
+..\..\..\..\lib\include
+..\..\..\..\lib\include\private
+..\..\..\..\lib\FreeRTOS\portable\Renesas\RX600v2
+..\..\..\..\lib\FreeRTOS-Plus-TCP\source\protocols\include
+..\..\..\..\lib\FreeRTOS-Plus-TCP\include
+..\..\..\..\lib\FreeRTOS-Plus-TCP\source\portable\Compiler\Renesas
+..\..\..\..\lib\ota\portable\renesas\rx65n-rsk
+..\..\..\..\lib\third_party\jsmn
+..\..\..\..\lib\third_party\pkcs11
+..\..\..\..\lib\third_party\tinycbor
+..\..\..\..\lib\third_party\mbedtls\include
+src\realtime_OS_pkg\r_bsp_rtos
+src\realtime_OS_pkg\r_bsp_rtos\board\rskrx65n_2mb
+src\realtime_OS_pkg\r_bsp_rtos\mcu\rx65n\register_access
+src\realtime_OS_pkg\r_cmt_rtos_rx
+src\realtime_OS_pkg\r_cmt_rtos_rx\src
+src
+
+(3) リンク順の修正
+
+aws_demos.mtlsファイル(UTF-8,CR+LF,BOM付)をエディタで修正してCS+のリンク順設定ダイアログでインポートして下さい。
+e2 studioで生成させたrcpcファイルの<LinkOrder>と</LinkOrder>の間に出力されているobjファイルの順番と同じにします。
+(aws_demos.libは除去しておいて下さい。(含まれていてもエラーにはなりません。))
+
+(4) セクション配置設定の変更
+
+B_1,R_1,B_2,R_2,B,R/00800000,B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,SU,SI/00840000,C_1,C_2,C,C$*,D*,W*,L,P*/FFE00000,EXCEPTVECT/FFFFFF80,RESETVECT/FFFFFFFC[赤字]
+
+(5) 一括ビルドを行う設定を[はい]に戻す
+
+スマートコンフィグレータでコード生成を行うと強制的に[いいえ]になってしまうので随時[はい]に戻します。
+
+(6) 使用するデバッグツールをRX E1(JTAG)に変更
+
+今回のみの予定
+
+--------------------------------------------------------------------------
+2018/04/06
+
+Follow upstream v1.2.3 by NoMaY
+
+後で書く
+
+--------------------------------------------------------------------------
+2018/03/18
+
+Follow upstream v1.2.2 by NoMaY
+
+後で書く
+

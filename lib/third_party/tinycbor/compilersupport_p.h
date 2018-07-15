@@ -120,6 +120,23 @@ with these intrinsics. */
 #  define cbor_htonl        _byteswap_ulong
 #  define cbor_ntohs        _byteswap_ushort
 #  define cbor_htons        _byteswap_ushort
+#elif defined(__RX) && defined(__CCRX__)
+#  include <builtin.h>
+#  if defined(__LIT)
+#    define cbor_ntohll(x)  ((cbor_ntohl(((uint32_t)(x))) * UINT64_C(0x100000000)) + (cbor_ntohl(((x) >> 32))))
+#    define cbor_htonll     cbor_ntohll
+#    define cbor_ntohl      _builtin_revl
+#    define cbor_htonl      _builtin_revl
+#    define cbor_ntohs      _builtin_revw
+#    define cbor_htons      _builtin_revw
+#  else
+#    define cbor_ntohll
+#    define cbor_htonll
+#    define cbor_ntohl
+#    define cbor_htonl
+#    define cbor_ntohs
+#    define cbor_htons
+#  endif
 #endif
 #endif
 #ifndef cbor_ntohs
