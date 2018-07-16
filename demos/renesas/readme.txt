@@ -1,12 +1,15 @@
 ----------------------------------------------
-Getting start for RX65N Amazon FreeRTOS
+Getting Start for RX65N Amazon FreeRTOS
 ----------------------------------------------
 Thank you for interesting about RX65N and Amazon FreeRTOS.
 This guide is for your environment setup and confirm demos behavior.
 
 SheltyDog@Renesas writes this guide and has responsibility of this project.
-If you have any question/suggestion/opinion, please visit following page and post it.
-https://github.com/NoMaY-jp/amazon-freertos-renesas-rx
+If you have any question/suggestion/opinion, please visit following site and post it.
+https://github.com/renesas-rx/amazon-freertos
+
+And, details discussion is progressing in followin site. (Japanese)
+https://japan.renesasrulz.com/cafe_rene/f/forum21/4772/amazon-freertos-rx
 
 Now Amazon provides great real time OS with network software for
 MCU (like some peripheral with 100MHz class CPU) as "Amazon FreeRTOS".
@@ -18,11 +21,11 @@ The download zip file name is "amazon-freertos-master.zip".
 Extract this zip or your clone directory has "demos" and "lib" directory readme, etc.
 This is our root directory called <root>.
 
-Getting start steps:
+Getting Start Steps:
  step1:  Refer to the Development Environment (recommended) section to get the board and tools.
  step2:  Setup tools for your PC.
  step3:  Download RX65N Amazon FreeRTOS from GitHub. (Maybe you already done)
-         https://github.com/NoMaY-jp/amazon-freertos-renesas-rx
+         https://github.com/renesas-rx/amazon-freertos
  step4:  Make your AWS account, and make your "Things" on AWS,
          and enable Security Policy to allow all your device will connect to your "Things".
  step5:  Make your device certification and private key and settings put this into your source code.
@@ -37,27 +40,8 @@ Getting start steps:
          import sequence: file->import->existing project into workspace -> select a root directory
          The project folder is placed into <root>/demos/renesas/rx65n-rsk/ccrx-e2studio6
          Please specify this directory only.
- step7:  Get/Put Device Driver from Renesas Webpage and put it into your project.
-         Refer to following text.
-         <root>/demos/renesas/rx65n-rsk/ccrx-e2studio6/src/realtime_OS_pkg/get!.txt
- step8:  Configure your environment using Smart Configurator.
-         Please double click aws_demos.scfg on your Project Explorer on e2 studio.
-         You can start Smart Configurator with already configured value.
-         You can confirm following modules are installed on your Component Tab. (But not generated the code)
-         - r_bsp
-         - r_sci_rx
-         - r_cmt_rx
-         - r_flash_rx
-         - r_ether_rx
-         - r_byteq
-         After confirmation, please click the generate button on Smart Configurator.
-         The device drivers code you confirmed are generated into following directory,
-         and some settings (include path, section, link the library, etc) will be applied.
-         <root>/demos/renesas/rx65n-rsk/ccrx-e2studio6/src/smc_gen/
-         ** notice **
-         No need to change your device setting from R5F565NEHxFB to R5F565NEDxFB on your Board Tab.
- step9:  Build
- step10: Execute, confirm console log will show the Echo message from AWS.
+ step7:  Build
+ step8:  Execute, confirm console log will show the Echo message from AWS.
          The log will be output from G1CUSB connector as UART/USB.
          Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
          and "LF" only as return code for your console.
@@ -72,6 +56,11 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.0.7-pre1:
+[ADDED] GCC and IAR trial envirionment into Envision Kit project.
+[OMITTED] Step7-8 from Getting Start Steps.
+[ADDED] Configuired device driver from RX Driver Package to omit step7-8.
+
 v0.0.6:
 [ADDED] Support RX65N GR-ROSE.
 [ADDED] Compiler pre-processor macro "__RX" to fix e2 studio local issue for pre-build code analysis.
@@ -125,7 +114,7 @@ Device Driver: RX Driver Package v114
     [en] https://www.renesas.com/en-us/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
 
-Special Device Driver for FreeRTOS:
+Special Device Driver for FreeRTOS: RX65N Group RX65N Real-time OS Package V1.1.00
     [en] https://www.renesas.com/en-us/products/software-tools/software-os-middleware-driver/software-package/rx-real-time-os-package.html
     [ja] none
     
@@ -196,10 +185,18 @@ IDE: CS+
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/csplus.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/csplus.html
 
+IDE/Compiler: EWRX/IAR v410
+    [en] https://www.iar.com/iar-embedded-workbench/#!?architecture=RX
+    [ja] https://www.iar.com/jp/iar-embedded-workbench/#!?architecture=RX
+
+Compiler: GCC for Renesas 4.8.4.201801-GNURX 
+    [en] https://gcc-renesas.com/
+    [ja] https://gcc-renesas.com/ja/
+    
 --------------------------------------------------------------------------
 Connection Pattern
 --------------------------------------------------------------------------
-  pattern1:
+  pattern1: wifi module has TCP/IP
   osi	protocol	implemented into
   7	aws		Amazon FreeRTOS
   7	mqtt		Amazon FreeRTOS
@@ -218,7 +215,7 @@ Connection Pattern
   RX130 Target Board + Cloud Option Board (with Espressif ESP8266)
   RX65N GR-ROSE (with Espressif ESP8266)
 
-  pattern2:
+  pattern2: MCU has TCP/IP and using MCU Ethernet
   osi	protocol	implemented into
   7	aws		Amazon FreeRTOS
   7	mqtt		Amazon FreeRTOS
@@ -234,7 +231,7 @@ Connection Pattern
   RX65N GR-ROSE
   RXxxN Envision Kit (Murata Type 1FX on board)
   
-  pattern3:
+  pattern3: MCU has TCP/IP and using MCU SDIO for wifi
   osi	protocol	implemented into
   7	aws		Amazon FreeRTOS
   7	mqtt		Amazon FreeRTOS
@@ -258,22 +255,32 @@ Borad number:
  (2)RX65N Envision Kit
  (3)RX65N GR-ROSE proto1
 
+Connection pattern number:
+ (1)pattern1: wifi module has TCP/IP
+ (2)pattern2: MCU has TCP/IP and using MCU Ethernet
+ (3)pattern3: MCU has TCP/IP and using MCU SDIO for wifi
+
+/////////////////////////////////////////////////////////////
+
 IDE number:
  (1)e2 studio
  (2)CS+
- (3)IAR
+ (3)EWRX(IAR)
 
 Compiler number:
  (1)CC-RX
  (2)GCC
  (3)IAR
 
-v0.0.6:
-         IDE      (1)         (2)         (3)
-         Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
-Board (1)          x           x                     
-      (2)          x           x          N/A N/A    
-      (3)          x                      N/A N/A    
+                 / IDE      (1)         (2)         (3)
+Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
+(1)   (1)        /           x           x   -   -   -   -     
+(2)   (1)        /           x   x       x   -   -   -   -   * 
+(3)   (1)        /           x               -   -   -   -     
+
+  x: tested
+  *: now trying(still junk)
+  -: N/A
 
 --------------------------------------------------------------------------
 RX65N Device Introduction
@@ -363,6 +370,266 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/07/15
+　道が拓けてきた。あとはIAR対応。
+　NoMaY氏から案をいただいた。
+　
+　■NoMaY氏案
+　(1) とりあえずキーワード置換無しでCC-RX＋e2 studio v6のプロジェクトを変換してみる → 失敗したら別の手を考える
+　(2) FITのR_BSPモジュールはIAR社が提供しているものに置き換える
+　(3) FITの他のモジュールはGNURXで試したものに置き換える(SCFGcompiler.hにIARコンパイラ対応の記述を試しに入れてあります)
+　(4) FreeRTOSのPortレイヤーをlib\FreeRTOS\portable\IAR\RXv2へ置き換える
+　(5) FreeRTOS-Plus-TCPのPortレイヤーをlib\FreeRTOS-Plus-TCP\source\portable\Compiler\IARへ置き換える
+　(6) 割り込みベクタの登録、セクションの確保、など
+　(7) iodefine.hはIAR社が提供しているヘッダファイルをインクルードするようにしておく
+　(8) machine.hはとりあえず中身が空のファイルにしておく
+
+　(1)を試す。
+　Project migration tools
+　　www.iar.com/jp/iar-embedded-workbench/project-migration/
+　
+　エラーがでた。バージョンが整合しないのかな。(1)は諦める。
+　幸いコードはUnified済であるので、プロジェクト新規作成してコードを追加していけばよいであろう。
+　
+　新規プロジェクトを作成してデバイスを選んだら、RX65Nがない。
+　どうやら手元のEWRXのバージョンが古い(v2.9)ようだ。最新版はv4.1。
+　更新はマイページに入らないといけないようだけれど、ID/パスが分からない。
+　コンパイラのライセンスIDは有るので、無償評価版をインストールして
+　そこにコンパイラのライセンスIDを登録する方法を試みる。
+　
+　最新版v4.1をインストールして起動してみる。ちょっと表示がおしゃれになっている。
+　起動後にライセンスマネージャが起動し、自動でライセンスIDの確認を行ってくれて
+　無事製品版に昇格した。
+　
+　(1)がエラーになったのはEWRXのバージョンが古かったからなのでは。もう一度試す。
+　予想通りうまくいった。けど、プロジェクトディレクトリ外のファイル(libフォルダ)が登録から外れている。
+　手動で登録していく必要がある。ビルドしてみた感じインクルードパスの設定も施してやる必要がありそう。
+　⇒新規プロジェクト作成で自力で組み立てたほうが不明点がなくよさげだ。
+　
+　新規プロジェクト作成で、main()のみのプロジェクトがデバッグできるか試す。
+　ビルドはOK。デバッガやデバイスの設定を施してEnvision Kit(E2Lite)に接続。
+　デバッガの設定にFreeRTOSのプラグイン追加があるので追加してみる。
+　FreeRTOS関連の便利なデバッグ機能が追加されるのかな。
+　無事ターゲット接続ができた。
+　
+　(2)に進む。
+　まずはNoMaY氏のZIPパッケージ(\src\smc_genに入れる)の取り込みを行う。
+
+　ディレクトリをまとめてツリーに登録することが出来ない(?)ようだ。
+　面倒なのでやっぱりプロジェクトコンバータを使ってFITモジュールの取り込みを行う。
+　Amazon FreeRTOS関連は手動で登録するかな。これはなかなか果てしない作業になりそう。
+　
+　まずは、Amazon FreeRTOS抜きにして、NoMaY氏のZIPパッケージとリアルタイムOS用FITパッケージを取り込む。
+　CC-RX、e2 studioの環境をコンバートして取り込む。そこにNoMaY氏のZIPパッケージを上書き。
+　リアルタイムOS用FITパッケージ(\src\realtime_OS_pkgに入れる)が付いてきたので削除。
+　
+　まとめてビルドしてみるも、エラー項目が多く厳しい。ミニマムスタートをしてみる。
+　完全新規プロジェクトに、BSPだけを組み込み、NoMaY氏の「SCFGcompiler.h」だけを組み込み
+　1個ずつエラーを潰していこう。
+　
+　新規プロジェクトにEWRXのFIT Module Importerを使用しBSPを出力する。
+　ソースコードを通し、インクルードパスを通したところでビルド。
+　r_bsp_config.h でエラーがでる。
+　どうやらスタックサイズはツールで入力する必要があるようだ。
+　ツールでスタック(ユーザ=0x3000、割り込み=0x3000、ヒープ0x2000)を設定し
+　r_bsp_config.hのエラー箇所はコメントアウト。
+　ビルドが通ったので注意点はここだけであろう。
+　r_bsp_config.hは、CC-RX+e2 studio+Envision Kitのプロジェクトから持ってくる。
+　
+　ビルドが通ったので実行してみる。無事main()に到達。
+　main()前の動きを把握するため、デバッガの設定でmain()まで自動実行の設定をやめる。
+　リセット後のプログラムはIARの標準のものが自動で組み込まれるようだ。
+　途中でBSPの__low_level_init() (公式BSPだとResetPRG())が呼ばれる。
+　続いてmain()が呼ばれる仕組みのようだ。
+　
+　(3)に進む。
+　次にGCC側のコード群から、compiler_supportフォルダのSCFGcompiler.hを持ってくる。
+　インクルードパスを通す。ビルド、特に問題なし。
+　BSP共通ヘッダのplatform.h にSCFGcompiler.hのインクルードを追加。
+　
+　コンパイルしてみると、SCFGcompiler.h の #define __LIT1 が怒られる。
+　IARではすでに存在するマクロのようだ。
+　BIGも合わせて/* nothing to do */のコメントに変えておく。
+　エラーゼロになった。
+　
+　NoMaY氏のZIPファイルからCMTタイマだけを組み込んでみる。
+　
+　static volatile struct st_cmt0 __evenaccess * const g_cmt_channels[CMT_RX_NUM_CHANNELS] =
+　
+　この行でエラーが起きた。__evenaccessが引っかかっている。
+　早速、SCFGcompiler.hのマクロを活用しようとするが、使えるマクロはまだない。
+　IARが出力するCMTのFITモジュールでは、__sfr に置き換わっていた。
+　ひとまず、#define __evenaccess    __sfr とする。
+　
+　次のエラーは割り込みベクタ。
+　
+　R_PRAGMA_STATIC_INTERRUPT(cmt0_isr, VECT(CMT0, CMI0))
+　static void cmt0_isr (void)
+　
+　これもIARが出力するCMTのFITモジュールを参照。
+　
+　#pragma vector=VECT(CMT0, CMI0)
+　__interrupt static void cmt0_isr (void)
+
+　関数の先頭に __interrupt が無いとダメなようだ。
+　これ用の共通マクロ追加必要か。
+　
+　#if defined(__CCRX__)
+　#define R_ATTRIB_INTERRUPT_FUNCTION /* none */
+　#elif defined(__GNUC__)
+　#define R_ATTRIB_INTERRUPT_FUNCTION /* none */
+　#elif defined(__ICCRX__)
+　#define __INTERRUPT    __interrupt
+　#endif
+
+　以上追加し、CMTの割り込み関数の先頭に__INTERRUPTを追加し、
+　コンパイルが通るようになった。
+　
+　main()にCMTの関数(R_CMT_CreatePeriodic())を呼び出し実験。
+　100Hz周期割り込みを発生させる。
+　割り込みが実行され、正しく時間を刻んでいるようだ。
+　
+　この調子でSCIとBYTEQとPINCFGを組み込む。
+　こちらも特に問題なし。型の暗黙変換で細かいワーニングが出ているがまあ良し。
+　
+　次はEther。以下構造体の__evenaccess で怒られる。
+　ポインタじゃないのに__evenaccessだからか？ これは元のコードがおかしい気がする。
+　__evenaccess を削除した。
+　
+　typedef struct DescriptorS
+　{
+    __evenaccess uint32_t           status;
+
+　最後はフラッシュ。
+　ワーニングが出たがエラーは出ず。ひとまず先に進む。
+　　・"unrecognized #pragma" が R_ATTRIB_BITFIELD_BIT_ORDER_LEFT_6で出ている。
+　　・引数の型ミスマッチが  xchg(&is_locked, plock);で出ている。
+　　・他にもFITのコードが元からIARだとワーニングを出す要素がいくつかあるようだ
+　
+　FITモジュールの組み込みが終わった。
+　続いてAmazon FreeRTOSのコードを登録していく。
+　
+　ひとまずビルドが通るところまで辿り着いた。以下課題。
+　・そもそもまだ動かない
+　・group_al1_handler_isr()の扱い。今コメントアウトしてある。
+　・FreeRTOSIPConfig.hの扱い。
+　・/lib/FreeRTOS/portable/IAR/RXv2/port.c の vApplicationSetupTimerInterrupt()の実装。
+　　⇒_IEN() とかをコメントアウトしてある
+　・/lib/FreeRTOS/portable/IAR/RXv2/port.c の vTickISR()の実装。
+　　⇒割り込み関数でなくしてる
+　・/lib/FreeRTOS/portable/IAR/RXv2/port_asm.s の
+　　インクルード"PriorityDefinitions.h"が見つからない
+　　⇒コメントアウトして、ヘッダに書いてあることを期待しているコンフィグ値を直打ち
+　・/lib/pkcs11/mbedtls/aws_pkcs11_mbedtls.c
+　　prvSetupPkcs11SigningForMbedTls関数
+　　⇒IARだとビルドエラーになる。
+　
+　ここまでで、一旦ExperimentalとしてGitHubに登録。
+　
+2018/07/14-(2)
+　NoMaY氏が作ってくれたGCC用のFITモジュールZIPパックを導入。
+　https://japan.renesasrulz.com/cafe_rene/f/forum21/4772/amazon-freertos-rx/28951#28951
+　⇒2251.smc_fit_modify_20180714.zip
+　
+　RX65N Amazon FreeRTOS v0.0.6の以下フォルダに解凍したデータを全部入れる。
+　\demos\renesas\rx65n-envision-kit\gnurx-e2studio6\src\smc_gen
+　
+　RX65N Amazon FreeRTOS v0.0.6の他のフォルダはRX Driver Package v114環境に移行したが、
+　GCC対応版はRX Driver Package v113環境を維持。
+　
+　プロジェクトエクスプローラの aws_demos.scfg をダブルクリックし、コード生成。
+　
+　ビルド実行。
+　
+　/demos/renesas/rx65n-envision-kit/common/application_code/rskrx65n_uart.c
+　⇒ r_pinset.h が無いとのことでコンパイルエラーが発生する。
+　
+　e2 studio v620からv630にアップしたことによる影響か。
+　ZIPパックからr_pinset.hを含むフォルダ「\smc_gen\r_pincfg」を
+　RX65N Amazon FreeRTOS v0.0.6の以下フォルダに解凍したデータを全部入れる。
+　\demos\renesas\rx65n-envision-kit\gnurx-e2studio6\src\smc_gen\r_pincfg
+　
+　ここでビルドOKとなる。(一度クリーンビルドが必要）
+　
+　ダウンロードして実行してみる。
+　暴走。トレースしてみる。
+　
+　reset_program.asm にて、FreeRTOSを初期化せずにmain()にジャンプし
+　その後処理が進んでいきOS内部の処理でNULLポインタアクセスとなり暴走している。
+　
+　reset_program.asm の main()呼び出しをしているところを代わりに
+　RTOSパッケージの r_bsp_rtos の resetprg.c に倣い、以下2関数を呼び出すことにする。
+　これはNoMaY氏のメモ書きの通りである。
+　
+　_Processing_Before_Start_Kernel    
+　_vTaskStartScheduler
+
+　ダウンロードして実行してみる。
+　暴走。トレースしてみる。
+
+　prvGetNextExpireTime()にて暴走するようだ。
+　どうやらスタックが足りないらしい。
+　リンカスクリプト(linker_script.ld)をe2 studio上から編集してみる。
+　他の環境では、USTACK、ISTACKをそれぞれ0x3000確保している。
+　ヒープは0x2000確保している。GCC環境もこれらを合わせ込む。
+　ヒープはBSSに配置されるであろう。たぶん。
+　　.ustack の仮想アドレス/ロードアドレスを 0x200 から 0x6000
+　　.istack の仮想アドレス/ロードアドレスを 0x100 から 0x3000
+　　.data   の仮想アドレス/ロードアドレスを 0x204 から 0x6004
+
+　ダウンロードして実行してみる。
+　暴走。トレースしてみる。
+
+　prvGetNextExpireTime()にて暴走するようだ。
+　どうやら割り込み周りでおかしくなっている。
+　NoMaY氏の割り込みベクタの記述差吸収マクロは働いていて
+　正しくCMT0割り込みに対応するベクタが生成され、割り込み自体も発生する様子。
+　試しにcmt0_isr()にブレークしてみる。ブレークするが、何度か割り込みが発生して
+　デバッガの挙動がおかしくなりデバッグ継続できなくなる。e2 studioがエラーを吐いて
+　デバッガ接続が切れる。
+　
+　フリーラン実行+ブレーク+トレースで、どこにブレークを貼った時に正常/異常動作が
+　分かれるかを検証。prvProcessTimerOrBlockTask()がreturnするところがフリーランで正常動作を
+　維持できる限界のようだ。returnする際の戻り番地が格納されたスタックが破壊されたか？
+　
+　reset_program.asm の先頭で istack と ustack を設定しているところを見てみる。
+　istack に 0x100、ustack に0x200が設定された。さっきのリンカスクリプトの設定が反映されてない様子。
+　クリーンビルドしてみる。
+　
+　ダウンロードして実行してみる。暴走しなくなった。
+　
+　■NoMaY氏の見解
+　①FreeRTOSのスケジューラを呼び出す処理がない(スタートアップルーチンもしくはmain()から呼び出す)
+　②FreeRTOSのタイマ割り込みをベクタ登録してない(lib\FreeRTOS\portable\GCC\RX600v2\port.cのvTickISR()を登録する)
+　③FreeRTOSのソフトウェア割り込みをベクタ登録していない(同port.cのvSoftwareInterruptISR()を登録する
+
+　④GNURXプロジェクトのR_BSPのR_BSP_RegisterProtectEnable()とR_BSP_RegisterProtectDisable()に割り込み禁止を追加
+　⑤GNURXプロジェクトのR_BSPのR_BSP_SoftwareLock()でXCHG命令を使用するように変更
+　⑥GNURXプロジェクトのR_CMT_RXがRTOS対応になっていないがaws_demosプロジェクトで未使用なので一旦削除
+　(・aws_demos.scfgに小細工をして本来はGNURXプロジェクトで生成出来ないFITモジュールを生成させる裏技は早めにやめる)
+
+　⑦今回のaws_demosプロジェクトをインポートするとe2 studioがlinker_script.ldの記述でエラーを表示するので調査/対処
+　⑧リンク時のあのワーニングにはどう対処すべきだろう、、、(今夜は無理かな、、、)
+
+　⑨フラッシュセルフプログラミングでコードをROMからRAMへコピーする処理がどうなっているか気掛かり(でも当面先延ばし)
+　⑩フラッシュセルフプログラミングのコードにインラインアセンブラのコードがあったので気掛かり(これも当面先延ばし)
+
+　上記NoMaY氏の見解のうち、①は完了、②③を実現してみる。
+　あとできれいに呼び出す方法は考えるとして、vTickISR()をCMT0タイマ割り込みから直接呼び出す。
+　port.c でvTickISR()は割り込み関数指定されているがこれを解除。
+　vSoftwareInterruptISR()はNoMaY氏の準備してくれた共通pragmaで以下のようにport.cで定義。
+　R_PRAGMA_STATIC_INTERRUPT(vSoftwareInterruptISR, VECT(ICU, SWINT));
+　port.c はFreeRTOSカーネルの奥底なので変更はなかなか大変そう。本家に問い合わせないといけない。
+　外側でどうにかする手を別途考える必要がある。課題★
+　
+　あと、Ether関連のセクションが未定義のためEtherコントローラの制限を回避できていない。
+　(制限=送信・受信バッファが32バイト境界、送信・受信ディスクリプタが16バイト境界)
+　そこで、リンカスクリプトを修正し、_ETHERNET_BUFFERSを0番地から、_RX_DESC、_TX_DESCをその続きに
+　配置して制限回避した。
+　
+　この状態で無事Amazon Web Serviceに接続するサンプルが動作した。
+　続いてIAR環境の動作確認を進めることにする。
+　
 2018/07/14
 　しばらくぶりの更新。この1か月は内部調整に奔走。この開発は、とても楽しい。
 　出張ラッシュがひと段落しての3連休。NoMaY氏がGCC対応のプロジェクトファイルを

@@ -320,7 +320,11 @@ extern uint32_t ulRand();
 #define ipconfigZERO_COPY_TX_DRIVER              ( 0 )
 #define ipconfigZERO_COPY_RX_DRIVER              ( 0 )
 
+#if defined(__GNUC__)
 #define portINLINE                               __inline
+#elif defined(__ICCRX__)
+#define portINLINE                               inline
+#endif
 
 void vApplicationMQTTGetKeys( const char ** ppcRootCA,
                               const char ** ppcClientCert,

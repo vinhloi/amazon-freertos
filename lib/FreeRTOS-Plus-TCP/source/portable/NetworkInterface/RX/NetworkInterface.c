@@ -448,7 +448,7 @@ static void check_ether_link(TimerHandle_t xTimer )
 uint32_t ulRand( void )   //TODO make true random number
 {
 	uint32_t tmp;
-	get_random_number(&tmp, 4);
+	get_random_number((uint8_t*)&tmp, 4);
 	return tmp;
 } /* End of function ulRand() */
 

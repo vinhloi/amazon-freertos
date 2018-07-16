@@ -6,27 +6,27 @@ MEMORY
 }
 SECTIONS
 {
-	.exvectors 0xFFFFFF80: AT(0xFFFFFF80)
+	.exvectors 0xFFFFFF80 : AT(0xFFFFFF80)
 	{
 		KEEP(*(.exvectors))
-	} > ROM
-	.fvectors 0xFFFFFFFC: AT(0xFFFFFFFC)
+	} >ROM
+	.fvectors 0xFFFFFFFC : AT(0xFFFFFFFC)
 	{
 		KEEP(*(.fvectors))
-	} > ROM
-	.text 0xFFF00000: AT(0xFFF00000)
+	} >ROM
+	.text 0xFFF00000 : AT(0xFFF00000)
 	{
 		*(.text)
 		*(.text.*)
 		*(P)
 		etext = .;
-	} > ROM
+	} >ROM
 	.rvectors :
 	{
 		_rvectors_start = .;
 		INCLUDE ../src/linker_script_rvectors.inc
 		_rvectors_end = .;
-	} > ROM
+	} >ROM
 	.init :
 	{
 		KEEP(*(.init))
@@ -41,16 +41,16 @@ SECTIONS
 		KEEP(*(.fini_array))
 		KEEP(*(SORT(.fini_array.*)))
 		__fini_array_end = .;
-	} > ROM
+	} >ROM
 	.fini :
 	{
 		KEEP(*(.fini))
-	} > ROM
+	} >ROM
 	.got :
 	{
 		*(.got)
 		*(.got.plt)
-	} > ROM
+	} >ROM
 	.rodata :
 	{
 		*(.rodata)
@@ -59,19 +59,19 @@ SECTIONS
 		*(C_2)
 		*(C)
 		_erodata = .;
-	} > ROM
+	} >ROM
 	.eh_frame_hdr :
 	{
 		*(.eh_frame_hdr)
-	} > ROM
+	} >ROM
 	.eh_frame :
 	{
 		*(.eh_frame)
-	} > ROM
+	} >ROM
 	.jcr :
 	{
 		*(.jcr)
-	} > ROM
+	} >ROM
 	.tors :
 	{
 		__CTOR_LIST__ = .;
@@ -87,16 +87,16 @@ SECTIONS
 		__DTOR_END__ = .;
 		. = ALIGN(2);
 		_mdata = .;
-	} > ROM
-	.ustack 0x200: AT(0x200)
+	} >ROM
+	.ustack 0x8000 : AT(0x8000)
 	{
 		_ustack = .;
-	} > RAM
-	.istack 0x100: AT(0x100)
+	} >RAM
+	.istack 0x5000 : AT(0x5000)
 	{
 		_istack = .;
-	} > RAM
-	.data 0x204: AT(_mdata)
+	} >RAM
+	.data 0x8004 : AT(_mdata)
 	{
 		_data = .;
 		*(.data)
@@ -105,11 +105,11 @@ SECTIONS
 		*(D_1)
 		*(D_2)
 		_edata = .;
-	} > RAM
+	} >RAM
 	.gcc_exc :
 	{
 		*(.gcc_exc)
-	} > RAM
+	} >RAM
 	.bss :
 	{
 		_bss = .;
@@ -121,33 +121,47 @@ SECTIONS
 		*(B_2)
 		_ebss = .;
 		_end = .;
-	} > RAM
-	.ofs1 0xFE7F5D40: AT(0xFE7F5D00)
+	} >RAM
+	.ofs1 0xFE7F5D40 : AT(0xFE7F5D00)
 	{
 		KEEP(*(.ofs1))
-	} > OFS
-	.ofs2 0xFE7F5D48: AT(0xFE7F5D10)
+	} >OFS
+	.ofs2 0xFE7F5D48 : AT(0xFE7F5D10)
 	{
 		KEEP(*(.ofs2))
-	} > OFS
-	.ofs3 0xFE7F5D50: AT(0xFE7F5D40)
+	} >OFS
+	.ofs3 0xFE7F5D50 : AT(0xFE7F5D40)
 	{
 		KEEP(*(.ofs3))
-	} > OFS
-	.ofs4 0xFE7F5D10: AT(0xFE7F5D48)
+	} >OFS
+	.ofs4 0xFE7F5D10 : AT(0xFE7F5D48)
 	{
 		KEEP(*(.ofs4))
-	} > OFS
-	.ofs5 0xFE7F5D10: AT(0xFE7F5D50)
+	} >OFS
+	.ofs5 0xFE7F5D10 : AT(0xFE7F5D50)
 	{
 		KEEP(*(.ofs5))
-	} > OFS
-	.ofs6 0xFE7F5D10: AT(0xFE7F5D64)
+	} >OFS
+	.ofs6 0xFE7F5D10 : AT(0xFE7F5D64)
 	{
 		KEEP(*(.ofs6))
-	} > OFS
-	.ofs7 0xFE7F5D10: AT(0xFE7F5D70)
+	} >OFS
+	.ofs7 0xFE7F5D10 : AT(0xFE7F5D70)
 	{
 		KEEP(*(.ofs7))
-	} > OFS
+	} >OFS "_ETHERNET_BUFFERS" 0 : AT(0)
+{
+} >RAM
+
+ "_RX_DESC" :
+{
+} >RAM "_TX_DESC" :
+{
+} >RAM
+
+
+
 }
+
+
+

@@ -219,7 +219,10 @@ static CK_RV prvSetupPkcs11SigningForMbedTls( P11SessionPtr_t pxSessionObj,
         pxKeyObj->xMbedPkCtx.pk_info,
         sizeof( pxKeyObj->xMbedPkInfo ) );
     pxKeyObj->pfnSavedMbedSign = pxKeyObj->xMbedPkInfo.sign_func;
+#if (__ICCRX__)
+#else
     pxKeyObj->xMbedPkInfo.sign_func = prvPrivateKeySigningCallback;
+#endif
     pxKeyObj->xMbedPkCtx.pk_info = &pxKeyObj->xMbedPkInfo;
 
     /* Swap out the underlying internal key context. */

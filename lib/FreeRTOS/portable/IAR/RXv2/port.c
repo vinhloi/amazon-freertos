@@ -58,7 +58,8 @@ extern void prvStartFirstTask( void );
  * The tick ISR handler.  The peripheral used is configured by the application
  * via a hook/callback function.
  */
-__interrupt void vTickISR( void );
+//__interrupt void vTickISR( void );
+void vTickISR( void );
 
 /*-----------------------------------------------------------*/
 
@@ -153,13 +154,13 @@ extern void vApplicationSetupTimerInterrupt( void );
 		vApplicationSetupTimerInterrupt();
 
 		/* Enable the software interrupt. */
-		_IEN( _ICU_SWINT ) = 1;
+//		_IEN( _ICU_SWINT ) = 1;
 
 		/* Ensure the software interrupt is clear. */
-		_IR( _ICU_SWINT ) = 0;
+//		_IR( _ICU_SWINT ) = 0;
 
 		/* Ensure the software interrupt is set to the kernel priority. */
-		_IPR( _ICU_SWINT ) = configKERNEL_INTERRUPT_PRIORITY;
+//		_IPR( _ICU_SWINT ) = configKERNEL_INTERRUPT_PRIORITY;
 
 		/* Start the first task. */
 		prvStartFirstTask();
@@ -170,8 +171,9 @@ extern void vApplicationSetupTimerInterrupt( void );
 }
 /*-----------------------------------------------------------*/
 
-#pragma vector = configTICK_VECTOR
-__interrupt void vTickISR( void )
+//#pragma vector = configTICK_VECTOR
+//__interrupt void vTickISR( void )
+void vTickISR( void )
 {
 	/* Re-enable interrupts. */
 	__enable_interrupt();
