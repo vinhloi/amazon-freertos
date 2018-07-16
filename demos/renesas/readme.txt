@@ -56,6 +56,12 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.0.7-pre4:
+[ADDED] RX65N GR-ROSE GCC e2 studio project code.
+
+v0.0.7-pre3:
+[FIXED] RX65N Envision Kit GCC e2 studio project code.
+
 v0.0.7-pre2:
 [FIXED] RX65N GR-ROSE CC-RX e2 studio project SCI/BSP settings.
 
@@ -277,9 +283,9 @@ Compiler number:
 
                  / IDE      (1)         (2)         (3)
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
-(1)   (1)        /           x           x   -   -   -   -     
-(2)   (1)        /           x   x       x   -   -   -   -   * 
-(3)   (1)        /           x               -   -   -   -     
+(1)   (2)        /           x           x   -   -   -   -     
+(2)   (2)        /           x   x       x   -   -   -   -   * 
+(3)   (2)        /           x   x           -   -   -   -     
 
   x: tested
   *: now trying(still junk)
@@ -376,7 +382,7 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。
 　v0.0.7-pre1では、GR-ROSE用のプロジェクト(CC-RXのe2 studio)が動作しない。
-　SCIの設定ファイルがおかしいようだ。修正してコミット。v0.0.7-pre。
+　SCIの設定ファイルがおかしいようだ。修正してコミット。v0.0.7-pre2。
 　
 　GR-ROSE用のプロジェクト(GCCのe2 studio)を追加する。
 　Envision Kit用のプロジェクト(GCCのe2 studio)をコピーしてボード周りの
@@ -392,7 +398,16 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　どうやらセクション設定がおかしくなっていたようだ。元に戻す。
 　割り込みベクタ周りの記述もおかしくなっていた。元に戻す。
 　
-　ここで一旦コミット。
+　ここで一旦コミット。v0.0.7-pre3。
+　(readme保存し忘れでメモ書きが残ってたので再コミット)
+　
+　今度こそ、GR-ROSE用のプロジェクト(GCCのe2 studio)を追加する。
+　Envision Kit用のプロジェクト(GCCのe2 studio)をコピーしてボード周りの
+　コンフィグを修正していくだけでいけるはず。
+　
+　いけた。
+　
+　ここでGitHubにコミット。今週の作業は終了。v0.0.7-pre4。
 　
 2018/07/15
 　道が拓けてきた。あとはIAR対応。
