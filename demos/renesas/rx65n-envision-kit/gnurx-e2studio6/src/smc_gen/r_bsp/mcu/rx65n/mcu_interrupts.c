@@ -842,7 +842,7 @@ void group_al0_handler_isr (void)
         R_BSP_InterruptControl(BSP_INT_SRC_AL0_RSPI2_SPII2, BSP_INT_CMD_CALL_CALLBACK, FIT_NO_PTR);
     }
 }
-#if 0
+
 /***********************************************************************************************************************
 * Function Name: group_al1_handler_isr
 * Description  : Interrupt handler for Group AL1 interrupts. The way this code works is that for each possible interrupt
@@ -881,4 +881,4 @@ void group_al1_handler_isr (void)
     }
 
 }
-#endif
+

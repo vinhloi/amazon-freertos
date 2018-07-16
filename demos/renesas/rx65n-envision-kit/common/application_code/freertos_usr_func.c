@@ -438,6 +438,7 @@ void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
     }
 }
 
+#if defined(__CCRX__) // toriaezu by NoMaY
 /***********************************************************************************************************************
 * Function Name: group_al1_handler_isr
 * Description  : Interrupt handler for Group AL1 interrupts. The way this code works is that for each possible interrupt
@@ -448,10 +449,7 @@ void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
 * Arguments    : None
 * Return Value : None
 ***********************************************************************************************************************/
-#if 0
-#if defined(__CCRX__) // toriaezu by NoMaY
 #pragma interrupt group_al1_handler_isr(vect=VECT(ICU,GROUPAL1))
-#endif
 void group_al1_handler_isr (void)
 {
     if (1 == ICU.GRPAL1.BIT.IS4)
@@ -480,8 +478,9 @@ void group_al1_handler_isr (void)
     }
 
 }
-
 #endif
+
+
 
 
 

@@ -88,15 +88,15 @@ SECTIONS
 		. = ALIGN(2);
 		_mdata = .;
 	} >ROM
-	.ustack 0x8000 : AT(0x8000)
+	.ustack 0x3000 : AT(0x3000)
 	{
 		_ustack = .;
 	} >RAM
-	.istack 0x5000 : AT(0x5000)
+	.istack 0x6000 : AT(0x6000)
 	{
 		_istack = .;
 	} >RAM
-	.data 0x8004 : AT(_mdata)
+	.data 0x9004 : AT(_mdata)
 	{
 		_data = .;
 		*(.data)
@@ -149,15 +149,22 @@ SECTIONS
 	.ofs7 0xFE7F5D10 : AT(0xFE7F5D70)
 	{
 		KEEP(*(.ofs7))
-	} >OFS "_ETHERNET_BUFFERS" 0 : AT(0)
+	} >OFS "_ETHERNET_BUFFERS" 0x0 : AT(0x0)
 {
 } >RAM
 
- "_RX_DESC" :
-{
-} >RAM "_TX_DESC" :
+
+
+	"_RX_DESC" :
+	{
+	} >RAM "_TX_DESC" :
 {
 } >RAM
+
+
+
+
+
 
 
 
