@@ -80,7 +80,7 @@ Configuration Options
 */
                                    
 #define SCI_CFG_CH0_INCLUDED    (0)
-#define SCI_CFG_CH1_INCLUDED    (1)
+#define SCI_CFG_CH1_INCLUDED    (0)
 #define SCI_CFG_CH2_INCLUDED    (0)
 #define SCI_CFG_CH3_INCLUDED    (0)
 #define SCI_CFG_CH4_INCLUDED    (0)
@@ -91,7 +91,7 @@ Configuration Options
 #define SCI_CFG_CH9_INCLUDED    (0)
 #define SCI_CFG_CH10_INCLUDED   (0)
 #define SCI_CFG_CH11_INCLUDED   (0)
-#define SCI_CFG_CH12_INCLUDED   (0)
+#define SCI_CFG_CH12_INCLUDED   (12)
 
 /* SPECIFY ASYNC MODE TX QUEUE BUFFER SIZES (will not allocate if chan not enabled */
 #define SCI_CFG_CH0_TX_BUFSIZ   (80)

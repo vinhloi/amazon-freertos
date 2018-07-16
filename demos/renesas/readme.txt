@@ -8,7 +8,7 @@ SheltyDog@Renesas writes this guide and has responsibility of this project.
 If you have any question/suggestion/opinion, please visit following site and post it.
 https://github.com/renesas-rx/amazon-freertos
 
-And, details discussion is progressing in followin site. (Japanese)
+And, details discussion is progressing in following site. (Japanese)
 https://japan.renesasrulz.com/cafe_rene/f/forum21/4772/amazon-freertos-rx
 
 Now Amazon provides great real time OS with network software for
@@ -56,6 +56,9 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.0.7-pre2:
+[FIXED] RX65N GR-ROSE CC-RX e2 studio project SCI/BSP settings.
+
 v0.0.7-pre1:
 [ADDED] GCC and IAR trial envirionment into Envision Kit project.
 [OMITTED] Step7-8 from Getting Start Steps.
@@ -370,6 +373,11 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/07/16
+　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。
+　v0.0.7-pre1では、GR-ROSE用のプロジェクト(CC-RXのe2 studio)が動作しない。
+　SCIの設定ファイルがおかしいようだ。修正してコミット。v0.0.7-pre。
+　
 2018/07/15
 　道が拓けてきた。あとはIAR対応。
 　NoMaY氏から案をいただいた。

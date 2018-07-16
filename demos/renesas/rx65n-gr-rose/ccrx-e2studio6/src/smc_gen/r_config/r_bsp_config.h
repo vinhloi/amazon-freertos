@@ -70,7 +70,7 @@ Configuration Options
    FP           = 0x5             = LFQFP/100/0.50
    LJ           = 0xA             = TFLGA/100/0.65
 */
-#define BSP_CFG_MCU_PART_PACKAGE        (0x3) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_MCU_PART_PACKAGE        (0xA) // <-- Updated by GUI. Do not edit this value manually
 
 /* Whether Encryption and SDHI/SDSI are included or not. 
    Character(s) = Value for macro = Description
@@ -81,7 +81,7 @@ Configuration Options
    F            = true            = Encryption module included, SDHI/SDSI module included
    H            = true            = Encryption module included, SDHI/SDSI module included, dual-bank structure
 */
-#define BSP_CFG_MCU_PART_ENCRYPTION_INCLUDED   (true) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_MCU_PART_ENCRYPTION_INCLUDED   (false) // <-- Updated by GUI. Do not edit this value manually
 
 /* ROM, RAM, and Data Flash Capacity. 
    Character(s) = Value for macro = ROM Size/Ram Size/Data Flash Size
@@ -444,7 +444,7 @@ Configuration Options
 
 /* This macro lets other modules no if a RTOS is being used.
    0 = RTOS is not used. 
-   1 = RTOS is used.??ï½¿ï½½?ï½¿ï½½?(FreeRTOS)
+   1 = RTOS is used.???½¿?½½??½¿?½½?(FreeRTOS)
 */
 #define BSP_CFG_RTOS_USED               (1)
 
