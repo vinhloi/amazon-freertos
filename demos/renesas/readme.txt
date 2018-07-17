@@ -56,6 +56,19 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.0.9:
+[NOTICE] Sorry, v0.0.8 includes wrong commit massage.
+         No differencies between v0.0.7 to v0.0.8, v0.0.9 excluding commit message.
+         v0.0.7 has following update.
+[UPDATED] Emulator settings to use the E2 Emulator Lite for all projects.
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
 v0.0.8:
 [NOTICE] Sorry, v0.0.7 includes wrong commit massage.
          No differencies between v0.0.7 to v0.0.8 excluding commit message.
