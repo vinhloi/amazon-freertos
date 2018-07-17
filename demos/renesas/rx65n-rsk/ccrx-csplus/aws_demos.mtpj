@@ -9442,7 +9442,7 @@ D_2=R_2
   </Class>
   <Class Guid="606767c3-4bf3-4e65-90c1-19075517355d">
     <Instance Guid="606767c3-4bf3-4e65-90c1-19075517355d">
-      <CurrentToolKey>980229aa-cc4c-40c7-be19-a84e15ec314e</CurrentToolKey>
+      <CurrentToolKey>6b3ab0e8-8ba1-402c-ac51-963031a63a4a</CurrentToolKey>
     </Instance>
   </Class>
   <Class Guid="8b5af363-dcc2-48e6-919c-6cdb80d50173">
@@ -10067,7 +10067,7 @@ D_2=R_2
   </Class>
   <Class Guid="104fc540-14b6-4fb9-bd7a-0d4844b95028">
     <Instance Guid="00000000-0000-0000-0000-000000000000">
-      <SubDebugger>980229aa-cc4c-40c7-be19-a84e15ec314e</SubDebugger>
+      <SubDebugger>6b3ab0e8-8ba1-402c-ac51-963031a63a4a</SubDebugger>
     </Instance>
   </Class>
   <Class Guid="e4df8d71-236e-4af2-aaea-56345a08da25">
@@ -10339,9 +10339,10 @@ D_2=R_2
       <DebuggerProperty-EssentialProperty-TargetConnect-TargetSupplyPower>No</DebuggerProperty-EssentialProperty-TargetConnect-TargetSupplyPower>
       <DebuggerProperty-EssentialProperty-TargetConnect-TargetSuppliedVoltage>Use3_3V</DebuggerProperty-EssentialProperty-TargetConnect-TargetSuppliedVoltage>
       <DebuggerProperty-EssentialProperty-TargetConnect-UserVCC>2147483647</DebuggerProperty-EssentialProperty-TargetConnect-UserVCC>
+      <DebuggerProperty-EssentialProperty-TargetConnect-CommunicationMethodForE2Lite>Jtag</DebuggerProperty-EssentialProperty-TargetConnect-CommunicationMethodForE2Lite>
       <DebuggerProperty-EssentialProperty-TargetConnect-CommunicationMethod>Jtag</DebuggerProperty-EssentialProperty-TargetConnect-CommunicationMethod>
-      <DebuggerProperty-EssentialProperty-TargetConnect-JtagClock>Jtag_16_500</DebuggerProperty-EssentialProperty-TargetConnect-JtagClock>
-      <DebuggerProperty-EssentialProperty-TargetConnect-FineBaudRate>Fine_2000000</DebuggerProperty-EssentialProperty-TargetConnect-FineBaudRate>
+      <DebuggerProperty-EssentialProperty-TargetConnect-JtagClock>Jtag_06_000</DebuggerProperty-EssentialProperty-TargetConnect-JtagClock>
+      <DebuggerProperty-EssentialProperty-TargetConnect-FineBaudRate>Fine_1500000</DebuggerProperty-EssentialProperty-TargetConnect-FineBaudRate>
       <DebuggerProperty-EssentialProperty-TargetConnect-BaudRate>115200</DebuggerProperty-EssentialProperty-TargetConnect-BaudRate>
       <DebuggerProperty-EssentialProperty-Flash-SecurityIdMode>Hex</DebuggerProperty-EssentialProperty-Flash-SecurityIdMode>
       <DebuggerProperty-EssentialProperty-Flash-WorkRamStartAddress>4096</DebuggerProperty-EssentialProperty-Flash-WorkRamStartAddress>

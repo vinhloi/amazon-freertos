@@ -56,6 +56,17 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.0.7:
+[UPDATED] Emulator settings to use the E2 Emulator Lite for all projects.
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+         
 v0.0.7-pre4:
 [ADDED] RX65N GR-ROSE GCC e2 studio project code.
 
@@ -115,10 +126,12 @@ IDE: e2 studio V6.3.0
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/e2studio.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/e2studio.html
     
-Debugger: E1 Emulator (no need to buy because Renesas Starter Kit has this one into package)
-    [en] https://www.renesas.com/en-us/products/software-tools/tools/emulator/e1.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/emulator/e1.html
-
+Debugger: E2 Emulator Lite (no need to buy because Renesas Starter Kit has this one into package)
+    [en] https://www.renesas.com/en-us/products/software-tools/tools/emulator/e2-emulator-lite.html
+    [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/emulator/e2-emulator-lite.html
+    
+    Notice: You can also use E1 Emulator but you have to modify the debugger settings on your IDE.
+    
 Device Driver: RX Driver Package v114
     [en] https://www.renesas.com/en-us/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
@@ -172,11 +185,9 @@ Board: RX65N GR-ROSE proto1
          5             ----- 5pin
          6             ----- 6pin
 
-         This pin assign is wrong. We will fix this after proto2.
-
-         [How to connect E1 Emulator]
+         [How to connect E2 Emulator Lite]
          GR-ROSE CN2-TH 4pins are connected to RX65N Debug Interface called FINE.
-         You can connect E1 or E2 Emulator to this pins as following.
+         You can connect E2 Emulator Lite to this pins as following.
          GR-ROSE CN2-TH ----- Emulator 14pin connector
          pin1(VCC)      ----- pin8
          pin2(GND)      ----- pin2, pin12, pin14
