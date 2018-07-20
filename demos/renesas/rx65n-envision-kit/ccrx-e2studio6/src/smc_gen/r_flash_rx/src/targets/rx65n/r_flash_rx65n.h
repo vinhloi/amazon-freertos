@@ -806,22 +806,20 @@ static rom_block_sizes_t g_flash_RomBlockSizes[NUM_BLOCK_TABLE_ENTRIES] =
 };
 
 
-#pragma bit_order left
-#pragma unpack
+R_PRAGMA_UNPACK
 typedef union
 {
     unsigned long LONG;
-    struct {
-        unsigned long BTFLG:1;
-        unsigned long :3;
-        unsigned long FAWE:12;
-        unsigned long FSPR:1;
-        unsigned long :3;
-        unsigned long FAWS:12;
-    } BIT;
+    R_ATTRIB_BITFIELD_BIT_ORDER_LEFT_6(
+        unsigned long BTFLG:1,
+        unsigned long :3,
+        unsigned long FAWE:12,
+        unsigned long FSPR:1,
+        unsigned long :3,
+        unsigned long FAWS:12
+    ) BIT;
 } fawreg_t;
-#pragma bit_order
-#pragma packoption
+R_PRAGMA_PACKOPTION
 
 
 /*  According to HW Manual the Max Programming Time for 128 bytes (ROM)

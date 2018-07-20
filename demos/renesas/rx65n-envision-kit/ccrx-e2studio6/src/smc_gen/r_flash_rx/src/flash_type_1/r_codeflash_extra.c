@@ -64,7 +64,8 @@ Private global variables and functions
 static void r_cf_extra_operation (const uint32_t start_addr_startup_value, const uint32_t end_addr, r_flash_command_t command);
 static flash_err_t r_cf_set_startup_area (uint32_t value);
 
-#pragma section FRAM
+#define FLASH_PE_MODE_SECTION    R_ATTRIB_SECTION_CHANGE_F(FRAM)
+#define FLASH_SECTION_CHANGE_END R_ATTRIB_SECTION_CHANGE_END
 
 /*******************************************************************************
 * Outline      : Setting the access window
@@ -78,6 +79,7 @@ static flash_err_t r_cf_set_startup_area (uint32_t value);
 * Return Value : FLASH_SUCCESS            - Command executed successfully
 *              : FLASH_ERR_ACCESSW        - AccessWindow setting error
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_CF_SetAccessWindow (flash_access_window_config_t  *pAccessInfo)
 {
     flash_err_t      err = FLASH_SUCCESS;
@@ -123,6 +125,7 @@ flash_err_t R_CF_SetAccessWindow (flash_access_window_config_t  *pAccessInfo)
 * Arguments    : none
 * Return Value : FLASH_SUCCESS
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_CF_GetAccessWindow (flash_access_window_config_t  *pAccessInfo)
 {
     pAccessInfo->start_addr = (((FLASH.FAWSMR << 10) + CODEFLASH_ADDR_OFFSET) | 0xFC000000);
@@ -146,6 +149,7 @@ flash_err_t R_CF_GetAccessWindow (flash_access_window_config_t  *pAccessInfo)
 *                FLASH_ERR_PARAM -
 *                Illegal parameter passed
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_CF_ToggleStartupArea (void)
 {
     uint8_t startup_area_flag;
@@ -190,6 +194,7 @@ flash_err_t R_CF_ToggleStartupArea (void)
 * Return Value : FLASH_SUCCESS -  Command executed successfully
 *              : FLASH_ERR_ACCESSW - Start-up program switching error
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 static flash_err_t r_cf_set_startup_area (uint32_t value)
 {
     flash_err_t err = FLASH_SUCCESS;
@@ -220,6 +225,7 @@ static flash_err_t r_cf_set_startup_area (uint32_t value)
 * Return Value : startup_area_flag - 0 ==> Alternate area
 *                                    1 ==> Default area
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 uint8_t R_CF_GetCurrentStartupArea(void)
 {
     uint8_t startup_area_flag;
@@ -245,6 +251,7 @@ uint8_t R_CF_GetCurrentStartupArea(void)
 *                                      3 ==> The start-up area is switched to
 *                                            the alternate area temporarily.
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 uint8_t R_CF_GetCurrentSwapState(void)
 {
     uint8_t startup_area_select;
@@ -261,6 +268,7 @@ uint8_t R_CF_GetCurrentSwapState(void)
 * Arguments    : value for SAS bits; switch startup area if value = SAS_SWITCH_AREA
 * Return Value : none
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 void R_CF_SetCurrentSwapState(uint8_t value)
 {
     uint8_t sas_flag;
@@ -318,6 +326,7 @@ void R_CF_SetCurrentSwapState(uint8_t value)
 *              : command  : select from R_FLASH_ACCESSWINDOW or R_FLASH_STARTUPAREA
 * Return Value : none
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 static void r_cf_extra_operation (const uint32_t start_addr_startup_value, const uint32_t end_addr, r_flash_command_t command)
 {
 
@@ -363,6 +372,7 @@ static void r_cf_extra_operation (const uint32_t start_addr_startup_value, const
 *              : FLASH_ERR_BUSY         - Command being executed
 *              : FLASH_ERR_ACCESSW      - Extra area command error
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t r_cf_extra_check (void)
 {
 
@@ -389,7 +399,7 @@ flash_err_t r_cf_extra_check (void)
     return FLASH_SUCCESS;
 }
 
-#pragma section /*end FRAM */
+FLASH_SECTION_CHANGE_END /*end FRAM */
 
 #endif
 #endif

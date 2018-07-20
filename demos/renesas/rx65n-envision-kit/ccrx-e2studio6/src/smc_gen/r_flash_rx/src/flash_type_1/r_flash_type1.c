@@ -75,7 +75,11 @@ Includes   <System Includes> , "Project Includes"
 
 
 #if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
-#pragma section FRAM
+#define FLASH_PE_MODE_SECTION    R_ATTRIB_SECTION_CHANGE_F(FRAM)
+#define FLASH_SECTION_CHANGE_END R_ATTRIB_SECTION_CHANGE_END
+#else
+#define FLASH_PE_MODE_SECTION
+#define FLASH_SECTION_CHANGE_END
 #endif
 
 /***********************************************************************************************************
@@ -89,6 +93,7 @@ Includes   <System Includes> , "Project Includes"
 *                FLASH_ERR_BUSY -
 *                    Flash is busy with another operation or is uninitialized
 ***********************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_get_status (void)
 {
 
@@ -113,6 +118,7 @@ flash_err_t flash_get_status (void)
 * Return Value : none
 *******************************************************************************/
 #pragma inline_asm r_flash_delay
+FLASH_PE_MODE_SECTION
 static void r_flash_delay  (unsigned long loop_cnt)
 {
     BRA     ?+
@@ -135,6 +141,7 @@ static void r_flash_delay  (unsigned long loop_cnt)
                : khz : ICLK frequency when calling the function
 * Return Value : none
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 void r_flash_delay_us (unsigned long us, unsigned long khz)
 {
 
@@ -161,8 +168,9 @@ void r_flash_delay_us (unsigned long us, unsigned long khz)
 * Arguments    : none
 * Return Value : none
 ******************************************************************************/
-#pragma interrupt Excep_FCU_FRDYI(vect=VECT(FCU, FRDYI))
-static void Excep_FCU_FRDYI(void)
+R_PRAGMA_STATIC_INTERRUPT(Excep_FCU_FRDYI, VECT(FCU, FRDYI))
+FLASH_PE_MODE_SECTION
+R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
 {
     flash_err_t err = FLASH_SUCCESS;
 
@@ -301,8 +309,9 @@ static void Excep_FCU_FRDYI(void)
 }
 
 #endif  // ((FLASH_CFG_CODE_FLASH_ENABLE == 1) && (FLASH_CFG_CODE_FLASH_BGO == 1)) || (FLASH_CFG_DATA_FLASH_BGO == 1)
-#endif  // (FLASH_TYPE == FLASH_TYPE_1)
 
-#pragma section /* end FLASH_SECTION_ROM */
+FLASH_SECTION_CHANGE_END /* end FLASH_SECTION_ROM */
+
+#endif  // (FLASH_TYPE == FLASH_TYPE_1)
 
 /* end of file */
