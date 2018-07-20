@@ -35,6 +35,7 @@
 *                              Fixed a bug that callback function work many times at receive interrupt
 *                               when FIFO(async) enabled.
 *                              Fixed a bug that the interrupt priority level can be changed only in async mode.
+*           31.10.2017 2.01    Added the demo for RX65N, RX65N-2M.
 ***********************************************************************************************************************/
 
 #ifndef SCI_IF_H
@@ -52,7 +53,7 @@ Macro definitions
 ***********************************************************************************************************************/
 /* Version Number of API. */
 #define SCI_VERSION_MAJOR  (2)
-#define SCI_VERSION_MINOR  (00)
+#define SCI_VERSION_MINOR  (01)
 
 
 /*****************************************************************************

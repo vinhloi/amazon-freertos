@@ -28,6 +28,7 @@
 *              : 12.08.2016 2.00    Modified for BSPless operation (softwareLock()/Unlock()).
 *              : 05.10.2016 3.00    Modified API functions to call either flash_api_xxx Flash Type 2 functions
 *                                   or r_flash_xxx Flash Type 1, 3, 4 functions.
+*              : 31.10.2017 3.10    Added function R_FLASH_Close().
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -138,6 +139,23 @@ void R_FlashCodeCopy(void)
 
 #endif
 }
+
+
+/***********************************************************************************************************************
+* Function Name: R_FLASH_Close
+* Description  : This function closes the flash driver.
+* Arguments    : None
+* Return Value : see called function
+***********************************************************************************************************************/
+flash_err_t R_FLASH_Close(void)
+{
+#if (FLASH_TYPE == FLASH_TYPE_2)
+    return(flash_api_close());
+#else
+    return(r_flash_close());
+#endif
+}
+
 
 
 /* FUNCTIONS WHICH MUST BE RUN FROM RAM FOLLOW */

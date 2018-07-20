@@ -8,7 +8,7 @@
 </toolchain>
 </configuration>
 <platform id="R5F565NEHxFB"/>
-<option id="board" value="カスタムユーザボード"/>
+<option id="board" value="�J�X�^�����[�U�{�[�h"/>
 </general>
 <tool id="Clock">
 <Item current="true" id="mainclock.selectBox"/>
@@ -223,14 +223,14 @@
 <pinItem allocation="20" direction="None" id="XTAL" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_TCON3" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_TCON0" locked="false" status="0"/>
-<pinItem allocation="71" direction="None" id="RMII0_RXD0" locked="false" status="0"/>
-<pinItem allocation="72" direction="None" id="RMII0_RXD1" locked="false" status="0"/>
+<pinItem allocation="71" direction="None" id="RMII0_RXD0" locked="false" status="512"/>
+<pinItem allocation="72" direction="None" id="RMII0_RXD1" locked="false" status="512"/>
 <pinItem allocation="" direction="None" id="ET0_WOL" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="ET0_EXOUT" locked="false" status="0"/>
-<pinItem allocation="63" direction="None" id="RMII0_TXD1" locked="false" status="0"/>
-<pinItem allocation="64" direction="None" id="RMII0_TXD0" locked="false" status="0"/>
-<pinItem allocation="69" direction="None" id="REF50CK0" locked="false" status="0"/>
-<pinItem allocation="85" direction="None" id="ET0_MDC" locked="false" status="0"/>
+<pinItem allocation="63" direction="None" id="RMII0_TXD1" locked="false" status="512"/>
+<pinItem allocation="64" direction="None" id="RMII0_TXD0" locked="false" status="512"/>
+<pinItem allocation="69" direction="None" id="REF50CK0" locked="false" status="512"/>
+<pinItem allocation="85" direction="None" id="ET0_MDC" locked="false" status="512"/>
 <pinItem allocation="" direction="None" id="LCD_CLK" locked="false" status="0"/>
 <pinItem allocation="22" direction="None" id="EXTAL" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="ET0_LINKSTA" locked="false" status="0"/>
@@ -240,10 +240,10 @@
 <pinItem allocation="" direction="None" id="LCD_DATA13" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_DATA12" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_DATA11" locked="false" status="0"/>
-<pinItem allocation="68" direction="None" id="RMII0_RX_ER" locked="false" status="0"/>
-<pinItem allocation="65" direction="None" id="RMII0_TXD_EN" locked="false" status="0"/>
-<pinItem allocation="86" direction="None" id="ET0_MDIO" locked="false" status="0"/>
-<pinItem allocation="58" direction="None" id="RMII0_CRS_DV" locked="false" status="0"/>
+<pinItem allocation="68" direction="None" id="RMII0_RX_ER" locked="false" status="512"/>
+<pinItem allocation="65" direction="None" id="RMII0_TXD_EN" locked="false" status="512"/>
+<pinItem allocation="86" direction="None" id="ET0_MDIO" locked="false" status="512"/>
+<pinItem allocation="58" direction="None" id="RMII0_CRS_DV" locked="false" status="512"/>
 <pinItem allocation="" direction="None" id="LCD_DATA0" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_DATA1" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_DATA2" locked="false" status="0"/>
@@ -254,8 +254,8 @@
 <pinItem allocation="" direction="None" id="LCD_DATA7" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_DATA8" locked="false" status="0"/>
 <pinItem allocation="" direction="None" id="LCD_DATA9" locked="false" status="0"/>
-<pinItem allocation="54" direction="None" id="RXD2" locked="false" status="0"/>
-<pinItem allocation="56" direction="None" id="TXD2" locked="false" status="0"/>
+<pinItem allocation="54" direction="None" id="RXD2" locked="false" status="512"/>
+<pinItem allocation="56" direction="None" id="TXD2" locked="false" status="512"/>
 </tool>
 <tool id="Interrupt">
 <Item id="BSC_BUSERR" priority="15"/>
@@ -481,176 +481,9 @@
 </tool>
 <tool id="SWComponent" version="1.0.0.0">
 <configuration inuse="true" name="r_bsp">
-<component display="r_bsp" id="r_bspGeneric(v=3.60a)" version="Generic(v=3.60a)"/>
-<source id="com.renesas.smc.tools.swcomponent.fit.source"/>
-</configuration>
-<configuration inuse="true" name="r_cmt_rx">
-<component description="依存モジュール: r_bsp バージョン 2.90, 3.00, 3.01, 3.10, 3.20, 3.30, 3.40, 3.50, 3.60&#10;This module creates a timer tick using a CMT channel based on a frequency input by the user." detailDescription="Simple CMT driver for creating timer tick." display="r_cmt_rx" id="r_cmt_rx3.20" version="3.20"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-</configuration>
-<configuration inuse="true" name="r_ether_rx">
-<component description="依存モジュール: r_bsp バージョン 3.60&#10;The Ethernet fit module provides a method to send and receive Ethernet / IEEE802.3 frame using Ethernet controller (ETHERC), Ethernet DMA controller (EDMAC)." detailDescription="Ethernet Driver." display="r_ether_rx" id="r_ether_rx1.13" version="1.13">
-<gridItem id="ET0_TX_CLK" selectedIndex="0"/>
-<gridItem id="ET0_RX_CLK" selectedIndex="0"/>
-<gridItem id="ET0_TX_EN" selectedIndex="0"/>
-<gridItem id="ET0_ETXD3" selectedIndex="0"/>
-<gridItem id="ET0_ETXD2" selectedIndex="0"/>
-<gridItem id="ET0_ETXD1" selectedIndex="0"/>
-<gridItem id="ET0_ETXD0" selectedIndex="0"/>
-<gridItem id="ET0_TX_ER" selectedIndex="0"/>
-<gridItem id="ET0_RX_DV" selectedIndex="0"/>
-<gridItem id="ET0_ERXD3" selectedIndex="0"/>
-<gridItem id="ET0_ERXD2" selectedIndex="0"/>
-<gridItem id="ET0_ERXD1" selectedIndex="0"/>
-<gridItem id="ET0_ERXD0" selectedIndex="0"/>
-<gridItem id="ET0_RX_ER" selectedIndex="0"/>
-<gridItem id="ET0_CRS" selectedIndex="0"/>
-<gridItem id="ET0_COL" selectedIndex="0"/>
-<gridItem id="ET0_MDC" selectedIndex="1"/>
-<gridItem id="ET0_MDIO" selectedIndex="1"/>
-<gridItem id="ET0_LINKSTA" selectedIndex="0"/>
-<gridItem id="ET0_EXOUT" selectedIndex="0"/>
-<gridItem id="ET0_WOL" selectedIndex="0"/>
-<gridItem id="ETHERC0_MII" selectedIndex="1"/>
-<gridItem id="REF50CK0" selectedIndex="1"/>
-<gridItem id="RMII0_TXD_EN" selectedIndex="1"/>
-<gridItem id="RMII0_TXD1" selectedIndex="1"/>
-<gridItem id="RMII0_TXD0" selectedIndex="1"/>
-<gridItem id="RMII0_RXD1" selectedIndex="1"/>
-<gridItem id="RMII0_RXD0" selectedIndex="1"/>
-<gridItem id="RMII0_RX_ER" selectedIndex="1"/>
-<gridItem id="RMII0_CRS_DV" selectedIndex="1"/>
-<gridItem id="ET0_MDC" selectedIndex="1"/>
-<gridItem id="ET0_MDIO" selectedIndex="1"/>
-<gridItem id="ET0_LINKSTA" selectedIndex="0"/>
-<gridItem id="ET0_EXOUT" selectedIndex="0"/>
-<gridItem id="ET0_WOL" selectedIndex="0"/>
-<gridItem id="ETHERC0_RMII" selectedIndex="1"/>
-<gridItem id="ET1_TX_CLK" selectedIndex="0"/>
-<gridItem id="ET1_RX_CLK" selectedIndex="0"/>
-<gridItem id="ET1_TX_EN" selectedIndex="0"/>
-<gridItem id="ET1_ETXD3" selectedIndex="0"/>
-<gridItem id="ET1_ETXD2" selectedIndex="0"/>
-<gridItem id="ET1_ETXD1" selectedIndex="0"/>
-<gridItem id="ET1_ETXD0" selectedIndex="0"/>
-<gridItem id="ET1_TX_ER" selectedIndex="0"/>
-<gridItem id="ET1_RX_DV" selectedIndex="0"/>
-<gridItem id="ET1_ERXD3" selectedIndex="0"/>
-<gridItem id="ET1_ERXD2" selectedIndex="0"/>
-<gridItem id="ET1_ERXD1" selectedIndex="0"/>
-<gridItem id="ET1_ERXD0" selectedIndex="0"/>
-<gridItem id="ET1_RX_ER" selectedIndex="0"/>
-<gridItem id="ET1_CRS" selectedIndex="0"/>
-<gridItem id="ET1_COL" selectedIndex="0"/>
-<gridItem id="ET1_MDC" selectedIndex="0"/>
-<gridItem id="ET1_MDIO" selectedIndex="0"/>
-<gridItem id="ET1_LINKSTA" selectedIndex="0"/>
-<gridItem id="ET1_EXOUT" selectedIndex="0"/>
-<gridItem id="ET1_WOL" selectedIndex="0"/>
-<gridItem id="ETHERC1_MII" selectedIndex="0"/>
-<gridItem id="REF50CK1" selectedIndex="0"/>
-<gridItem id="RMII1_TXD_EN" selectedIndex="0"/>
-<gridItem id="RMII1_TXD1" selectedIndex="0"/>
-<gridItem id="RMII1_TXD0" selectedIndex="0"/>
-<gridItem id="RMII1_RXD1" selectedIndex="0"/>
-<gridItem id="RMII1_RXD0" selectedIndex="0"/>
-<gridItem id="RMII1_RX_ER" selectedIndex="0"/>
-<gridItem id="RMII1_CRS_DV" selectedIndex="0"/>
-<gridItem id="ET1_MDC" selectedIndex="0"/>
-<gridItem id="ET1_MDIO" selectedIndex="0"/>
-<gridItem id="ET1_LINKSTA" selectedIndex="0"/>
-<gridItem id="ET1_EXOUT" selectedIndex="0"/>
-<gridItem id="ET1_WOL" selectedIndex="0"/>
-<gridItem id="ETHERC1_RMII" selectedIndex="0"/>
-</component>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-</configuration>
-<configuration inuse="true" name="r_flash_rx">
-<component description="依存モジュール: r_bsp バージョン 3.60&#10;This module allows the user to program, erase, write and blankcheck the Code and/or Data flash." detailDescription="Flash API for RX100, RX200, RX600. and RX700." display="r_flash_rx" id="r_flash_rx3.20" version="3.20"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-</configuration>
-<configuration inuse="true" name="r_sci_rx">
-<component description="依存モジュール: r_bsp バージョン 2.90, 3.00, 3.40, 3.50, 3.60&#10;依存モジュール: r_byteq バージョン 1.40, 1.50, 1.60&#10;This module allows any number of SCI channels on the MCU to run in full duplex Asynchronous mode, single master Simple SPI mode, or master Synchronous mode simultaneously. The driver is interrupt driven and non-blocking. Transmit and receive buffer queues are used in Asynchronous mode and their sizes may be configured independently for each channel. Resources for unused channels or modes may be removed via settings in the driver's config.h file." detailDescription="Multi-Channel Multi-Mode SCI Driver." display="r_sci_rx" id="r_sci_rx2.00" version="2.00">
-<gridItem id="SCK0" selectedIndex="0"/>
-<gridItem id="RXD0/SMISO0" selectedIndex="0"/>
-<gridItem id="TXD0/SMOSI0" selectedIndex="0"/>
-<gridItem id="CTS0#/RTS0#/SS0#" selectedIndex="0"/>
-<gridItem id="SCI0" selectedIndex="0"/>
-<gridItem id="SCK1" selectedIndex="0"/>
-<gridItem id="RXD1/SMISO1" selectedIndex="0"/>
-<gridItem id="TXD1/SMOSI1" selectedIndex="0"/>
-<gridItem id="CTS1#/RTS1#/SS1#" selectedIndex="0"/>
-<gridItem id="SCI1" selectedIndex="0"/>
-<gridItem id="SCK2" selectedIndex="0"/>
-<gridItem id="RXD2/SMISO2" selectedIndex="1"/>
-<gridItem id="TXD2/SMOSI2" selectedIndex="1"/>
-<gridItem id="CTS2#/RTS2#/SS2#" selectedIndex="0"/>
-<gridItem id="SCI2" selectedIndex="1"/>
-<gridItem id="SCK3" selectedIndex="0"/>
-<gridItem id="RXD3/SMISO3" selectedIndex="0"/>
-<gridItem id="TXD3/SMOSI3" selectedIndex="0"/>
-<gridItem id="CTS3#/RTS3#/SS3#" selectedIndex="0"/>
-<gridItem id="SCI3" selectedIndex="0"/>
-<gridItem id="SCK4" selectedIndex="0"/>
-<gridItem id="RXD4/SMISO4" selectedIndex="0"/>
-<gridItem id="TXD4/SMOSI4" selectedIndex="0"/>
-<gridItem id="CTS4#/RTS4#/SS4#" selectedIndex="0"/>
-<gridItem id="SCI4" selectedIndex="0"/>
-<gridItem id="SCK5" selectedIndex="0"/>
-<gridItem id="RXD5/SMISO5" selectedIndex="0"/>
-<gridItem id="TXD5/SMOSI5" selectedIndex="0"/>
-<gridItem id="CTS5#/RTS5#/SS5#" selectedIndex="0"/>
-<gridItem id="SCI5" selectedIndex="0"/>
-<gridItem id="SCK6" selectedIndex="0"/>
-<gridItem id="RXD6/SMISO6" selectedIndex="0"/>
-<gridItem id="TXD6/SMOSI6" selectedIndex="0"/>
-<gridItem id="CTS6#/RTS6#/SS6#" selectedIndex="0"/>
-<gridItem id="SCI6" selectedIndex="0"/>
-<gridItem id="SCK7" selectedIndex="0"/>
-<gridItem id="RXD7/SMISO7" selectedIndex="0"/>
-<gridItem id="TXD7/SMOSI7" selectedIndex="0"/>
-<gridItem id="CTS7#/RTS7#/SS7#" selectedIndex="0"/>
-<gridItem id="SCI7" selectedIndex="0"/>
-<gridItem id="SCK8" selectedIndex="0"/>
-<gridItem id="RXD8/SMISO8/SSCL8" selectedIndex="0"/>
-<gridItem id="TXD8/SMOSI8/SSDA8" selectedIndex="0"/>
-<gridItem id="CTS8#/RTS8#/SS8#" selectedIndex="0"/>
-<gridItem id="SCI8" selectedIndex="0"/>
-<gridItem id="SCK9" selectedIndex="0"/>
-<gridItem id="RXD9/SMISO9/SSCL9" selectedIndex="0"/>
-<gridItem id="TXD9/SMOSI9/SSDA9" selectedIndex="0"/>
-<gridItem id="CTS9#/RTS9#/SS9#" selectedIndex="0"/>
-<gridItem id="SCI9" selectedIndex="0"/>
-<gridItem id="SCK10" selectedIndex="0"/>
-<gridItem id="RXD10/SMISO10/SSCL10" selectedIndex="0"/>
-<gridItem id="TXD10/SMOSI10/SSDA10" selectedIndex="0"/>
-<gridItem id="SS10#" selectedIndex="0"/>
-<gridItem id="CTS10#" selectedIndex="0"/>
-<gridItem id="RTS10#" selectedIndex="0"/>
-<gridItem id="SCI10" selectedIndex="0"/>
-<gridItem id="SCK11" selectedIndex="0"/>
-<gridItem id="RXD11/SMISO11/SSCL11" selectedIndex="0"/>
-<gridItem id="TXD11/SMOSI11/SSDA11" selectedIndex="0"/>
-<gridItem id="SS11#" selectedIndex="0"/>
-<gridItem id="CTS11#" selectedIndex="0"/>
-<gridItem id="RTS11#" selectedIndex="0"/>
-<gridItem id="SCI11" selectedIndex="0"/>
-<gridItem id="SCK12" selectedIndex="0"/>
-<gridItem id="RXD12/SMISO12" selectedIndex="0"/>
-<gridItem id="TXD12/SMOSI12" selectedIndex="0"/>
-<gridItem id="CTS12#/RTS12#/SS12#" selectedIndex="0"/>
-<gridItem id="SCI12" selectedIndex="0"/>
-</component>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-</configuration>
-<configuration inuse="true" name="r_byteq">
-<component description="依存モジュール: r_bsp バージョン 3.10&#10;This module allocates a queue control block in an Open() call to handle indexing for buffers provided by the user application. Additional functions are provided to put and get data from the buffer queue, inspect the number of bytes available or in use, and to flush the queue. There is no limit to the number of queues supported, and queue control blocks can be allocated statically at build time or dynamically at run time." detailDescription="Byte-based circular buffer library." display="r_byteq" id="r_byteq1.60" version="1.60"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+<component description="�ˑ����W���[��: �Ȃ�&#10;The r_bsp package provides a foundation for code to be built on top of. It provides startup code, iodefines, and MCU information for different boards. There are 2 folders that make up the r_bsp package. The 'mcu' folder contains files that are common to a MCU group. These files provide functionality such as easy register access, CPU functions, and a file named 'mcu_info.h' for each MCU group. The 'mcu_info.h' file has information about the MCU on the board and is configured based on the information given in r_bsp_config.h. The information in 'mcu_info.h' is used to help configure Renesas middleware that uses the r_bsp package. The 'board' folder has a folder with startup code for each supported board.  Which MCU and board is chosen is decided by the settings in 'platform.h'. The user can choose which board they are using by uncommenting the include path that applies to their board. For example, if you are using the RSK+RX62N then you would uncomment the #include &quot;./board/rskrx62n/r_bsp.h&quot; include path. Users are encouraged to add their own boards to the 'board' directory. BSPs are configured by using the r_bsp_config.h file. Each board will have a reference configuration file named r_bsp_config_reference.h. The user should copy this file to their project, rename it to r_bsp_config.h, and use the options inside the file to configure the BSP for their project." detailDescription="Board Support Packages." display="r_bsp" id="r_bspGeneric(v=3.60a)" version="Generic(v=3.60a)"/>
+<source description="Firmware Integration Technology (FIT) �ɑΉ�����R���|�[�l���g�́ARX�t�@�~���̃}�C�R���Ԃł̍����ڍs��������Ƃ��܂��B" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+<source description="Firmware Integration Technology (FIT) �ɑΉ�����R���|�[�l���g�́ARX�t�@�~���̃}�C�R���Ԃł̍����ڍs��������Ƃ��܂��B" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 </configuration>
 </tool>
 </smc>

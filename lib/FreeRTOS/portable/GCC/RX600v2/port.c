@@ -37,7 +37,7 @@
 #include "string.h"
 
 /* Hardware specifics. */
-#include "platform.h"
+#include "iodefine.h"
 
 /*-----------------------------------------------------------*/
 
@@ -67,14 +67,20 @@ static void prvStartFirstTask( void ) __attribute__((naked));
  * restoring of registers).  Written in asm code as direct register access is
  * required.
  */
-//void vSoftwareInterruptISR( void ) __attribute__((naked));
-R_PRAGMA_STATIC_INTERRUPT(vSoftwareInterruptISR, VECT(ICU, SWINT));
+#if defined(configTICK_VECTOR)
+void vSoftwareInterruptISR( void ) __attribute__((naked, vector( ".rvectors", VECT_ICU_SWINT )));
+#else
+void vSoftwareInterruptISR( void ) __attribute__((naked));
+#endif
 
 /*
  * The tick interrupt handler.
  */
-//void vTickISR( void ) __attribute__((interrupt));
-void vTickISR( void );
+#if defined(configTICK_VECTOR)
+void vTickISR( void ) __attribute__((interrupt( ".rvectors", _VECT( configTICK_VECTOR ) )));
+#else
+void vTickISR( void ) __attribute__((interrupt));
+#endif
 
 /*-----------------------------------------------------------*/
 

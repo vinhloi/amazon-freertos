@@ -24,6 +24,7 @@
 /***********************************************************************************************************************
 * History : DD.MM.YYYY Version Description
 *           05.10.2016 1.00    First Release
+*           31.10.2017 1.10    Added function prototype for r_flash_close().
 ***********************************************************************************************************************/
 
 #ifndef RX_FLASH_GROUP_HEADER_FILE
@@ -53,6 +54,7 @@ extern current_param_t g_current_parameters;
 Exported global functions (to be accessed by other files)
 ***********************************************************************************************************************/
 extern flash_err_t r_flash_open(void);
+extern flash_err_t r_flash_close(void);
 extern flash_err_t r_flash_erase(flash_block_address_t block_start_address, uint32_t num_blocks);
 extern flash_err_t check_cf_block_total(flash_block_address_t block_start_address, uint32_t num_blocks);
 #ifndef FLASH_NO_BLANK_CHECK

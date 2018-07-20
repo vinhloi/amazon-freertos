@@ -36,27 +36,6 @@ Global variables and functions
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* Function Name: R_ETHER_PinSet_ETHERC0_MII
-* Description  : This function initializes pins for r_ether_rx module
-* Arguments    : none
-* Return Value : none
-***********************************************************************************************************************/
-void R_ETHER_PinSet_ETHERC0_MII()
-{
-    R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
-
-    /* Set ET0_MDC pin */
-    MPC.P72PFS.BYTE = 0x11U;
-    PORT7.PMR.BIT.B2 = 1U;
-
-    /* Set ET0_MDIO pin */
-    MPC.P71PFS.BYTE = 0x11U;
-    PORT7.PMR.BIT.B1 = 1U;
-
-    R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
-}
-
-/***********************************************************************************************************************
 * Function Name: R_ETHER_PinSet_ETHERC0_RMII
 * Description  : This function initializes pins for r_ether_rx module
 * Arguments    : none

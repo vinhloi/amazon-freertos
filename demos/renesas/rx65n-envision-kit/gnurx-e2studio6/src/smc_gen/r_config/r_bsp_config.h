@@ -504,19 +504,5 @@ Configuration Options
 */
 #define BSP_CFG_BOARD_REVISION                      (2)
 
-/* GNURX and Amazon FreeRTOS support
-*/
-
-#include "machine.h"
-#include "SCFGcompiler.h"
-
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "queue.h"
-/*#include "croutine.h"*/
-#include "timers.h"
-#include "event_groups.h"
-
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

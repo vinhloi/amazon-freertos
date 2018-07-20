@@ -41,6 +41,13 @@ Includes   <System Includes> , "Project Includes"
 #define     BSP_DECLARE_STACK
 /* Define the target platform */
 #include    "platform.h"
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+    #include    "freertos_usr_func.h"    // FreeRTOS's user configuration
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
 
 /* When using the user startup program, disable the following code. */
 #if (BSP_CFG_STARTUP_DISABLE == 0)
@@ -76,6 +83,11 @@ void BSP_CFG_USER_WARM_START_PRE_C_FUNCTION(void);
 void BSP_CFG_USER_WARM_START_POST_C_FUNCTION(void);
 #endif
 
+#if BSP_CFG_RTOS_USED == 1	//FreeRTOS
+/* A function is used to create a main task, rtos's objects required to be available in advance. */
+extern void Processing_Before_Start_Kernel(void);
+#endif
+
 /***********************************************************************************************************************
 Private global variables and functions
 ***********************************************************************************************************************/
@@ -83,7 +95,9 @@ Private global variables and functions
 void PowerON_Reset_PC(void);
 
 /* Main program function declaration */
+#if BSP_CFG_RTOS_USED == 0	// Non-OS
 void main(void);
+#endif
 static void operating_frequency_set(void);
 static void clock_source_select(void);
 #if BSP_CFG_RUN_IN_USER_MODE==1

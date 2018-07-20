@@ -672,7 +672,7 @@ flash_err_t flash_write(uint32_t src_start_address,
  ***********************************************************************************************************************/
 R_PRAGMA_STATIC_INTERRUPT(Excep_FCU_FRDYI,VECT(FCU,FRDYI))
 FLASH_PE_MODE_SECTION
-static void Excep_FCU_FRDYI(void)
+R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
 {
 #if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
     uint32_t    size_boundary;
@@ -878,7 +878,7 @@ static void Excep_FCU_FRDYI(void)
  ***********************************************************************************************************************/
 R_PRAGMA_STATIC_INTERRUPT(Excep_FCU_FIFERR,VECT(FCU,FIFERR))
 FLASH_PE_MODE_SECTION
-static void Excep_FCU_FIFERR(void)
+R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FIFERR(void)
 {
     /* Check if Command Lock bit is set */
     if (1 == FLASH.FASTAT.BIT.CMDLK)

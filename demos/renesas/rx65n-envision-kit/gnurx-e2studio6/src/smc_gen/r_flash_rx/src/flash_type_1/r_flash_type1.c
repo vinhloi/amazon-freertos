@@ -170,7 +170,7 @@ void r_flash_delay_us (unsigned long us, unsigned long khz)
 ******************************************************************************/
 R_PRAGMA_STATIC_INTERRUPT(Excep_FCU_FRDYI, VECT(FCU, FRDYI))
 FLASH_PE_MODE_SECTION
-static void Excep_FCU_FRDYI(void)
+R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
 {
     flash_err_t err = FLASH_SUCCESS;
 

@@ -54,10 +54,13 @@ Includes   <System Includes> , "Project Includes"
 #include    "r_typedefs.h"
 #endif
 
+#include    "SCFGcompiler.h"
+
 #if defined(__RENESAS__)
 /* Intrinsic functions provided by compiler. */
 #else
 /* PORT: Use header file for other compiler. */
+#include "machine.h"
 #endif
 
 /***********************************************************************************************************************

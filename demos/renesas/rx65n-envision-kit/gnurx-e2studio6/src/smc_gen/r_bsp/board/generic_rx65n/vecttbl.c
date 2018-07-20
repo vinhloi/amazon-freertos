@@ -204,7 +204,7 @@ void __attribute__((interrupt)) non_maskable_isr(void)
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void undefined_interrupt_source_isr(void)
+void __attribute__((interrupt(".rvectors","$default"))) undefined_interrupt_source_isr(void)
 {
     /* If user has registered a callback for this exception then call it. */
     R_BSP_InterruptControl(BSP_INT_SRC_UNDEFINED_INTERRUPT, BSP_INT_CMD_CALL_CALLBACK, FIT_NO_PTR);
@@ -220,7 +220,7 @@ void undefined_interrupt_source_isr(void)
 * Arguments    : none
 * Return value : none
 ***********************************************************************************************************************/
-void bus_error_isr (void)
+void __attribute__((interrupt(".rvectors", VECT_BSC_BUSERR))) bus_error_isr (void)
 {
     /* Clear the bus error */
     BSC.BERCLR.BIT.STSCLR = 1;
