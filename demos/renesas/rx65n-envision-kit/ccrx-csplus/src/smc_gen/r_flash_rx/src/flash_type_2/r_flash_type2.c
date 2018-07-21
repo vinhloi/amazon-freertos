@@ -524,7 +524,11 @@ End of function  data_flash_write
 
 
 #if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
-#pragma section FRAM
+#define FLASH_PE_MODE_SECTION    R_ATTRIB_SECTION_CHANGE_F(FRAM)
+#define FLASH_SECTION_CHANGE_END R_ATTRIB_SECTION_CHANGE_END
+#else
+#define FLASH_PE_MODE_SECTION
+#define FLASH_SECTION_CHANGE_END
 #endif
 
 /***********************************************************************************************************************
@@ -565,6 +569,7 @@ End of function  data_flash_write
 *                FLASH_ERR_FAILURE -
 *                    Operation failed for some other reason.*
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_api_blankcheck(uint32_t address, uint32_t size, flash_res_t *result)
 {
 
@@ -749,6 +754,7 @@ flash_err_t flash_api_blankcheck(uint32_t address, uint32_t size, flash_res_t *r
 *                    '1'=Allows Erase/Write by FCU
 * Return Value : none
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 void flash_access_window_set(flash_access_window_config_t *pAccessInfo)
 {
     /* Used for making sure select bits are not set. */
@@ -801,6 +807,7 @@ void flash_access_window_set(flash_access_window_config_t *pAccessInfo)
 *                FLASH_ERR_BUSY -
 *                    Flash is busy with another operation
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_getStatus (void)
 {
     /* Return flash status */
@@ -832,6 +839,7 @@ End of function  R_FlashGetStatus
 *                FLASH_BUSY -
 *                    Flash is busy with another operation
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static uint8_t flash_grab_state (flash_states_t new_state)
 {
     /* Check to see if lock was successfully taken */
@@ -864,6 +872,7 @@ End of function  flash_grab_state
 * Arguments    : none
 * Return Value : none
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static void flash_release_state2 (void)
 {
     /* Set current FCU mode to READ */
@@ -897,6 +906,7 @@ End of function  flash_release_state2
 *                false -
 *                    Address is not valid.
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static bool flash_valid_addr_check (uint32_t block_start_address)
 
 {
@@ -923,6 +933,7 @@ static bool flash_valid_addr_check (uint32_t block_start_address)
 *                FLASH_ERR_BUSY -
 *                    Another flash operation is in progress
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static flash_err_t flash_lockbit_protection (uint32_t lock_bit)
 {
 #if (FLASH_CFG_PARAM_CHECKING_ENABLE == 1)
@@ -961,8 +972,9 @@ End of function  flash_lockbit_protection
 * Arguments    : none
 * Return Value : none
 ******************************************************************************/
-#pragma interrupt Excep_FCU_FIFERR(vect=VECT(FCU, FIFERR))
-void Excep_FCU_FIFERR(void)
+R_PRAGMA_INTERRUPT(Excep_FCU_FIFERR, VECT(FCU, FIFERR))
+FLASH_PE_MODE_SECTION
+R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FIFERR(void)
 {
 
     /* Leave Program/Erase Mode and clear any error flags */
@@ -987,8 +999,9 @@ void Excep_FCU_FIFERR(void)
 * Arguments    : none
 * Return Value : none
 ******************************************************************************/
-#pragma interrupt Excep_FCU_FRDYI(vect=VECT(FCU, FRDYI))
-void Excep_FCU_FRDYI(void)
+R_PRAGMA_INTERRUPT(Excep_FCU_FRDYI, VECT(FCU, FRDYI))
+FLASH_PE_MODE_SECTION
+R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
 {
     /* Local variables */
     uint32_t num_byte_to_write;
@@ -1246,10 +1259,6 @@ End of function  flash_ready_isr
 
 
 
-#if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
-#pragma section FRAM
-#endif
-
 /******************************************************************************
 * Function Name: rom_write
 * Description  : Write bytes to ROM Area Flash.
@@ -1266,6 +1275,7 @@ End of function  flash_ready_isr
 *                FLASH_ERR_FAILURE -
 *                    Operation Failed
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static flash_err_t rom_write (uint32_t address, uint32_t data, uint32_t size)
 {
 /* If ROM programming is not enabled then do not compile this code as it is
@@ -1359,6 +1369,7 @@ End of function  rom_write
 *                FLASH_FAILURE -
 *                    Operation Failed
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static uint8_t enter_pe_mode (uint32_t flash_addr)
 {
     /* Used for timeout on FENTRYR write/read. */
@@ -1528,6 +1539,7 @@ End of function enter_pe_mode
 *                    The programming/erasure address
 * Return Value : none
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static void exit_pe_mode (uint32_t flash_addr)
 {
     /* Declare wait timer count variable */
@@ -1628,6 +1640,7 @@ static void exit_pe_mode (uint32_t flash_addr)
 * Return Value : 0   Invalid address supplied
 *                    Block size otherwise
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 uint32_t flash_get_romBlock_size (uint32_t romaddr, rom_block_info_t* pblock_info)
 {
     uint16_t  index = 0;
@@ -1678,6 +1691,7 @@ End of function  flash_get_romBlock_size
 * Return Value : False   Invalid block supplied
 *                True -  supplied block_info structure holds the block info
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 bool flash_get_romBlock_info (uint32_t block_number, rom_block_info_t* pblock_info)
 {
     uint16_t  this_block = 0;
@@ -1738,6 +1752,7 @@ End of function  flash_get_romBlock_info
 *                    Flash Write operation failed for some other reason. This can be a result of trying to erase an area
 *                    that has been protected via access control.
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_api_erase(flash_block_address_t block_start_address, uint32_t num_blocks)
 {
     flash_err_t  result = FLASH_SUCCESS;
@@ -1976,6 +1991,7 @@ flash_err_t flash_api_erase(flash_block_address_t block_start_address, uint32_t 
 *                FLASH_FAILURE -
 *                    Operation Failed
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static flash_err_t flash_erase_command (FCU_BYTE_PTR const erase_addr)
 {
     /* Declare timer wait count variable */
@@ -2072,6 +2088,7 @@ static flash_err_t flash_erase_command (FCU_BYTE_PTR const erase_addr)
 *                    Flash is busy with another operation
 *
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t bytes)
 {
     flash_err_t result = FLASH_SUCCESS;
@@ -2450,6 +2467,7 @@ flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t 
 *                    Flash peripheral is busy with another operation or not initialized
 *
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_api_control(flash_cmd_t cmd,  void  *pcfg)
 {
     flash_err_t err = FLASH_SUCCESS;
@@ -2533,6 +2551,7 @@ flash_err_t flash_api_control(flash_cmd_t cmd,  void  *pcfg)
 * Arguments    : none
 * Return Value : none
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 void flash_reset (void)
 {
     /* Declare wait counter variable */
@@ -2599,6 +2618,7 @@ void flash_reset (void)
 *                FLASH_ERR_BUSY -
 *                    Another flash operation is in progress
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_lockbit_program (flash_program_lockbit_config_t *lockbit_addr)
 {
     /* Declare address pointer */
@@ -2703,6 +2723,7 @@ End of function  R_FlashProgramLockBit
 *                FLASH_ERR_BUSY -
 *                    Another flash operation is in progress
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_lockbit_read (flash_read_lockbit_config_t *lockbit_info)
 {
     /* Declare address pointer */
@@ -2801,6 +2822,7 @@ End of function  R_FlashReadLockBit
 *                    Current address we are writing to.
 * Return Value : Number of bytes to write at this time.
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static uint32_t flash_get_program_size (uint32_t bytes, uint32_t flash_addr)
 {
     uint32_t num_byte_to_write = 0;
@@ -2872,6 +2894,7 @@ static uint32_t flash_get_program_size (uint32_t bytes, uint32_t flash_addr)
 *                FLASH_FAILURE -
 *                    Operation Failed
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 static uint8_t notify_peripheral_clock (FCU_BYTE_PTR flash_addr)
 {
     /* Declare wait counter variable */
@@ -2928,6 +2951,6 @@ End of function notify_peripheral_clock
 
 
 
-#endif
+FLASH_SECTION_CHANGE_END // end FLASH_SECTION_ROM
 
-#pragma section // end FLASH_SECTION_ROM
+#endif

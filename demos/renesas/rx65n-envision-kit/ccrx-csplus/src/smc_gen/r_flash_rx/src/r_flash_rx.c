@@ -160,7 +160,11 @@ flash_err_t R_FLASH_Close(void)
 
 /* FUNCTIONS WHICH MUST BE RUN FROM RAM FOLLOW */
 #if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
-#pragma section FRAM
+#define FLASH_PE_MODE_SECTION    R_ATTRIB_SECTION_CHANGE_F(FRAM)
+#define FLASH_SECTION_CHANGE_END R_ATTRIB_SECTION_CHANGE_END
+#else
+#define FLASH_PE_MODE_SECTION
+#define FLASH_SECTION_CHANGE_END
 #endif
 
 /***********************************************************************************************************************
@@ -169,6 +173,7 @@ flash_err_t R_FLASH_Close(void)
 * Arguments    : see called function
 * Return Value : see called function
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_FLASH_Erase(flash_block_address_t block_start_address, uint32_t num_blocks)
 {
 #if (FLASH_TYPE == FLASH_TYPE_2)
@@ -185,6 +190,7 @@ flash_err_t R_FLASH_Erase(flash_block_address_t block_start_address, uint32_t nu
 * Arguments:     see called function
 * Return Value : see called function
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_FLASH_BlankCheck(uint32_t address, uint32_t num_bytes, flash_res_t *result)
 {
 #if (FLASH_TYPE == FLASH_TYPE_2)
@@ -203,6 +209,7 @@ flash_err_t R_FLASH_BlankCheck(uint32_t address, uint32_t num_bytes, flash_res_t
 * Arguments    : see called function
 * Return Value : see called function
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_FLASH_Write(uint32_t src_address, uint32_t dest_address, uint32_t num_bytes)
 {
 
@@ -222,6 +229,7 @@ flash_err_t R_FLASH_Write(uint32_t src_address, uint32_t dest_address, uint32_t 
 * Arguments    : see called function
 * Return Value : see called function
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_FLASH_Control(flash_cmd_t cmd, void *pcfg)
 {
     /* Call the MCU specific control function which handles control commands for the target MCU */
@@ -242,7 +250,8 @@ flash_err_t R_FLASH_Control(flash_cmd_t cmd, void *pcfg)
 * Arguments    : none
 * Return Value : Version of this module.
 ***********************************************************************************************************************/
-#pragma inline(R_FLASH_GetVersion)
+FLASH_PE_MODE_SECTION
+R_ATTRIB_INLINE
 uint32_t R_FLASH_GetVersion (void)
 {
     /* These version macros are defined in r_flash_if.h. */
@@ -264,6 +273,7 @@ uint32_t R_FLASH_GetVersion (void)
 *                FLASH_ERR_BUSY -
 *                    Flash is busy with another operation
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_lock_state (flash_states_t new_state)
 {
     /* Attempt to get lock */
@@ -291,6 +301,7 @@ flash_err_t flash_lock_state (flash_states_t new_state)
 * Arguments    : none
 * Return Value : none
 ******************************************************************************/
+FLASH_PE_MODE_SECTION
 void flash_release_state (void)
 {
 
@@ -312,6 +323,7 @@ void flash_release_state (void)
 *                false -
 *                    Lock was not acquired.
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 bool flash_softwareLock(int32_t * const plock)
 {
     bool ret = false;
@@ -347,6 +359,7 @@ bool flash_softwareLock(int32_t * const plock)
 *                false -
 *                    Lock was not released.
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 bool flash_softwareUnlock(int32_t * const plock)
 {
     /* Set lock back to unlocked. */
@@ -356,4 +369,4 @@ bool flash_softwareUnlock(int32_t * const plock)
 } /* End of function flash_softwareUnlock() */
 
 
-#pragma section /* end FLASH SECTION FRAM */
+FLASH_SECTION_CHANGE_END /* end FLASH SECTION FRAM */
