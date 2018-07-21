@@ -20,9 +20,9 @@
 /***********************************************************************************************************************
 * File Name    : r_cg_userdefine.h
 * Version      : 1.1.1
-* Device(s)    : R5F565NEHxFC
+* Device(s)    : R5F565NEHxFB
 * Description  : User header file for code generation.
-* Creation Date: 2018-07-16
+* Creation Date: 2018-07-20
 ***********************************************************************************************************************/
 
 #ifndef CG_USER_DEF_H

@@ -531,6 +531,7 @@ Configuration Options
 /* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
    0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
    1 = rev. 1.00 Board (RTK50565N2C00000BE)
+   2 = RX65N Envision Kit
 */
 #define BSP_CFG_BOARD_REVISION                      (1)
 

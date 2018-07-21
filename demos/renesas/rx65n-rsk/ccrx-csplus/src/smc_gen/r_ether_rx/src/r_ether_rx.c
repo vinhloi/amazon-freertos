@@ -217,9 +217,9 @@ static const pauseresolution_t pause_resolution[PAUSE_TABLE_ENTRIES] =
  * defined with section pragma directives to easily locate them
  * on the memory map.
  */
-#pragma section _RX_DESC
+R_ATTRIB_SECTION_CHANGE_V(_RX_DESC)
 static descriptor_t rx_descriptors[ETHER_CHANNEL_MAX][ETHER_CFG_EMAC_RX_DESCRIPTORS];
-#pragma section _TX_DESC
+R_ATTRIB_SECTION_CHANGE_V(_TX_DESC)
 static descriptor_t tx_descriptors[ETHER_CHANNEL_MAX][ETHER_CFG_EMAC_TX_DESCRIPTORS];
 
 /* 
@@ -229,10 +229,10 @@ static descriptor_t tx_descriptors[ETHER_CHANNEL_MAX][ETHER_CFG_EMAC_TX_DESCRIPT
  * The ETHER_CFG_BUFSIZE and EMAC_NUM_BUFFERS are defined by macro in the file "r_ether_private.h".
  * It is sequentially used from the head of the buffer as a receive buffer or a transmission buffer.
  */
-#pragma section _ETHERNET_BUFFERS
+R_ATTRIB_SECTION_CHANGE_V(_ETHERNET_BUFFERS)
 static etherbuffer_t ether_buffers[ETHER_CHANNEL_MAX];
 
-#pragma section
+R_ATTRIB_SECTION_CHANGE_END
 
 static uint8_t promiscuous_mode[ETHER_CHANNEL_MAX];
 
@@ -1410,7 +1410,7 @@ ether_return_t R_ETHER_Control (ether_cmd_t const cmd, ether_param_t const contr
  * Arguments    : none
  * Return Value : Version number
  ***********************************************************************************************************************/
-#pragma inline(R_ETHER_GetVersion)
+R_ATTRIB_INLINE
 uint32_t R_ETHER_GetVersion (void)
 {
     return ((((uint32_t) ETHER_RX_VERSION_MAJOR) << 16) | ((uint32_t) ETHER_RX_VERSION_MINOR));
@@ -2458,8 +2458,8 @@ static uint8_t check_mpde_bit (void)
  * Arguments    : none
  * Return Value : none
  ***********************************************************************************************************************/
-#pragma interrupt (ether_eint(vect=VECT(ETHER,EINT)))
-void ether_eint(void)
+R_PRAGMA_INTERRUPT(ether_eint, VECT(ETHER,EINT))
+R_ATTRIB_INTERRUPT void ether_eint(void)
 {
     ether_int_common(ETHER_CHANNEL_0);
 } /* End of function ether_eint() */
