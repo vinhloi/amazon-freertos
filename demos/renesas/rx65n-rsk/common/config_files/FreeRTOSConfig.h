@@ -273,7 +273,9 @@ extern uint32_t ulRand();
  * Amazon FreeRTOS aws_demos project
  ********************************************/
 
+#if defined(__CCRX__)
 #define __FUNCTION__ __func__ /* GCC <--> CC-RX */
 #define __attribute__( attr ) /* GCC <--> CC-RX */
+#endif
 
 #endif /* FREERTOS_CONFIG_H */
