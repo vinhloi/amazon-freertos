@@ -7,7 +7,7 @@
 <option id="com.renesas.smc.toolchain.option.buildArtefactType" key="com.renesas.smc.toolchain.option.buildArtefactType.exe"/>
 </toolchain>
 </configuration>
-<platform id="R5F565NEHxFB"/>
+<platform id="R5F565NEDxFB"/>
 <option id="board" value="カスタムユーザボード"/>
 </general>
 <tool id="Clock">
