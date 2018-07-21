@@ -81,7 +81,7 @@ Configuration Options
    F            = true            = Encryption module included, SDHI/SDSI module included
    H            = true            = Encryption module included, SDHI/SDSI module included, dual-bank structure
 */
-#define BSP_CFG_MCU_PART_ENCRYPTION_INCLUDED   (true) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_MCU_PART_ENCRYPTION_INCLUDED   (false) // <-- Updated by GUI. Do not edit this value manually
 
 /* ROM, RAM, and Data Flash Capacity. 
    Character(s) = Value for macro = ROM Size/Ram Size/Data Flash Size
