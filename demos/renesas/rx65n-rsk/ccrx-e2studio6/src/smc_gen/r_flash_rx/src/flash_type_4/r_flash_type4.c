@@ -60,7 +60,7 @@ static flash_err_t flash_write_faw_reg(fawreg_t faw);
 
 
 #if (FLASH_IN_DUAL_BANK_MODE)
-#pragma section FRAM2
+R_ATTRIB_SECTION_CHANGE_F(FRAM2)
 
 
 flash_err_t flash_toggle_banksel_reg()
@@ -130,7 +130,11 @@ flash_err_t flash_toggle_banksel_reg()
 
 #endif // FLASH_IN_DUAL_BANK_MODE
 
-#pragma section FRAM
+#define FLASH_PE_MODE_SECTION    R_ATTRIB_SECTION_CHANGE_F(FRAM)
+#define FLASH_SECTION_CHANGE_END R_ATTRIB_SECTION_CHANGE_END
+#else // #if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
+#define FLASH_PE_MODE_SECTION
+#define FLASH_SECTION_CHANGE_END
 #endif // #if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
 
 /***********************************************************************************************************************
@@ -144,6 +148,7 @@ flash_err_t flash_toggle_banksel_reg()
 *                FLASH_ERR_CMD_LOCKED -
 *                    Flash hardware locked
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t get_cmdlk_err(void)
 {
     flash_err_t err;
@@ -190,6 +195,7 @@ flash_err_t get_cmdlk_err(void)
 *                FLASH_INT_EVENT_ERR_CMD_LOCKED -
 *                    Flash peripheral hardware locked
 ***********************************************************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_interrupt_event_t get_cmdlk_err_event(void)
 {
     flash_interrupt_event_t event;
@@ -233,6 +239,7 @@ flash_interrupt_event_t get_cmdlk_err_event(void)
 * Return Value : startup_area_flag - 0 ==> Alternate area
 *                                    1 ==> Default area
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 uint8_t R_CF_GetCurrentStartupArea(void)
 {
     fawreg_t    faw;
@@ -252,6 +259,7 @@ uint8_t R_CF_GetCurrentStartupArea(void)
 *                FLASH_ERR_FAILURE -
 *                   PE mode enter/exit failed
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_CF_ToggleStartupArea (void)
 {
     flash_err_t err;
@@ -281,6 +289,7 @@ flash_err_t R_CF_ToggleStartupArea (void)
 *                FLASH_SAS_ALTERNATE -
 *                    The start-up area temporarily set to the alternate area
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 uint8_t R_CF_GetCurrentSwapState(void)
 {
 
@@ -298,6 +307,7 @@ uint8_t R_CF_GetCurrentSwapState(void)
 *                    FLASH_SAS_SWITCH_AREA (Command to temporarily switch to the other startup area)
 * Return Value : None
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 void R_CF_SetCurrentSwapState(uint8_t value)
 {
     uint8_t     sas_flag;
@@ -362,6 +372,7 @@ void R_CF_SetCurrentSwapState(uint8_t value)
 *                FLASH_ERR_FAILURE -
 *                   PE mode enter/exit failed
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_CF_SetAccessWindow (flash_access_window_config_t  *pAccessInfo)
 {
     flash_err_t err = FLASH_SUCCESS;
@@ -393,6 +404,7 @@ flash_err_t R_CF_SetAccessWindow (flash_access_window_config_t  *pAccessInfo)
 *                FLASH_ERR_FAILURE -
 *                   PE mode enter/exit failed
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t flash_write_faw_reg (fawreg_t   faw)
 {
     flash_err_t err = FLASH_SUCCESS;
@@ -458,6 +470,7 @@ flash_err_t flash_write_faw_reg (fawreg_t   faw)
 *                    Pointer to structure to load address range into
 * Return Value : FLASH_SUCCESS
 *******************************************************************************/
+FLASH_PE_MODE_SECTION
 flash_err_t R_CF_GetAccessWindow (flash_access_window_config_t  *pAccessInfo)
 {
 
@@ -467,7 +480,8 @@ flash_err_t R_CF_GetAccessWindow (flash_access_window_config_t  *pAccessInfo)
     return FLASH_SUCCESS;
 }
 
-#pragma section // end FRAM
 #endif // FLASH_CFG_CODE_FLASH_ENABLE
+
+FLASH_SECTION_CHANGE_END // end FRAM
 
 #endif // FLASH_TYPE == 4
