@@ -2066,7 +2066,7 @@ sci_err_t R_SCI_Close(sci_hdl_t const hdl)
 * Arguments    : none
 * Return Value : version number
 ******************************************************************************/
-#pragma inline(R_SCI_GetVersion)
+R_ATTRIB_INLINE
 uint32_t  R_SCI_GetVersion(void)
 {
 uint32_t const version = (SCI_VERSION_MAJOR << 16) | SCI_VERSION_MINOR;

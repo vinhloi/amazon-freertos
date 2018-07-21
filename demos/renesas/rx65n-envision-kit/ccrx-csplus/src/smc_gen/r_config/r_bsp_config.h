@@ -444,7 +444,10 @@ Configuration Options
 
 /* This macro lets other modules no if a RTOS is being used.
    0 = RTOS is not used. 
-   1 = RTOS is used.??¿½?¿½?(FreeRTOS)
+   1 = FreeRTOS is used.
+   2 = SEGGER embOS is used.
+   3 = Micrium MicroC/OS is used.
+   4 = Renesas RI600V4 & RI600PX is used.
 */
 #define BSP_CFG_RTOS_USED               (1)
 
@@ -532,6 +535,7 @@ Configuration Options
    0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
    1 = rev. 1.00 Board (RTK50565N2C00000BE)
    2 = RX65N Envision Kit
+   3 = RX65N GR-ROSE
 */
 #define BSP_CFG_BOARD_REVISION                      (2)
 
