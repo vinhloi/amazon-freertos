@@ -56,11 +56,15 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
-v0.1.0-pre6:
-[UPDATED] RX Driver Package version from v114 to v115 RX65N RSK GCC/e2 studio project.
-           -> Copy smc_gen folder (excluding bsp) from RX65N RSK CC-RX CS+ project.
+v0.1.0-pre7:
+[UPDATED] RX Driver Package version from v114 to v115 RX65N Envision Kit CC-RX/e2 studio project.
 [TESTED] Following projetcs.
-         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite
+
+v0.1.0-pre6:
+[UPDATED] RX Driver Package version from v114 to v115 RX65N Envision Kit CC-RX/CS+ project.
+[TESTED] Following projetcs.
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite
          
 v0.1.0-pre5:
 [UPDATED] RX Driver Package version from v114 to v115 RX65N RSK GCC/e2 studio project.
@@ -370,7 +374,7 @@ Compiler number:
                  / IDE      (1)         (2)         (3)
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (1)   (2)        /           x   x       x   -   -   -   -     
-(2)   (2)        /           x   *       *   -   -   -   -   * 
+(2)   (2)        /           x   *       x   -   -   -   -   * 
 (3)   (2)        /           *   *           -   -   -   -     
 
   x: tested
@@ -638,12 +642,28 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　以下のようにコピー。ボード依存の端子設定コードr_pincfgとgeneralとr_configを除く。
 　\demos\renesas\rx65n-rsk\ccrx-csplus\src\smc_gen\
 　↓
-　\demos\renesas\rx65n-rsk\gnurx-e2studio6\src\smc_gen\
+　\demos\renesas\rx65n-envision-kit\ccrx-csplus\src\smc_gen\
 　r_bsp_config.h に追加したボードリビジョン設定を変更。(1)->(2)
 　r_sci_config.h で、SCI 2chを使用するよう変更。
 　
 　ビルド、動作確認、OK。
 　pre版としてコミット。v0.1.0-pre6。
+　
+　RX65N Envision Kit CC-RX e2 studio の環境メンテ。
+　スマートコンフィグレータでBSPとEtherを最新に交換。
+　
+　出力済みのコードを削除する。
+　\test\demos\renesas\rx65n-envision-kit\ccrx-e2studio6\src\smc_gen
+　
+　以下のようにコピー。ボード依存の端子設定コードr_pincfgとgeneralとr_configを除く。
+　\demos\renesas\rx65n-rsk\ccrx-e2studio6\src\smc_gen\
+　↓
+　\demos\renesas\rx65n-envision-kit\ccrx-e2studio6\src\smc_gen\
+　r_bsp_config.h に追加したボードリビジョン設定を変更。(1)->(2)
+　r_sci_config.h で、SCI 2chを使用するよう変更。
+　
+　ビルド、動作確認、OK。
+　pre版としてコミット。v0.1.0-pre7。
 　
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。
