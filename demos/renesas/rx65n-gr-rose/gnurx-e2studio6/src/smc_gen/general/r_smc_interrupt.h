@@ -20,9 +20,9 @@
 /***********************************************************************************************************************
 * File Name    : r_smc_interrupt.h
 * Version      : 1.1.0
-* Device(s)    : R5F565NEHxFB
+* Device(s)    : R5F565NEDxFP
 * Description  : This file implements interrupt setting.
-* Creation Date: 2018-07-14
+* Creation Date: 2018-07-22
 ***********************************************************************************************************************/
 
 #ifndef SMC_INTERRUPT_H
@@ -55,6 +55,8 @@ Macro definitions (Register bit)
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
+#define FAST_INTERRUPT_VECTOR                      (0)
+
 /* The macro definitions below list the full set of priority levels as selected in the Interrupts tab
  * Please do not modify this file manually
  */
@@ -137,7 +139,7 @@ Macro definitions
 #define ICU_ICU_GROUPBL0_PRIORITY                  _0F_ICU_PRIORITY_LEVEL15
 #define ICU_ICU_GROUPBL1_PRIORITY                  _0F_ICU_PRIORITY_LEVEL15
 #define ICU_ICU_GROUPAL0_PRIORITY                  _0F_ICU_PRIORITY_LEVEL15
-#define ICU_ICU_GROUPAL1_PRIORITY                  _0F_ICU_PRIORITY_LEVEL15
+#define ICU_ICU_GROUPAL1_PRIORITY                  _02_ICU_PRIORITY_LEVEL2
 #define ICU_SCI11_RXI11_PRIORITY                   _0F_ICU_PRIORITY_LEVEL15
 #define ICU_SCI11_TXI11_PRIORITY                   _0F_ICU_PRIORITY_LEVEL15
 #define ICU_SCI12_RXI12_PRIORITY                   _0F_ICU_PRIORITY_LEVEL15

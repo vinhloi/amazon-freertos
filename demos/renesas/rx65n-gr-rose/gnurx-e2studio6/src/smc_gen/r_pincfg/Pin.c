@@ -107,7 +107,6 @@ void R_Pins_Create(void)
     /* Set TXD12 pin */
     PORTE.PODR.BYTE |= 0x02U;
     MPC.PE1PFS.BYTE = 0x0CU;
-    PORTE.PMR.BYTE |= 0x02U;
     PORTE.PDR.BYTE |= 0x02U;
 
     R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);

@@ -5,12 +5,12 @@ r_ether_rx
 
 Document Number
 ---------------
-R01AN2009EJ0114 (English version)
-R01AN2009JJ0114 (Japanese version)
+R01AN2009EJ0115 (English version)
+R01AN2009JJ0115 (Japanese version)
 
 Version
 -------
-v1.14
+v1.15
 
 Overview
 --------
@@ -66,7 +66,7 @@ Please refer to the Adding Firmware Integration Technology Modules to Projects.
 
 Toolchain(s) Used
 -----------------
-* Renesas RX v2.07.00
+* Renesas RX v2.08.00
 
 File Structure
 --------------
@@ -77,10 +77,10 @@ r_ether_rx
 +---doc
 |   |
 |   +---en
-|   |   r01an2009ej0114-rx-ether.pdf
+|   |   r01an2009ej0115-rx-ether.pdf
 |   |
 |   \---ja
-|       r01an2009jj0114-rx-ether.pdf
+|       r01an2009jj0115-rx-ether.pdf
 |
 +---ref
 |       r_ether_config_reference.h
