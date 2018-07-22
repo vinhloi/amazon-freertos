@@ -56,6 +56,12 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0-pre5:
+[UPDATED] RX Driver Package version from v114 to v115 RX65N RSK GCC/e2 studio project.
+           -> Copy smc_gen folder (excluding bsp) from RX65N RSK CC-RX CS+ project.
+[TESTED] Following projetcs.
+         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         
 v0.1.0-pre4:
 [UPDATED] RX Driver Package version from v114 to v115 RX65N RSK CC-RX/CS+ project.
            -> Re-generate the code from RX Driver Package v115.
@@ -357,7 +363,7 @@ Compiler number:
 
                  / IDE      (1)         (2)         (3)
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
-(1)   (2)        /           x   *       x   -   -   -   -     
+(1)   (2)        /           x   x       x   -   -   -   -     
 (2)   (2)        /           *   *       *   -   -   -   -   * 
 (3)   (2)        /           *   *           -   -   -   -     
 
@@ -566,7 +572,54 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　ビルド、動作確認、OK。
 　pre版としてコミット。v0.1.0-pre4。
 
-
+　さて、次は少し壁があるかもしれない。
+　RX65N RSK e2 studio GCCの組み合わせのメンテ。
+　NoMaY氏にコミットいただいた状態のものをそのままe2 studio v700で動作だけさせてみる。
+　動かない。暴走はしないが、UART出力がされない。
+　UART送信の割り込みが入ってないようだ。
+　マップファイルを確認して割り込みベクタ周りを見てみる。
+　割り込みベクタが生成されていない様子。
+　
+　リリースビルドのv0.0.9と比較してみる。割り込みベクタ周りに差が出ている。
+　\demos\renesas\rx65n-rsk\gnurx-e2studio6\src\smc_gen\r_sci_rx\src\targets\rx65n\r_sci_rx65n.c
+　v0.0.9の記述に戻したら正常動作となった。
+　
+　　NG: 現状
+　　　#if SCI_CFG_CH0_INCLUDED
+　　　R_PRAGMA_STATIC_INTERRUPT(sci0_txi0_isr, VECT(SCI0,TXI0))
+　　　R_PRAGMA_STATIC_INTERRUPT(sci0_rxi0_isr, VECT(SCI0,RXI0))
+　　　#endif
+　　　__INTERRUPT void sci0_tei0_isr(void *cb_args)
+　　　R_ATTRIB_STATIC_INTERRUPT void sci0_rxi0_isr(void)
+　
+　　v0.0.9
+　　　#if SCI_CFG_CH0_INCLUDED
+　　　R_PRAGMA_STATIC_INTERRUPT(sci0_txi0_isr, VECT(SCI0,TXI0))
+　　　static void sci0_txi0_isr(void);
+　　　R_PRAGMA_STATIC_INTERRUPT(sci0_rxi0_isr, VECT(SCI0,RXI0))
+　　　static void sci0_rxi0_isr(void);
+　　　#endif
+　　　void sci0_tei0_isr(void *cb_args)
+　　　static void sci0_rxi0_isr(void)
+　　　
+　　⇒SCIに関しては一旦v0.0.9の記述法に戻す。
+　　　CC-RXでは動作するがGCCだと動作しないようだ。
+　　　
+　　正常動作OK。逆にCC-RX環境で動作するか試してみる。問題なし。
+　
+　CS+ CC-RX環境のスマートコンフィグレータのスタック設定ができてない。
+　修正してコード生成しなおす。
+　\demos\renesas\rx65n-rsk\ccrx-csplus\src\smc_gen\
+　
+　スマートコンフィグレータ出力をCC-RXのものをGCC環境に上書き。
+　BSPはまだ1本化できてないので除く。
+　\demos\renesas\rx65n-rsk\ccrx-csplus\src\smc_gen\
+　↓
+　\demos\renesas\rx65n-rsk\gnurx-e2studio6\src\smc_gen\
+　
+　ここまででRX65N RSKの3種のプロジェクトが動作確認OKとなった。
+　コミットする。pre版としてコミット。v0.1.0-pre5。
+　
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。
 　v0.0.7-pre1では、GR-ROSE用のプロジェクト(CC-RXのe2 studio)が動作しない。

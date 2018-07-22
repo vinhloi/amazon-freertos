@@ -145,14 +145,14 @@ Configuration Options
     /* If only 1 stack is chosen using BSP_CFG_USER_STACK_ENABLE then no RAM will be allocated for the user stack. */
     #if (BSP_CFG_USER_STACK_ENABLE == 1)
     /* User Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive. */
-    #pragma stacksize su=0x1000
+    #pragma stacksize su=0x3000
     #endif
 
 /* Interrupt Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive.
  * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
  * below.
  */
-#pragma stacksize si=0x400
+#pragma stacksize si=0x3000
 #endif
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
@@ -166,7 +166,7 @@ Configuration Options
       choose 'Contents' in E2Studio. This will present a list of modules that can be included. Uncheck the box for
       stdio.h. 
 */
-#define BSP_CFG_HEAP_BYTES              (0x400)
+#define BSP_CFG_HEAP_BYTES              (0x2000)
 
 /* Initializes C input & output library functions.
    0 = Disable I/O library initialization in resetprg.c. If you are not using stdio then use this value.
@@ -579,7 +579,6 @@ Configuration Options
    3 = RX65N GR-ROSE
 */
 #define BSP_CFG_BOARD_REVISION                      (1)
-
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

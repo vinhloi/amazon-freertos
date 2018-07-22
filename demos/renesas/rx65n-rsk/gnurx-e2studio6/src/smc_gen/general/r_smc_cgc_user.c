@@ -19,10 +19,10 @@
 
 /***********************************************************************************************************************
 * File Name    : r_smc_cgc_user.c
-* Version      : 1.1.1
-* Device(s)    : R5F565NEHxFB
+* Version      : 1.1.2
+* Device(s)    : R5F565NEDxFC
 * Description  : None
-* Creation Date: 2018-07-14
+* Creation Date: 2018-07-22
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -59,5 +59,5 @@ void R_CGC_Create_UserInit(void)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-/* End user code. Do not edit comment generated here */
+/* End user code. Do not edit comment generated here */   
 

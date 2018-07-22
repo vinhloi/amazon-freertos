@@ -1,3 +1,4 @@
+/* Generated configuration header file - do not edit */
 /***********************************************************************************************************************
 * DISCLAIMER
 * This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products. No 
@@ -25,6 +26,15 @@
 ************************************************************************************************************************
 * History : DD.MM.YYYY Version   Description
 *         : 15.05.2017 1.00      First Release
+*         : 01.12.2017 1.01      Added the following macro definition.
+*                                - BSP_CFG_EBMAPCR_1ST_PRIORITY
+*                                - BSP_CFG_EBMAPCR_2ND_PRIORITY
+*                                - BSP_CFG_EBMAPCR_3RD_PRIORITY
+*                                - BSP_CFG_EBMAPCR_4TH_PRIORITY
+*                                - BSP_CFG_EBMAPCR_5TH_PRIORITY
+*         : 01.07.2018 1.02      Added the following macro definition.
+*                                - BSP_CFG_CONFIGURATOR_SELECT
+*                                Add RTOS support. FreeRTOS. Define a timer for RTOS.
 ***********************************************************************************************************************/
 #ifndef R_BSP_CONFIG_REF_HEADER_FILE
 #define R_BSP_CONFIG_REF_HEADER_FILE
@@ -81,7 +91,7 @@ Configuration Options
    F            = true            = Encryption module included, SDHI/SDSI module included
    H            = true            = Encryption module included, SDHI/SDSI module included, dual-bank structure
 */
-#define BSP_CFG_MCU_PART_ENCRYPTION_INCLUDED   (true) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_MCU_PART_ENCRYPTION_INCLUDED   (false) // <-- Updated by GUI. Do not edit this value manually
 
 /* ROM, RAM, and Data Flash Capacity. 
    Character(s) = Value for macro = ROM Size/Ram Size/Data Flash Size
@@ -112,6 +122,40 @@ Configuration Options
 */
 #define BSP_CFG_MCU_PART_MEMORY_TYPE    (0x0) // <-- Updated by GUI. Do not edit this value manually
 
+/* Whether to use 1 stack or 2. RX MCUs have the ability to use 2 stacks: an interrupt stack and a user stack.
+ * When using 2 stacks the user stack will be used during normal user code. When an interrupt occurs the CPU
+ * will automatically shift to using the interrupt stack. Having 2 stacks can make it easier to figure out how
+ * much stack space to allocate since the user does not have to worry about always having enough room on the
+ * user stack for if-and-when an interrupt occurs. Some users will not want 2 stacks though because it is not
+ * needed in all applications and can lead to wasted RAM (i.e. space in between stacks that is not used).
+ * If only 1 stack is used then the interrupt stack is the one that will be used. If 1 stack is chosen then
+ * the user may want to remove the 'SU' section from the linker sections to remove any linker warnings.
+ *
+ * 0 = Use 1 stack. Disable user stack. User stack size set below will be ignored.
+ * 1 = Use 2 stacks. User stack and interrupt stack will both be used.
+ */
+#define BSP_CFG_USER_STACK_ENABLE       (1)
+
+/* When using the user startup program, disable the following code. */
+#if (BSP_CFG_STARTUP_DISABLE == 0)
+
+/* The 'BSP_DECLARE_STACK' macro is checked so that the stack is only declared in one place (resetprg.c). Every time a 
+   '#pragma stacksize' is encountered, the stack size is increased. This prevents multiplication of stack size. */
+#if defined(BSP_DECLARE_STACK)
+    /* If only 1 stack is chosen using BSP_CFG_USER_STACK_ENABLE then no RAM will be allocated for the user stack. */
+    #if (BSP_CFG_USER_STACK_ENABLE == 1)
+    /* User Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive. */
+    #pragma stacksize su=0x1000
+    #endif
+
+/* Interrupt Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive.
+ * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
+ * below.
+ */
+#pragma stacksize si=0x400
+#endif
+
+#endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 
 /* Heap size in bytes.
    To disable the heap you must follow these steps:
@@ -122,12 +166,12 @@ Configuration Options
       choose 'Contents' in E2Studio. This will present a list of modules that can be included. Uncheck the box for
       stdio.h. 
 */
-#define BSP_CFG_HEAP_BYTES              (0x2000)
+#define BSP_CFG_HEAP_BYTES              (0x400)
 
 /* Initializes C input & output library functions.
    0 = Disable I/O library initialization in resetprg.c. If you are not using stdio then use this value.
    1 = Enable I/O library initialization in resetprg.c. This is default and needed if you are using stdio. */
-#define BSP_CFG_IO_LIB_ENABLE           (0)
+#define BSP_CFG_IO_LIB_ENABLE           (1)
 
 /* If desired the user may redirect the stdio charget() and/or charput() functions to their own respective functions
    by enabling below and providing and replacing the my_sw_... function names with the names of their own functions. */
@@ -409,13 +453,13 @@ Configuration Options
 #define BSP_CFG_CODE_FLASH_START_BANK   (0) //Bank0 by default
 
 /* This macro lets other modules no if a RTOS is being used.
-   0 = RTOS is not used. 
+   0 = RTOS is not used.
    1 = FreeRTOS is used.
-   2 = SEGGER embOS is used.
-   3 = Micrium MicroC/OS is used.
-   4 = Renesas RI600V4 & RI600PX is used.
+   2 = embOS is used.(This is not available.)
+   3 = MicroC_OS is used.(This is not available.)
+   4 = RI600V4 or RI600PX is used.(This is not available.)
 */
-#define BSP_CFG_RTOS_USED               (1)
+#define BSP_CFG_RTOS_USED               (1) // <-- Updated by GUI. Do not edit this value manually
 
 /* This macro is used to select which CMT channel used for system timer of RTOS.
  * The setting of this macro is only valid if the macro BSP_CFG_RTOS_USED is set to a value other than 0. */
@@ -426,7 +470,7 @@ Configuration Options
  * 2      = CMT channel 2 used for system timer of RTOS.
  * 3      = CMT channel 3 used for system timer of RTOS.
  * Others = Invalid. */
-#define BSP_CFG_RTOS_SYSTEM_TIMER		(0)
+#define BSP_CFG_RTOS_SYSTEM_TIMER       (0)
 #endif
 
 /* By default modules will use global locks found in mcu_locks.c. If the user is using a RTOS and would rather use its
@@ -493,9 +537,40 @@ Configuration Options
 */
 #define BSP_CFG_PARAM_CHECKING_ENABLE               (1)
 
+/* The extended bus master has five transfer sources: EDMAC, GLCDC-GRA1 (GLCDC graphics 1 data read), GLCDCGRA2 (GLCDC
+   graphics 2 data read), DRW2D-TX (DRW2D texture data read), and DRW2D-FB (DRW2D frame buffer data read write and
+   display list data read).
+   The default priority order in bsp is below
+   GLCDC-GRA1 > GLCDC-GRA2 > DRW2D-TX > DRW2D-FB > EDMAC.
+   Priority can be changed with this macro.
+   
+   Extended Bus Master Priority setting
+   0 = GLCDC graphics 1 data read
+   1 = DRW2D texture data read
+   2 = DRW2D frame buffer data read write and display list data read
+   3 = GLCDC graphics 2 data read
+   4 = EDMAC
+   
+   Note : This macro is only available for products with at least 1.5 Mbytes of code flash memory.
+          Settings other than above are prohibited.
+          Duplicate priority settings can not be made.
+*/
+#define BSP_CFG_EBMAPCR_1ST_PRIORITY               (0) /* Extended Bus Master 1st Priority Selection */
+#define BSP_CFG_EBMAPCR_2ND_PRIORITY               (3) /* Extended Bus Master 2nd Priority Selection */
+#define BSP_CFG_EBMAPCR_3RD_PRIORITY               (1) /* Extended Bus Master 3rd Priority Selection */
+#define BSP_CFG_EBMAPCR_4TH_PRIORITY               (2) /* Extended Bus Master 4th Priority Selection */
+#define BSP_CFG_EBMAPCR_5TH_PRIORITY               (4) /* Extended Bus Master 5th Priority Selection */
+
 /* This macro is used to define the voltage that is supplied to the MCU (Vcc). This macro is defined in millivolts. This
    macro does not actually change anything on the MCU. Some FIT modules need this information so it is defined here. */
-#define BSP_CFG_MCU_VCC_MV                          (3300)
+#define BSP_CFG_MCU_VCC_MV                          (3300) // <-- Updated by GUI. Do not edit this value manually
+
+/* Allow initialization of auto-generated peripheral initialization code by Smart Configurator tool.
+   When not using the Smart Configurator,  set the value of BSP_CFG_CONFIGURATOR_SELECT to 0.
+   0 = Disabled (default)
+   1 = Smart Configurator initialization code used
+*/
+#define BSP_CFG_CONFIGURATOR_SELECT                 (1) // <-- Updated by GUI. Do not edit this value manually
 
 /* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
    0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
@@ -504,6 +579,7 @@ Configuration Options
    3 = RX65N GR-ROSE
 */
 #define BSP_CFG_BOARD_REVISION                      (1)
+
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

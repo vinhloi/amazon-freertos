@@ -2798,6 +2798,12 @@
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>f9497537-4c4a-43ed-aa85-88fc4e5154a8</ParentItem>
     </Instance>
+    <Instance Guid="96349ddd-a673-4126-a9be-c229ca024096">
+      <Name>reset_program.asm</Name>
+      <Type>File</Type>
+      <RelativePath>src\smc_gen\r_bsp\board\generic_rx65n\reset_program.asm</RelativePath>
+      <ParentItem>f9497537-4c4a-43ed-aa85-88fc4e5154a8</ParentItem>
+    </Instance>
     <Instance Guid="ea94bb9b-22e3-443d-839f-8e65c5f82d4f">
       <Name>r_bsp.h</Name>
       <Type>File</Type>
@@ -7402,6 +7408,10 @@ D_2=R_2
     </Instance>
     <Instance Guid="f83e70f3-48ba-4619-8f44-11e823c2b2ae">
       <ItemAddTime>636678720763610780</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="96349ddd-a673-4126-a9be-c229ca024096">
+      <ItemAddTime>636678813063385960</ItemAddTime>
       <ItemAddTimeCount>0</ItemAddTimeCount>
     </Instance>
     <Instance Guid="a7be515f-f007-45ed-9059-4e1500c0f74d">
