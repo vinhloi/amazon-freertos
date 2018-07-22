@@ -501,6 +501,7 @@ Configuration Options
    0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
    1 = rev. 1.00 Board (RTK50565N2C00000BE)
    2 = RX65N Envision Kit
+   3 = RX65N GR-ROSE
 */
 #define BSP_CFG_BOARD_REVISION                      (2)
 

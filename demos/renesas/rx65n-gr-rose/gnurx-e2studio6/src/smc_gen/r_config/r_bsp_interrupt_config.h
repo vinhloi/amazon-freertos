@@ -210,29 +210,5 @@ Macro definitions
 #define BSP_MAPPED_INT_CFG_A_VECT_AES_AESRDY                              
 #define BSP_MAPPED_INT_CFG_A_VECT_AES_AESEND                              
 
-/***********************************************************************************************************************
-Interrupt vector entries
-***********************************************************************************************************************/
-/* BSC BUSERR */
-void bus_error_isr(void) __attribute__ ((interrupt(".rvectors", 0x0040 / 4)));
-
-/* ICU GROUPBL2 */
-void group_bl2_handler_isr(void) __attribute__ ((interrupt(".rvectors", 0x01AC / 4)));
-
-/* ICU GROUPBL0 */
-void group_bl0_handler_isr(void) __attribute__ ((interrupt(".rvectors", 0x01B8 / 4)));
-
-/* ICU GROUPBL1 */
-void group_bl1_handler_isr(void) __attribute__ ((interrupt(".rvectors", 0x01BC / 4)));
-
-/* ICU GROUPAL0 */
-void group_al0_handler_isr(void) __attribute__ ((interrupt(".rvectors", 0x01C0 / 4)));
-
-/* ICU GROUPAL1 */
-void group_al1_handler_isr(void) __attribute__ ((interrupt(".rvectors", 0x01C4 / 4)));
-
-/* Idle Vectors */
-void undefined_interrupt_source_isr(void) __attribute__ ((interrupt(".rvectors","$default")));
-
 #endif /* R_BSP_INTERRUPT_CONFIG_REF_HEADER_FILE */
 

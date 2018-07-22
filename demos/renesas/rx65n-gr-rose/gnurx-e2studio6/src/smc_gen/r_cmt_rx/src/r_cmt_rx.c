@@ -190,7 +190,14 @@ bool R_CMT_CreateOneShot (uint32_t period_us, void (* callback)(void * pdata), u
 bool R_CMT_Stop (uint32_t channel)
 {
     /* Make sure valid channel number was input. */
+#if BSP_CFG_RTOS_USED == 0      //Non-OS
     if (channel >= CMT_RX_NUM_CHANNELS)
+#elif BSP_CFG_RTOS_USED == 1        // FreeRTOS
+    if ((channel >= CMT_RX_NUM_CHANNELS) || (BSP_CFG_RTOS_SYSTEM_TIMER == channel))
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
     {
         /* Invalid channel number was used. */
         return false;
@@ -229,6 +236,27 @@ bool R_CMT_Control (uint32_t channel, cmt_commands_t command, void * pdata)
 {
     bool ret = true;
 
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+    if (CMT_RX_CMD_GET_NUM_CHANNELS == command)
+    {
+        /* Return the number of CMT channels on this MCU. */
+        *(uint32_t *)pdata = CMT_RX_NUM_CHANNELS;
+        ret = true;
+        return ret;
+    }
+    else if ((channel == BSP_CFG_RTOS_SYSTEM_TIMER) || (channel >= CMT_RX_NUM_CHANNELS))
+    {
+        /* Specified CMT channel is being used by RTOS or Invalid channel */
+        /* Modifying is NOT allowed for the other commands. */
+        ret = false;
+        return ret;
+    }
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
+
     /* Process command that was input. */
     switch (command)
     {
@@ -252,11 +280,11 @@ bool R_CMT_Control (uint32_t channel, cmt_commands_t command, void * pdata)
                 ret = false;
             }
         break;
-
+#if BSP_CFG_RTOS_USED == 0   /* Unreachable code because of checks above */
         case CMT_RX_CMD_GET_NUM_CHANNELS:
             *(uint32_t *)pdata = CMT_RX_NUM_CHANNELS;
         break;
-
+#endif
         case CMT_RX_CMD_PAUSE:
 
             if (channel < CMT_RX_NUM_CHANNELS)
@@ -471,6 +499,17 @@ static bool cmt_find_channel (uint32_t * channel)
     /* Look for an available channel. */
     for (i = 0; i < CMT_RX_NUM_CHANNELS; i++)
     {
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+        if (i == BSP_CFG_RTOS_SYSTEM_TIMER)
+        {
+            /* Found CMT channel is being used for RTOS. */
+            continue;
+        }
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
         if (true == R_BSP_HardwareLock((mcu_lock_t)(BSP_LOCK_CMT0 + i)))
         {
             /* Channel found. */
@@ -857,12 +896,24 @@ void cmt_isr_common (uint32_t channel)
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
 R_PRAGMA_STATIC_INTERRUPT(cmt0_isr, VECT(CMT0, CMI0))
-static void cmt0_isr (void)
+R_ATTRIB_STATIC_INTERRUPT void cmt0_isr (void)
 {
     cmt_isr_common(0);
-    vTickISR();
 }
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+    #if (BSP_CFG_RTOS_SYSTEM_TIMER != 0)
+        R_PRAGMA_STATIC_INTERRUPT(cmt0_isr, VECT(CMT0, CMI0))
+        static void cmt0_isr (void)
+        {
+            cmt_isr_common(0);
+        }
+    #endif /* (BSP_CFG_RTOS_SYSTEM_TIMER != 0) */
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
 
 /***********************************************************************************************************************
 * Function Name: cmt1_isr
@@ -870,11 +921,24 @@ static void cmt0_isr (void)
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
 R_PRAGMA_STATIC_INTERRUPT(cmt1_isr, VECT(CMT1, CMI1))
-static void cmt1_isr (void)
+R_ATTRIB_STATIC_INTERRUPT void cmt1_isr (void)
 {
     cmt_isr_common(1);
 }
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+    #if (BSP_CFG_RTOS_SYSTEM_TIMER != 1)
+        R_PRAGMA_STATIC_INTERRUPT(cmt1_isr, VECT(CMT1, CMI1))
+        static void cmt1_isr (void)
+        {
+            cmt_isr_common(1);
+        }
+    #endif /* (BSP_CFG_RTOS_SYSTEM_TIMER != 1) */
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
 
 #if   CMT_RX_NUM_CHANNELS == 4
 /***********************************************************************************************************************
@@ -883,11 +947,24 @@ static void cmt1_isr (void)
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
 R_PRAGMA_STATIC_INTERRUPT(cmt2_isr, VECT(CMT2, CMI2))
-static void cmt2_isr (void)
+R_ATTRIB_STATIC_INTERRUPT void cmt2_isr (void)
 {
     cmt_isr_common(2);
 }
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+    #if (BSP_CFG_RTOS_SYSTEM_TIMER != 2)
+        R_PRAGMA_STATIC_INTERRUPT(cmt2_isr, VECT(CMT2, CMI2))
+        static void cmt2_isr (void)
+        {
+            cmt_isr_common(2);
+        }
+    #endif /* (BSP_CFG_RTOS_SYSTEM_TIMER != 2) */
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
 
 /***********************************************************************************************************************
 * Function Name: cmt3_isr
@@ -895,11 +972,24 @@ static void cmt2_isr (void)
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
 R_PRAGMA_STATIC_INTERRUPT(cmt3_isr, VECT(CMT3, CMI3))
-static void cmt3_isr (void)
+R_ATTRIB_STATIC_INTERRUPT void cmt3_isr (void)
 {
     cmt_isr_common(3);
 }
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+    #if (BSP_CFG_RTOS_SYSTEM_TIMER != 3)
+        R_PRAGMA_STATIC_INTERRUPT(cmt3_isr, VECT(CMT3, CMI3))
+        static void cmt3_isr (void)
+        {
+            cmt_isr_common(3);
+        }
+    #endif /* (BSP_CFG_RTOS_SYSTEM_TIMER != 3) */
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
 #endif
 
+#endif
 

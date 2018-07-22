@@ -48,39 +48,62 @@ https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html
 
 #if defined(__CCRX__)
 
-#define R_PRAGMA_INTERRUPT(function_name, vector)           R_PRAGMA(interrupt function_name(vect=vector))\
-                                                            extern void function_name(void);
-#define R_PRAGMA_STATIC_INTERRUPT(function_name, vector)    R_PRAGMA(interrupt function_name(vect=vector))\
-                                                            static void function_name(void);
+#define R_PRAGMA_INTERRUPT(function_name, vector)            R_PRAGMA(interrupt function_name(vect=vector))\
+                                                             extern void function_name(void);
+#define R_PRAGMA_STATIC_INTERRUPT(function_name, vector)     R_PRAGMA(interrupt function_name(vect=vector))\
+                                                             static void function_name(void);
 
-#define R_PRAGMA_FAST_INTERRUPT(function_name)              R_PRAGMA(interrupt function_name(fast))\
-                                                            extern void function_name(void);
-#define R_PRAGMA_STATIC_FAST_INTERRUPT(function_name)       R_PRAGMA(interrupt function_name(fast))\
-                                                            static void function_name(void);
+#define R_PRAGMA_INTERRUPT_FUNCTION(function_name)           R_PRAGMA(interrupt function_name)\
+                                                             extern void function_name(void);
+#define R_PRAGMA_STATIC_INTERRUPT_FUNCTION(function_name)    R_PRAGMA(interrupt function_name)\
+                                                             static void function_name(void);
 
-//TODO: without vector (i.e. like __interrupt)
+#define R_PRAGMA_FAST_INTERRUPT(function_name)               R_PRAGMA(interrupt function_name(fast))\
+                                                             extern void function_name(void);
+#define R_PRAGMA_STATIC_FAST_INTERRUPT(function_name)        R_PRAGMA(interrupt function_name(fast))\
+                                                             static void function_name(void);
+
+#define R_ATTRIB_INTERRUPT                                   extern
+#define R_ATTRIB_STATIC_INTERRUPT                            static
+
+#define R_ATTRIB_FAST_INTERRUPT                              extern
+#define R_ATTRIB_STATIC_FAST_INTERRUPT                       static
 
 #elif defined(__GNUC__)
 
-#define R_PRAGMA_INTERRUPT(function_name, vector)           extern void function_name(void) __attribute__((interrupt(".rvectors", vector)));
-#define R_PRAGMA_STATIC_INTERRUPT(function_name, vector)    static void function_name(void) __attribute__((interrupt(".rvectors", vector), used));
+#define R_PRAGMA_INTERRUPT(function_name, vector)            extern void function_name(void) __attribute__((interrupt(".rvectors", vector)));
+#define R_PRAGMA_STATIC_INTERRUPT(function_name, vector)     static void function_name(void) __attribute__((interrupt(".rvectors", vector), used));
 
-#define R_PRAGMA_FAST_INTERRUPT(function_name)              extern void function_name(void) __attribute__((interrupt(fast)));
-#define R_PRAGMA_STATIC_FAST_INTERRUPT(function_name)       static void function_name(void) __attribute__((interrupt(fast)), used);
+#define R_PRAGMA_FAST_INTERRUPT(function_name)               extern void function_name(void) __attribute__((interrupt(fast)));
+#define R_PRAGMA_STATIC_FAST_INTERRUPT(function_name)        static void function_name(void) __attribute__((interrupt(fast)), used);
 
-//TODO: without vector (i.e. like __interrupt)
+#define R_PRAGMA_INTERRUPT_FUNCTION(function_name)           extern void function_name(void) __attribute__((interrupt));
+#define R_PRAGMA_STATIC_INTERRUPT_FUNCTION(function_name)    static void function_name(void) __attribute__((interrupt, used));
+
+#define R_ATTRIB_INTERRUPT                                   extern __attribute__((interrupt))
+#define R_ATTRIB_STATIC_INTERRUPT                            static __attribute__((interrupt, used))
+
+#define R_ATTRIB_FAST_INTERRUPT                              extern __attribute__((interrupt(fast)))
+#define R_ATTRIB_STATIC_FAST_INTERRUPT                       static __attribute__((interrupt(fast)), used)
 
 #elif defined(__ICCRX__)
 
-#define R_PRAGMA_INTERRUPT(function_name, vect)             R_PRAGMA(vector=vect)\
-                                                            __interrupt extern void function_name(void);
-#define R_PRAGMA_STATIC_INTERRUPT(function_name, vect)      R_PRAGMA(vector=vect)\
-                                                            __interrupt static void function_name(void);
+#define R_PRAGMA_INTERRUPT(function_name, vect)              R_PRAGMA(vector=vect)\
+                                                             extern __interrupt void function_name(void);
+#define R_PRAGMA_STATIC_INTERRUPT(function_name, vect)       R_PRAGMA(vector=vect)\
+                                                             static __interrupt void function_name(void);
 
-#define R_PRAGMA_FAST_INTERRUPT(function_name)              __fast_interrupt extern void function_name(void);
-#define R_PRAGMA_STATIC_FAST_INTERRUPT(function_name)       __fast_interrupt static void function_name(void);
+#define R_PRAGMA_INTERRUPT_FUNCTION(function_name)           extern __interrupt void function_name(void);
+#define R_PRAGMA_STATIC_INTERRUPT_FUNCTION(function_name)    static __interrupt void function_name(void);
 
-//TODO: without vector (i.e. like __interrupt)
+#define R_PRAGMA_FAST_INTERRUPT(function_name)               extern __fast_interrupt void function_name(void);
+#define R_PRAGMA_STATIC_FAST_INTERRUPT(function_name)        static __fast_interrupt void function_name(void);
+
+#define R_ATTRIB_INTERRUPT                                   extern __interrupt
+#define R_ATTRIB_STATIC_INTERRUPT                            static __interrupt
+
+#define R_ATTRIB_FAST_INTERRUPT                              extern __fast_interrupt
+#define R_ATTRIB_STATIC_FAST_INTERRUPT                       static __fast_interrupt
 
 #endif
 
@@ -495,10 +518,14 @@ R_PRAGMA(bitfield=default)\
 
 #endif
 
+/* I guess that following definitions are bad practices because these are redefinitions of keyword, but... */
+/* The volatile is a keyword of the C language */
+/* The __evenaccess is a keyword of the CC-RX compiler */
+/* The __FUNCTION__ is a keyword of GNU/IAR C compilers */
+
 #if defined(__CCRX__)
 
-/* #define volatile    volatile __evenaccess    |* I guess this is a bad practice, but ... */
-#define __attribute__(attr)    /* none */
+/* #define volatile        volatile __evenaccess */
 #define __FUNCTION__    __func__
 
 #elif defined(__GNUC__)
@@ -507,9 +534,7 @@ R_PRAGMA(bitfield=default)\
 
 #elif defined(__ICCRX__)
 
-#define __evenaccess    /* none */
-#define __attribute__(attr)    /* none */
-#define __FUNCTION__    __func__
+#define __evenaccess    __sfr
 
 #endif
 
@@ -535,10 +560,10 @@ https://gcc-renesas.com/migration-guides/rx/index.html#Compiler_predefined
 
 #define __RX 1
 
-#if defined(__LITTLE_ENDIAN__)
-#define __LIT 1
+#if defined(__RX_LITTLE_ENDIAN__)
+/* #define __LIT 1 */ /* This is already defined by ICCRX. */
 #else
-#define __BIG 1
+/* #define __BIG 1 */ /* This is already defined by ICCRX. */
 #endif
 
 #endif

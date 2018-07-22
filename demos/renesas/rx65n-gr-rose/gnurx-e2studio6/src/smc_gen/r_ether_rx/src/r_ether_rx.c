@@ -2459,7 +2459,7 @@ static uint8_t check_mpde_bit (void)
  * Return Value : none
  ***********************************************************************************************************************/
 R_PRAGMA_INTERRUPT(ether_eint, VECT(ETHER,EINT))
-void ether_eint(void)
+R_ATTRIB_INTERRUPT void ether_eint(void)
 {
     ether_int_common(ETHER_CHANNEL_0);
 } /* End of function ether_eint() */

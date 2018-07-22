@@ -55,6 +55,19 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include    "board/generic_rx65n/hwsetup.h"
 #include    "board/generic_rx65n/lowsrc.h"
 #include    "board/generic_rx65n/vecttbl.h"
+#if BSP_CFG_RTOS_USED == 0      // Non-OS
+#elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
+#include "queue.h"
+/*#include "croutine.h" Amazon FreeRTOS does not have this header file. */
+#include "timers.h"
+#include "event_groups.h"
+#elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
+#elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
+#elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#endif
 
 #endif /* BSP_BOARD_GENERIC_RX65N */
 

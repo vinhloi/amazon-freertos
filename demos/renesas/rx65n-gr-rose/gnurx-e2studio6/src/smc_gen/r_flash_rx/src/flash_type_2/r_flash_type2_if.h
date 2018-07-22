@@ -25,6 +25,7 @@
 * History : DD.MM.YYYY Version Description           
 *         : 02.18.2014 1.10    Support for RX200, RX600
 *         : 12.08.2016 2.00    Modified for BSPless operation.
+*         : 31.10.2017 2.10    Added extern for flash_api_close().
 **********************************************************************************************************************/
 
 #ifndef FLASH_API_IF_FCU_HEADER_FILE
@@ -55,6 +56,7 @@ Exported global variables
 Exported global functions (to be accessed by other files)
 ***********************************************************************************************************************/
 flash_err_t flash_api_open(void);
+flash_err_t flash_api_close(void);
 flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t bytes);
 flash_err_t flash_api_erase(flash_block_address_t block_start_address, uint32_t num_blocks);
 flash_err_t flash_api_blankcheck(uint32_t address, uint32_t num_bytes, flash_res_t *result);
