@@ -56,6 +56,19 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0:
+[UPDATED] RX Driver Package version from v114 to v115 for all projects.
+[UPDATED] CS+, e2 studio to latest.
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+
 v0.1.0-pre10:
 [UPDATED] RX Driver Package version from v114 to v115 RX65N GR-ROSE GCC/e2 studio project.
 [TESTED] Following projetcs.
