@@ -19,7 +19,7 @@
  ***********************************************************************************************************************/
 /***********************************************************************************************************************
  * File Name    : r_ether_rx_config.h
- * Version      : 1.03
+ * Version      : 1.04
  * Description  : Ethernet module device driver
  ***********************************************************************************************************************/
 /**********************************************************************************************************************
@@ -28,6 +28,7 @@
  *         : 31.03.2016 1.01     Added changes for RX63N.
  *         : 01.10.2016 1.02     Added changes for RX65N.
  *         : 01.10.2017 1.03     Added changes for RX65N-2MB.
+ *         : 08.01.2018 1.04     Changed comment.
  ***********************************************************************************************************************/
 
 /* Guards against multiple inclusion */
@@ -81,7 +82,7 @@
     #define ETHER_CFG_CH1_PHY_ACCESS                    (1)
 
 /* Define the access timing of MII/RMII register */
-    #define ETHER_CFG_PHY_MII_WAIT                      (8)     /* Plese define the value of 8 or more */
+    #define ETHER_CFG_PHY_MII_WAIT                      (8)     /* Plese define the value of 1 or more */
 
 /* Define the waiting time for reset completion of PHY-LSI */
     #define ETHER_CFG_PHY_DELAY_RESET                   (0x00020000L)
