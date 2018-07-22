@@ -56,6 +56,12 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0-pre3:
+[FIXED] RX65N RSK CC-RX/e2 studio project has Ether driver is not latest.
+        Updated from v114 to v115.
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+
 v0.1.0-pre2:
 [UPDATED] RX Driver Package version from v114 to v115 RX65N RSK CC-RX/e2 studio project.
            -> Re-generate the code from RX Driver Package v115.
@@ -524,6 +530,20 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　一旦pre版としてコミット。v0.1.0-pre2。
 　
+　Etherドライバがv114からv115に更新されていないことに気付く。
+　\demos\renesas\rx65n-rsk\ccrx-e2studio6\src\smc_gen\ をZIP化してバックアップ。
+　\demos\renesas\rx65n-rsk\ccrx-e2studio6\src\smc_gen\r_ether_rx と
+　\demos\renesas\rx65n-rsk\ccrx-e2studio6\src\smc_gen\r_config\r_ether_rx_config.h を削除。
+　スマートコンフィグレータ上でEtherドライバをv114からv115に更新。
+　Etherドライバの設定を行う。
+　r_bsp_config.h の BSP_CFG_RTOS_USEDが(0)に戻っているであろうから、(1)に設定する。
+　ZIP化したバックアップを解き、スマートコンフィグレータ出力と比較、コンパイラ差分を
+　吸収するマクロ(R_PRAGMA_など)を反映。
+　
+　ビルド、動作確認、OK。
+　pre版としてコミット。v0.1.0-pre3。
+
+
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。
 　v0.0.7-pre1では、GR-ROSE用のプロジェクト(CC-RXのe2 studio)が動作しない。

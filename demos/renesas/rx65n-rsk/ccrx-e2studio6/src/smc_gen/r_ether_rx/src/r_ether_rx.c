@@ -18,7 +18,7 @@
  ***********************************************************************************************************************/
 /***********************************************************************************************************************
  * File Name    : r_ether_rx.c
- * Version      : 1.13
+ * Version      : 1.14
  * Description  : Ethernet module device driver
  ***********************************************************************************************************************/
 /***********************************************************************************************************************
@@ -34,7 +34,23 @@
  *                                 The issue occurs when ETHER_CFG_USE_LINKSTA is set to a value of 0.
  *                               Corrected source code of the R_ETHER_Close_ZC2 function.
  *                               Corrected source code of the R_ETHER_LinkProcess function.
- *         : 01.10.2017 1.13     Removed ether_clear_icu_source function in R_ETHER_Close_ZC2 function..
+ *         : 01.10.2017 1.13     Removed ether_clear_icu_source function in R_ETHER_Close_ZC2 function.
+ *         : 07.05.2018 1.14     The module is updated to fix the software issues.
+ *                               (1) When R_ETHER_Read_ZC2 function or R_ETHER_Read function is called,
+ *                               there is case when the Ethernet frame cannot be received normally.
+ *                                 The issue occurs when R_ETHER_Read_ZC2 function or R_ETHER_Read function
+ *                                 is called in the interrupt function.
+ *                               Corrected source code of the R_ETHER_LinkProcess function.
+ *                               (2) When R_ETHER_LinkProcess function is called,
+ *                               there is case when link up processing is not completed normally.
+ *                                 The issue occurs When R_ETHER_LinkProcess function is called,
+ *                                 PHY auto-negotiation is not completed.
+ *                               Corrected source code of the R_ETHER_LinkProcess function.
+ *                               (3) When R_ETHER_Read_ZC2 function or R_ETHER_Read function is called,
+ *                               there is case when execution of function is not completed.
+ *                                 The issue occurs when R_ETHER_LinkProcess function is called
+ *                                 in the interrupt function.
+ *                               Corrected source code of the R_ETHER_Read_ZC2 function.
  ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -545,6 +561,7 @@ int32_t R_ETHER_Read_ZC2 (uint32_t channel, void **pbuf)
     int32_t num_recvd;
     int32_t ret;
     int32_t complete_flag;
+    int32_t ret2;
 
     /* Check argument */
     if (ETHER_CHANNEL_MAX <= channel)
@@ -584,7 +601,11 @@ int32_t R_ETHER_Read_ZC2 (uint32_t channel, void **pbuf)
                     if (RFS7_RMAF == (papp_rx_desc[channel]->status & RFS7_RMAF))
                     {
                         /* The buffer is released at the multicast frame detect.  */
-                        R_ETHER_Read_ZC2_BufRelease(channel);
+                        ret2 = R_ETHER_Read_ZC2_BufRelease(channel);
+                        if (ETHER_SUCCESS != ret2)
+                        {
+                            return ret2;
+                        }
 
                         ret = ETHER_ERR_MC_FRAME;
                         complete_flag = ETHER_SUCCESS;
@@ -596,7 +617,11 @@ int32_t R_ETHER_Read_ZC2 (uint32_t channel, void **pbuf)
                     if (RFE == (papp_rx_desc[channel]->status & RFE))
                     {
                         /* The buffer is released at the error.  */
-                        R_ETHER_Read_ZC2_BufRelease(channel);
+                        ret2 = R_ETHER_Read_ZC2_BufRelease(channel);
+                        if (ETHER_SUCCESS != ret2)
+                        {
+                            return ret2;
+                        }
                     }
                     else
                     {
@@ -972,20 +997,28 @@ void R_ETHER_LinkProcess (uint32_t channel)
             /* Initialize the Ether buffer */
             memset(&ether_buffers[channel], 0x00, sizeof(ether_buffers[channel]));
 
+            transfer_enable_flag[channel] = ETHER_FLAG_ON;
+            
             /*
              * ETHERC and EDMAC are set after ETHERC and EDMAC are reset in software
              * and sending and receiving is permitted. 
              */
             ether_configure_mac(channel, mac_addr_buf[channel], NO_USE_MAGIC_PACKET_DETECT);
-            ether_do_link(channel, NO_USE_MAGIC_PACKET_DETECT);
-
-            transfer_enable_flag[channel] = ETHER_FLAG_ON;
-
-            if ((NULL != cb_func.pcb_func) && (FIT_NO_FUNC != cb_func.pcb_func))
+            ret = ether_do_link(channel, NO_USE_MAGIC_PACKET_DETECT);
+            if (ETHER_SUCCESS == ret)
             {
-                cb_arg.channel = channel;
-                cb_arg.event_id = ETHER_CB_EVENT_ID_LINK_ON;
-                (*cb_func.pcb_func)((void *) &cb_arg);
+                if ((NULL != cb_func.pcb_func) && (FIT_NO_FUNC != cb_func.pcb_func))
+                {
+                    cb_arg.channel = channel;
+                    cb_arg.event_id = ETHER_CB_EVENT_ID_LINK_ON;
+                    (*cb_func.pcb_func)((void *) &cb_arg);
+                }
+            }
+            else
+            {
+                /* When PHY auto-negotiation is not completed */
+                transfer_enable_flag[channel] = ETHER_FLAG_OFF;
+                lchng_flag[channel] = ETHER_FLAG_ON_LINK_ON;
             }
         }
         else
@@ -1007,20 +1040,28 @@ void R_ETHER_LinkProcess (uint32_t channel)
         /* Initialize the Ether buffer */
         memset(&ether_buffers[channel], 0x00, sizeof(ether_buffers[channel]));
 
+        transfer_enable_flag[channel] = ETHER_FLAG_ON;
+       
        /*
         * ETHERC and EDMAC are set after ETHERC and EDMAC are reset in software
         * and sending and receiving is permitted. 
         */
         ether_configure_mac(channel, mac_addr_buf[channel], NO_USE_MAGIC_PACKET_DETECT);
-        ether_do_link(channel, NO_USE_MAGIC_PACKET_DETECT);
-
-        transfer_enable_flag[channel] = ETHER_FLAG_ON;
-
-        if ((NULL != cb_func.pcb_func) && (FIT_NO_FUNC != cb_func.pcb_func))
+        ret = ether_do_link(channel, NO_USE_MAGIC_PACKET_DETECT);
+        if (ETHER_SUCCESS == ret)
         {
-            cb_arg.channel = channel;
-            cb_arg.event_id = ETHER_CB_EVENT_ID_LINK_ON;
-            (*cb_func.pcb_func)((void *) &cb_arg);
+            if ((NULL != cb_func.pcb_func) && (FIT_NO_FUNC != cb_func.pcb_func))
+            {
+                cb_arg.channel = channel;
+                cb_arg.event_id = ETHER_CB_EVENT_ID_LINK_ON;
+                (*cb_func.pcb_func)((void *) &cb_arg);
+            }
+        }
+        else
+        {
+            /* When PHY auto-negotiation is not completed */
+            transfer_enable_flag[channel] = ETHER_FLAG_OFF;
+            lchng_flag[channel] = ETHER_FLAG_ON_LINK_ON;
         }
 #endif
     }
