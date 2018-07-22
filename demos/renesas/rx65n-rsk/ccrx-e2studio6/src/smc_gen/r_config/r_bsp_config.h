@@ -1,3 +1,4 @@
+/* Generated configuration header file - do not edit */
 /***********************************************************************************************************************
 * DISCLAIMER
 * This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products. No 
@@ -444,9 +445,12 @@ Configuration Options
 
 /* This macro lets other modules no if a RTOS is being used.
    0 = RTOS is not used. 
-   1 = RTOS is used.?¿½?(FreeRTOS)
+   1 = FreeRTOS is used.
+   2 = embOS is used.
+   3 = MicroC_OS is used.
+   4 = RI600V4 or RI600PX is used.
 */
-#define BSP_CFG_RTOS_USED               (1)
+#define BSP_CFG_RTOS_USED               (1) // <-- Updated by GUI. Do not edit this value manually
 
 /* This macro is used to select which CMT channel used for system timer of RTOS.
  * The setting of this macro is only valid if the macro BSP_CFG_RTOS_USED is set to a value other than 0. */
@@ -526,12 +530,10 @@ Configuration Options
 
 /* This macro is used to define the voltage that is supplied to the MCU (Vcc). This macro is defined in millivolts. This
    macro does not actually change anything on the MCU. Some FIT modules need this information so it is defined here. */
-#define BSP_CFG_MCU_VCC_MV                          (3300)
+#define BSP_CFG_MCU_VCC_MV                          (3300) // <-- Updated by GUI. Do not edit this value manually
 
 /* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
    0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
-   1 = rev. 1.00 Board (RTK50565N2C00000BE)
-   2 = RX65N Envision Kit
 */
 #define BSP_CFG_BOARD_REVISION                      (1)
 

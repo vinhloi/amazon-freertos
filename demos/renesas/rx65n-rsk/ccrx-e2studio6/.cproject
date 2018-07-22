@@ -26,12 +26,14 @@
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.common.1850118877" name="Common" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.common">
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.isa.1166121546" name="命令セット・アーキテクチャ" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.isa" useByScannerDiscovery="false" value="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.isa.rxv2" valueType="enumerated"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.hasFpu.953524543" name="Has FPU" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.hasFpu" useByScannerDiscovery="false" value="TRUE" valueType="string"/>
-								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceName.1749835163" name="Device Name" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceName" useByScannerDiscovery="false" value="R5F565NEHxFC_DUAL" valueType="string"/>
-								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceCommand.1832925785" name="Device Command" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceCommand" useByScannerDiscovery="false" value="R5F565NE_DUAL" valueType="string"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceName.1749835163" name="Device Name" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceName" useByScannerDiscovery="false" value="R5F565NEHxFC" valueType="string"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceCommand.1832925785" name="Device Command" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceCommand" useByScannerDiscovery="false" value="R5F565NE" valueType="string"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.checkRtos.466760735" name="Check RTOS" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.checkRtos" useByScannerDiscovery="false" value="unusedRtos" valueType="string"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.hasDsp.1283956617" name="Has DSP" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.hasDsp" useByScannerDiscovery="false" value="false" valueType="string"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceFamily.1145629173" name="Device Family" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceFamily" useByScannerDiscovery="false" value="RX65N" valueType="string"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.branch.1355967028" name="分岐幅" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.branch" useByScannerDiscovery="false" value="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.branch.none" valueType="enumerated"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceHistory.2117211459" name="Device history" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.deviceHistory" value="R5F565NEDxFC_DUAL;R5F565NEHxFC" valueType="string"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.isaHistory.1984435365" name="ISA history" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.common.option.isaHistory" value="non_init;com.renesas.cdt.managedbuild.renesas.ccrx.common.option.isa.rxv2" valueType="string"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.829055" name="Compiler" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.include.737778905" name="インクルード・ファイルを検索するフォルダ" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.include" useByScannerDiscovery="false" valueType="includePath">
@@ -54,13 +56,15 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib/third_party/mbedtls/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/compiler_support}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_bsp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_byteq}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_byteq/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_cmt_rx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_cmt_rx/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_ether_rx}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_bsp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_sci_rx}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_sci_rx/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_flash_rx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_flash_rx/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_flash_rx/src/flash_type_1}&quot;"/>
@@ -68,8 +72,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_flash_rx/src/flash_type_3}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_flash_rx/src/flash_type_4}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_flash_rx/src/targets}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_sci_rx}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_sci_rx/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/general}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_pincfg}&quot;"/>
 								</option>
@@ -113,7 +115,7 @@
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.librarian.option.headFenv.93735528" name="fenv.h（C99）：浮動小数点数環境設定" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.librarian.option.headFenv" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.converter.1607322956" name="Converter" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.converter">
-								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.converter.option.outputHexFile.567073891" name="Output hex file" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.converter.option.outputHexFile" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.converter.option.outputHexFile.567073891" name="ロード・モジュール・コンバータを実行する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.converter.option.outputHexFile" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.rtosConfig.1733071265" name="RTOS Configurator" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.rtosConfig"/>
 						</toolChain>
@@ -137,5 +139,9 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="HardwareDebug">
+			<resource resourceType="PROJECT" workspacePath="/aws_demos"/>
+		</configuration>
+	</storageModule>
 </cproject>

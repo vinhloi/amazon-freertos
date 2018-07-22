@@ -56,6 +56,18 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0-pre1:
+[UPDATED] e2 studio version from v630 to v700 on RX65N RSK CC-RX/e2 studio project.
+[UPDATED] RX Driver Package version from v114 to v115 RX65N RSK CC-RX/e2 studio project.
+[ADDED] RX65N RSK GCC/e2 studio project.
+[RESTRUCTED] RX65N RSK CC-RX/CS+ project.
+[RESTRUCTED] RX65N RSK CC-RX/e2 studio project.
+[FIXED] Device name tag (R5F565NEHxFB --> R5F565NEDxFB) on aws_demos.scfg
+        of each of RX65N Envision Kit project.
+[RESTRUCTED] RX65N Envision Kit CC-RX/CS+ project.
+[RESTRUCTED] RX65N Envision Kit GCC/e2 studio project.
+[RESTRUCTED] RX65N Envision Kit CC-RX/e2 studio project.
+
 v0.0.9:
 [NOTICE] Sorry, v0.0.8 includes wrong commit massage.
          No differencies between v0.0.7 to v0.0.8, v0.0.9 excluding commit message.
@@ -149,7 +161,7 @@ Compiler: CC-RX V2.08 (you need non-expired evaluation license or product licens
     [en] https://www.renesas.com/en-us/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
 
-IDE: e2 studio V6.3.0
+IDE: e2 studio V7.0.0
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/e2studio.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/e2studio.html
     
@@ -159,7 +171,7 @@ Debugger: E2 Emulator Lite (no need to buy because Renesas Starter Kit has this 
     
     Notice: You can also use E1 Emulator but you have to modify the debugger settings on your IDE.
     
-Device Driver: RX Driver Package v114
+Device Driver: RX Driver Package v115
     [en] https://www.renesas.com/en-us/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
 
@@ -228,7 +240,7 @@ Board: RX65N GR-ROSE proto1
            You can see pin1 on left-upper corner nearby "E" character on "ESPRESSIF" logo.
            Pin4 is lower 4pins from pin1.
 
-IDE: CS+
+IDE: CS+ v7.00.00
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/csplus.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/csplus.html
 
@@ -321,9 +333,9 @@ Compiler number:
 
                  / IDE      (1)         (2)         (3)
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
-(1)   (2)        /           x           x   -   -   -   -     
-(2)   (2)        /           x   x       x   -   -   -   -   * 
-(3)   (2)        /           x   x           -   -   -   -     
+(1)   (2)        /           x   *       *   -   -   -   -     
+(2)   (2)        /           *   *       *   -   -   -   -   * 
+(3)   (2)        /           *   *           -   -   -   -     
 
   x: tested
   *: now trying(still junk)
@@ -417,6 +429,14 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/07/22
+　スマートコンフィグレータ出力周りをNoMaY氏が整備してくれている。
+　だいぶすっきりしてきた。RX65N RSK のGCC用プロジェクトも追加された。
+　こちらでは、e2 studio v700 と CS+ v700と RX Driver Package v115への
+　更新を行っていく。ひとまず代表パタンのRX65N RSK e2 studio CC-RXの
+　組をトップバッターにして更新完了。特に問題なし。
+　一旦pre版としてコミット。v0.1.0-pre1。
+　
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。
 　v0.0.7-pre1では、GR-ROSE用のプロジェクト(CC-RXのe2 studio)が動作しない。
