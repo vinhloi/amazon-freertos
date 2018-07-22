@@ -410,7 +410,7 @@ byteq_err_t R_BYTEQ_Close(byteq_hdl_t const hdl)
 * Arguments    : none
 * Return Value : version number
 ******************************************************************************/
-#pragma inline(R_BYTEQ_GetVersion)
+R_ATTRIB_INLINE
 uint32_t  R_BYTEQ_GetVersion(void)
 {
 

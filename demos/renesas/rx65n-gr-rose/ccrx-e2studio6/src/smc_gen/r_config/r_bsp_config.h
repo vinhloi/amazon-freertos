@@ -70,7 +70,7 @@ Configuration Options
    FP           = 0x5             = LFQFP/100/0.50
    LJ           = 0xA             = TFLGA/100/0.65
 */
-#define BSP_CFG_MCU_PART_PACKAGE        (0xA) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_MCU_PART_PACKAGE        (0x5) // <-- Updated by GUI. Do not edit this value manually
 
 /* Whether Encryption and SDHI/SDSI are included or not. 
    Character(s) = Value for macro = Description
@@ -444,7 +444,10 @@ Configuration Options
 
 /* This macro lets other modules no if a RTOS is being used.
    0 = RTOS is not used. 
-   1 = RTOS is used.???½¿?½½??½¿?½½?(FreeRTOS)
+   1 = FreeRTOS is used.
+   2 = SEGGER embOS is used.
+   3 = Micrium MicroC/OS is used.
+   4 = Renesas RI600V4 & RI600PX is used.
 */
 #define BSP_CFG_RTOS_USED               (1)
 
