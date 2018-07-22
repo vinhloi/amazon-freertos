@@ -19,7 +19,7 @@
 
 /***********************************************************************************************************************
 * File Name    : r_smc_entry.h
-* Version      : 1.1.1
+* Version      : 1.2.0
 * Device(s)    : R5F565NEDxFP
 * Description  : SMC platform header file.
 * Creation Date: 2018-07-22

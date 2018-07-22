@@ -24,6 +24,7 @@
 * History : DD.MM.YYYY Version  Description
 *         : 01.10.2016 1.00     First Release
 *         : 15.05.2017 2.00     Changed comments of the PRCR register.
+*         : 01.07.2018 2.01     Prevent task switching when protection counter is updated.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -58,6 +59,7 @@ Private global variables and functions
 ***********************************************************************************************************************/
 /* Used for holding reference counters for protection bits. */
 static volatile uint16_t g_protect_counters[BSP_REG_PROTECT_TOTAL_ITEMS];
+
 /* Masks for setting or clearing the PRCR register. Use -1 for size because PWPR in MPC is used differently. */
 static const    uint16_t g_prcr_masks[BSP_REG_PROTECT_TOTAL_ITEMS-1] = 
 {
@@ -149,30 +151,31 @@ bool R_BSP_CpuInterruptLevelWrite (uint32_t level)
 ***********************************************************************************************************************/
 void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
 {
+    
 #if BSP_CFG_RTOS_USED == 1      // FreeRTOS
-    uint32_t    ipl_value;
+   uint32_t    ipl_value;
 
 #if defined(__RENESAS__)
-    /* Get the current Processor Interrupt Priority Level (IPL). */
-    ipl_value = (uint32_t)get_ipl();
+   /* Get the current Processor Interrupt Priority Level (IPL). */ 
+   ipl_value = (uint32_t)get_ipl();
 
-    /* Set IPL to 0xF to disable all interrupts,
-     * so the scheduler can not be scheduled in critical region.
-     * Note: The value of BSP_MCU_IPL_MAX should be equal or larger than the setting of
-     * configKERNEL_INTERRUPT_PRIORITY and configMAX_SYSCALL_INTERRUPT_PRIORITY. */
-    set_ipl((signed long)BSP_MCU_IPL_MAX);
-#endif /* defined(__RENESAS__) */
+   /* Set IPL to 0xF to disable all interrupts,
+    * so the scheduler can not be scheduled in critical region.
+    * Note: The value of BSP_MCU_IPL_MAX should be equal or larger than the setting of
+    * configKERNEL_INTERRUPT_PRIORITY and configMAX_SYSCALL_INTERRUPT_PRIORITY. */ 
+   set_ipl((signed long)BSP_MCU_IPL_MAX);
+#endif /* defined(__RENESAS__) */ 
 
-#endif /* BSP_CFG_RTOS_USED == 1 */
-
-    /* Is it safe to disable write access? */
+#endif /* BSP_CFG_RTOS_USED == 1 */ 
+    
+    /* Is it safe to disable write access?  */
     if (0 != g_protect_counters[regs_to_protect])
     {
         /* Decrement the protect counter */
         g_protect_counters[regs_to_protect]--;
     }
 
-    /* Is it safe to disable write access? */
+    /* Is it safe to disable write access?  */
     if (0 == g_protect_counters[regs_to_protect])
     {
         if (BSP_REG_PROTECT_MPC != regs_to_protect)
@@ -209,13 +212,12 @@ void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
             MPC.PWPR.BIT.B0WI = 1;     
         }
     }
-
 #if BSP_CFG_RTOS_USED == 1      // FreeRTOS
 
 #if defined(__RENESAS__)
-    /* Restore the IPL. */
-    set_ipl((signed long)ipl_value);
-#endif /* defined(__RENESAS__) */
+   /* Restore the IPL. */ 
+   set_ipl((signed long)ipl_value);
+#endif /* defined(__RENESAS__) */ 
 
 #endif /* BSP_CFG_RTOS_USED == 1 */
 }
@@ -230,20 +232,20 @@ void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
 void R_BSP_RegisterProtectDisable (bsp_reg_protect_t regs_to_unprotect)
 {
 #if BSP_CFG_RTOS_USED == 1      // FreeRTOS
-    uint32_t    ipl_value;
+   uint32_t    ipl_value;
 
 #if defined(__RENESAS__)
-    /* Get current Processor Interrupt Priority Level (IPL). */
-    ipl_value = (uint32_t)get_ipl();
+   /* Get current Processor Interrupt Priority Level (IPL). */ 
+   ipl_value = (uint32_t)get_ipl();
 
-    /* Set IPL to 0xF to disable all interrupts,
-     * so the scheduler can not be scheduled in critical region.
-     * Note: The value of BSP_MCU_IPL_MAX should be equal or larger than the setting of
-     * configKERNEL_INTERRUPT_PRIORITY and configMAX_SYSCALL_INTERRUPT_PRIORITY. */
-    set_ipl((signed long)BSP_MCU_IPL_MAX);
-#endif /* defined(__RENESAS__) */
+   /* Set IPL to 0xF to disable all interrupts,
+    * so the scheduler can not be scheduled in critical region.
+    * Note: The value of BSP_MCU_IPL_MAX should be equal or larger than the setting of
+    * configKERNEL_INTERRUPT_PRIORITY and configMAX_SYSCALL_INTERRUPT_PRIORITY. */ 
+   set_ipl((signed long)BSP_MCU_IPL_MAX);
+#endif /* defined(__RENESAS__) */ 
 
-#endif /* BSP_CFG_RTOS_USED == 1 */
+#endif /* BSP_CFG_RTOS_USED == 1 */ 
 
     /* If this is first entry then disable protection. */
     if (0 == g_protect_counters[regs_to_unprotect])
@@ -285,11 +287,11 @@ void R_BSP_RegisterProtectDisable (bsp_reg_protect_t regs_to_unprotect)
 #if BSP_CFG_RTOS_USED == 1      // FreeRTOS
 
 #if defined(__RENESAS__)
-    /* Restore the IPL. */
-    set_ipl((signed long)ipl_value);
-#endif /* defined(__RENESAS__) */
+   /* Restore the IPL. */ 
+   set_ipl((signed long)ipl_value);
+#endif /* defined(__RENESAS__) */ 
 
-#endif /* BSP_CFG_RTOS_USED == 1 */
+#endif /* BSP_CFG_RTOS_USED == 1 */ 
 }
 
 /***********************************************************************************************************************

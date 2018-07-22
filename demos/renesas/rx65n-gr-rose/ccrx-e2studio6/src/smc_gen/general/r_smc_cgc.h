@@ -19,7 +19,7 @@
 
 /***********************************************************************************************************************
 * File Name    : r_smc_cgc.h
-* Version      : 1.1.1
+* Version      : 1.1.2
 * Device(s)    : R5F565NEDxFP
 * Description  : This file implements cgc setting.
 * Creation Date: 2018-07-22

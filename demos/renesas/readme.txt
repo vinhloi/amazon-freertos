@@ -56,6 +56,11 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0-pre9:
+[UPDATED] RX Driver Package version from v114 to v115 RX65N GR-ROSE CC-RX/e2 studio project.
+[TESTED] Following projetcs.
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite
+
 v0.1.0-pre8:
 [UPDATED] RX Driver Package version from v114 to v115 RX65N Envision Kit GCC/e2 studio project.
 [TESTED] Following projetcs.
@@ -379,8 +384,8 @@ Compiler number:
                  / IDE      (1)         (2)         (3)
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (1)   (2)        /           x   x       x   -   -   -   -     
-(2)   (2)        /           x   *       x   -   -   -   -   * 
-(3)   (2)        /           *   *           -   -   -   -     
+(2)   (2)        /           x   x       x   -   -   -   -   * 
+(3)   (2)        /           x   *           -   -   -   -     
 
   x: tested
   *: now trying(still junk)
@@ -688,6 +693,22 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 
 　ビルド、動作確認、OK。
 　pre版としてコミット。v0.1.0-pre8。
+
+　RX65N GR-ROSE CC-RX e2 studio の環境メンテ。
+　スマートコンフィグレータでBSPとEtherを最新に交換。
+　
+　コード生成し、出力済みのコードを削除する。ボード依存の端子設定コードr_pincfgとgeneralを除く。
+　\demos\renesas\rx65n-gr-rose\ccrx-e2studio6\src\smc_gen
+　
+　以下のようにコピー。ボード依存の端子設定コードr_pincfgとgeneralとbspを除く。
+　\demos\renesas\rx65n-rsk\ccrx-csplus\src\smc_gen\
+　↓
+　\demos\renesas\rx65n-gr-rose\ccrx-e2studio6\src\smc_gen
+　r_bsp_config.h に追加したボードリビジョン設定を変更。(1)->(3)
+　r_sci_config.h で、SCI 12chを使用するよう変更。
+　
+　ビルド、動作確認、OK。
+　pre版としてコミット。v0.1.0-pre9。
 
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。

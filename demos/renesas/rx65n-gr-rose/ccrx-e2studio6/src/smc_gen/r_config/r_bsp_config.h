@@ -1,3 +1,4 @@
+/* Generated configuration header file - do not edit */
 /***********************************************************************************************************************
 * DISCLAIMER
 * This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products. No 
@@ -25,6 +26,15 @@
 ************************************************************************************************************************
 * History : DD.MM.YYYY Version   Description
 *         : 15.05.2017 1.00      First Release
+*         : 01.12.2017 1.01      Added the following macro definition.
+*                                - BSP_CFG_EBMAPCR_1ST_PRIORITY
+*                                - BSP_CFG_EBMAPCR_2ND_PRIORITY
+*                                - BSP_CFG_EBMAPCR_3RD_PRIORITY
+*                                - BSP_CFG_EBMAPCR_4TH_PRIORITY
+*                                - BSP_CFG_EBMAPCR_5TH_PRIORITY
+*         : 01.07.2018 1.02      Added the following macro definition.
+*                                - BSP_CFG_CONFIGURATOR_SELECT
+*                                Add RTOS support. FreeRTOS. Define a timer for RTOS.
 ***********************************************************************************************************************/
 #ifndef R_BSP_CONFIG_REF_HEADER_FILE
 #define R_BSP_CONFIG_REF_HEADER_FILE
@@ -309,7 +319,7 @@ Configuration Options
 /* Configure SDCLK output pin (only effective when external bus enabled)
    Values 0=no output, 1 = BCK frequency
 */
-#define BSP_CFG_SDCLK_OUTPUT            (0) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_SDCLK_OUTPUT            (0)
 
 /* Main Clock Oscillator Wait Time (MOSCWTCR).
    The value of MOSCWTCR register required for correspondence with the waiting time required to secure stable oscillation
@@ -443,13 +453,13 @@ Configuration Options
 #define BSP_CFG_CODE_FLASH_START_BANK   (0) //Bank0 by default
 
 /* This macro lets other modules no if a RTOS is being used.
-   0 = RTOS is not used. 
+   0 = RTOS is not used.
    1 = FreeRTOS is used.
-   2 = SEGGER embOS is used.
-   3 = Micrium MicroC/OS is used.
-   4 = Renesas RI600V4 & RI600PX is used.
+   2 = embOS is used.(This is not available.)
+   3 = MicroC_OS is used.(This is not available.)
+   4 = RI600V4 or RI600PX is used.(This is not available.)
 */
-#define BSP_CFG_RTOS_USED               (1)
+#define BSP_CFG_RTOS_USED               (1) // <-- Updated by GUI. Do not edit this value manually
 
 /* This macro is used to select which CMT channel used for system timer of RTOS.
  * The setting of this macro is only valid if the macro BSP_CFG_RTOS_USED is set to a value other than 0. */
@@ -460,7 +470,7 @@ Configuration Options
  * 2      = CMT channel 2 used for system timer of RTOS.
  * 3      = CMT channel 3 used for system timer of RTOS.
  * Others = Invalid. */
-#define BSP_CFG_RTOS_SYSTEM_TIMER		(0)
+#define BSP_CFG_RTOS_SYSTEM_TIMER       (0)
 #endif
 
 /* By default modules will use global locks found in mcu_locks.c. If the user is using a RTOS and would rather use its
@@ -527,9 +537,42 @@ Configuration Options
 */
 #define BSP_CFG_PARAM_CHECKING_ENABLE               (1)
 
+/* The extended bus master has five transfer sources: EDMAC, GLCDC-GRA1 (GLCDC graphics 1 data read), GLCDCGRA2 (GLCDC
+   graphics 2 data read), DRW2D-TX (DRW2D texture data read), and DRW2D-FB (DRW2D frame buffer data read write and
+   display list data read).
+   The default priority order in bsp is below
+   GLCDC-GRA1 > GLCDC-GRA2 > DRW2D-TX > DRW2D-FB > EDMAC.
+   Priority can be changed with this macro.
+   
+   Extended Bus Master Priority setting
+   0 = GLCDC graphics 1 data read
+   1 = DRW2D texture data read
+   2 = DRW2D frame buffer data read write and display list data read
+   3 = GLCDC graphics 2 data read
+   4 = EDMAC
+   
+   Note : This macro is only available for products with at least 1.5 Mbytes of code flash memory.
+          Settings other than above are prohibited.
+          Duplicate priority settings can not be made.
+*/
+#define BSP_CFG_EBMAPCR_1ST_PRIORITY               (0) /* Extended Bus Master 1st Priority Selection */
+#define BSP_CFG_EBMAPCR_2ND_PRIORITY               (3) /* Extended Bus Master 2nd Priority Selection */
+#define BSP_CFG_EBMAPCR_3RD_PRIORITY               (1) /* Extended Bus Master 3rd Priority Selection */
+#define BSP_CFG_EBMAPCR_4TH_PRIORITY               (2) /* Extended Bus Master 4th Priority Selection */
+#define BSP_CFG_EBMAPCR_5TH_PRIORITY               (4) /* Extended Bus Master 5th Priority Selection */
+
 /* This macro is used to define the voltage that is supplied to the MCU (Vcc). This macro is defined in millivolts. This
    macro does not actually change anything on the MCU. Some FIT modules need this information so it is defined here. */
-#define BSP_CFG_MCU_VCC_MV                          (3300)
+#define BSP_CFG_MCU_VCC_MV                          (3300) // <-- Updated by GUI. Do not edit this value manually
+
+/* Allow initialization of auto-generated peripheral initialization code by Smart Configurator tool.
+   When not using the Smart Configurator,  set the value of BSP_CFG_CONFIGURATOR_SELECT to 0.
+   0 = Disabled (default)
+   1 = Smart Configurator initialization code used
+*/
+#define BSP_CFG_CONFIGURATOR_SELECT                 (1) // <-- Updated by GUI. Do not edit this value manually
+
+#define BSP_CFG_CONFIGURATOR_SELECT                 (1) // <-- Updated by GUI. Do not edit this value manually
 
 /* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
    0 = 1st Prototype Board (RTK50565N2CxxxxxBR)

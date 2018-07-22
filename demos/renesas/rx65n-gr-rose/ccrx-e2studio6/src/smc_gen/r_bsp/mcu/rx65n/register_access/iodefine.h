@@ -18,7 +18,7 @@
 ***********************************************************************************************************************/
 /*******************************************************************************
 *                                                                              
-* Device     : RX/RX600/RX651                                                  
+* Device     : RX/RX600/RX65N                                                  
 *
 * File Name  : iodefine.h                                                      
 *
@@ -36,16 +36,17 @@
 *            : V1.5A  (2016-12-15)  [Hardware Manual Revision : 1.00]
 *            : V1.5B  (2017-03-22)  [Hardware Manual Revision : 1.00]
 *            : V2.0   (2017-04-21)  [Hardware Manual Revision : 2.00]
+*            : V2.0A  (2017-10-23)  [Hardware Manual Revision : 2.00]
 *
 * NOTE       : THIS IS A TYPICAL EXAMPLE.                                      
 *                                                                              
-*  Copyright(c) 2016 Renesas Electronics Corporation.                          
+*  Copyright(c) 2017 Renesas Electronics Corporation.                          
 *
 *********************************************************************************/
 /********************************************************************************/
 /*                                                                              */
 /*  DESCRIPTION : Definition of ICU Register                                    */
-/*  CPU TYPE    : RX651                                                         */
+/*  CPU TYPE    : RX65N                                                         */
 /*                                                                              */
 /*  Usage : IR,DTCER,IER,IPR of ICU Register                                    */
 /*     The following IR, DTCE, IEN, IPR macro functions simplify usage.         */
@@ -90,8 +91,8 @@
 /*                                                                              */
 /*                                                                              */
 /********************************************************************************/
-#ifndef __RX651IODEFINE_HEADER__
-#define __RX651IODEFINE_HEADER__
+#ifndef __RX65NIODEFINE_HEADER__
+#define __RX65NIODEFINE_HEADER__
 
 #define	IEN_BSC_BUSERR		IEN0
 #define	IEN_RAM_RAMERR		IEN2
@@ -702,10 +703,10 @@
 #define	IS_RSPI2_SPII2		IS20
 #define	IS_RSPI2_SPEI2		IS21
 #define	IS_EDMAC0_EINT0		IS4
-#define IS_GLCDC_VPOS   	IS8
-#define IS_GLCDC_GR1UF  	IS9
-#define IS_GLCDC_GR2UF  	IS10
-#define IS_DRW2D_DRWIRQ  	IS11
+#define	IS_GLCDC_VPOS		IS8
+#define	IS_GLCDC_GR1UF		IS9
+#define	IS_GLCDC_GR2UF		IS10
+#define	IS_DRW2D_DRWIRQ		IS11
 
 #define	EN_CAN0_ERS0		EN0
 #define	EN_CAN1_ERS1		EN1
@@ -774,10 +775,10 @@
 #define	EN_RSPI2_SPII2		EN20
 #define	EN_RSPI2_SPEI2		EN21
 #define	EN_EDMAC0_EINT0		EN4
-#define EN_GLCDC_VPOS   	EN8
-#define EN_GLCDC_GR1UF  	EN9
-#define EN_GLCDC_GR2UF  	EN10
-#define EN_DRW2D_DRWIRQ  	EN11
+#define	EN_GLCDC_VPOS		EN8
+#define	EN_GLCDC_GR1UF		EN9
+#define	EN_GLCDC_GR2UF		EN10
+#define	EN_DRW2D_DRWIRQ		EN11
 
 #define	CLR_CAN0_ERS0		CLR0
 #define	CLR_CAN1_ERS1		CLR1
@@ -849,10 +850,10 @@
 #define	GEN_RSPI2_SPII2		GENAL0
 #define	GEN_RSPI2_SPEI2		GENAL0
 #define	GEN_EDMAC0_EINT0	GENAL1
-#define GEN_GLCDC_VPOS  	GENAL1
-#define GEN_GLCDC_GR1UF 	GENAL1
-#define GEN_GLCDC_GR2UF 	GENAL1
-#define GEN_DRW2D_DRWIRQ 	GENAL1
+#define	GEN_GLCDC_VPOS		GENAL1
+#define	GEN_GLCDC_GR1UF		GENAL1
+#define	GEN_GLCDC_GR2UF		GENAL1
+#define	GEN_DRW2D_DRWIRQ	GENAL1
 
 #define	GRP_CAN0_ERS0		GRPBE0
 #define	GRP_CAN1_ERS1		GRPBE0
@@ -907,8 +908,8 @@
 #define	GRP_SCI8_ERI8		GRPBL1
 #define	GRP_SCI9_TEI9		GRPBL1
 #define	GRP_SCI9_ERI9		GRPBL1
-#define	GRP_RIIC1_TEI1		GENBL1
-#define	GRP_RIIC1_EEI1		GENBL1
+#define	GRP_RIIC1_TEI1		GRPBL1
+#define	GRP_RIIC1_EEI1		GRPBL1
 #define	GRP_SDSI_SDIOI		GRPBL2
 #define	GRP_SCI10_TEI10		GRPAL0
 #define	GRP_SCI10_ERI10		GRPAL0
@@ -921,10 +922,10 @@
 #define	GRP_RSPI2_SPII2		GRPAL0
 #define	GRP_RSPI2_SPEI2		GRPAL0
 #define	GRP_EDMAC0_EINT0	GRPAL1
-#define GRP_GLCDC_VPOS  	GRPAL1
-#define GRP_GLCDC_GR1UF 	GRPAL1
-#define GRP_GLCDC_GR2UF 	GRPAL1
-#define GRP_DRW2D_DRWIRQ 	GRPAL1
+#define	GRP_GLCDC_VPOS		GRPAL1
+#define	GRP_GLCDC_GR1UF		GRPAL1
+#define	GRP_GLCDC_GR2UF		GRPAL1
+#define	GRP_DRW2D_DRWIRQ	GRPAL1
 
 #define	GCR_CAN0_ERS0		GCRBE0
 #define	GCR_CAN1_ERS1		GCRBE0
@@ -1064,8 +1065,8 @@
 #define	SMCI7	(*(volatile struct st_smci0   __evenaccess *)0x8A0E0)
 #define	SMCI8	(*(volatile struct st_smci0   __evenaccess *)0x8A100)
 #define	SMCI9	(*(volatile struct st_smci0   __evenaccess *)0x8A120)
-#define	SMCI10	(*(volatile struct st_smci10  __evenaccess *)0xD0046)
-#define	SMCI11	(*(volatile struct st_smci10  __evenaccess *)0xD0066)
+#define	SMCI10	(*(volatile struct st_smci10  __evenaccess *)0xD0040)
+#define	SMCI11	(*(volatile struct st_smci10  __evenaccess *)0xD0060)
 #define	SMCI12	(*(volatile struct st_smci0   __evenaccess *)0x8B300)
 #define	SYSTEM	(*(volatile struct st_system  __evenaccess *)0x80000)
 #define	TEMPS	(*(volatile struct st_temps   __evenaccess *)0x8C500)
@@ -15633,6 +15634,45 @@ typedef struct st_smci0 {
 } st_smci0_t;
 
 typedef struct st_smci10 {
+	union {
+		unsigned char BYTE;
+		struct {
+			unsigned char GM:1;
+			unsigned char BLK:1;
+			unsigned char PE:1;
+			unsigned char PM:1;
+			unsigned char BCP:2;
+			unsigned char CKS:2;
+		} BIT;
+	} SMR;
+	char           wk0[1];
+	union {
+		unsigned char BYTE;
+		struct {
+			unsigned char TIE:1;
+			unsigned char RIE:1;
+			unsigned char TE:1;
+			unsigned char RE:1;
+			unsigned char MPIE:1;
+			unsigned char TEIE:1;
+			unsigned char CKE:2;
+		} BIT;
+	} SCR;
+	char           wk1[1];
+	union {
+		unsigned char BYTE;
+		struct {
+			unsigned char TDRE:1;
+			unsigned char RDRF:1;
+			unsigned char ORER:1;
+			unsigned char ERS:1;
+			unsigned char PER:1;
+			unsigned char TEND:1;
+			unsigned char MPB:1;
+			unsigned char MPBT:1;
+		} BIT;
+	} SSR;
+	char           wk2[1];
 	union {
 		unsigned char BYTE;
 		struct {
