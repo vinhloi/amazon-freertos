@@ -30,6 +30,7 @@
 Includes   <System Includes> , "Project Includes"
 ***********************************************************************************************************************/
 /* Has intrinsic support. Includes xchg() which is used in this code. */
+#include "machine.h"
 /* Platform configuration. */
 #include "platform.h"
 
@@ -76,10 +77,7 @@ bool R_BSP_SoftwareLock (BSP_CFG_USER_LOCKING_TYPE * const plock)
        we just need to check the value of 'is_locked' after this instruction finishes. */
 
     /* Try to acquire semaphore to obtain lock */
-	int32_t tmp;
-	tmp = is_locked;
-	is_locked = plock->lock;
-	plock->lock = tmp;
+    xchg(&is_locked, &plock->lock);
     
     /* Check to see if semaphore was successfully taken */
     if (is_locked == false)

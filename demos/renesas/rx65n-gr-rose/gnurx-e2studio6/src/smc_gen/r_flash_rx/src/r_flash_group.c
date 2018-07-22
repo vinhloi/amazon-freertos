@@ -27,6 +27,8 @@
 *                                   Updated r_flash_control() FLASH_CMD_CONFIG_CLOCK; Added FLASH_CMD_BANK_TOGGLE,
 *                                       FLASH_CMD_BANK_GET.
 *                                   Added is_cf_addr(), is_cf_overflow(), and get_cf_addr_info().
+*              : 31.10.2017 1.20    Added function r_flash_close().
+*                                   Added error check FLASH_ERR_ALREADY_OPEN to r_flash_open().
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -118,6 +120,7 @@ current_param_t g_current_parameters = {
                                          false, /* CF BGO Disabled */
                                         };
 
+static bool g_driver_opened=false;
 static flash_err_t flash_interrupt_config(bool state, void *pcfg);
 static flash_err_t get_erase_flash_type(flash_block_address_t block_start_address, uint32_t num_blocks, flash_type_t *type);
 static bool is_cf_addr(uint32_t addr);
@@ -144,6 +147,8 @@ static flash_err_t set_write_params(uint32_t address, uint32_t num_bytes, flash_
 *                    API initialized successfully.
 *                FLASH_ERR_BUSY -
 *                    API has already been initialized and another operation is ongoing.
+*                FLASH_ERR_ALREADY_OPEN
+*                    Open() has been called twice without an intermediate Close().
 *                FLASH_ERR_FAILURE
 *                    Initialization failed.
 ***********************************************************************************************************************/
@@ -166,6 +171,12 @@ flash_err_t r_flash_open(void)
         return FLASH_ERR_BUSY;      // should never happen
     }
 
+    if (g_driver_opened == true)
+    {
+        flash_release_state();
+        return FLASH_ERR_ALREADY_OPEN;
+    }
+
     /* Initialize the FCU */
 #ifdef FLASH_HAS_FCU
     err = flash_init_fcu();
@@ -183,12 +194,13 @@ flash_err_t r_flash_open(void)
     /* Disable Interrupts. Enabled when callback set with Control() FLASH_CMD_SET_BGO_CALLBACK. */
     flash_interrupt_config(false, NULL);
 
-    /* Unlock driver */
-    flash_release_state();
-
 #if ((FLASH_TYPE == 1) && !defined(FLASH_NO_DATA_FLASH))
-     R_DF_Enable_DataFlashAccess();
+    R_DF_Enable_DataFlashAccess();
 #endif
+
+    /* Unlock driver */
+    g_driver_opened = true;
+    flash_release_state();
 
     return FLASH_SUCCESS;
 }
@@ -258,6 +270,37 @@ flash_err_t flash_interrupt_config(bool state, void *pcfg)
     {
         return FLASH_ERR_PARAM;
     }
+
+    return FLASH_SUCCESS;
+}
+
+
+/***********************************************************************************************************************
+* Function Name: r_flash_close
+* Description  : Function disables flash interrupts and marks driver as closed.
+* Arguments    : void
+* Return Value : FLASH_SUCCESS -
+*                    API closed successfully.
+*                FLASH_ERR_BUSY -
+*                    Another operation is ongoing.
+***********************************************************************************************************************/
+flash_err_t r_flash_close(void)
+{
+
+    /* Lock driver */
+    if (FLASH_SUCCESS != flash_lock_state(FLASH_UNINITIALIZED))
+    {
+        return FLASH_ERR_BUSY;
+    }
+
+    /* Disable interrupts */
+    flash_interrupt_config(false, NULL);
+
+    /* Show driver as closed and release hold on lock.
+     * Do not use flash_release_state() because we do not want to set state to FLASH_READY.
+     */
+    g_driver_opened = false;
+    flash_softwareUnlock(&g_flash_lock);
 
     return FLASH_SUCCESS;
 }

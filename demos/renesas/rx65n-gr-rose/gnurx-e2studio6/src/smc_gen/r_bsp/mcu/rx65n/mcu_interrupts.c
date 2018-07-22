@@ -36,6 +36,8 @@
 /***********************************************************************************************************************
 Includes   <System Includes> , "Project Includes"
 ***********************************************************************************************************************/
+/* Used for accessing CPU registers. */
+#include "machine.h"
 /* Access to r_bsp. */
 #include "platform.h"
 #include <stddef.h>
@@ -66,6 +68,12 @@ static void (* g_bsp_vectors[BSP_INT_SRC_TOTAL_ITEMS])(void * pdata);
 
 bsp_int_err_t bsp_interrupt_enable_disable(bsp_int_src_t vector, bool enable);
 bsp_int_err_t bsp_interrupt_group_enable_disable(bsp_int_src_t vector, bool enable, uint32_t ipl);
+
+void group_bl0_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPBL0)));
+void group_bl1_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPBL1)));
+void group_bl2_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPBL2)));
+void group_al0_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPAL0)));
+void group_al1_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPAL1)));
 
 /***********************************************************************************************************************
 * Function Name: bsp_interrupt_open

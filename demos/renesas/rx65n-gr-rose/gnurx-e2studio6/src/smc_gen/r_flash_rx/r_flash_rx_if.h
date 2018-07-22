@@ -127,6 +127,8 @@
 *                              Repackaged include files so r_mcu_config.h not required for projects using BSP.
 *                              Fixed bug in RX65N-2M dual mode operation where sometimes when running in bank 0,
 *                                 performing a bank swap caused application execution to fail.
+*           31.10.2017 3.30    Added error check FLASH_ERR_ALREADY_OPEN to R_FLASH_Open().
+*                              Added function R_FLASH_Close().
 ***********************************************************************************************************************/
 
 #ifndef FLASH_INTERFACE_HEADER_FILE
@@ -141,7 +143,7 @@ Macro definitions
 ***********************************************************************************************************************/
 /* Driver Version Number. */
 #define FLASH_RX_VERSION_MAJOR           (3)
-#define FLASH_RX_VERSION_MINOR           (20)
+#define FLASH_RX_VERSION_MINOR           (30)
 
 
 /***********************************************************************************************************************
@@ -275,6 +277,7 @@ typedef enum _flash_err
     FLASH_ERR_UNSUPPORTED,  // Command not supported for this flash type
     FLASH_ERR_SECURITY,     // Pgm/Erase error due to part locked (FAW.FSPR)
     FLASH_ERR_TIMEOUT,      // Timeout Condition
+    FLASH_ERR_ALREADY_OPEN  // Open() called twice without intermediate Close()
 } flash_err_t;
 
 
@@ -516,6 +519,7 @@ Exported global variables
 Exported global functions (to be accessed by other files)
 ***********************************************************************************************************************/
 flash_err_t R_FLASH_Open(void);
+flash_err_t R_FLASH_Close(void);
 flash_err_t R_FLASH_Write(uint32_t src_address, uint32_t dest_address, uint32_t num_bytes);
 flash_err_t R_FLASH_Erase(flash_block_address_t block_start_address, uint32_t num_blocks);
 flash_err_t R_FLASH_BlankCheck(uint32_t address, uint32_t num_bytes, flash_res_t *blank_check_result);

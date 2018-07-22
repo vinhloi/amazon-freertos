@@ -410,9 +410,24 @@ Configuration Options
 
 /* This macro lets other modules no if a RTOS is being used.
    0 = RTOS is not used. 
-   1 = RTOS is used.
+   1 = FreeRTOS is used.
+   2 = embOS is used.
+   3 = MicroC_OS is used.
+   4 = RI600V4 or RI600PX is used.
 */
-#define BSP_CFG_RTOS_USED               (0)
+#define BSP_CFG_RTOS_USED               (1)
+
+/* This macro is used to select which CMT channel used for system timer of RTOS.
+ * The setting of this macro is only valid if the macro BSP_CFG_RTOS_USED is set to a value other than 0. */
+#if (BSP_CFG_RTOS_USED != 0)
+/* Setting value.
+ * 0      = CMT channel 0 used for system timer of RTOS (recommended to be used for RTOS).
+ * 1      = CMT channel 1 used for system timer of RTOS.
+ * 2      = CMT channel 2 used for system timer of RTOS.
+ * 3      = CMT channel 3 used for system timer of RTOS.
+ * Others = Invalid. */
+#define BSP_CFG_RTOS_SYSTEM_TIMER       (0)
+#endif
 
 /* By default modules will use global locks found in mcu_locks.c. If the user is using a RTOS and would rather use its
    locking mechanisms then they can change this macro. 
@@ -481,6 +496,11 @@ Configuration Options
 /* This macro is used to define the voltage that is supplied to the MCU (Vcc). This macro is defined in millivolts. This
    macro does not actually change anything on the MCU. Some FIT modules need this information so it is defined here. */
 #define BSP_CFG_MCU_VCC_MV                          (3300)
+
+/* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
+   0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
+*/
+#define BSP_CFG_BOARD_REVISION                      (0)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

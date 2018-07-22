@@ -70,7 +70,7 @@ Configuration Options
    FP           = 0x5             = LFQFP/100/0.50
    LJ           = 0xA             = TFLGA/100/0.65
 */
-#define BSP_CFG_MCU_PART_PACKAGE        (0xA) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_MCU_PART_PACKAGE        (0x5) // <-- Updated by GUI. Do not edit this value manually
 
 /* Whether Encryption and SDHI/SDSI are included or not. 
    Character(s) = Value for macro = Description
@@ -504,20 +504,6 @@ Configuration Options
    3 = RX65N GR-ROSE
 */
 #define BSP_CFG_BOARD_REVISION                      (3)
-
-/* GNURX and Amazon FreeRTOS support
-*/
-
-#include "machine.h"
-#include "SCFGcompiler.h"
-
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "queue.h"
-/*#include "croutine.h"*/
-#include "timers.h"
-#include "event_groups.h"
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

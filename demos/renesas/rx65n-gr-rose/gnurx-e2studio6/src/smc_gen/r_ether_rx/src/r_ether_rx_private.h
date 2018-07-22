@@ -18,7 +18,7 @@
  ***********************************************************************************************************************/
 /***********************************************************************************************************************
  * File Name    : r_ether_rx_private.h
- * Version      : 1.13
+ * Version      : 1.14
  * Device       : RX63N/RX65N/RX64M/RX71M
  * Tool-Chain   : RX Family C Compiler
  * H/W Platform : 
@@ -32,6 +32,7 @@
  *         : 31.03.2016 1.03     Added changes for RX63N.
  *         : 01.10.2016 1.04     Added changes for RX65N.
  *         : 01.10.2017 1.13     Removed BSP version error.
+ *         : 08.01.2018 1.14     Changed setting value check.
   ***********************************************************************************************************************/
 
 /* Guards against multiple inclusion */
@@ -88,7 +89,7 @@
         #error "ERROR- ETHER_CFG_CH1_PHY_ACCESS - PHY-LSI access channel is out of range defined in r_ether_rx_config.h."
     #endif
 
-    #if !(ETHER_CFG_PHY_MII_WAIT >= 8)
+    #if !(ETHER_CFG_PHY_MII_WAIT >= 1)
         #error "ERROR- ETHER_CFG_PHY_MII_WAIT - PHY-LSI access timing is out of range defined in r_ether_rx_config.h."
     #endif
 

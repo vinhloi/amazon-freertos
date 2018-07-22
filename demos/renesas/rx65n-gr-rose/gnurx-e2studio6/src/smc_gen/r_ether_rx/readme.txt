@@ -5,12 +5,12 @@ r_ether_rx
 
 Document Number
 ---------------
-R01AN2009EJ0113 (English version)
-R01AN2009JJ0113 (Japanese version)
+R01AN2009EJ0114 (English version)
+R01AN2009JJ0114 (Japanese version)
 
 Version
 -------
-v1.13
+v1.14
 
 Overview
 --------
@@ -60,8 +60,8 @@ Required Packages
 How to add to your project
 --------------------------
 Please refer to the Adding Firmware Integration Technology Modules to Projects.
-"r01an1723eu0121_rx.pdf/r01an1826ej0110_rx.pdf"(Only English version)
-"r01an1723ju0121_rx.pdf/r01an1826jj0110_rx.pdf"(Only Japanese version)
+"r01an1723eu0121_rx.pdf/r01an1826ej0110_rx.pdf/r20an0451es0100-e2studio-sc.pdf"(Only English version)
+"r01an1723ju0121_rx.pdf/r01an1826jj0110_rx.pdf/r20an0451js0100-e2studio-sc.pdf"(Only Japanese version)
 
 
 Toolchain(s) Used
@@ -77,10 +77,10 @@ r_ether_rx
 +---doc
 |   |
 |   +---en
-|   |   r01an2009ej0113-rx-ether.pdf
+|   |   r01an2009ej0114-rx-ether.pdf
 |   |
 |   \---ja
-|       r01an2009jj0113-rx-ether.pdf
+|       r01an2009jj0114-rx-ether.pdf
 |
 +---ref
 |       r_ether_config_reference.h
