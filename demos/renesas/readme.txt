@@ -56,17 +56,24 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0-pre2:
+[UPDATED] RX Driver Package version from v114 to v115 RX65N RSK CC-RX/e2 studio project.
+           -> Re-generate the code from RX Driver Package v115.
+           -> Merged unified macro code for multi compiler.
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+
 v0.1.0-pre1:
 [UPDATED] e2 studio version from v630 to v700 on RX65N RSK CC-RX/e2 studio project.
 [UPDATED] RX Driver Package version from v114 to v115 RX65N RSK CC-RX/e2 studio project.
 [ADDED] RX65N RSK GCC/e2 studio project.
-[RESTRUCTED] RX65N RSK CC-RX/CS+ project.
-[RESTRUCTED] RX65N RSK CC-RX/e2 studio project.
+[RESTRUCTUERED] RX65N RSK CC-RX/CS+ project.
+[RESTRUCTUERED] RX65N RSK CC-RX/e2 studio project.
 [FIXED] Device name tag (R5F565NEHxFB --> R5F565NEDxFB) on aws_demos.scfg
         of each of RX65N Envision Kit project.
-[RESTRUCTED] RX65N Envision Kit CC-RX/CS+ project.
-[RESTRUCTED] RX65N Envision Kit GCC/e2 studio project.
-[RESTRUCTED] RX65N Envision Kit CC-RX/e2 studio project.
+[RESTRUCTUERED] RX65N Envision Kit CC-RX/CS+ project.
+[RESTRUCTUERED] RX65N Envision Kit GCC/e2 studio project.
+[RESTRUCTUERED] RX65N Envision Kit CC-RX/e2 studio project.
 
 v0.0.9:
 [NOTICE] Sorry, v0.0.8 includes wrong commit massage.
@@ -244,6 +251,10 @@ IDE: CS+ v7.00.00
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/csplus.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/csplus.html
 
+Smart Configurator v1.4.0 (Standalone for CS+): 
+    [en] https://www.renesas.com/en-us/products/software-tools/tools/solution-toolkit/smart-configurator.html
+    [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/solution-toolkit/smart-configurator.html
+    
 IDE/Compiler: EWRX/IAR v410
     [en] https://www.iar.com/iar-embedded-workbench/#!?architecture=RX
     [ja] https://www.iar.com/jp/iar-embedded-workbench/#!?architecture=RX
@@ -401,10 +412,25 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■課題まとめ★
 --------------------------------------------------------------------------
+　2018/07/22
+　　スマートコンフィグレータのボード設定で RX65N RSK-2MB を選んでいるのに、
+　　BSPで選択されて出力されるボード毎のフォルダが generic_rx65n になっている。
+
+　　r_bsp.h 以下ヘッダはAmazon FreeRTOSに存在しない。BSP開発者に修正依頼。
+　　ローカルではコメントアウトしておく。
+　　/*#include "croutine.h" Amazon FreeRTOS does not have this header file. */
+　　/*#include "freertos_start.h" Amazon FreeRTOS does not have this header file. */
+　　resetprg.c にも、#include "freertos_start.h" がある。上記と同様にコメントアウトしておく。
+
+　　コード生成すると、r_bsp_config.h の以下項目が必ず (0)に戻るようだ。
+　　コード生成するたびにこの値を確認しなければならない。
+　　まだ未対応ならスマートコンフィグレータ側はこの定義を無視するようにした方が良い。
+　　#define BSP_CFG_RTOS_USED               (1) // <-- Updated by GUI. Do not edit this value manually
+
 　2018/06/10
 　　スマートコンフィグレータのデバイス設定(暗号有品のRX65N)と
 　　プロジェクトのデバイス設定(暗号無品のRX65N)とで食い違っていて、
-　　スマートコンフィグレータ上で警告が出ている。
+　　スマートコンフィグレータ上で警告が出ている。⇒7/22メンテで調整した。
 　　
 　2018/05/01
 　　2018/05/01のポーティング記録参照
@@ -436,6 +462,67 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　更新を行っていく。ひとまず代表パタンのRX65N RSK e2 studio CC-RXの
 　組をトップバッターにして更新完了。特に問題なし。
 　一旦pre版としてコミット。v0.1.0-pre1。
+　
+　NoMaY氏の作業と1ファイル衝突。シェルティ側を優先した。
+　# Conflicts:
+　#	demos/renesas/rx65n-rsk/ccrx-e2studio6/src/smc_gen/r_config/r_bsp_config.h
+　
+　スマートコンフィグレータは、出力先にすでにコードがあると上書きしない設定が
+　デフォルトなので、RX Driver Package をスマートコンフィグレータ上で最新に交換した
+　としてそれがコードに反映されるとは限らない。
+　一方で、コンパイラ差分を吸収するマクロ(R_PRAGMA_など)はすでにコードに反映されており
+　これがスマートコンフィグレータによって消えられても困る。
+　
+　少々面倒ではあるが、代表パタン(RX65N RSK e2 studio CC-RX)を決めて、そこで
+　手動でRX Driver Packageの最新版コードとコンパイラ差分を吸収するマクロ(R_PRAGMA_など)を
+　含む旧版とのマージを行っていく。他の環境では、スマートコンフィグレータで
+　最新のRX Driver PackageのFITモジュールを使用する設定にして、代表パタンのsmc_genフォルダを
+　丸ごとコピーすればよいであろう。これでBSPを含む全FITモジュールを、
+　コンパイラ差分を吸収するマクロ(R_PRAGMA_など)を伴い更新することができる。
+　
+　あと、RX65N RSKの環境で暗号有品デバイスをスマートコンフィグレータ設定していたが、
+　暗号無し品に変更する。スマートコンフィグレータのボード設定が追加されたが、まだ
+　暗号有品のボードの設定が無いようだ。（まあデバイス以外に違いはないのだけど）
+　プロジェクトのデバイス設定も暗号無し品に変更。DUALを使おうとしていたのもやめる。
+　プロジェクトのデバイス設定：R5F565NEHxFC_DUAL->R5F565NEDxFC
+　スマートコンフィグレータのデバイス設定：R5F565NEHxFC->R5F565NEDxFC
+　
+　この状態で以下フォルダをバックアップを取り、いったん削除し、コード生成。
+　\demos\renesas\rx65n-rsk\ccrx-e2studio6\src\smc_gen
+　
+　バックアップデータとコード生成されたデータをマージしていく。
+　これで最新のRX Driver Packageのコードにコンパイラ差分を吸収するマクロ(R_PRAGMA_など)を
+　反映できるはずだ。
+　
+　スマートコンフィグレータのボード設定で RX65N RSK-2MB を選んでいるのに、
+　BSPで選択されて出力されるボード毎のフォルダが generic_rx65n になっている。
+　どういうことだ？ 新規プロジェクトで試してみる。やっぱりだめ。期待動作ではない。
+　開発元に報告する。★
+　
+　ひとまず generic で我慢しておく。端子設定周りは読み込めている様子。
+　
+　マージで具合の悪いところを洗い出す。
+　
+　r_bsp.h 以下ヘッダはAmazon FreeRTOSに存在しない。BSP開発者に修正依頼。
+　ローカルではコメントアウトしておく。
+　/*#include "croutine.h" Amazon FreeRTOS does not have this header file. */
+　/*#include "freertos_start.h" Amazon FreeRTOS does not have this header file. */
+　resetprg.c にも、#include "freertos_start.h" がある。上記と同様にコメントアウトしておく。
+　
+　コード生成すると、r_bsp_config.h の以下項目が必ず (0)に戻るようだ。
+　コード生成するたびにこの値を確認しなければならない。
+　まだ未対応ならスマートコンフィグレータ側はこの定義を無視するようにした方が良い。
+　#define BSP_CFG_RTOS_USED               (1) // <-- Updated by GUI. Do not edit this value manually
+　
+　他は特に問題なし。ビルド問題なし。実機確認問題なし。
+　
+　なんか、改行コードが LF のものと、CRLF のものが混在している。
+　FITのコーディングルールがどうであったか確認する。
+　ひとまずローカルでは Amazon FreeRTOSに倣い、LF でなるべく統一するものとする。
+　スマートコンフィグレータ出力のものは触らない方がよいであろう。
+　混在しているように見えるが、おおむねCRLFが多いようだ。
+　
+　一旦pre版としてコミット。v0.1.0-pre2。
 　
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。

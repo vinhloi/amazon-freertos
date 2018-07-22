@@ -30,7 +30,7 @@
 <Segment id="Device">
 <Setting id="Series" value="RX600"/>
 <Setting id="Group" value="RX65N"/>
-<Setting id="PartNo" value="R5F565NEHxFC"/>
+<Setting id="PartNo" value="R5F565NEDxFC"/>
 <Setting id="PinCount" value="176"/>
 </Segment>
 <Segment id="Clock">
