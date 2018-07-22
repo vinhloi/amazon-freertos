@@ -56,6 +56,11 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0-pre8:
+[UPDATED] RX Driver Package version from v114 to v115 RX65N Envision Kit GCC/e2 studio project.
+[TESTED] Following projetcs.
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite
+
 v0.1.0-pre7:
 [UPDATED] RX Driver Package version from v114 to v115 RX65N Envision Kit CC-RX/e2 studio project.
 [TESTED] Following projetcs.
@@ -653,7 +658,7 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　スマートコンフィグレータでBSPとEtherを最新に交換。
 　
 　出力済みのコードを削除する。
-　\test\demos\renesas\rx65n-envision-kit\ccrx-e2studio6\src\smc_gen
+　\demos\renesas\rx65n-envision-kit\ccrx-e2studio6\src\smc_gen
 　
 　以下のようにコピー。ボード依存の端子設定コードr_pincfgとgeneralとr_configを除く。
 　\demos\renesas\rx65n-rsk\ccrx-e2studio6\src\smc_gen\
@@ -665,6 +670,25 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　ビルド、動作確認、OK。
 　pre版としてコミット。v0.1.0-pre7。
 　
+　RX65N Envision Kit GCC e2 studio の環境メンテ。
+　出力済みのコードを削除する。
+　\demos\renesas\rx65n-envision-kit\gnurx-e2studio6\src\smc_gen
+
+　スマートコンフィグレータが使えないので、以下のようにコピー。
+　\demos\renesas\rx65n-rsk\gnurx-e2studio6\src\smc_gen
+　↓
+　\demos\renesas\rx65n-envision-kit\gnurx-e2studio6\src\smc_gen
+
+　r_pincfgとgeneralとr_configは、RX65N Envision Kitの別プロジェクトからもってくる。
+　\demos\renesas\rx65n-envision-kit\ccrx-csplus\src\smc_gen
+　↓
+　\demos\renesas\rx65n-envision-kit\gnurx-e2studio6\src\smc_gen
+　
+　BSP_CFG_IO_LIB_ENABLE を (0)にしておく。しないと標準I/Oのライブラリ辺りでエラーがでる。
+
+　ビルド、動作確認、OK。
+　pre版としてコミット。v0.1.0-pre8。
+
 2018/07/16
 　GitHub上のデータ調整。一気にファイル整理したのでいろいろボロがありそう。
 　v0.0.7-pre1では、GR-ROSE用のプロジェクト(CC-RXのe2 studio)が動作しない。
