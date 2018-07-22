@@ -24,6 +24,7 @@
 /***********************************************************************************************************************
 * History : DD.MM.YYYY Version   Description
 *         : 15.05.2017 1.00      First Release
+*         : 01.07.2018 1.01      Additional RTOS header file.
 ***********************************************************************************************************************/
 
 #ifndef BSP_BOARD_GENERIC_RX65N
@@ -64,9 +65,11 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 /*#include "croutine.h" Amazon FreeRTOS does not have this header file. */
 #include "timers.h"
 #include "event_groups.h"
+/*#include "freertos_start.h" Amazon FreeRTOS does not have this header file. */
 #elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
 #elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
 #elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
+#else
 #endif
 
 #endif /* BSP_BOARD_GENERIC_RX65N */

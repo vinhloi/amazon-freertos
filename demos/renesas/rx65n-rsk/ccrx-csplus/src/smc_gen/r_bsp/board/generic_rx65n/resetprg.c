@@ -31,6 +31,8 @@
 *                                                 is not to be used.
 *                                Changed the sub-clock oscillator settings.
 *                                Added the bsp startup module disable function.
+*         : 01.07.2018 2.01      Added support for RTOS.
+*                                Added processing after writing ROMWT register.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -90,11 +92,10 @@ void BSP_CFG_USER_WARM_START_PRE_C_FUNCTION(void);
 void BSP_CFG_USER_WARM_START_POST_C_FUNCTION(void);
 #endif
 
-#if BSP_CFG_RTOS_USED == 1	//FreeRTOS
+#if BSP_CFG_RTOS_USED == 1  //FreeRTOS
 /* A function is used to create a main task, rtos's objects required to be available in advance. */
 extern void Processing_Before_Start_Kernel(void);
 #endif
-
 /***********************************************************************************************************************
 Private global variables and functions
 ***********************************************************************************************************************/
@@ -907,10 +908,30 @@ static void clock_source_select (void)
     if (BSP_ICLK_HZ > ROMWT_FREQ_THRESHOLD_02)
     {
         SYSTEM.ROMWT.BYTE = 0x02;
+        
+        /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual. */
+        if(0x02 == SYSTEM.ROMWT.BYTE)
+        {
+            /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual.
+               This is done to ensure that the register has been written before the next register access. The RX has a 
+               pipeline architecture so the next instruction could be executed before the previous write had finished.
+            */
+            nop();
+        }
     }
     else if (BSP_ICLK_HZ > ROMWT_FREQ_THRESHOLD_01)
     {
         SYSTEM.ROMWT.BYTE = 0x01;
+
+        /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual. */
+        if(0x01 == SYSTEM.ROMWT.BYTE)
+        {
+            /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual.
+               This is done to ensure that the register has been written before the next register access. The RX has a 
+               pipeline architecture so the next instruction could be executed before the previous write had finished.
+            */
+            nop();
+        }
     }
     else
     {

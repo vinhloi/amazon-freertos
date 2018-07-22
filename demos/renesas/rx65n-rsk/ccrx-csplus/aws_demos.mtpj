@@ -1,9 +1,9 @@
-<CubeSuiteProject>
-  <ProductVersion>8.01.00.00</ProductVersion>
+﻿<CubeSuiteProject>
+  <ProductVersion>9.00.00.00</ProductVersion>
   <Class Guid="68f4a651-b9cd-473b-a595-b00447132ffa">
     <Instance Guid="00000000-0000-0000-0000-000000000000">
       <FormatVersion>2.0</FormatVersion>
-      <FileVersion>8.1</FileVersion>
+      <FileVersion>9.0</FileVersion>
       <ProjectGuid>8fb95a9e-eac3-4f0a-86e7-5f6b3204c942</ProjectGuid>
       <ProjectItemGuid>e52d8397-abc0-4ed7-a0dd-4a9291a48203</ProjectItemGuid>
       <FileCategoryGuid>d96fffee-b91e-455d-a49e-ff83393d00a5</FileCategoryGuid>
@@ -2702,6 +2702,11 @@
       <Type>Category</Type>
       <ParentItem>caa36524-3e0a-4052-97b3-51d2ca693465</ParentItem>
     </Instance>
+    <Instance Guid="b610619d-ae06-4a9a-8549-4627f4f5bbf5">
+      <Name>user</Name>
+      <Type>Category</Type>
+      <ParentItem>caa36524-3e0a-4052-97b3-51d2ca693465</ParentItem>
+    </Instance>
     <Instance Guid="9630f748-e245-4f2c-86bc-8ece567fecd8">
       <Name>dbsct.c</Name>
       <Type>File</Type>
@@ -2793,6 +2798,13 @@
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>f9497537-4c4a-43ed-aa85-88fc4e5154a8</ParentItem>
     </Instance>
+    <Instance Guid="ea94bb9b-22e3-443d-839f-8e65c5f82d4f">
+      <Name>r_bsp.h</Name>
+      <Type>File</Type>
+      <RelativePath>src\smc_gen\r_bsp\board\user\r_bsp.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>b610619d-ae06-4a9a-8549-4627f4f5bbf5</ParentItem>
+    </Instance>
     <Instance Guid="591180fe-a864-449b-8ee7-3b2f56e0a4ec">
       <Name>en</Name>
       <Type>Category</Type>
@@ -2803,16 +2815,16 @@
       <Type>Category</Type>
       <ParentItem>1d37e451-119f-4833-85fa-c4889fa87c2e</ParentItem>
     </Instance>
-    <Instance Guid="25a00ff5-c6d5-4d0b-bc68-4b2b023d08d6">
-      <Name>r01an1685ej0360-rx.pdf</Name>
+    <Instance Guid="2e8bcdcc-3123-4266-9f9f-cb09442d000a">
+      <Name>r01an1685ej0380-rx.pdf</Name>
       <Type>File</Type>
-      <RelativePath>src\smc_gen\r_bsp\doc\en\r01an1685ej0360-rx.pdf</RelativePath>
+      <RelativePath>src\smc_gen\r_bsp\doc\en\r01an1685ej0380-rx.pdf</RelativePath>
       <ParentItem>591180fe-a864-449b-8ee7-3b2f56e0a4ec</ParentItem>
     </Instance>
-    <Instance Guid="317c1ae6-43c5-4369-a2dd-c7e28218ab35">
-      <Name>r01an1685jj0360-rx.pdf</Name>
+    <Instance Guid="23f373e3-d968-4d5a-b47c-3151819d16c2">
+      <Name>r01an1685jj0380-rx.pdf</Name>
       <Type>File</Type>
-      <RelativePath>src\smc_gen\r_bsp\doc\ja\r01an1685jj0360-rx.pdf</RelativePath>
+      <RelativePath>src\smc_gen\r_bsp\doc\ja\r01an1685jj0380-rx.pdf</RelativePath>
       <ParentItem>8be2752b-08ff-4e9e-bb91-5f5cdd115b0c</ParentItem>
     </Instance>
     <Instance Guid="09b7e750-8fa2-4f5a-85ed-ffb9b6528dc8">
@@ -3137,16 +3149,16 @@
       <Type>Category</Type>
       <ParentItem>ea7c0a5a-2f8b-425e-a542-c73888dcef2a</ParentItem>
     </Instance>
-    <Instance Guid="12dfe0d7-b0e2-4689-914d-f9cff47c2908">
-      <Name>r01an2009ej0114-rx.pdf</Name>
+    <Instance Guid="af71c311-a801-415a-a74a-5e15d089fa1c">
+      <Name>r01an2009ej0115-rx.pdf</Name>
       <Type>File</Type>
-      <RelativePath>src\smc_gen\r_ether_rx\doc\en\r01an2009ej0114-rx.pdf</RelativePath>
+      <RelativePath>src\smc_gen\r_ether_rx\doc\en\r01an2009ej0115-rx.pdf</RelativePath>
       <ParentItem>731e8428-7999-430c-b7ba-0175a5f2ae23</ParentItem>
     </Instance>
-    <Instance Guid="fdd12422-b16b-4136-8c03-a34ba3fc7b75">
-      <Name>r01an2009jj0114-rx.pdf</Name>
+    <Instance Guid="f83e70f3-48ba-4619-8f44-11e823c2b2ae">
+      <Name>r01an2009jj0115-rx.pdf</Name>
       <Type>File</Type>
-      <RelativePath>src\smc_gen\r_ether_rx\doc\ja\r01an2009jj0114-rx.pdf</RelativePath>
+      <RelativePath>src\smc_gen\r_ether_rx\doc\ja\r01an2009jj0115-rx.pdf</RelativePath>
       <ParentItem>773d3054-1ccf-4e48-b121-41c7405f5a6d</ParentItem>
     </Instance>
     <Instance Guid="70275b0f-ad5f-44a9-8e8c-58f4c0e043ee">
@@ -3727,13 +3739,13 @@
       <DataFormatVersion>1.0</DataFormatVersion>
     </Instance>
     <Instance Guid="2a81c37a-5015-44c2-9f40-e58b669eec75">
-      <DeviceName>R5F565NEHxFC_DUAL</DeviceName>
+      <DeviceName>R5F565NEDxFC</DeviceName>
       <MemoCount>0</MemoCount>
     </Instance>
   </Class>
   <Class Guid="873c9a58-9bc5-439a-b476-78629a4553ed">
     <Instance Guid="873c9a58-9bc5-439a-b476-78629a4553ed">
-      <ProjectDeviceChangedCounter>0</ProjectDeviceChangedCounter>
+      <ProjectDeviceChangedCounter>1</ProjectDeviceChangedCounter>
       <ProjectInitialDeviceName>R5F565NEHxFC_DUAL</ProjectInitialDeviceName>
     </Instance>
   </Class>
@@ -4112,7 +4124,7 @@
       <SourceItemGuid179>695699cb-2c0d-4055-b26c-1176e84425a7</SourceItemGuid179>
       <SourceItemType179>CSource</SourceItemType179>
       <SourceItemCount>180</SourceItemCount>
-      <LastDeviceChangedCounter>0</LastDeviceChangedCounter>
+      <LastDeviceChangedCounter>1</LastDeviceChangedCounter>
     </Instance>
     <Instance Guid="9e208646-ccba-4100-a676-29b1efe6545f">
       <AsmOptionInclude-DefaultValue />
@@ -4195,7 +4207,7 @@
       <GeneralOptionPatch-DefaultValue>None</GeneralOptionPatch-DefaultValue>
       <GeneralOptionSaveAcc-DefaultValue>False</GeneralOptionSaveAcc-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
-      <TimeTagModified--0>-8586802347969016000</TimeTagModified--0>
+      <TimeTagModified--0>-8586693644326596378</TimeTagModified--0>
       <BuildMode-0>DefaultBuild</BuildMode-0>
       <Memo-0 />
       <OutputMessageFormat-0>%TargetFiles%</OutputMessageFormat-0>
@@ -4203,7 +4215,7 @@
       <SetAllBuildModeValue-0>False</SetAllBuildModeValue-0>
       <PreBuildCommands-0 />
       <PostBuildCommands-0 />
-      <TimeTagModified--1>-8586694528769638512</TimeTagModified--1>
+      <TimeTagModified--1>-8586693640090645066</TimeTagModified--1>
       <OutputMessageFormat-1>%TargetFiles%</OutputMessageFormat-1>
       <FormatBuildOptionList-1>%TargetFiles% : %Program% %Options%</FormatBuildOptionList-1>
       <PreBuildCommands-1>@aws_demos_build_path_check.bat
@@ -4263,7 +4275,7 @@
       <GeneralOptionIsa-1>RXv2</GeneralOptionIsa-1>
       <GeneralOptionOutput-1>LoadModuleFile</GeneralOptionOutput-1>
       <GeneralOptionPic-1>False</GeneralOptionPic-1>
-      <GeneralOptionSimultaneousBuild-1>True</GeneralOptionSimultaneousBuild-1>
+      <GeneralOptionSimultaneousBuild-1>False</GeneralOptionSimultaneousBuild-1>
       <GeneralOptionCpu-1>RX600</GeneralOptionCpu-1>
       <GeneralOptionEnableParallelBuilding-1>False</GeneralOptionEnableParallelBuilding-1>
       <GeneralOptionOutputFolder-1>%ConfigDir%</GeneralOptionOutputFolder-1>
@@ -4409,7 +4421,7 @@
       <COptionFloatOrder-DefaultValue>False</COptionFloatOrder-DefaultValue>
       <COptionIncode-DefaultValue>Sjis</COptionIncode-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
-      <TimeTagModified--0>-8586694534469234128</TimeTagModified--0>
+      <TimeTagModified--0>-8586693640092894894</TimeTagModified--0>
       <COptionLangC-0>C</COptionLangC-0>
       <COptionListfile-0>False</COptionListfile-0>
       <COptionLogo-0>False</COptionLogo-0>
@@ -4428,7 +4440,8 @@
       <COptionXcref-0>False</COptionXcref-0>
       <COptionControlFlowIntegrity-0>None</COptionControlFlowIntegrity-0>
       <COptionDebug-0>True</COptionDebug-0>
-      <COptionInclude-0>src\compiler_support
+      <COptionInclude-0>src\smc_gen\r_bsp\board\user
+src\compiler_support
 src\smc_gen\r_sci_rx\src\targets\rx65n
 src\smc_gen\r_sci_rx\src
 src\smc_gen\r_sci_rx\ref
@@ -4540,7 +4553,7 @@ src\smc_gen\general
       <COptionCheck-0>No</COptionCheck-0>
       <COptionFloatOrder-0>False</COptionFloatOrder-0>
       <COptionIncode-0>Sjis</COptionIncode-0>
-      <TimeTagModified--1>-8586694531622640928</TimeTagModified--1>
+      <TimeTagModified--1>-8586693640091954963</TimeTagModified--1>
       <COptionLangC-1>C99</COptionLangC-1>
       <COptionListfile-1>False</COptionListfile-1>
       <COptionLogo-1>False</COptionLogo-1>
@@ -4559,7 +4572,8 @@ src\smc_gen\general
       <COptionXcref-1>False</COptionXcref-1>
       <COptionControlFlowIntegrity-1>None</COptionControlFlowIntegrity-1>
       <COptionDebug-1>True</COptionDebug-1>
-      <COptionInclude-1>src\smc_gen\r_sci_rx\src\targets\rx65n
+      <COptionInclude-1>src\smc_gen\r_bsp\board\user
+src\smc_gen\r_sci_rx\src\targets\rx65n
 src\smc_gen\r_sci_rx\src
 src\smc_gen\r_sci_rx\ref
 src\smc_gen\r_sci_rx
@@ -4834,6 +4848,7 @@ src\compiler_support
       <LinkOptionCFIIgnoreModule-DefaultValue />
       <LinkOptionOtherAdditionalOptionsForConvertFile-DefaultValue />
       <LinkOptionCommandLine-DefaultValue />
+      <LinkOptionSplitVect-DefaultValue>False</LinkOptionSplitVect-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
       <TimeTagModified--0>-8586694534912371328</TimeTagModified--0>
       <LinkOptionCpu-0>False</LinkOptionCpu-0>
@@ -4918,6 +4933,7 @@ src\compiler_support
       <LinkOptionCFIIgnoreModule-0 />
       <LinkOptionOtherAdditionalOptionsForConvertFile-0 />
       <LinkOptionCommandLine-0 />
+      <LinkOptionSplitVect-0>False</LinkOptionSplitVect-0>
       <TimeTagModified--1>-8586694533617609552</TimeTagModified--1>
       <LinkOptionCpu-1>False</LinkOptionCpu-1>
       <LinkOptionForm-1>Absolute</LinkOptionForm-1>
@@ -5004,6 +5020,7 @@ D_2=R_2
       <LinkOptionCFIIgnoreModule-1 />
       <LinkOptionOtherAdditionalOptionsForConvertFile-1 />
       <LinkOptionCommandLine-1 />
+      <LinkOptionSplitVect-1>False</LinkOptionSplitVect-1>
     </Instance>
     <Instance Guid="df74c69e-635e-42d9-845e-14128ba4d48a">
       <HexOptionForm-DefaultValue>Stype</HexOptionForm-DefaultValue>
@@ -5016,9 +5033,10 @@ D_2=R_2
       <LinkOptionConvertFileName-DefaultValue>%ProjectName%.mot</LinkOptionConvertFileName-DefaultValue>
       <LinkOptionRecordS-DefaultValue>None</LinkOptionRecordS-DefaultValue>
       <HexOptionChangeMessageInformation-DefaultValue>None</HexOptionChangeMessageInformation-DefaultValue>
-      <LinkOptionMultiConvertFileName-DefaultValue />
+      <HexOptionLoadAddress-DefaultValue />
       <LinkOptionSpace-DefaultValue>None</LinkOptionSpace-DefaultValue>
       <HexOptionChangeMessageInformationNumber-DefaultValue />
+      <LinkOptionMultiConvertFileName-DefaultValue />
       <LinkOptionSpaceValue-DefaultValue>FF</LinkOptionSpaceValue-DefaultValue>
       <HexOptionChangeMessageWarning-DefaultValue>None</HexOptionChangeMessageWarning-DefaultValue>
       <HexOptionFixRecordLengthAndAlign-DefaultValue>False</HexOptionFixRecordLengthAndAlign-DefaultValue>
@@ -5052,9 +5070,10 @@ D_2=R_2
       <LinkOptionConvertFileName-0>%ProjectName%.mot</LinkOptionConvertFileName-0>
       <LinkOptionRecordS-0>None</LinkOptionRecordS-0>
       <HexOptionChangeMessageInformation-0>None</HexOptionChangeMessageInformation-0>
-      <LinkOptionMultiConvertFileName-0 />
+      <HexOptionLoadAddress-0 />
       <LinkOptionSpace-0>None</LinkOptionSpace-0>
       <HexOptionChangeMessageInformationNumber-0 />
+      <LinkOptionMultiConvertFileName-0 />
       <LinkOptionSpaceValue-0>FF</LinkOptionSpaceValue-0>
       <HexOptionChangeMessageWarning-0>None</HexOptionChangeMessageWarning-0>
       <HexOptionFixRecordLengthAndAlign-0>False</HexOptionFixRecordLengthAndAlign-0>
@@ -5087,9 +5106,10 @@ D_2=R_2
       <LinkOptionConvertFileName-1>%ProjectName%.mot</LinkOptionConvertFileName-1>
       <LinkOptionRecordS-1>None</LinkOptionRecordS-1>
       <HexOptionChangeMessageInformation-1>None</HexOptionChangeMessageInformation-1>
-      <LinkOptionMultiConvertFileName-1 />
+      <HexOptionLoadAddress-1 />
       <LinkOptionSpace-1>None</LinkOptionSpace-1>
       <HexOptionChangeMessageInformationNumber-1 />
+      <LinkOptionMultiConvertFileName-1 />
       <LinkOptionSpaceValue-1>FF</LinkOptionSpaceValue-1>
       <HexOptionChangeMessageWarning-1>None</HexOptionChangeMessageWarning-1>
       <HexOptionFixRecordLengthAndAlign-1>False</HexOptionFixRecordLengthAndAlign-1>
@@ -7092,14 +7112,6 @@ D_2=R_2
       <ItemAddTime>636570020930480800</ItemAddTime>
       <ItemAddTimeCount>12</ItemAddTimeCount>
     </Instance>
-    <Instance Guid="25a00ff5-c6d5-4d0b-bc68-4b2b023d08d6">
-      <ItemAddTime>636570020932326688</ItemAddTime>
-      <ItemAddTimeCount>0</ItemAddTimeCount>
-    </Instance>
-    <Instance Guid="317c1ae6-43c5-4369-a2dd-c7e28218ab35">
-      <ItemAddTime>636570020934674176</ItemAddTime>
-      <ItemAddTimeCount>0</ItemAddTimeCount>
-    </Instance>
     <Instance Guid="7277114c-bbd2-431f-bda1-af02b0a62d12">
       <ItemAddTime>636570020954417152</ItemAddTime>
       <ItemAddTimeCount>1</ItemAddTimeCount>
@@ -7356,14 +7368,6 @@ D_2=R_2
       <ItemAddTime>636671732628024978</ItemAddTime>
       <ItemAddTimeCount>0</ItemAddTimeCount>
     </Instance>
-    <Instance Guid="12dfe0d7-b0e2-4689-914d-f9cff47c2908">
-      <ItemAddTime>636671732628145285</ItemAddTime>
-      <ItemAddTimeCount>0</ItemAddTimeCount>
-    </Instance>
-    <Instance Guid="fdd12422-b16b-4136-8c03-a34ba3fc7b75">
-      <ItemAddTime>636671732628205478</ItemAddTime>
-      <ItemAddTimeCount>0</ItemAddTimeCount>
-    </Instance>
     <Instance Guid="034ca246-202c-4029-a08d-2f3342b6f9b7">
       <ItemAddTime>636671732628365872</ItemAddTime>
       <ItemAddTimeCount>0</ItemAddTimeCount>
@@ -7378,6 +7382,26 @@ D_2=R_2
     </Instance>
     <Instance Guid="ce564907-e60b-417e-9cdc-63e6103387e4">
       <ItemAddTime>636671732628686721</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="ea94bb9b-22e3-443d-839f-8e65c5f82d4f">
+      <ItemAddTime>636678720763140806</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="2e8bcdcc-3123-4266-9f9f-cb09442d000a">
+      <ItemAddTime>636678720763260813</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="23f373e3-d968-4d5a-b47c-3151819d16c2">
+      <ItemAddTime>636678720763320816</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="af71c311-a801-415a-a74a-5e15d089fa1c">
+      <ItemAddTime>636678720763560776</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="f83e70f3-48ba-4619-8f44-11e823c2b2ae">
+      <ItemAddTime>636678720763610780</ItemAddTime>
       <ItemAddTimeCount>0</ItemAddTimeCount>
     </Instance>
     <Instance Guid="a7be515f-f007-45ed-9059-4e1500c0f74d">
@@ -9551,8 +9575,8 @@ D_2=R_2
       <DebuggerProperty-DownloadProperty-DebugInformation-DownloadFiles-DownloadItem0-GenerateInformationForInputCompletion>True</DebuggerProperty-DownloadProperty-DebugInformation-DownloadFiles-DownloadItem0-GenerateInformationForInputCompletion>
     </Instance>
     <Instance Guid="72b41815-17e5-41b2-ab97-2a2bb023d612">
-      <DeviceChangedCounter>0</DeviceChangedCounter>
-      <DeviceName>R5F565NEHxFC_DUAL</DeviceName>
+      <DeviceChangedCounter>1</DeviceChangedCounter>
+      <DeviceName>R5F565NEDxFC</DeviceName>
       <DebuggerProperty-EssentialProperty-Clock-MainClock>Extal</DebuggerProperty-EssentialProperty-Clock-MainClock>
       <DebuggerProperty-EssentialProperty-Clock-MainClockFrequency>240000</DebuggerProperty-EssentialProperty-Clock-MainClockFrequency>
       <DebuggerProperty-EssentialProperty-Clock-Operatingfrequency>1200000</DebuggerProperty-EssentialProperty-Clock-Operatingfrequency>

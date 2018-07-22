@@ -56,6 +56,13 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.0-pre4:
+[UPDATED] RX Driver Package version from v114 to v115 RX65N RSK CC-RX/CS+ project.
+           -> Re-generate the code from RX Driver Package v115.
+           -> Merged unified macro code for multi compiler.
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+
 v0.1.0-pre3:
 [FIXED] RX65N RSK CC-RX/e2 studio project has Ether driver is not latest.
         Updated from v114 to v115.
@@ -350,7 +357,7 @@ Compiler number:
 
                  / IDE      (1)         (2)         (3)
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
-(1)   (2)        /           x   *       *   -   -   -   -     
+(1)   (2)        /           x   *       x   -   -   -   -     
 (2)   (2)        /           *   *       *   -   -   -   -   * 
 (3)   (2)        /           *   *           -   -   -   -     
 
@@ -542,6 +549,22 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　ビルド、動作確認、OK。
 　pre版としてコミット。v0.1.0-pre3。
+
+　次はRX65N RSK CS+ CC-RXの組み合わせのメンテ。
+　まずはデバイス設定の変更。
+　プロジェクトのデバイス設定：R5F565NEHxFC_DUAL->R5F565NEDxFC
+　スマートコンフィグレータのデバイス設定：R5F565NEHxFC->R5F565NEDxFC
+　
+　RX Driver Package v114->v115においては、Amazon FreeRTOSで使用している
+　FITモジュールはBSPとEtherのみ更新がかかっている。
+　BSPとEtherのみスマートコンフィグレータで入れ替えを行う。
+　
+　コード生成を実行、
+　\demos\renesas\rx65n-rsk\ccrx-csplus\src\smc_gen を削除
+　\demos\renesas\rx65n-rsk\ccrx-e2studio6\src\smc_gen\ を代わりにコピーペースト。
+
+　ビルド、動作確認、OK。
+　pre版としてコミット。v0.1.0-pre4。
 
 
 2018/07/16

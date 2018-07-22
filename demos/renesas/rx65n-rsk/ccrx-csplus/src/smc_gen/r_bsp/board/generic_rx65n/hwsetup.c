@@ -25,6 +25,8 @@
 /***********************************************************************************************************************
 * History : DD.MM.YYYY Version   Description
 *         : 15.05.2017 1.00      First Release
+*         : 01.12.2017 1.01      Added EBMAPCR register setting.
+*         : 01.07.2018 1.02      Added the initialization function for Smart Configurator.
 ***********************************************************************************************************************/
 
 
@@ -33,7 +35,37 @@ Includes   <System Includes> , "Project Includes"
 ***********************************************************************************************************************/
 /* I/O Register and board definitions */
 #include "platform.h"
+#if BSP_CFG_CONFIGURATOR_SELECT == 1
 #include "r_cg_macrodriver.h"
+#endif
+
+/***********************************************************************************************************************
+Typedef definitions
+***********************************************************************************************************************/
+#pragma bit_order left
+#pragma unpack
+typedef struct bsp_bsc {
+    union {
+        uint32_t u_long;
+        struct {
+            uint32_t prerr:1;
+            uint32_t :1;
+            uint32_t rpstop:1;
+            uint32_t :10;
+            uint32_t pr5sel:3;
+            uint32_t :1;
+            uint32_t pr4sel:3;
+            uint32_t :1;
+            uint32_t pr3sel:3;
+            uint32_t :1;
+            uint32_t pr2sel:3;
+            uint32_t :1;
+            uint32_t pr1sel:3;
+        } bit;
+    } ebmapcr;
+} st_bsp_bsc_t;
+#pragma bit_order
+#pragma packoption
 
 /***********************************************************************************************************************
 Private global variables and functions
@@ -50,6 +82,10 @@ static void peripheral_modules_enable(void);
 /* ADC initial configuration function declaration */
 static void bsp_adc_initial_configure(void);
 
+#if defined(BSP_MCU_RX65N_2MB)
+/* BUS initial configuration function declaration */
+static void bsp_bsc_initial_configure(void);
+#endif/* BSP_MCU_RX65N_2MB */
 
 /***********************************************************************************************************************
 * Function name: hardware_setup
@@ -64,6 +100,9 @@ void hardware_setup(void)
     peripheral_modules_enable();
     bsp_non_existent_port_init();
     bsp_adc_initial_configure();
+#if defined(BSP_MCU_RX65N_2MB)
+    bsp_bsc_initial_configure();
+#endif/* BSP_MCU_RX65N_2MB */
 }
 
 /***********************************************************************************************************************
@@ -97,8 +136,10 @@ static void interrupts_configure(void)
 static void peripheral_modules_enable(void)
 {
     /* Add code here to enable peripherals used by the application */
-    /* Call the Smart Configurator initialization function */
+#if BSP_CFG_CONFIGURATOR_SELECT == 1
+    /* The initialization function for Smart Configurator */
     R_Systeminit();
+#endif
 }
 
 /***********************************************************************************************************************
@@ -137,3 +178,28 @@ static void bsp_adc_initial_configure(void)
     /* Protect on. */
     SYSTEM.PRCR.WORD = 0xA500;
 }
+
+#if defined(BSP_MCU_RX65N_2MB)
+/***********************************************************************************************************************
+* Function name: bsp_bsc_initial_configure
+* Description  : Configures the BUS initial settings
+* Arguments    : none
+* Return value : none
+* Note         : The EBMAPCR register is only available for products with at least 1.5 Mbytes of code flash memory.
+***********************************************************************************************************************/
+static void bsp_bsc_initial_configure(void)
+{
+	st_bsp_bsc_t bsp_bsc;
+
+    /* Setting priority when bus right request contention occurs. */
+    bsp_bsc.ebmapcr.u_long     = BSC.EBMAPCR.LONG;
+    bsp_bsc.ebmapcr.bit.pr1sel = BSP_CFG_EBMAPCR_1ST_PRIORITY;
+    bsp_bsc.ebmapcr.bit.pr2sel = BSP_CFG_EBMAPCR_2ND_PRIORITY;
+    bsp_bsc.ebmapcr.bit.pr3sel = BSP_CFG_EBMAPCR_3RD_PRIORITY;
+    bsp_bsc.ebmapcr.bit.pr4sel = BSP_CFG_EBMAPCR_4TH_PRIORITY;
+    bsp_bsc.ebmapcr.bit.pr5sel = BSP_CFG_EBMAPCR_5TH_PRIORITY;
+
+    /* Set to EBMAPCR register */
+    BSC.EBMAPCR.LONG = bsp_bsc.ebmapcr.u_long;
+}
+#endif/* BSP_MCU_RX65N_2MB */
