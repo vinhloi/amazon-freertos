@@ -106,6 +106,22 @@
 *         : 15.05.2017 3.60     Added support for RSKRX65N-2MB.
 *                               Added support for GENERIC_RX65N.
 *                               Added support for RSKRX130-512KB.
+*         : 01.11.2017 3.70     Added support for GENERIC_RX130.
+*                               Added support for GENERIC_RX110.
+*                               Added support for GENERIC_RX111.
+*                               Added support for GENERIC_RX113.
+*                               Added support for GENERIC_RX230.
+*                               Added support for GENERIC_RX231.
+*                               Added support for GENERIC_RX23T.
+*                               Added support for GENERIC_RX24T.
+*                               Added support for GENERIC_RX24U.
+*                               Added support for GENERIC_RX64M.
+*                               Added support for GENERIC_RX71M.
+*                               Added support for ENVISIONRX65N.
+*         : 01.11.2017 3.71     Corrected typo in Rev3.70 BSP.
+*         : 01.07.2018 3.80     Added support for TARGETBOARDRX65N.
+*                               Added support for TARGETBOARDRX231.
+*                               Added support for TARGETBOARDRX130.
 ***********************************************************************************************************************/
 
 #ifndef PLATFORM_H
@@ -153,6 +169,9 @@ DEFINE YOUR SYSTEM - UNCOMMENT THE INCLUDE PATH FOR THE PLATFORM YOU ARE USING.
 /* RSKRX64M */
 //#include "./board/rskrx64m/r_bsp.h"
 
+/* GENERIC_RX64M */
+//#include "./board/generic_rx64m/r_bsp.h"
+
 /* RSKRX65N */
 //#include "./board/rskrx65n/r_bsp.h"
 
@@ -162,8 +181,17 @@ DEFINE YOUR SYSTEM - UNCOMMENT THE INCLUDE PATH FOR THE PLATFORM YOU ARE USING.
 /* GENERIC_RX65N */
 #include "./board/generic_rx65n/r_bsp.h"
 
+/* TARGETBOARDRX65N */
+//#include "./board/targetboardrx65n/r_bsp.h"
+
+/* ENVISIONRX65N */
+//#include "./board/envisionrx65n/r_bsp.h"
+
 /* RSKRX71M */
 //#include "./board/rskrx71m/r_bsp.h"
+
+/* GENERIC_RX71M */
+//#include "./board/generic_rx71m/r_bsp.h"
 
 /* RSKRX210 */
 //#include "./board/rskrx210/r_bsp.h"
@@ -177,8 +205,17 @@ DEFINE YOUR SYSTEM - UNCOMMENT THE INCLUDE PATH FOR THE PLATFORM YOU ARE USING.
 /* RSKRX230 */
 //#include "./board/rskrx230/r_bsp.h"
 
+/* GENERIC_RX230 */
+//#include "./board/generic_rx230/r_bsp.h"
+
 /* RSKRX231 */
 //#include "./board/rskrx231/r_bsp.h"
+
+/* GENERIC_RX231 */
+//#include "./board/generic_rx231/r_bsp.h"
+
+/* TARGETBOARDRX231 */
+//#include "./board/targetboardrx231/r_bsp.h"
 
 /* RSSKRX23T */
 //#include "./board/rsskrx23t/r_bsp.h"
@@ -186,17 +223,32 @@ DEFINE YOUR SYSTEM - UNCOMMENT THE INCLUDE PATH FOR THE PLATFORM YOU ARE USING.
 /* RSKRX23T */
 //#include "./board/rskrx23t/r_bsp.h"
 
+/* GENERIC_RX23T */
+//#include "./board/generic_rx23t/r_bsp.h"
+
 /* RSKRX24T */
 //#include "./board/rskrx24t/r_bsp.h"
+
+/* GENERIC_RX24T */
+//#include "./board/generic_rx24t/r_bsp.h"
 
 /* RSKRX24U */
 //#include "./board/rskrx24u/r_bsp.h"
 
+/* GENERIC_RX24U */
+//#include "./board/generic_rx24u/r_bsp.h"
+
 /* RSKRX111 */
 //#include "./board/rskrx111/r_bsp.h"
 
+/* GENERIC_RX111 */
+//#include "./board/generic_rx111/r_bsp.h"
+
 /* RSKRX110 */
 //#include "./board/rskrx110/r_bsp.h"
+
+/* GENERIC_RX110 */
+//#include "./board/generic_rx110/r_bsp.h"
 
 /* RPBRX111 */
 //#include "./board/rpbrx111/r_bsp.h"
@@ -204,21 +256,23 @@ DEFINE YOUR SYSTEM - UNCOMMENT THE INCLUDE PATH FOR THE PLATFORM YOU ARE USING.
 /* RSKRX113 */
 //#include "./board/rskrx113/r_bsp.h"
 
+/* GENERIC_RX113 */
+//#include "./board/generic_rx113/r_bsp.h"
+
 /* RSKRX130 */
 //#include "./board/rskrx130/r_bsp.h"
 
 /* RSKRX130_512KB */
 //#include "./board/rskrx130_512kb/r_bsp.h"
 
+/* GENERIC_RX130 */
+//#include "./board/generic_rx130/r_bsp.h"
+
+/* TARGETBOARDRX130 */
+//#include "./board/targetboardrx130/r_bsp.h"
+
 /* User Board - Define your own board here. */
 //#include "./board/user/r_bsp.h"
-
-/* Smart Configurator defined board here. */
-//#include "./board/generic_rx130/r_bsp.h"
-//#include "./board/generic_rx230/r_bsp.h"
-//#include "./board/generic_rx231/r_bsp.h"
-//#include "./board/generic_rx64m/r_bsp.h"
-//#include "./board/generic_rx71m/r_bsp.h"
 
 /***********************************************************************************************************************
 MAKE SURE AT LEAST ONE PLATFORM WAS DEFINED - DO NOT EDIT BELOW THIS POINT
