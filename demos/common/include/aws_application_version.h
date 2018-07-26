@@ -59,7 +59,7 @@ typedef struct {
 	} u;
 } AppVersion32_t;
 #if (defined(__RX) && defined(__CCRX__))
-#pragma unpack
+#pragma packoption
 #else
 #pragma pack(pop)
 #endif

@@ -40,7 +40,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifdef __RX
 	#ifdef __CCRX__
 		;
-		#pragma unpack
+		#pragma packoption
 	#endif
 #endif
 
