@@ -269,13 +269,9 @@ extern uint32_t ulRand();
 /* Header required for the tracealyzer recorder library. */
 //#include "trcRecorder.h"
 
-/*********************************************
- * Amazon FreeRTOS aws_demos project
- ********************************************/
 
-#if defined(__CCRX__)
-#define __FUNCTION__ __func__ /* GCC <--> CC-RX */
-#define __attribute__( attr ) /* GCC <--> CC-RX */
-#endif
+
+/* Header required for the compatibility between GNU/IAR C compilers and the CC-RX compiler. */
+#include "SCFGcompiler.h"
 
 #endif /* FREERTOS_CONFIG_H */

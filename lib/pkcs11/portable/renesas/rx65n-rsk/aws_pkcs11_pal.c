@@ -67,7 +67,19 @@ typedef struct
 /**
  * @brief Certificates/key storage in flash.
  */
+/* As of today... (by NoMaY) */
+#if 0
+/* This is a GCC style. */
 P11KeyConfig_t P11KeyConfig __attribute__( ( section( "UNINIT_FIXED_LOC" ) ) );
+#elif 0
+/* This is a SCFGcompiler.h style. (Of course this needs the "UNINIT_FIXED_LOC" section of linker setting. */
+R_ATTRIB_SECTION_CHANGE_V(UNINIT_FIXED_LOC)
+P11KeyConfig_t P11KeyConfig;
+R_ATTRIB_SECTION_CHANGE_END
+#elif 1
+/* As of today, we use the following code. (Of course this should be changed to the above code later. */
+P11KeyConfig_t P11KeyConfig;
+#endif
 /*-----------------------------------------------------------*/
 
 
