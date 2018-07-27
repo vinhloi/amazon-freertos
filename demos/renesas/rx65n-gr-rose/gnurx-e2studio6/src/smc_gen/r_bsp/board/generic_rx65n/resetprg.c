@@ -31,6 +31,8 @@
 *                                                 is not to be used.
 *                                Changed the sub-clock oscillator settings.
 *                                Added the bsp startup module disable function.
+*         : 01.07.2018 2.01      Added support for RTOS.
+*                                Added processing after writing ROMWT register.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -843,10 +845,30 @@ static void clock_source_select (void)
     if (BSP_ICLK_HZ > ROMWT_FREQ_THRESHOLD_02)
     {
         SYSTEM.ROMWT.BYTE = 0x02;
+        
+        /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual. */
+        if(0x02 == SYSTEM.ROMWT.BYTE)
+        {
+            /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual.
+               This is done to ensure that the register has been written before the next register access. The RX has a 
+               pipeline architecture so the next instruction could be executed before the previous write had finished.
+            */
+            __asm("nop");
+        }
     }
     else if (BSP_ICLK_HZ > ROMWT_FREQ_THRESHOLD_01)
     {
         SYSTEM.ROMWT.BYTE = 0x01;
+
+        /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual. */
+        if(0x01 == SYSTEM.ROMWT.BYTE)
+        {
+            /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual.
+               This is done to ensure that the register has been written before the next register access. The RX has a 
+               pipeline architecture so the next instruction could be executed before the previous write had finished.
+            */
+            __asm("nop");
+        }
     }
     else
     {

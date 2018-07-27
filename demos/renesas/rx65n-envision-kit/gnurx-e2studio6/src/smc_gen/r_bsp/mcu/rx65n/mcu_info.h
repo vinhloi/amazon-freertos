@@ -42,6 +42,7 @@
 *                                - Setting of 176 pins.
 *                                - Setting of 2-Mbyte ROM capacity.
 *                                - Setting of 1.5-Mbyte ROM capacity.
+*         : 01.12.2017 2.01      Added EBMAPCR register set value check.
 ***********************************************************************************************************************/
 
 #ifndef MCU_INFO
@@ -167,6 +168,38 @@ Macro definitions
         #error "ERROR - Valid PLL clock source must be chosen in r_bsp_config.h using BSP_CFG_PLL_SRC macro."
     #endif
 #endif
+
+#if defined(BSP_MCU_RX65N_2MB)
+/*    Extended Bus Master Priority setting
+   0 = GLCDC graphics 1 data read
+   1 = DRW2D texture data read
+   2 = DRW2D frame buffer data read write and display list data read
+   3 = GLCDC graphics 2 data read
+   4 = EDMAC
+   
+   Note : Settings other than above are prohibited.
+          Duplicate priority settings can not be made.
+*/
+#if ((BSP_CFG_EBMAPCR_1ST_PRIORITY == BSP_CFG_EBMAPCR_2ND_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_1ST_PRIORITY == BSP_CFG_EBMAPCR_3RD_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_1ST_PRIORITY == BSP_CFG_EBMAPCR_4TH_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_1ST_PRIORITY == BSP_CFG_EBMAPCR_5TH_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_2ND_PRIORITY == BSP_CFG_EBMAPCR_3RD_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_2ND_PRIORITY == BSP_CFG_EBMAPCR_4TH_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_2ND_PRIORITY == BSP_CFG_EBMAPCR_5TH_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_3RD_PRIORITY == BSP_CFG_EBMAPCR_4TH_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_3RD_PRIORITY == BSP_CFG_EBMAPCR_5TH_PRIORITY) ||\
+     (BSP_CFG_EBMAPCR_4TH_PRIORITY == BSP_CFG_EBMAPCR_5TH_PRIORITY))
+ #error "Error! Invalid setting for Extended Bus Master Priority in r_bsp_config.h. Please check BSP_CFG_EX_BUS_1ST_PRIORITY to BSP_CFG_EX_BUS_5TH_PRIORITY"
+#endif
+#if ((5 <= BSP_CFG_EBMAPCR_1ST_PRIORITY) ||\
+     (5 <= BSP_CFG_EBMAPCR_2ND_PRIORITY) ||\
+     (5 <= BSP_CFG_EBMAPCR_3RD_PRIORITY) ||\
+     (5 <= BSP_CFG_EBMAPCR_4TH_PRIORITY) ||\
+     (5 <= BSP_CFG_EBMAPCR_5TH_PRIORITY))
+ #error "Error! Invalid setting for Extended Bus Master Priority in r_bsp_config.h. Please check BSP_CFG_EX_BUS_1ST_PRIORITY to BSP_CFG_EX_BUS_5TH_PRIORITY"
+#endif
+#endif/* BSP_MCU_RX65N_2MB */
 
 /* System clock speed in Hz. */
 #define BSP_ICLK_HZ                 (BSP_SELECTED_CLOCK_HZ / BSP_CFG_ICK_DIV)

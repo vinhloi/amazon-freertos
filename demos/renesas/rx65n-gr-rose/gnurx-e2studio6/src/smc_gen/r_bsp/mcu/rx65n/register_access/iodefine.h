@@ -50,6 +50,7 @@
 *            : V1.5A  (2016-12-15)  [Hardware Manual Revision : 1.00]
 *            : V1.5B  (2017-03-22)  [Hardware Manual Revision : 1.00]
 *            : V2.0   (2017-04-21)  [Hardware Manual Revision : 2.00]
+*            : V2.0A  (2017-10-23)  [Hardware Manual Revision : 2.00]
 *
 * NOTE       : THIS IS A TYPICAL EXAMPLE.                                      
 *                                                                              
@@ -104,8 +105,8 @@
 /*                                                                              */
 /*                                                                              */
 /********************************************************************************/
-#ifndef __RX651IODEFINE_HEADER__
-#define __RX651IODEFINE_HEADER__
+#ifndef __RX65NIODEFINE_HEADER__
+#define __RX65NIODEFINE_HEADER__
 
 #define	IEN_BSC_BUSERR		IEN0
 #define	IEN_RAM_RAMERR		IEN2
@@ -921,8 +922,8 @@
 #define	GRP_SCI8_ERI8		GRPBL1
 #define	GRP_SCI9_TEI9		GRPBL1
 #define	GRP_SCI9_ERI9		GRPBL1
-#define	GRP_RIIC1_TEI1		GENBL1
-#define	GRP_RIIC1_EEI1		GENBL1
+#define	GRP_RIIC1_TEI1		GRPBL1
+#define	GRP_RIIC1_EEI1		GRPBL1
 #define	GRP_SDSI_SDIOI		GRPBL2
 #define	GRP_SCI10_TEI10		GRPAL0
 #define	GRP_SCI10_ERI10		GRPAL0
@@ -1078,8 +1079,8 @@
 #define	SMCI7	(*(volatile struct st_smci0    *)0x8A0E0)
 #define	SMCI8	(*(volatile struct st_smci0    *)0x8A100)
 #define	SMCI9	(*(volatile struct st_smci0    *)0x8A120)
-#define	SMCI10	(*(volatile struct st_smci10   *)0xD0046)
-#define	SMCI11	(*(volatile struct st_smci10   *)0xD0066)
+#define	SMCI10	(*(volatile struct st_smci10   *)0xD0040)
+#define	SMCI11	(*(volatile struct st_smci10   *)0xD0060)
 #define	SMCI12	(*(volatile struct st_smci0    *)0x8B300)
 #define	SYSTEM	(*(volatile struct st_system   *)0x80000)
 #define	TEMPS	(*(volatile struct st_temps    *)0x8C500)
@@ -26763,25 +26764,97 @@ typedef struct st_smci10 {
 	union {
 		unsigned char BYTE;
 		struct {
-			
+		
 #ifdef __RX_LITTLE_ENDIAN__
-			unsigned char SMIF : 1;
-			unsigned char  : 1;
-			unsigned char SINV : 1;
-			unsigned char SDIR : 1;
-			unsigned char CHR1 : 1;
-			unsigned char  : 2;
-			unsigned char BCP2 : 1;
+			unsigned char CKS:2;
+			unsigned char BCP:2;
+			unsigned char PM:1;
+			unsigned char PE:1;
+			unsigned char BLK:1;
+			unsigned char GM:1;
 #else
-			unsigned char BCP2 : 1;
-			unsigned char  : 2;
-			unsigned char CHR1 : 1;
-			unsigned char SDIR : 1;
-			unsigned char SINV : 1;
-			unsigned char  : 1;
-			unsigned char SMIF : 1;
+			unsigned char GM:1;
+			unsigned char BLK:1;
+			unsigned char PE:1;
+			unsigned char PM:1;
+			unsigned char BCP:2;
+			unsigned char CKS:2;
 #endif
-	} BIT;
+		} BIT;
+	} SMR;
+	char           wk0[1];
+	union {
+		unsigned char BYTE;
+		struct {
+		
+#ifdef __RX_LITTLE_ENDIAN__
+			unsigned char CKE:2;
+			unsigned char TEIE:1;
+			unsigned char MPIE:1;
+			unsigned char RE:1;
+			unsigned char TE:1;
+			unsigned char RIE:1;
+			unsigned char TIE:1;
+#else
+			unsigned char TIE:1;
+			unsigned char RIE:1;
+			unsigned char TE:1;
+			unsigned char RE:1;
+			unsigned char MPIE:1;
+			unsigned char TEIE:1;
+			unsigned char CKE:2;
+#endif
+		} BIT;
+	} SCR;
+	char           wk1[1];
+	union {
+		unsigned char BYTE;
+		struct {
+		
+#ifdef __RX_LITTLE_ENDIAN__
+			unsigned char MPBT:1;
+			unsigned char MPB:1;
+			unsigned char TEND:1;
+			unsigned char PER:1;
+			unsigned char ERS:1;
+			unsigned char ORER:1;
+			unsigned char RDRF:1;
+			unsigned char TDRE:1;
+#else
+			unsigned char TDRE:1;
+			unsigned char RDRF:1;
+			unsigned char ORER:1;
+			unsigned char ERS:1;
+			unsigned char PER:1;
+			unsigned char TEND:1;
+			unsigned char MPB:1;
+			unsigned char MPBT:1;
+#endif
+		} BIT;
+	} SSR;
+	char           wk2[1];
+	union {
+		unsigned char BYTE;
+		struct {
+		
+#ifdef __RX_LITTLE_ENDIAN__
+			unsigned char SMIF:1;
+			unsigned char :1;
+			unsigned char SINV:1;
+			unsigned char SDIR:1;
+			unsigned char CHR1:1;
+			unsigned char :2;
+			unsigned char BCP2:1;
+#else
+			unsigned char BCP2:1;
+			unsigned char :2;
+			unsigned char CHR1:1;
+			unsigned char SDIR:1;
+			unsigned char SINV:1;
+			unsigned char :1;
+			unsigned char SMIF:1;
+#endif
+		} BIT;
 	} SCMR;
 } st_smci10_t;
 
