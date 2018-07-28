@@ -143,8 +143,9 @@ bool R_BSP_CpuInterruptLevelWrite (uint32_t level)
 ***********************************************************************************************************************/
 void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
 {
-    
-#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
+// Not only RTOS but also non-RTOS needs this bugfix. 
+// Please see the post (sorry in Japanese) https://japan.renesasrulz.com/cafe_rene/f/forum5/5042/fit-rtos-bsp/28398#28398
+//#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
    uint32_t    ipl_value;
 
 #if defined(__GNUC__)
@@ -158,7 +159,7 @@ void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
    set_ipl((signed long)BSP_MCU_IPL_MAX);
 #endif /* defined(__GNUC__) */ 
 
-#endif /* BSP_CFG_RTOS_USED == 1 */ 
+//#endif /* BSP_CFG_RTOS_USED == 1 */ 
     
     /* Is it safe to disable write access?  */
     if (0 != g_protect_counters[regs_to_protect])
@@ -204,14 +205,14 @@ void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
             MPC.PWPR.BIT.B0WI = 1;     
         }
     }
-#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
+//#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
 
 #if defined(__GNUC__)
    /* Restore the IPL. */ 
    set_ipl((signed long)ipl_value);
 #endif /* defined(__GNUC__) */ 
 
-#endif /* BSP_CFG_RTOS_USED == 1 */
+//#endif /* BSP_CFG_RTOS_USED == 1 */
 }
 
 /***********************************************************************************************************************
@@ -223,7 +224,9 @@ void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
 ***********************************************************************************************************************/
 void R_BSP_RegisterProtectDisable (bsp_reg_protect_t regs_to_unprotect)
 {
-#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
+// Not only RTOS but also non-RTOS needs this bugfix. 
+// Please see the R_BSP_RegisterProtectEnable() function.
+//#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
    uint32_t    ipl_value;
 
 #if defined(__GNUC__)
@@ -237,7 +240,7 @@ void R_BSP_RegisterProtectDisable (bsp_reg_protect_t regs_to_unprotect)
    set_ipl((signed long)BSP_MCU_IPL_MAX);
 #endif /* defined(__GNUC__) */ 
 
-#endif /* BSP_CFG_RTOS_USED == 1 */ 
+//#endif /* BSP_CFG_RTOS_USED == 1 */ 
 
     /* If this is first entry then disable protection. */
     if (0 == g_protect_counters[regs_to_unprotect])
@@ -276,14 +279,14 @@ void R_BSP_RegisterProtectDisable (bsp_reg_protect_t regs_to_unprotect)
     /* Increment the protect counter */
     g_protect_counters[regs_to_unprotect]++;
 
-#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
+//#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
 
 #if defined(__GNUC__)
    /* Restore the IPL. */ 
    set_ipl((signed long)ipl_value);
 #endif /* defined(__GNUC__) */ 
 
-#endif /* BSP_CFG_RTOS_USED == 1 */ 
+//#endif /* BSP_CFG_RTOS_USED == 1 */ 
 }
 
 /***********************************************************************************************************************
