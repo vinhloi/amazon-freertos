@@ -22,7 +22,7 @@
 * Version      : 1.2.0
 * Device(s)    : R5F565NEDxFC
 * Description  : Macro header file for code generation.
-* Creation Date: 2018-07-22
+* Creation Date: 2018-07-29
 ***********************************************************************************************************************/
 
 #ifndef MODULEID_H
@@ -33,7 +33,7 @@ Includes
 ***********************************************************************************************************************/
 #include "platform.h"
 #include "r_smc_interrupt.h"
-#include <machine.h>
+#include "r_cg_interrupt_handlers.h"
 
 /***********************************************************************************************************************
 Macro definitions (Register bit)
@@ -61,6 +61,10 @@ Macro definitions
 #define MD_ERROR3            (MD_ERRORBASE + 0x04U)  /* error 3 */
 #define MD_ERROR4            (MD_ERRORBASE + 0x05U)  /* error 4 */
 #define MD_ERROR5            (MD_ERRORBASE + 0x06U)  /* error 5 */
+
+#define nop()                asm("nop;")
+#define brk()                asm("brk;")
+#define wait()               asm("wait;")
 
 #endif
 

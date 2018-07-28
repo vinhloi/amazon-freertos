@@ -22,7 +22,7 @@
 * Version      : 1.2.0
 * Device(s)    : R5F565NEDxFB
 * Description  : Initialization file for code generation configurations.
-* Creation Date: 2018-07-22
+* Creation Date: 2018-07-29
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -45,6 +45,25 @@ Includes
 Global variables and functions
 ***********************************************************************************************************************/
 /* Start user code for global. Do not edit comment generated here */
+
+/* Workaround to set group interrupt priority level when it is not set in the generated function */
+static void R_Interrupt_Create_Workaround(void);
+static void R_Interrupt_Create_Workaround(void)
+{
+    /* Call the generated function */
+    R_Interrupt_Create();
+
+    /* Disable group AL1 interrupt*/
+    IEN(ICU,GROUPAL1) = 0U;
+
+    /* Set group AL1 interrupt priority level */
+    IPR(ICU,GROUPAL1) = _02_ICU_PRIORITY_LEVEL2;
+
+    /* Enable group AL1 interrupt */
+    IEN(ICU,GROUPAL1) = 1U;
+}
+#define R_Interrupt_Create R_Interrupt_Create_Workaround
+
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
@@ -94,5 +113,5 @@ void R_Systeminit(void)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-/* End user code. Do not edit comment generated here */   
+/* End user code. Do not edit comment generated here */
 

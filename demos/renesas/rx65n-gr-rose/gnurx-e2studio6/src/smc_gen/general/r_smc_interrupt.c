@@ -22,7 +22,7 @@
 * Version      : 1.1.0
 * Device(s)    : R5F565NEDxFP
 * Description  : This file implements interrupt setting
-* Creation Date: 2018-07-22
+* Creation Date: 2018-07-29
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
 Includes
@@ -39,14 +39,6 @@ Includes
 
 void R_Interrupt_Create(void)
 {
-    /* Disable group AL1 interrupt*/
-    IEN(ICU,GROUPAL1) = 0U;
-    
-
-    /* Set group AL1 interrupt priority level */
-    IPR(ICU,GROUPAL1) = _02_ICU_PRIORITY_LEVEL2;
-
-    /* Enable group AL1 interrupt */
-    IEN(ICU,GROUPAL1) = 1U;
+    /* No fast interrupt and group settings have been configured in the Interrupts tab. */
 }
 

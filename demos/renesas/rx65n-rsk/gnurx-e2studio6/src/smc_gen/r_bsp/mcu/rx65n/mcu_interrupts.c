@@ -69,11 +69,31 @@ static void (* g_bsp_vectors[BSP_INT_SRC_TOTAL_ITEMS])(void * pdata);
 bsp_int_err_t bsp_interrupt_enable_disable(bsp_int_src_t vector, bool enable);
 bsp_int_err_t bsp_interrupt_group_enable_disable(bsp_int_src_t vector, bool enable, uint32_t ipl);
 
+#ifdef _006E_FAST_VECTOR_NUM
+void group_bl0_handler_isr(void) __attribute__ ((fast_interrupt));
+#else
 void group_bl0_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPBL0)));
+#endif
+#ifdef _006F_FAST_VECTOR_NUM
+void group_bl1_handler_isr(void) __attribute__ ((fast_interrupt));
+#else
 void group_bl1_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPBL1)));
+#endif
+#ifdef _006B_FAST_VECTOR_NUM
+void group_bl2_handler_isr(void) __attribute__ ((fast_interrupt));
+#else
 void group_bl2_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPBL2)));
+#endif
+#ifdef _0070_FAST_VECTOR_NUM
+void group_al0_handler_isr(void) __attribute__ ((fast_interrupt));
+#else
 void group_al0_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPAL0)));
+#endif
+#ifdef _0071_FAST_VECTOR_NUM
+void group_al1_handler_isr(void) __attribute__ ((fast_interrupt));
+#else
 void group_al1_handler_isr(void) __attribute__ ((interrupt(".rvectors", VECT_ICU_GROUPAL1)));
+#endif
 
 /***********************************************************************************************************************
 * Function Name: bsp_interrupt_open

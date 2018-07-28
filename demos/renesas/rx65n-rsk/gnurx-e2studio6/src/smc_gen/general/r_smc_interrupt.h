@@ -22,7 +22,7 @@
 * Version      : 1.1.0
 * Device(s)    : R5F565NEDxFC
 * Description  : This file implements interrupt setting.
-* Creation Date: 2018-07-22
+* Creation Date: 2018-07-29
 ***********************************************************************************************************************/
 
 #ifndef SMC_INTERRUPT_H
@@ -55,8 +55,6 @@ Macro definitions (Register bit)
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
-#define FAST_INTERRUPT_VECTOR                      (0)
-
 /* The macro definitions below list the full set of priority levels as selected in the Interrupts tab
  * Please do not modify this file manually
  */

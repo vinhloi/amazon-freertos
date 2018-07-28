@@ -22,7 +22,7 @@
 * Version      : 1.1.2
 * Device(s)    : R5F565NEDxFC
 * Description  : None
-* Creation Date: 2018-07-22
+* Creation Date: 2018-07-29
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -59,5 +59,5 @@ void R_CGC_Create_UserInit(void)
 }
 
 /* Start user code for adding. Do not edit comment generated here */
-/* End user code. Do not edit comment generated here */   
+/* End user code. Do not edit comment generated here */
 

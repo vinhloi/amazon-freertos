@@ -319,7 +319,7 @@
 <Item id="BL0" priority="15"/>
 <Item id="BL1" priority="15"/>
 <Item id="AL0" priority="15"/>
-<Item id="AL1" priority="15"/>
+<Item id="AL1" priority="2"/>
 <Item id="SCI11_RXI11" priority="15"/>
 <Item id="SCI11_TXI11" priority="15"/>
 <Item id="SCI12_RXI12" priority="15"/>
@@ -463,7 +463,36 @@
 </tool>
 <tool id="SWComponent" version="1.0.0.0">
 <configuration inuse="true" name="r_bsp">
-<component description="依存モジュール: なし&#10;The r_bsp package provides a foundation for code to be built on top of. It provides startup code, iodefines, and MCU information for different boards. There are 2 folders that make up the r_bsp package. The 'mcu' folder contains files that are common to a MCU group. These files provide functionality such as easy register access, CPU functions, and a file named 'mcu_info.h' for each MCU group. The 'mcu_info.h' file has information about the MCU on the board and is configured based on the information given in r_bsp_config.h. The information in 'mcu_info.h' is used to help configure Renesas middleware that uses the r_bsp package. The 'board' folder has a folder with startup code for each supported board.  Which MCU and board is chosen is decided by the settings in 'platform.h'. The user can choose which board they are using by uncommenting the include path that applies to their board. For example, if you are using the RSK+RX62N then you would uncomment the #include &quot;./board/rskrx62n/r_bsp.h&quot; include path. Users are encouraged to add their own boards to the 'board' directory. BSPs are configured by using the r_bsp_config.h file. Each board will have a reference configuration file named r_bsp_config_reference.h. The user should copy this file to their project, rename it to r_bsp_config.h, and use the options inside the file to configure the BSP for their project." detailDescription="Board Support Packages." display="r_bsp" id="r_bspGeneric(v=3.8a)" version="Generic(v=3.8a)"/>
+<component description="依存モジュール: なし&#10;The r_bsp package provides a foundation for code to be built on top of. It provides startup code, iodefines, and MCU information for different boards. There are 2 folders that make up the r_bsp package. The 'mcu' folder contains files that are common to a MCU group. These files provide functionality such as easy register access, CPU functions, and a file named 'mcu_info.h' for each MCU group. The 'mcu_info.h' file has information about the MCU on the board and is configured based on the information given in r_bsp_config.h. The information in 'mcu_info.h' is used to help configure Renesas middleware that uses the r_bsp package. The 'board' folder has a folder with startup code for each supported board.  Which MCU and board is chosen is decided by the settings in 'platform.h'. The user can choose which board they are using by uncommenting the include path that applies to their board. For example, if you are using the RSK+RX62N then you would uncomment the #include &quot;./board/rskrx62n/r_bsp.h&quot; include path. Users are encouraged to add their own boards to the 'board' directory. BSPs are configured by using the r_bsp_config.h file. Each board will have a reference configuration file named r_bsp_config_reference.h. The user should copy this file to their project, rename it to r_bsp_config.h, and use the options inside the file to configure the BSP for their project." detailDescription="Board Support Packages." display="r_bsp" id="r_bspGeneric(v=3.8a)" version="Generic(v=3.8a)">
+<gridItem id="BSP_CFG_STARTUP_DISABLE" selectedIndex="0"/>
+<gridItem id="BSP_CFG_USER_CHARGET_ENABLED" selectedIndex="0"/>
+<gridItem id="BSP_CFG_USER_CHARGET_FUNCTION" selectedIndex="my_sw_charget_function"/>
+<gridItem id="BSP_CFG_USER_CHARPUT_ENABLED" selectedIndex="0"/>
+<gridItem id="BSP_CFG_USER_CHARPUT_FUNCTION" selectedIndex="my_sw_charput_function"/>
+<gridItem id="BSP_CFG_RUN_IN_USER_MODE" selectedIndex="0"/>
+<gridItem id="BSP_CFG_ROM_CACHE_ENABLE" selectedIndex="0"/>
+<gridItem id="BSP_CFG_TRUSTED_MODE_FUNCTION" selectedIndex="0xFFFFFFFF"/>
+<gridItem id="BSP_CFG_FAW_REG_VALUE" selectedIndex="0xFFFFFFFF"/>
+<gridItem id="BSP_CFG_ROMCODE_REG_VALUE" selectedIndex="0xFFFFFFFF"/>
+<gridItem id="BSP_CFG_CODE_FLASH_BANK_MODE" selectedIndex="1"/>
+<gridItem id="BSP_CFG_CODE_FLASH_START_BANK" selectedIndex="0"/>
+<gridItem id="BSP_CFG_USER_LOCKING_ENABLED" selectedIndex="0"/>
+<gridItem id="BSP_CFG_USER_LOCKING_TYPE" selectedIndex="bsp_lock_t"/>
+<gridItem id="BSP_CFG_USER_LOCKING_HW_LOCK_FUNCTION" selectedIndex="my_hw_locking_function"/>
+<gridItem id="BSP_CFG_USER_LOCKING_HW_UNLOCK_FUNCTION" selectedIndex="my_hw_unlocking_function"/>
+<gridItem id="BSP_CFG_USER_LOCKING_SW_LOCK_FUNCTION" selectedIndex="my_sw_locking_function"/>
+<gridItem id="BSP_CFG_USER_LOCKING_SW_UNLOCK_FUNCTION" selectedIndex="my_sw_unlocking_function"/>
+<gridItem id="BSP_CFG_USER_WARM_START_CALLBACK_PRE_INITC_ENABLED" selectedIndex="0"/>
+<gridItem id="BSP_CFG_USER_WARM_START_PRE_C_FUNCTION" selectedIndex="my_sw_warmstart_prec_function"/>
+<gridItem id="BSP_CFG_USER_WARM_START_CALLBACK_POST_INITC_ENABLED" selectedIndex="0"/>
+<gridItem id="BSP_CFG_USER_WARM_START_POST_C_FUNCTION" selectedIndex="my_sw_warmstart_postc_function"/>
+<gridItem id="BSP_CFG_PARAM_CHECKING_ENABLE" selectedIndex="1"/>
+<gridItem id="BSP_CFG_EBMAPCR_1ST_PRIORITY" selectedIndex="0"/>
+<gridItem id="BSP_CFG_EBMAPCR_2ND_PRIORITY" selectedIndex="3"/>
+<gridItem id="BSP_CFG_EBMAPCR_3RD_PRIORITY" selectedIndex="1"/>
+<gridItem id="BSP_CFG_EBMAPCR_4TH_PRIORITY" selectedIndex="2"/>
+<gridItem id="BSP_CFG_EBMAPCR_5TH_PRIORITY" selectedIndex="4"/>
+</component>
 <source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 <source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 </configuration>
