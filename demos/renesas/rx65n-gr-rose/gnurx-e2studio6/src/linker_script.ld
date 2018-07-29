@@ -149,26 +149,20 @@ SECTIONS
 	.ofs7 0xFE7F5D10 : AT(0xFE7F5D70)
 	{
 		KEEP(*(.ofs7))
-	} >OFS "_ETHERNET_BUFFERS" 0x0 : AT(0x0)
-{
-} >RAM
-
-
-
-	"_RX_DESC" :
+	} >OFS
+	_ETHERNET_BUFFERS 0x0 : AT(0x0)
 	{
-	} >RAM "_TX_DESC" :
-{
-} >RAM
-
-
-
-
-
-
-
-
+		___sectop__ETHERNET_BUFFERS = .;
+		*(_ETHERNET_BUFFERS)
+	} >RAM
+	_RX_DESC :
+	{
+		___sectop__RX_DESC = .;
+		*(_RX_DESC)
+	} >RAM
+	_TX_DESC :
+	{
+		___sectop__TX_DESC = .;
+		*(_TX_DESC)
+	} >RAM
 }
-
-
-

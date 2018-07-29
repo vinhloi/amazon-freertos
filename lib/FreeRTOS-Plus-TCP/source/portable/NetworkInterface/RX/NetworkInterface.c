@@ -260,10 +260,14 @@ void vNetworkInterfaceAllocateRAMToBuffers( NetworkBufferDescriptor_t pxNetworkB
 	uint32_t ul;
     uint8_t *buffer_address;
 
-    R_ATTRIB_SECTION_CHANGE_V(B_ETHERNET_BUFFERS_1)
-    static uint8_t B_ETHERNET_BUFFERS_1[1];
-    R_ATTRIB_SECTION_CHANGE_END
-    buffer_address = B_ETHERNET_BUFFERS_1;
+#if defined(__CCRX__)
+    buffer_address = __sectop("B_ETHERNET_BUFFERS_1");
+#elif defined(__GNUC__)
+    extern void *__sectop__ETHERNET_BUFFERS;
+    buffer_address = __sectop__ETHERNET_BUFFERS;
+#elif defined(__ICCRX__)
+    buffer_address = __section_begin("_ETHERNET_BUFFERS");
+#endif
 
 	for( ul = 0; ul < ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS; ul++ )
 	{
