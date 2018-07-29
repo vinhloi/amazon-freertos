@@ -63,11 +63,11 @@ https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html
 #define R_PRAGMA_STATIC_FAST_INTERRUPT(function_name)        R_PRAGMA(interrupt function_name(fast))\
                                                              static void function_name(void);
 
-#define R_ATTRIB_INTERRUPT                                   extern
-#define R_ATTRIB_STATIC_INTERRUPT                            static
+#define R_ATTRIB_INTERRUPT                                   extern /* only this one because of no corresponding keyword */
+#define R_ATTRIB_STATIC_INTERRUPT                            static /* only this one because of no corresponding keyword */
 
-#define R_ATTRIB_FAST_INTERRUPT                              extern
-#define R_ATTRIB_STATIC_FAST_INTERRUPT                       static
+#define R_ATTRIB_FAST_INTERRUPT                              extern /* only this one because of no corresponding keyword */
+#define R_ATTRIB_STATIC_FAST_INTERRUPT                       static /* only this one because of no corresponding keyword */
 
 #elif defined(__GNUC__)
 
@@ -80,8 +80,8 @@ https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html
 #define R_PRAGMA_INTERRUPT_FUNCTION(function_name)           extern void function_name(void) __attribute__((interrupt));
 #define R_PRAGMA_STATIC_INTERRUPT_FUNCTION(function_name)    static void function_name(void) __attribute__((interrupt, used));
 
-#define R_ATTRIB_INTERRUPT                                   extern __attribute__((interrupt))
-#define R_ATTRIB_STATIC_INTERRUPT                            static __attribute__((interrupt, used))
+#define R_ATTRIB_INTERRUPT                                   extern /* only this one because __attribute__((interrupt)) prevents GNURX from generating vector */
+#define R_ATTRIB_STATIC_INTERRUPT                            static /* only this one because __attribute__((interrupt, used)) prevents GNURX from generating vector */
 
 #define R_ATTRIB_FAST_INTERRUPT                              extern __attribute__((interrupt(fast)))
 #define R_ATTRIB_STATIC_FAST_INTERRUPT                       static __attribute__((interrupt(fast)), used)
