@@ -122,41 +122,6 @@ Configuration Options
 */
 #define BSP_CFG_MCU_PART_MEMORY_TYPE    (0x0) // <-- Updated by GUI. Do not edit this value manually
 
-/* Whether to use 1 stack or 2. RX MCUs have the ability to use 2 stacks: an interrupt stack and a user stack.
- * When using 2 stacks the user stack will be used during normal user code. When an interrupt occurs the CPU
- * will automatically shift to using the interrupt stack. Having 2 stacks can make it easier to figure out how
- * much stack space to allocate since the user does not have to worry about always having enough room on the
- * user stack for if-and-when an interrupt occurs. Some users will not want 2 stacks though because it is not
- * needed in all applications and can lead to wasted RAM (i.e. space in between stacks that is not used).
- * If only 1 stack is used then the interrupt stack is the one that will be used. If 1 stack is chosen then
- * the user may want to remove the 'SU' section from the linker sections to remove any linker warnings.
- *
- * 0 = Use 1 stack. Disable user stack. User stack size set below will be ignored.
- * 1 = Use 2 stacks. User stack and interrupt stack will both be used.
- */
-#define BSP_CFG_USER_STACK_ENABLE       (1)
-
-/* When using the user startup program, disable the following code. */
-#if (BSP_CFG_STARTUP_DISABLE == 0)
-
-/* The 'BSP_DECLARE_STACK' macro is checked so that the stack is only declared in one place (resetprg.c). Every time a 
-   '#pragma stacksize' is encountered, the stack size is increased. This prevents multiplication of stack size. */
-#if defined(BSP_DECLARE_STACK)
-    /* If only 1 stack is chosen using BSP_CFG_USER_STACK_ENABLE then no RAM will be allocated for the user stack. */
-    #if (BSP_CFG_USER_STACK_ENABLE == 1)
-    /* User Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive. */
-    #pragma stacksize su=0x1000
-    #endif
-
-/* Interrupt Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive.
- * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
- * below.
- */
-#pragma stacksize si=0x400
-#endif
-
-#endif /* BSP_CFG_STARTUP_DISABLE == 0 */
-
 /* Heap size in bytes.
    To disable the heap you must follow these steps:
    1) Set this macro (BSP_CFG_HEAP_BYTES) to 0.
