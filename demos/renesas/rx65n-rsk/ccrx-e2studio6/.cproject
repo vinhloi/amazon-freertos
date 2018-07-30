@@ -123,7 +123,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application_code"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="config_files"/>
-						<entry excluding="aws/FreeRTOS-Plus-TCP/source/protocols/Common/FreeRTOS_TCP_server.c|aws/FreeRTOS-Plus-TCP/source/protocols/FTP/FreeRTOS_FTP_server.c|aws/FreeRTOS-Plus-TCP/source/protocols/HTTP/FreeRTOS_HTTP_server.c|aws/FreeRTOS-Plus-TCP/source/protocols/NTP/NTPDemo.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lib"/>
+						<entry excluding="third_party/mcu_vendor/renesas/FIT|aws/FreeRTOS-Plus-TCP/source/protocols/Common/FreeRTOS_TCP_server.c|aws/FreeRTOS-Plus-TCP/source/protocols/FTP/FreeRTOS_FTP_server.c|aws/FreeRTOS-Plus-TCP/source/protocols/HTTP/FreeRTOS_HTTP_server.c|aws/FreeRTOS-Plus-TCP/source/protocols/NTP/NTPDemo.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lib"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
@@ -139,9 +139,5 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="HardwareDebug">
-			<resource resourceType="PROJECT" workspacePath="/aws_demos"/>
-		</configuration>
-	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>
