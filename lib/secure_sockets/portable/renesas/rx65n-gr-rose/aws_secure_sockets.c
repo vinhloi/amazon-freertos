@@ -522,7 +522,7 @@ static CK_SESSION_HANDLE xPkcs11Session = 0;
 static CK_FUNCTION_LIST_PTR pxPkcs11FunctionList = NULL;
 
 /*-----------------------------------------------------------*/
-
+#if 0
 uint32_t ulRand( void )
 {
     CK_RV xResult = 0;
@@ -589,4 +589,5 @@ uint32_t ulRand( void )
 
     return ulRandomValue;
 }
+#endif
 /*-----------------------------------------------------------*/
