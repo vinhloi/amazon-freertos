@@ -1,4 +1,4 @@
-rem @echo off
+@echo off
 rem ################################################################################
 rem # This batch file executes some preprocess for build and then executes the make
 rem ################################################################################

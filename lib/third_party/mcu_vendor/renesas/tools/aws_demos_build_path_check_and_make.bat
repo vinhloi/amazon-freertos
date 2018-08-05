@@ -16,8 +16,8 @@ if exist ".\aws_demos_build_path_check.bat" (
     echo Error: Unable to find the project folder.
     goto ERROR
 )
-echo IDE is %ide%  && rem # For debug
-echo Project Folder is %pj% && rem # For debug
+rem echo IDE is %ide%  && rem # For debug
+rem echo Project Folder is %pj% && rem # For debug
 
 if %ide%==e2 if "%1"=="clean" goto CLEAN
 if %ide%==e2 if "%2"=="clean" goto CLEAN
