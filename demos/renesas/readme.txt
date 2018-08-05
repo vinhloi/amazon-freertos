@@ -56,6 +56,10 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.1-pre4:
+[FIXED] Wrong project settings.
+[ADDED] Explanation of Renesas Starter Kit+ for RX65N-2MB + Silex SX-ULPGN PMOD environment in this readme.
+
 v0.1.1-pre3:
 [ADDED] Renesas Starter Kit+ for RX65N-2MB + Silex SX-ULPGN PMOD environment.
 
@@ -347,6 +351,13 @@ WIFI Module: Silex SX-ULPGN PMOD
          And you have to update following settings in <root>/demos/common/include/aws_clientcredential.h
            #define clientcredentialWIFI_SSID       "Paste Wi-Fi SSID here."
            #define clientcredentialWIFI_PASSWORD   "Paste Wi-Fi password here."
+           
+         Please open "Renesas Debug Virtual Consol" on your e2 studio to receive
+         the log data about wifi related.
+         And, this system is now in experimental. So communication speed is too late.
+         And, now in optimized level = 0 (none) because optimized level = 2 settings
+         cannot be confirmed good behavior.
+         These issue will be solved soon.
 
 IDE: CS+ v7.00.00
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/csplus.html
@@ -763,6 +774,15 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　特に問題なく結合完了。
 　pre版としてコミット。v0.1.1-pre3。
+　
+　v0.1.1-pre3 のRenesas Starter Kit+ for RX65N-2MB + Silex SX-ULPGN PMOD environmentは
+　プロジェクトファイルがおかしい。リソースフィルタにおいて必要な設定がなぜか消えて
+　しまっている。修正する。
+　また、この環境、Renesas Debug Virtual ConsolにWIFI関連のログを出力するが
+　窓を開いてないと先に進まない。またこの機能をOFFにしたら動かなくなる。
+　また、まだ実験中のため通信が遅い。あと最適化をONにすると動かない。
+　このあたりをReadmeに注意事項を追加する。
+　
 　
 　本日の作業はこれまで。
 　

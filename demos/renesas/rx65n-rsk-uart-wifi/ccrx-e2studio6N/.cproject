@@ -138,22 +138,22 @@
 					</folderInfo>
 					<folderInfo id="com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.216582545.1162363623" name="/" resourcePath="lib/aws/secure_sockets">
 						<toolChain id="com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.toolChain.1947817930" name="Renesas CCRX Toolchain" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.toolChain" unusedChildren="">
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF;org.eclipse.cdt.core.PE" id="com.renesas.cdt.managedbuild.renesas.ccrx.base.targetPlatform" osList="win32" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.targetPlatform"/>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.dsp.1586329612" name="DSP Assembler" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.dsp.283334129"/>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.common.1880725871" name="Common" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.common.1850118877"/>
-							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.1780125485" name="Compiler" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.829055"/>
-							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.assembler.1525816101" name="Assembler" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.assembler.175236271"/>
+							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.1780125485" name="Compiler" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.829055">
+								<inputType id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gcc.inputType.1676879060" name="Compiler Input C" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gcc.inputType"/>
+								<inputType id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gpp.inputType.1579976085" name="Compiler Input CPP" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gpp.inputType"/>
+							</tool>
+							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.assembler.1525816101" name="Assembler" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.assembler.175236271">
+								<inputType id="com.renesas.cdt.managedbuild.renesas.ccrx.assembler.inputType.1049684688" name="Assembler InputType" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.assembler.inputType"/>
+							</tool>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.linker.867083283" name="Linker" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.linker.2099553218"/>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.librarian.809782957" name="Library Generator" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.librarian.1357919725"/>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.converter.1137217551" name="Converter" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.converter.1607322956"/>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.rtosConfig.732276097" name="RTOS Configurator" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.rtosConfig.1733071265"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.216582545.1836391030" name="BufferAllocation_1.c" rcbsApplicability="disable" resourcePath="lib/aws/FreeRTOS-Plus-TCP/source/portable/BufferManagement/BufferAllocation_1.c" toolsToInvoke="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.829055.604888724">
-						<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.829055.604888724" name="Compiler" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.compiler.829055">
-							<inputType id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gcc.inputType.349672515" name="Compiler Input C" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gcc.inputType"/>
-							<inputType id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gpp.inputType.305896723" name="Compiler Input CPP" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gpp.inputType"/>
-						</tool>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application_code"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="config_files"/>
