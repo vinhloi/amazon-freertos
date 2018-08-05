@@ -1,7 +1,7 @@
 ----------------------------------------------
-Getting Start for RX65N Amazon FreeRTOS
+Getting Start for RX MCUs Amazon FreeRTOS
 ----------------------------------------------
-Thank you for interesting about RX65N and Amazon FreeRTOS.
+Thank you for interesting about RX MCUs (RX65N is main) and Amazon FreeRTOS.
 This guide is for your environment setup and confirm demos behavior.
 
 SheltyDog@Renesas writes this guide and has responsibility of this project.
@@ -56,6 +56,23 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.1-pre1:
+[CONFIRMED] Following changes by NoMaY-san.
+[UPDATED] Follow the upstream from Amazon FreeRTOS v1.3.0. <step 1/3>
+[ADDED] RX65N GR-ROSE's project for CC-RX & CS+.
+[MOVED] RX MCUs device driver HAL from /demos folder to /lib/third_party/mcu_vendor/renesas
+[FIXED] lack of called DI/EI operation in R_BSP_RegisterProtectDisable() and R_BSP_RegisterProtectEnable().
+[ADDED] Maybe a better way to get the start address of the _ETHERNET_BUFFERS section for GNURX projects.
+[FIXED] Correction of the SCFGcompiler.h because the R_ATTRIB_INTERRUPT/R_ATTRIB_STATIC_INTERRUPT macros
+        for GNURX projects were incorrect so that interrupt vectors were not generated.
+[RESTRUCTUERED] Restructuring folder structure of projects for CC-RX/e2 studio & CC-RX/CS+ & GNURX/e2 studio,
+                RX65N-RSK's trial of new folder structure reducing the effort to maintain various projects
+                but still keeping good usability.
+[ADDED] A workaround to avoid the problem that the BSP_CFG_RTOS_USED in the r_bsp_config.h
+        is set to (0) every time of code generation by the Smart Configurator.
+[RESTRUCTUERED] Restructuring folder structure of projects for CC-RX/e2 studio & CC-RX/CS+ & GNURX/e2 studio,
+                Improve the batch files and the handling of them.
+
 v0.1.0:
 [UPDATED] RX Driver Package version from v114 to v115 for all projects.
 [UPDATED] CS+, e2 studio to latest.
@@ -63,9 +80,9 @@ v0.1.0:
          RX65N RSK CC-RX e2 studio with E2 Emulator Lite
          RX65N RSK CC-RX CS+ with E2 Emulator Lite
          RX65N RSK GCC e2 studio with E2 Emulator Lite
-         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite
-         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite
-         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
          RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
          RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
 
@@ -210,7 +227,7 @@ v0.0.2:
 [REMOVED] Getting start step7 from #ifdef 0 to 1.
 [UPDATED] Clarify Getting start root directory path same as download zip "amazon-freertos-master".
 
-v0.0.1: released
+v0.0.1:
 [ADDED] RX65N supports Amazon FreeRTOS Release Version 1.2.3 in tentative.
         Only confirmed Echo demo using Ethernet.
 
@@ -304,6 +321,16 @@ Board: RX65N GR-ROSE proto1
            You can see pin1 on left-upper corner nearby "E" character on "ESPRESSIF" logo.
            Pin4 is lower 4pins from pin1.
 
+Board: RX64M GR-KAEDE
+    [en] http://gadget.renesas.com/en/product/kaede.html
+    [ja] http://gadget.renesas.com/ja/product/kaede.html
+
+         The log will be output from CNx xxpin=TxDxx(Pxx) connector as UART. (x=now confirming)
+         Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
+         and "LF" only as return code for your console.
+         PMOD UART/USB convertor is provided by Digilent.
+         https://store.digilentinc.com/pmod-usbuart-usb-to-uart-interface/
+           
 IDE: CS+ v7.00.00
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/csplus.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/csplus.html
@@ -323,7 +350,7 @@ Compiler: GCC for Renesas 4.8.4.201801-GNURX
 --------------------------------------------------------------------------
 Connection Pattern
 --------------------------------------------------------------------------
-  pattern1: wifi module has TCP/IP
+  pattern1: wifi module has TCP/IP and SSL/TLS, Amazon recommends this pattern as RAM<16KB.
   osi	protocol	implemented into
   7	aws		Amazon FreeRTOS
   7	mqtt		Amazon FreeRTOS
@@ -334,15 +361,12 @@ Connection Pattern
   2	ether		wifi module
   1	phy		wifi module
 
-  RX65N Target Board + Cloud Option Board (with Silex SX-ULPGN)	<first step>
-  RX231 Target Board + Cloud Option Board (with Silex SX-ULPGN)	<first step>
-  RX130 Target Board + Cloud Option Board (with Silex SX-ULPGN)	<first step>
   RX65N Target Board + Cloud Option Board (with Espressif ESP8266)
   RX231 Target Board + Cloud Option Board (with Espressif ESP8266)
   RX130 Target Board + Cloud Option Board (with Espressif ESP8266)
   RX65N GR-ROSE (with Espressif ESP8266)
 
-  pattern2: MCU has TCP/IP and using MCU Ethernet
+  pattern2: MCU has TCP/IP and SSL/TLS and using MCU Ethernet, Amazon recommends this pattern as RAM<64KB.
   osi	protocol	implemented into
   7	aws		Amazon FreeRTOS
   7	mqtt		Amazon FreeRTOS
@@ -358,7 +382,7 @@ Connection Pattern
   RX65N GR-ROSE
   RXxxN Envision Kit (Murata Type 1FX on board)
   
-  pattern3: MCU has TCP/IP and using MCU SDIO for wifi
+  pattern3: MCU has TCP/IP and SSL/TLS and using MCU SDIO for wifi, Amazon recommends this pattern as RAM<64KB.
   osi	protocol	implemented into
   7	aws		Amazon FreeRTOS
   7	mqtt		Amazon FreeRTOS
@@ -372,7 +396,26 @@ Connection Pattern
   RX65N RSK + SDIO wifi SDK (with Murata Type 1FX)
   RX65N Envision Kit + SDIO wifi SDK (with Murata Type 1FX)
   RXxxN Envision Kit (Murata Type 1FX on board)
-  
+
+  patternX: wifi module has TCP/IP and MCU has SSL/TLS, Amazon does NOT recommend this pattern!
+            This pattern needs RAM<64KB but only MCU SSL/TLS is running even if both MCU and wifi module
+            have SSL/TLS as function. This is very compromised pattern.
+            Because Silex wifi module does not have a SSL/TLS client authentication scheme that Amazon
+            Web Service requires.
+  osi	protocol	implemented into
+  7	aws		Amazon FreeRTOS
+  7	mqtt		Amazon FreeRTOS
+  6	ssl/tls		Amazon FreeRTOS
+  5	socket		Amazon FreeRTOS
+  4	tcp		wifi module
+  3	ip		wifi module
+  2	ether		wifi module
+  1	phy		wifi module
+
+  RX65N Target Board + Cloud Option Board (with Silex SX-ULPGN)	<first step>
+  RX231 Target Board + Cloud Option Board (with Silex SX-ULPGN)	<first step> -> cannot be realized of lack of RAM
+  RX130 Target Board + Cloud Option Board (with Silex SX-ULPGN)	<first step> -> cannot be realized of lack of RAM
+
 --------------------------------------------------------------------------
 Development Environment (tested or no matrix)
 --------------------------------------------------------------------------
@@ -381,12 +424,14 @@ Borad number:
  (1)Renesas Starter Kit+ for RX65N-2MB
  (2)RX65N Envision Kit
  (3)RX65N GR-ROSE proto1
+ (4)RX64M GR-KAEDE
 
 Connection pattern number:
- (1)pattern1: wifi module has TCP/IP
- (2)pattern2: MCU has TCP/IP and using MCU Ethernet
- (3)pattern3: MCU has TCP/IP and using MCU SDIO for wifi
-
+ (1)pattern1: wifi module has TCP/IP and SSL/TLS, Amazon recommends this pattern as RAM<16KB.
+ (2)pattern2: MCU has TCP/IP and SSL/TLS and using MCU Ethernet, Amazon recommends this pattern as RAM<64KB.
+ (3)pattern3: MCU has TCP/IP and SSL/TLS and using MCU SDIO for wifi, Amazon recommends this pattern as RAM<64KB.
+ (4)patternX: wifi module has TCP/IP and MCU has SSL/TLS, Amazon does NOT recommend this pattern!
+ 
 /////////////////////////////////////////////////////////////
 
 IDE number:
@@ -472,18 +517,24 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　2018/07/22
 　　スマートコンフィグレータのボード設定で RX65N RSK-2MB を選んでいるのに、
 　　BSPで選択されて出力されるボード毎のフォルダが generic_rx65n になっている。
-
+　　⇒将来ジェネリックのみになる予定。ボード依存部はスマートコンフィグレータ出力となる。
+　　　⇒8/5 解決。
+　　　
 　　r_bsp.h 以下ヘッダはAmazon FreeRTOSに存在しない。BSP開発者に修正依頼。
 　　ローカルではコメントアウトしておく。
 　　/*#include "croutine.h" Amazon FreeRTOS does not have this header file. */
 　　/*#include "freertos_start.h" Amazon FreeRTOS does not have this header file. */
 　　resetprg.c にも、#include "freertos_start.h" がある。上記と同様にコメントアウトしておく。
-
+　　⇒8/5 BSP開発者に修正依頼済み。
+　　
 　　コード生成すると、r_bsp_config.h の以下項目が必ず (0)に戻るようだ。
 　　コード生成するたびにこの値を確認しなければならない。
 　　まだ未対応ならスマートコンフィグレータ側はこの定義を無視するようにした方が良い。
 　　#define BSP_CFG_RTOS_USED               (1) // <-- Updated by GUI. Do not edit this value manually
-
+　　⇒現時点では公式未対応機能のためあえてこうしているとのこと。
+　　　⇒NoMaY氏に暫定処置していただいた。内容OK。
+　　　　⇒8/5 解決。
+　　　　
 　2018/06/10
 　　スマートコンフィグレータのデバイス設定(暗号有品のRX65N)と
 　　プロジェクトのデバイス設定(暗号無品のRX65N)とで食い違っていて、
@@ -512,6 +563,29 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/08/05
+　引き続き、NoMaY氏にフォルダ構成の調整行っていただいている。
+　大きくは、①/lib/third_party/mcu_vendor/renesas にFIT関連を引越ししたこと、
+　スマートコンフィグレータ周りのフォルダ調整(ccrx-e2studioNとか
+　gnurx-e2studioNとして従来プロジェクトと分離して実験)、②本家V130への追従。
+　②はcommonについて本家新規のファイルを登録だけしてあって、
+　ビルドから除外の状態になっているとのこと。
+　
+　まずはざっと変更点の確認を行って大きな問題が無いか確認していく。
+　⇒問題なし。
+　
+　RX65N RSKで動作確認を行う。他の環境の①対応はRSKでの確認が終わってから。
+　⇒CC-RX環境、GCC環境、e2/CS+環境、①②共に問題なし。GCCで割り込みベクタが未生成になる問題も解消。
+　　\demos\renesas\rx65n-rsk\ccrx-csplusN
+　　\demos\renesas\rx65n-rsk\ccrx-e2studio6N
+　　\demos\renesas\rx65n-rsk\gnurx-e2studio6N
+　　\demos\renesas\rx65n-rsk\ccrx-csplus
+　　\demos\renesas\rx65n-rsk\ccrx-e2studio6
+　　\demos\renesas\rx65n-rsk\gnurx-e2studio6
+　
+　問題なかったので本Readme更新だけだが、ここまでで一旦コミットを行う。
+　pre版としてコミット。v0.1.1-pre1。
+
 2018/07/22
 　スマートコンフィグレータ出力周りをNoMaY氏が整備してくれている。
 　だいぶすっきりしてきた。RX65N RSK のGCC用プロジェクトも追加された。
