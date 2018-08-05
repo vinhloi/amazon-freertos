@@ -585,7 +585,86 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　問題なかったので本Readme更新だけだが、ここまでで一旦コミットを行う。
 　pre版としてコミット。v0.1.1-pre1。
+　
+　続いて、②本家V130を行う。(1)と(3)はNoMaY氏、(2)はシェルティの分担。
+　(1)は完了している様子。
+　
+　\demos\renesas\rx65n-rsk\ccrx-e2studio6N の環境で作業開始。
+　
+　(1) 新規フォルダと新規ファイルの追加(ただしビルドから除外)、共通部分のCソース以外のファイル変更のマージ
+　(2) 共通部分のCソースファイル変更のマージとRXマイコン用のプロジェクトのソースへの反映(ビルドから除外の解除を含む)
+　(3) RXマイコン用のテストプロジェクトのe2 studioのプロジェクト作成(STの環境などを参考にしてトライしてみる)
 
+　(2)を進めていく。差分を確認。
+　かふぇルネに差分のスクリーンショットが既に貼ってある。
+　NoMaYさん、ありがとうございます！
+　
+　testsフォルダはtests用のプロジェクトを別途格納する形式なので、
+　ひとまず保留しておく。libフォルダの差分を適用していくことにする。
+
+　libフォルダは以下3個が増えている。
+　
+　①cbor
+　②defender
+　③FreeRTOS-Plus-POSIX
+　
+　一番簡単そうな③を登録する。
+　
+　インクルードパスを登録する。
+　\lib\FreeRTOS-Plus-POSIX\include\portableフォルダがある。
+　ヘッダのテンプレは、FreeRTOS_POSIX_portable_default.h。
+　_defaultを外して対応ボードのフォルダを作ってそこにFreeRTOS_POSIX_portable.h として設置。
+　
+　エラー3個出る。
+　E0562310:Undefined external symbol "_xTaskGetApplicationTaskTag" referenced in ".\lib\aws\FreeRTOS-Plus-POSIX\source\FreeRTOS_POSIX_pthread.obj"
+　E0562310:Undefined external symbol "_vTaskSetApplicationTaskTag" referenced in ".\lib\aws\FreeRTOS-Plus-POSIX\source\FreeRTOS_POSIX_pthread.obj"
+　E0562310:Undefined external symbol "_xTaskGetIdleTickCount" referenced in ".\lib\aws\FreeRTOS-Plus-POSIX\source\FreeRTOS_POSIX_clock.obj"
+
+　xTaskGetApplicationTaskTag を全文検索。
+　\lib\FreeRTOS\portable\Common\mpu_wrappers.c にある。
+　
+　Commonがプロジェクト登録から外れているようだ。
+　portableフォルダのリソースフィルタに Common を追加する。
+
+　"mpu_prototypes.h"が見つからないらしい。
+　
+　グーグルで検索したところ、FreeRTOS本家のSVNにあった。
+　https://sourceforge.net/p/freertos/code/HEAD/tree/trunk/FreeRTOS/Source/include/
+　
+　GitHub上のAmazon FreeRTOS内のFreeRTOSカーネルと、
+　Sourceforge上のFreeRTOSカーネルが微妙に整合取れてない感じか。
+　
+　mpu_prototypes.hをダウンロードして、\lib\include に入れておく。
+　
+　E0562310:Undefined external symbol "_vPortResetPrivilege" referenced in ".\lib\aws\FreeRTOS\portable\Common\mpu_wrappers.obj"
+　E0562310:Undefined external symbol "_xTaskCreateRestricted" referenced in ".\lib\aws\FreeRTOS\portable\Common\mpu_wrappers.obj"
+　E0562310:Undefined external symbol "_xTaskGetApplicationTaskTag" referenced in ".\lib\aws\FreeRTOS-Plus-POSIX\source\FreeRTOS_POSIX_pthread.obj"
+　E0562310:Undefined external symbol "_vTaskAllocateMPURegions" referenced in ".\lib\aws\FreeRTOS\portable\Common\mpu_wrappers.obj"
+　E0562310:Undefined external symbol "_vTaskSetApplicationTaskTag" referenced in ".\lib\aws\FreeRTOS-Plus-POSIX\source\FreeRTOS_POSIX_pthread.obj"
+　E0562310:Undefined external symbol "_xPortRaisePrivilege" referenced in ".\lib\aws\FreeRTOS\portable\Common\mpu_wrappers.obj"
+　E0562310:Undefined external symbol "_xTaskGetIdleTickCount" referenced in ".\lib\aws\FreeRTOS-Plus-POSIX\source\FreeRTOS_POSIX_clock.obj"
+　E0562310:Undefined external symbol "_xTaskCreateRestrictedStatic" referenced in ".\lib\aws\FreeRTOS\portable\Common\mpu_wrappers.obj"
+　
+　色々足りないらしい。
+　SourceforgeからFreeRTOSカーネルのSnapshotをゲットして、Amazon FreeRTOS内包のFreeRTOSカーネルとDIFFを取ってみる。
+　色々構成が違うようだ。
+　
+　アプローチを変えて、Windowsのプロジェクトがどのような構造になっているか調べる。
+　FreeRTOS-Plus-POSIXがプロジェクト登録されていない。
+　v130で追加されたコードを使うのは、ちょっと保留したほうがよさそう。
+　
+　その他、\lib\secure_sockets\portable\renesas の aws_secure_sockets.c が古いので、
+　\lib\secure_sockets\portable\freertos_plus_tcp にある最新テンプレートの内容を反映。
+
+　uRand()の実装体が、以下関数ポインタ経由で呼び出されるようだ。
+　今は未だuRand()を直接デバイス依存側で実装する方式で繋いでおこう。
+　xResult = pxPkcs11FunctionList->C_Initialize( NULL );
+　aws_secure_sockets.c 内の uRand()の実装は #if 0で無効化しておく。
+　
+　動作確認、特に問題なし。
+　アップデートしたのは結局のところ、aws_secure_sockets.c だけとなった。
+　　pre版としてコミット。v0.1.1-pre2。
+　
 2018/07/22
 　スマートコンフィグレータ出力周りをNoMaY氏が整備してくれている。
 　だいぶすっきりしてきた。RX65N RSK のGCC用プロジェクトも追加された。
