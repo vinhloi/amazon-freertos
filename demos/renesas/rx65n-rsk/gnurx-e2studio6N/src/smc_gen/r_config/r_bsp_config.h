@@ -554,6 +554,5 @@ Configuration Options
 */
 #define BSP_CFG_BOARD_REVISION                      (1)
 
-
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

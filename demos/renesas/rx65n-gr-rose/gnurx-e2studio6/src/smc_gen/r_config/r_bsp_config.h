@@ -424,7 +424,16 @@ Configuration Options
    3 = MicroC_OS is used.(This is not available.)
    4 = RI600V4 or RI600PX is used.(This is not available.)
 */
-#define BSP_CFG_RTOS_USED               (1) // <-- Updated by GUI. Do not edit this value manually
+/* As of today, we need a workaround to avoid the problem that the Smart Configurator does not have such GUI
+   yet and the BSP_CFG_RTOS_USED here is set to (0) every time of code generation by the Smart Configurator.
+   The BSP_CFG_RTOS_USED is set to (1) in the r_bsp.h instead of here so that the setting of here is ignored.
+*/
+#if !defined(BSP_CFG_RTOS_USED) || (BSP_CFG_RTOS_USED == 0)
+#if defined(BSP_CFG_RTOS_USED)
+#undef BSP_CFG_RTOS_USED
+#endif
+#define BSP_CFG_RTOS_USED               (0) // <-- Updated by GUI. Do not edit this value manually
+#endif
 
 /* This macro is used to select which CMT channel used for system timer of RTOS.
  * The setting of this macro is only valid if the macro BSP_CFG_RTOS_USED is set to a value other than 0. */

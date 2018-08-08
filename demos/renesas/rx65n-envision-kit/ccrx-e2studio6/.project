@@ -55,6 +55,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>src/compiler_support</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/ccrx/compiler_support</locationURI>
+		</link>
+		<link>
 			<name>application_code/common_demos/include</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/demos/common/include</locationURI>
@@ -160,6 +165,36 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/tinycbor</locationURI>
 		</link>
 		<link>
+			<name>src/FIT_modified_code/r_bsp</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/ccrx/generic_rx65n/r_bsp</locationURI>
+		</link>
+		<link>
+			<name>src/FIT_modified_code/r_byteq</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_byteq</locationURI>
+		</link>
+		<link>
+			<name>src/FIT_modified_code/r_cmt_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_cmt_rx</locationURI>
+		</link>
+		<link>
+			<name>src/FIT_modified_code/r_ether_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_ether_rx</locationURI>
+		</link>
+		<link>
+			<name>src/FIT_modified_code/r_flash_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flash_rx</locationURI>
+		</link>
+		<link>
+			<name>src/FIT_modified_code/r_sci_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_rx</locationURI>
+		</link>
+		<link>
 			<name>application_code/common_demos/include/aws_application_version.h</name>
 			<type>1</type>
 			<locationURI>AWS_IOT_MCU_ROOT/demos/common/include/aws_application_version.h</locationURI>
@@ -261,6 +296,15 @@
 		</link>
 	</linkedResources>
 	<filteredResources>
+		<filter>
+			<id>1532925745925</id>
+			<name></name>
+			<type>6</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-aws_demos_build_path_check_and_make.bat</arguments>
+			</matcher>
+		</filter>
 		<filter>
 			<id>1513514174593</id>
 			<name></name>
