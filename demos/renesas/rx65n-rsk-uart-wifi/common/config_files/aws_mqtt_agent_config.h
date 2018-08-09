@@ -44,18 +44,6 @@
 #define mqttconfigENABLE_METRICS    ( 1 )
 
 /**
- * @defgroup Metrics The metrics reported to the AWS IoT broker.
- *
- * If mqttconfigENABLE_METRICS is set to 1, these will be included
- * in the "username" field of MQTT connect messages.
- */
-/** @{ */
-#define mqttconfigMETRIC_SDK         "SDK=AmazonFreeRTOS"               /**< The SDK used by this device. */
-#define mqttconfigMETRIC_VERSION     "Version="tskKERNEL_VERSION_NUMBER /**< The version number of this SDK. */
-#define mqttconfigMETRIC_PLATFORM    "Platform=Unknown"                 /**< *FIX ME: Replace 'Unkown' with your platform name.* The platform that this SDK is running on. */
-/** @} */
-
-/**
  * @brief The maximum time an application task waits for sending a command to the
  * command queue and for receiving a notification from the MQTT task.
  *

@@ -264,12 +264,11 @@ extern void vLoggingPrintf( const char * pcFormat, ... );
 extern uint32_t ulRand();
 #define configRAND32()    ulRand()
 
-
+/* The platform FreeRTOS is running on. */
+#define configPLATFORM_NAME    "RenesasRX65N"
 
 /* Header required for the tracealyzer recorder library. */
 //#include "trcRecorder.h"
-
-
 
 /* Header required for the compatibility between GNU/IAR C compilers and the CC-RX compiler. */
 #include "SCFGcompiler.h"
