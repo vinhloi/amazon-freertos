@@ -56,9 +56,22 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
-v0.1.1-pre5
+v0.1.1:
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+         
+v0.1.1-pre5:
 [REMOVED] link to FreeRTOS+TCP from rx65n-rsk-uart-wifi.
-[FIXED] Wrong behavior or rx65n-rsk-uart-wifi: can set optimize level 2, can set log-off.
+[FIXED] Wrong behavior of rx65n-rsk-uart-wifi: can set optimize level 2, can set log-off.
 [UPDATED] Follow the upstream v1.3.0 excluding tests folder.
 [RESTRUCTUERED] Remove prototype for optimizing file structure.
 
@@ -477,7 +490,7 @@ Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (1)   (2)        /           x   x       x   -   -   -   -     
 (2)   (2)        /           x   x       x   -   -   -   -   * 
 (3)   (2)        /           x   x           -   -   -   -     
-(5)   (4)        /           x
+(5)   (4)        /           x               -   -   -   -     
 
   x: tested (MQTT echo demo)
   *: now trying(still junk)
@@ -620,6 +633,41 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　最適化設定を2に戻しビルド。正常動作確認。OK。
 　ひとまずここまででコミット。v0.1.1-pre5。
+　
+　全プロジェクトで動作確認を行う。
+　スマートコンフィグレータによるコード生成も行い、
+　合わせてNoMaY氏のスクリプトの動作チェックも行う。
+　\demos\renesas\rx65n-rsk\ccrx-csplus ... OK
+　\demos\renesas\rx65n-rsk\ccrx-e2studio ... OK
+　\demos\renesas\rx65n-rsk\gnurx-e2studio ... OK
+　\demos\renesas\rx65n-envision-kit\ccrx-csplus ... OK
+　\demos\renesas\rx65n-envision-kit\ccrx-e2studio ... OK
+　\demos\renesas\rx65n-envision-kit\gnurx-e2studio ... OK
+　\demos\renesas\rx65n-gr-rose\ccrx-csplus ... NG -> OK (エミュレータから電源供給する設定に変更、通信方式をFINEに変更)
+　\demos\renesas\rx65n-gr-rose\ccrx-e2studio ... OK
+　
+　どうやらNoMaY氏の保存の改行コードは LF で、CS+が出力するコード、プロジェクトファイルの
+　改行コードは CR+LF のようだ。GitHub上で大量に差分が出るように見えるのはこれが原因か。
+　
+　ざっくり調べてみた。
+　
+　CS+のコード生成系: r_cg_hardware_setup.c : CR+LF # 現状何らかの要因でLFになっている
+　CS+のピンコンフィグ系: Pin.c : CR+LF # 現状N何らかの要因でLFになっている
+　CS+のピンコンフィグ系ヘッダ: r_pinset.h : LF
+　CS+のFITモジュールのピンコンフィグ系: r_ether_rx_pinset.c: CR+LF # 現状何らかの要因でLFになっている
+　CS+のFITモジュールのコンフィグ系: r_bsp_config.h: CR+LF # 現状何らかの要因でLFになっている
+　CS+のプロジェクトファイル: aws_demos.mtpj: CR+LF # 現状何らかの要因でLFになっている
+　e2 studioのコード生成系: r_cg_hardware_setup.c : CR+LF # 現状何らかの要因でLFになっている
+　e2 studioのピンコンフィグ系: Pin.c : CR+LF # 現状何らかの要因でLFになっている
+　e2 studioのピンコンフィグ系ヘッダ: r_pinset.h : LF
+　e2 studioのFITモジュールのピンコンフィグ系: r_ether_rx_pinset.c: CR+LF # 現状何らかの要因でLFになっている
+　e2 studioのプロジェクトファイル: .cproject: LF
+　
+　改行コードの件はNoMaY氏に相談。
+　コミットはe2 studioのプロジェクトファイル、本Readme等を除きCR+LFにて行う。
+　
+　ここまででコミット。
+　全プロジェクト無事に動作確認OKとなったので、v0.1.1のリリースビルドとする。
 
 2018/08/05
 　引き続き、NoMaY氏にフォルダ構成の調整行っていただいている。
