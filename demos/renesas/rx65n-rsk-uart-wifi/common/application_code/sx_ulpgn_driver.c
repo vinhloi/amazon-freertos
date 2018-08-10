@@ -265,15 +265,16 @@ int32_t sx_ulpgn_tcp_connect(uint32_t ipaddr, uint16_t port)
 	return sx_ulpgn_serial_send_basic(buff, 3, 10000, ULPGN_RETURN_CONNECT);
 }
 
-int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length)
+int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length, uint32_t timeout_ms)
 {
 	int32_t timeout;
-	int32_t sended_length, lenghttmp1;
+	volatile int32_t sended_length;
+	int32_t lenghttmp1;
 	sci_err_t ercd;
 //	sci_baud_t baud;
 
 	sended_length = 0;
-	timeout_init(g_sl_ulpgn_tcp_timeout);
+	timeout_init(timeout_ms);
 
 	timeout = 0;
 
@@ -300,16 +301,16 @@ int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length)
 			{
 				break;
 			}
-			if(-1 == check_timeout(0))
-			{
-				timeout = 1;
-				break;
-			}
+//			if(-1 == check_timeout(0))
+//			{
+//				timeout = 1;
+//				break;
+//			}
 		}
-		if(timeout == 1)
-		{
-			return -1;
-		}
+//		if(timeout == 1)
+//		{
+//			return -1;
+//		}
 		sended_length += lenghttmp1;
 	}
 	if(timeout == 1 )
@@ -318,18 +319,21 @@ int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length)
 	}
 
 #if DEBUGLOG == 1
-	printf("tcp %d byte send\r\n",length);
+	printf("tcp %d byte send\r\n",sended_length);
 #endif
-	return length;
+	return sended_length;
 }
 
-int32_t sx_ulpgn_tcp_recv(uint8_t *pdata, int32_t length)
+int32_t sx_ulpgn_tcp_recv(uint8_t *pdata, int32_t length, uint32_t timeout_ms)
 {
 	int32_t timeout;
 	sci_err_t ercd;
 	uint32_t recvcnt = 0;
+#if DEBUGLOG == 1
+	TickType_t tmptime2;
+#endif
 
-	timeout_init(g_sl_ulpgn_tcp_timeout);
+	timeout_init(timeout_ms);
 
 	timeout = 0;
 	while(1)
@@ -349,12 +353,9 @@ int32_t sx_ulpgn_tcp_recv(uint8_t *pdata, int32_t length)
 			break;
 		}
 	}
-//	if(timeout == 1 && recvcnt == 0)
-//	{
-//		return -1;
-//	}
 #if DEBUGLOG == 1
-	printf("tcp %d byte received.reqsize=%d\r\n",recvcnt, length);
+	tmptime2 = xTaskGetTickCount();
+	printf("r:%06d:tcp %d byte received.reqsize=%d\r\n",tmptime2, recvcnt, length);
 #endif
 
 	return recvcnt;
@@ -371,10 +372,12 @@ int32_t sx_ulpgn_tcp_disconnect(void)
 	int32_t ret = 0;
 	if(1 == socket_create_flag)
 	{
-		R_BSP_SoftwareDelay(22, BSP_DELAY_MILLISECS); /* 1s */
-		ret = sx_ulpgn_serial_send_basic("+++", 3, 200, ULPGN_RETURN_OK);
 
-		ret = sx_ulpgn_serial_send_basic("ATNCLOSE\r", 3, 200, ULPGN_RETURN_OK);
+		R_BSP_SoftwareDelay(201, BSP_DELAY_MILLISECS); /* 1s */
+		R_SCI_Control(sx_ulpgn_uart_sci_handle,SCI_CMD_RX_Q_FLUSH,NULL);
+		ret = sx_ulpgn_serial_send_basic("+++", 3, 1000, ULPGN_RETURN_OK);
+
+		ret = sx_ulpgn_serial_send_basic("ATNCLOSE\r", 3, 1000, ULPGN_RETURN_OK);
 		if(0 == ret)
 		{
 			socket_create_flag = 0;
@@ -473,7 +476,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t respons
 			{
 				continue;
 			}
-			if(recvcnt == sizeof(recvbuff))
+			if(recvcnt == sizeof(recvbuff)-2)
 			{
 				break;
 			}
@@ -512,7 +515,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t respons
 		return -1;
 	}
 	if(0 != strncmp((const char *)&recvbuff[recvcnt - strlen((const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode]) ],
-			(const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode], strlen((const char *)ULPGN_RETURN_TEXT_OK)))
+			(const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode], strlen((const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode])))
 	{
 		return -1;
 	}

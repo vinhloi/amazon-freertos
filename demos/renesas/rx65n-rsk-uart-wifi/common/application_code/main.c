@@ -26,7 +26,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
-#include "FreeRTOS_IP.h"
 #include <stdio.h>
 #include <string.h>
 

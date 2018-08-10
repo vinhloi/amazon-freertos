@@ -75,11 +75,6 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/FreeRTOS</locationURI>
 		</link>
 		<link>
-			<name>lib/aws/FreeRTOS-Plus-TCP</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/FreeRTOS-Plus-TCP</locationURI>
-		</link>
-		<link>
 			<name>lib/aws/bufferpool</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/bufferpool</locationURI>
@@ -366,33 +361,6 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-RX600v2</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1515504232772</id>
-			<name>lib/aws/FreeRTOS-Plus-TCP/source/portable/BufferManagement</name>
-			<type>5</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-BufferAllocation_2.c</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1515504311064</id>
-			<name>lib/aws/FreeRTOS-Plus-TCP/source/portable/Compiler</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-Renesas</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1515491646756</id>
-			<name>lib/aws/FreeRTOS-Plus-TCP/source/portable/NetworkInterface</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-RX</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>

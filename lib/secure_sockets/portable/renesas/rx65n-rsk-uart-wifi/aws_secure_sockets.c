@@ -1,6 +1,6 @@
 /*
  * Amazon FreeRTOS Secure Socket V1.0.0
- * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -32,9 +32,9 @@
 #include "FreeRTOS.h"
 #include "FreeRTOSIPConfig.h"
 #include "list.h"
-#include "FreeRTOS_IP.h"
+//#include "FreeRTOS_IP.h"
 #include "aws_secure_sockets.h"
-#include "FreeRTOS_Sockets.h"
+//#include "FreeRTOS_Sockets.h"
 #include "aws_tls.h"
 #include "task.h"
 #include "sx_ulpgn_driver.h"
@@ -48,6 +48,8 @@ typedef struct SSOCKETContext
     BaseType_t xRequireTLS;
     BaseType_t xSendFlags;
     BaseType_t xRecvFlags;
+    uint32_t ulSendTimeout;
+    uint32_t ulRecvTimeout;
     char * pcServerCertificate;
     uint32_t ulServerCertificateLength;
 } SSOCKETContext_t, * SSOCKETContextPtr_t;
@@ -76,7 +78,7 @@ static BaseType_t prvNetworkSend( void * pvContext,
 {
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) pvContext; /*lint !e9087 cast used for portability. */
 
-    return sx_ulpgn_tcp_send(pucData, xDataLength);
+    return sx_ulpgn_tcp_send(pucData, xDataLength, pxContext->ulSendTimeout);
 
 //    return FreeRTOS_send( pxContext->xSocket, pucData, xDataLength, pxContext->xSendFlags );
 }
@@ -89,9 +91,17 @@ static BaseType_t prvNetworkRecv( void * pvContext,
                                  unsigned char * pucReceiveBuffer,
                                  size_t xReceiveLength )
 {
+	BaseType_t receive_byte;
    SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) pvContext; /*lint !e9087 cast used for portability. */
 
-   return sx_ulpgn_tcp_recv(pucReceiveBuffer, xReceiveLength);
+
+   receive_byte = sx_ulpgn_tcp_recv(pucReceiveBuffer, xReceiveLength, pxContext->ulRecvTimeout);
+
+   if(xReceiveLength == 64)
+   {
+   	nop();
+   }
+   return receive_byte;
 
 //   return FreeRTOS_recv( pxContext->xSocket, pucReceiveBuffer, xReceiveLength, pxContext->xRecvFlags );
 }
@@ -154,6 +164,8 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
         {
             lStatus = SOCKETS_SOCKET_ERROR;
         }
+        pxContext->ulRecvTimeout = socketsconfigDEFAULT_RECV_TIMEOUT;
+        pxContext->ulSendTimeout = socketsconfigDEFAULT_SEND_TIMEOUT;
     }
 
     if( SOCKETS_ERROR_NONE != lStatus )
@@ -170,23 +182,6 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
     	}
     	return pxContext;
     }
-}
-/*-----------------------------------------------------------*/
-
-int32_t SOCKETS_Bind( Socket_t xSocket,
-                      SocketsSockaddr_t * pxAddress,
-                      Socklen_t xAddressLength )
-{
-    /* FIX ME. */
-    return SOCKETS_SOCKET_ERROR;
-}
-/*-----------------------------------------------------------*/
-
-int32_t SOCKETS_Listen( Socket_t xSocket,
-                        int32_t lBacklog )
-{
-    /* FIX ME. */
-    return SOCKETS_SOCKET_ERROR;
 }
 /*-----------------------------------------------------------*/
 
@@ -221,17 +216,9 @@ int32_t SOCKETS_Connect( Socket_t xSocket,
     int32_t ret;
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
     TLSParams_t xTLSParams = { 0 };
-    struct freertos_sockaddr xTempAddress = { 0 };
 
     if( ( pxContext != SOCKETS_INVALID_SOCKET ) && ( pxAddress != NULL ) )
     {
-        /* Connect the wrapped socket. */
-        xTempAddress.sin_addr = pxAddress->ulAddress;
-        xTempAddress.sin_family = pxAddress->ucSocketDomain;
-        xTempAddress.sin_len = ( uint8_t ) sizeof( xTempAddress );
-        xTempAddress.sin_port = pxAddress->usPort;
-//        lStatus = FreeRTOS_connect( pxContext->xSocket, &xTempAddress, xAddressLength );
-
         ret = sx_ulpgn_tcp_connect(SOCKETS_ntohl(pxAddress->ulAddress), SOCKETS_ntohs(pxAddress->usPort));
         if( 0 != ret )
         {
@@ -486,7 +473,7 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
                             const void * pvOptionValue,
                             size_t xOptionLength )
 {
-    int32_t lStatus = pdFREERTOS_ERRNO_NONE;
+    int32_t lStatus = SOCKETS_ERROR_NONE;
     TickType_t xTimeout;
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
 
@@ -499,7 +486,7 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
             if( NULL == ( pxContext->pcDestination =
                               ( char * ) pvPortMalloc( 1U + xOptionLength ) ) )
             {
-                lStatus = pdFREERTOS_ERRNO_ENOMEM;
+                lStatus = SOCKETS_ENOMEM;
             }
             else
             {
@@ -516,7 +503,7 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
             if( NULL == ( pxContext->pcServerCertificate =
                               ( char * ) pvPortMalloc( xOptionLength ) ) )
             {
-                lStatus = pdFREERTOS_ERRNO_ENOMEM;
+                lStatus = SOCKETS_ENOMEM;
             }
             else
             {
@@ -531,25 +518,21 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
             break;
 
         case SOCKETS_SO_NONBLOCK:
-            xTimeout = 0;
-            lStatus = FreeRTOS_setsockopt( pxContext->xSocket,
-                                           lLevel,
-                                           SOCKETS_SO_RCVTIMEO,
-                                           &xTimeout,
-                                           sizeof( xTimeout ) );
-
-            if( lStatus == SOCKETS_ERROR_NONE )
-            {
-                lStatus = FreeRTOS_setsockopt( pxContext->xSocket,
-                                               lLevel,
-                                               SOCKETS_SO_SNDTIMEO,
-                                               &xTimeout,
-                                               sizeof( xTimeout ) );
-            }
-
+            pxContext->ulSendTimeout = 1;
+            pxContext->ulRecvTimeout = 2;
             break;
 
         case SOCKETS_SO_RCVTIMEO:
+            /* Comply with Berkeley standard - a 0 timeout is wait forever. */
+            xTimeout = *( ( const TickType_t * ) pvOptionValue ); /*lint !e9087 pvOptionValue passed should be of TickType_t */
+
+            if( xTimeout == 0U )
+            {
+                xTimeout = portMAX_DELAY;
+            }
+        	pxContext->ulRecvTimeout = xTimeout;
+//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
+            break;
         case SOCKETS_SO_SNDTIMEO:
             /* Comply with Berkeley standard - a 0 timeout is wait forever. */
             xTimeout = *( ( const TickType_t * ) pvOptionValue ); /*lint !e9087 pvOptionValue passed should be of TickType_t */
@@ -558,22 +541,17 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
             {
                 xTimeout = portMAX_DELAY;
             }
-
-            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
-            lStatus = pdFREERTOS_ERRNO_NONE;
-//            lStatus = FreeRTOS_setsockopt( pxContext->xSocket,
-//                                           lLevel,
-//                                           lOptionName,
-//                                           &xTimeout,
-//                                           xOptionLength );
+        	pxContext->ulSendTimeout = xTimeout;
+//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
             break;
 
         default:
-            lStatus = FreeRTOS_setsockopt( pxContext->xSocket,
-                                           lLevel,
-                                           lOptionName,
-                                           pvOptionValue,
-                                           xOptionLength );
+            lStatus = SOCKETS_ENOPROTOOPT;
+//            FreeRTOS_setsockopt( pxContext->xSocket,
+//                                           lLevel,
+//                                           lOptionName,
+//                                           pvOptionValue,
+//                                           xOptionLength );
             break;
     }
 

@@ -56,6 +56,12 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.1-pre5
+[REMOVED] link to FreeRTOS+TCP from rx65n-rsk-uart-wifi.
+[FIXED] Wrong behavior or rx65n-rsk-uart-wifi: can set optimize level 2, can set log-off.
+[UPDATED] Follow the upstream v1.3.0 excluding tests folder.
+[RESTRUCTUERED] Remove prototype for optimizing file structure.
+
 v0.1.1-pre4:
 [FIXED] Wrong project settings.
 [ADDED] Explanation of Renesas Starter Kit+ for RX65N-2MB + Silex SX-ULPGN PMOD environment in this readme.
@@ -352,13 +358,6 @@ WIFI Module: Silex SX-ULPGN PMOD
            #define clientcredentialWIFI_SSID       "Paste Wi-Fi SSID here."
            #define clientcredentialWIFI_PASSWORD   "Paste Wi-Fi password here."
            
-         Please open "Renesas Debug Virtual Consol" on your e2 studio to receive
-         the log data about wifi related.
-         And, this system is now in experimental. So communication speed is too late.
-         And, now in optimized level = 0 (none) because optimized level = 2 settings
-         cannot be confirmed good behavior.
-         These issue will be solved soon.
-
 IDE: CS+ v7.00.00
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/csplus.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/csplus.html
@@ -600,6 +599,28 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/08/10
+　夏休みだ！
+　
+　初手GitHubを確認。NoMaY氏の作業が完了し、ファイル構成が絞れている。
+　更新漏れのファイルなども補完いただいている様子。毎度感謝です。
+　担当者がWIFI関連のコードを修正完了したとのことでこのマージを行う。
+　綺麗にマージできていれば、FreeRTOS+TCP以下のコードは使用しなくて
+　済むはずだ。プロジェクト登録から外す。
+　ビルドしてみるとFreeRTOS+TCP関連のヘッダのインクルードで引っかかる。
+　このインクルードを全部削除していく。
+　FreeRTOS+TCPから呼ばれる関数も削除。
+　void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
+　get_random_number()は依然として必要なようだ。リンクエラーで残る。
+　これは、/demos/renesas/rx65n-rsk-uart-wifi/common/application_code/entropy_hardware_poll.c に
+　移植しておく。
+　ビルド。正常動作確認。OK。相変わらずAWSに繋がるまでが遅い。
+　なぜだ。とりあえず保留。
+　　⇒ちょっとアクセスポイントとボードを離すと通信がうまくいかない。電波強度の問題？
+　
+　最適化設定を2に戻しビルド。正常動作確認。OK。
+　ひとまずここまででコミット。v0.1.1-pre5。
+
 2018/08/05
 　引き続き、NoMaY氏にフォルダ構成の調整行っていただいている。
 　大きくは、①/lib/third_party/mcu_vendor/renesas にFIT関連を引越ししたこと、
