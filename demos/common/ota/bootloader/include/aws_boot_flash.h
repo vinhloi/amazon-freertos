@@ -1,6 +1,6 @@
 /*
- * Amazon FreeRTOS
- * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * Amazon FreeRTOS Reference Bootloader V0.9.0
+ * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -10,8 +10,7 @@
  * subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software. If you wish to use our Amazon
- * FreeRTOS name, please do so in a fair use way that does not cause confusion.
+ * copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
@@ -25,27 +24,19 @@
  */
 
 
-#ifndef __AWS_CODESIGN_KEYS__H__
-#define __AWS_CODESIGN_KEYS__H__
 
-/*
- * PEM-encoded code signing certificate
- *
- * Must include the PEM header and footer:
- * "-----BEGIN CERTIFICATE-----"
- * "...base64 data..."
- * "-----END CERTIFICATE-----";
- */
-static const char signingcredentialSIGNING_CERTIFICATE_PEM[] = "Paste code signing certificate here.";
+#ifndef _AWS_BOOT_FLASH_H_
+#define _AWS_BOOT_FLASH_H_
 
-/*
- * PEM-encoded code signing private key.
- *
- * Must include the PEM header and footer:
- * "-----BEGIN PRIVATE KEY-----"
- * "...base64 data..."
- * "-----END PRIVATE KEY-----";
- */
-static const char signingcredentialSIGNING_PRIVATE_KEY_PEM[] = "Paste code signing private key here.";
+#include "aws_boot_loader.h"
 
-#endif
+BaseType_t BOOT_FLASH_Write( const uint32_t * pulAddress,
+                             const uint32_t * pulData,
+                             int lLength );
+
+BaseType_t BOOT_FLASH_EraseHeader( const BOOTImageDescriptor_t * pxAppDescriptor );
+
+BaseType_t BOOT_FLASH_EraseBank( const BOOTImageDescriptor_t * pxAppDescriptor );
+
+
+#endif /*_AWS_BOOT_FLASH_H_*/
