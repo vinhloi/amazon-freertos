@@ -45,7 +45,6 @@ aws_mqtt_lib.obj
 aws_ota_agent.obj
 aws_ota_cbor.obj
 aws_ota_pal.obj
-aws_rsprintf.obj
 aws_pkcs11_mbedtls.obj
 aws_pkcs11_pal.obj
 aws_secure_sockets.obj
