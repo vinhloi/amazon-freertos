@@ -109,6 +109,17 @@ for %%S in (%MODIFIED_FIT_MODULES%) do (
     )
 )
 
+:CONVERT_FOR_GNURX
+if exist "%pj%src\smc_gen\general\r_cg_vector_table.c" (
+    if not exist "%pj%src\smc_gen\general\r_cg_vector_pragma.h" (
+        echo converting file: "src\smc_gen\general\r_cg_vector_table.c" --^> "src\smc_gen\general\r_cg_vector_pragma.h"
+        cscript -nologo "%~dp0r_cg_vector_pragma.js" "%pj%src\smc_gen\general\r_cg_vector_table.c" "%pj%src\smc_gen\general\r_cg_vector_pragma.h"
+    )
+    if exist "%pj%src\smc_gen\general\r_cg_vector_pragma.h" (
+        echo Use "src\smc_gen\general\r_cg_vector_pragma.h" instead of r_cg_vector_table.c
+    )
+)
+
 :NOERROR
 if %ide%==csp (
     endlocal
