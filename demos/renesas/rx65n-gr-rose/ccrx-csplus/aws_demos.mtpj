@@ -2521,17 +2521,16 @@
       <ParentItem>35c39997-2e0d-46d0-b0ba-ee3b25c031ea</ParentItem>
       <Property>690b9da3-bf74-44df-bc90-1462200f0fbd</Property>
     </Instance>
+    <Instance Guid="bfd08642-ab64-4276-920a-0243e41b0679">
+      <Name>register_access</Name>
+      <Type>Category</Type>
+      <ParentItem>b355c2d5-bb3b-463f-9c1a-1f7474c321ee</ParentItem>
+      <Property>c9b9bd3e-fdb0-4f78-a4e0-5c114dbb1e3e</Property>
+    </Instance>
     <Instance Guid="90697131-fc0e-4ace-b2f7-1d8185aa7841">
       <Name>SCFGcompiler.h</Name>
       <Type>File</Type>
       <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support\SCFGcompiler.h</RelativePath>
-      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
-      <ParentItem>b355c2d5-bb3b-463f-9c1a-1f7474c321ee</ParentItem>
-    </Instance>
-    <Instance Guid="87c759b3-c7a1-4ab2-8c17-d4474121c679">
-      <Name>iodefine.h</Name>
-      <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support\iodefine.h</RelativePath>
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>b355c2d5-bb3b-463f-9c1a-1f7474c321ee</ParentItem>
     </Instance>
@@ -2548,6 +2547,13 @@
       <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support\attention!.txt</RelativePath>
       <TreeImageGuid>0c88f8d6-0d0b-411f-a135-781f4df9bffa</TreeImageGuid>
       <ParentItem>b355c2d5-bb3b-463f-9c1a-1f7474c321ee</ParentItem>
+    </Instance>
+    <Instance Guid="87c759b3-c7a1-4ab2-8c17-d4474121c679">
+      <Name>iodefine.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support\register_access\rx65n\iodefine.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>bfd08642-ab64-4276-920a-0243e41b0679</ParentItem>
     </Instance>
     <Instance Guid="4ea7e328-186e-438f-a37d-95b5e6ff04b9">
       <Name>r_bsp</Name>
@@ -5767,6 +5773,7 @@ src\smc_gen\general
 ..\..\..\..\lib\third_party\mbedtls\include
 src
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support
+..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support\register_access\rx65n
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\generic_rx65n\r_bsp
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src
@@ -5850,6 +5857,7 @@ src
 -include=..\..\..\..\lib\third_party\mbedtls\include
 -include=src
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support
+-include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\compiler_support\register_access\rx65n
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\ccrx\generic_rx65n\r_bsp
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src

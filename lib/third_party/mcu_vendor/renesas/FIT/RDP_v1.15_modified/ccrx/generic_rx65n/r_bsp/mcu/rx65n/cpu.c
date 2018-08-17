@@ -168,7 +168,7 @@ void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
 #endif /* defined(__RENESAS__) */ 
 
 //#endif /* BSP_CFG_RTOS_USED == 1 */ 
-    
+
     /* Is it safe to disable write access?  */
     if (0 != g_protect_counters[regs_to_protect])
     {
@@ -213,6 +213,7 @@ void R_BSP_RegisterProtectEnable (bsp_reg_protect_t regs_to_protect)
             MPC.PWPR.BIT.B0WI = 1;     
         }
     }
+
 //#if BSP_CFG_RTOS_USED == 1      // FreeRTOS
 
 #if defined(__RENESAS__)

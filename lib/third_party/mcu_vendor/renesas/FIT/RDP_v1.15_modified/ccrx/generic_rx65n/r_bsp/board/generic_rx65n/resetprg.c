@@ -205,6 +205,7 @@ void PowerON_Reset_PC(void)
     /* Call the main program function (should not return) */
     main();
 #elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
+	/* Lock the channel that system timer of RTOS is using. */
     #if (((BSP_CFG_RTOS_SYSTEM_TIMER) >=0) && ((BSP_CFG_RTOS_SYSTEM_TIMER) <= 3))
         if (R_BSP_HardwareLock((mcu_lock_t)(BSP_LOCK_CMT0 + BSP_CFG_RTOS_SYSTEM_TIMER)) == false)
         {

@@ -33,12 +33,12 @@
 		<link>
 			<name>application_code</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-envision-kit/common/application_code</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-gr-rose/common/application_code</locationURI>
 		</link>
 		<link>
 			<name>config_files</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-envision-kit/common/config_files</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-gr-rose/common/config_files</locationURI>
 		</link>
 		<link>
 			<name>lib</name>
@@ -113,17 +113,17 @@
 		<link>
 			<name>lib/aws/ota</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/portable/renesas/rx65n-envision-kit</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/portable/renesas/rx65n-gr-rose</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/pkcs11</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/pkcs11/portable/renesas/rx65n-envision-kit</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/pkcs11/portable/renesas/rx65n-gr-rose</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/secure_sockets</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/secure_sockets/portable/renesas/rx65n-envision-kit</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/secure_sockets/portable/renesas/rx65n-gr-rose</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/shadow</name>
@@ -143,7 +143,7 @@
 		<link>
 			<name>lib/aws/wifi</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/wifi/portable/renesas/rx65n-envision-kit</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/wifi/portable/renesas/rx65n-gr-rose</locationURI>
 		</link>
 		<link>
 			<name>lib/third_party/jsmn</name>
@@ -199,6 +199,11 @@
 			<name>src/FIT_modified_code/r_sci_rx</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_rx</locationURI>
+		</link>
+		<link>
+			<name>src/compiler_support/register_access</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/ccrx/compiler_support/register_access/rx65n</locationURI>
 		</link>
 		<link>
 			<name>application_code/common_demos/include/aws_application_version.h</name>
@@ -316,6 +321,15 @@
 			</matcher>
 		</filter>
 		<filter>
+			<id>1534518723747</id>
+			<name>src/compiler_support/register_access</name>
+			<type>10</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-*</arguments>
+			</matcher>
+		</filter>
+		<filter>
 			<id>1513514756448</id>
 			<name>lib/aws/FreeRTOS/portable</name>
 			<type>9</type>
@@ -367,6 +381,33 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-heap_4.c</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1564441882426</id>
+			<name>src/FIT_modified_code/r_ether_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1564441856894</id>
+			<name>src/FIT_modified_code/r_flash_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1564441820170</id>
+			<name>src/FIT_modified_code/r_sci_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
 			</matcher>
 		</filter>
 		<filter>

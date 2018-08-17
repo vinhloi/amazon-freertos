@@ -105,7 +105,7 @@ int8_t  *sbrk(size_t size)
     return p;
 }
 
-#endif /* BSP_CFG_HEAP_BYTES */
-
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
+
+#endif /* BSP_CFG_HEAP_BYTES */
 

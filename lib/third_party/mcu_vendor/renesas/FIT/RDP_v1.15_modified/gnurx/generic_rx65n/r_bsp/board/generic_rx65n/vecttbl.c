@@ -48,7 +48,7 @@ Macro definitions
 #define FPU_CAUSE_FLAGS     (0x000000FC)
 
 /***********************************************************************************************************************
-* Function name: PowerON_Reset_PC
+* Function name: PowerON_Reset
 * Description  : The reset vector points to this function.  Code execution starts in this function after reset.
 * Arguments    : none
 * Return value : none
