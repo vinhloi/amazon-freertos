@@ -167,6 +167,13 @@
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>ee76dcf7-991c-446f-8609-be276bc3895a</ParentItem>
     </Instance>
+    <Instance Guid="7dbfdfa2-fd3b-45ad-8c06-4b4f7970f94f">
+      <Name>aws_ota_codesigner_certificate.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\..\..\common\include\aws_ota_codesigner_certificate.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>ee76dcf7-991c-446f-8609-be276bc3895a</ParentItem>
+    </Instance>
     <Instance Guid="9b4f48bf-86f6-403e-b2a1-be701a6fbc40">
       <Name>aws_ota_update_demo.h</Name>
       <Type>File</Type>
@@ -311,6 +318,13 @@
       <Name>aws_mqtt_config.h</Name>
       <Type>File</Type>
       <RelativePath>..\common\config_files\aws_mqtt_config.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>ef28f179-dc4b-45a4-aba8-9ae1e35b1617</ParentItem>
+    </Instance>
+    <Instance Guid="0ce203fb-cb2c-4c96-a6ff-444b5d9da917">
+      <Name>aws_ota_agent_config.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\common\config_files\aws_ota_agent_config.h</RelativePath>
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>ef28f179-dc4b-45a4-aba8-9ae1e35b1617</ParentItem>
     </Instance>
@@ -938,6 +952,13 @@
       <Type>Category</Type>
       <ParentItem>07820263-c65e-47e8-ad5c-7fc4eb669938</ParentItem>
     </Instance>
+    <Instance Guid="9b58bc9c-8f4f-4dc7-8cfe-f8e734406f3d">
+      <Name>aws_appversion32.h</Name>
+      <Type>File</Type>
+      <RelativePath>..\..\..\..\lib\include\aws_appversion32.h</RelativePath>
+      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>07820263-c65e-47e8-ad5c-7fc4eb669938</ParentItem>
+    </Instance>
     <Instance Guid="57ffa974-c30d-4dd2-85d0-130d0160d840">
       <Name>aws_crypto.h</Name>
       <Type>File</Type>
@@ -1166,13 +1187,6 @@
       <Name>aws_ota_types.h</Name>
       <Type>File</Type>
       <RelativePath>..\..\..\..\lib\include\private\aws_ota_types.h</RelativePath>
-      <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
-      <ParentItem>42f7561a-0a86-4458-8ff7-2c15d4b2d8ae</ParentItem>
-    </Instance>
-    <Instance Guid="572f0ee6-24c7-40d7-956c-3b05964d25a6">
-      <Name>aws_rsprintf.h</Name>
-      <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\include\private\aws_rsprintf.h</RelativePath>
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>42f7561a-0a86-4458-8ff7-2c15d4b2d8ae</ParentItem>
     </Instance>
@@ -7676,8 +7690,8 @@ D_2=R_2
       <ItemAddTime>636569983432336512</ItemAddTime>
       <ItemAddTimeCount>3</ItemAddTimeCount>
     </Instance>
-    <Instance Guid="572f0ee6-24c7-40d7-956c-3b05964d25a6">
-      <ItemAddTime>636569983432436656</ItemAddTime>
+    <Instance Guid="9b58bc9c-8f4f-4dc7-8cfe-f8e734406f3d">
+      <ItemAddTime>636702519196413024</ItemAddTime>
       <ItemAddTimeCount>0</ItemAddTimeCount>
     </Instance>
     <Instance Guid="5981c02f-ea1e-4b47-86fd-b70baa37d2bb">
@@ -8811,6 +8825,14 @@ D_2=R_2
     <Instance Guid="9356a2e5-c559-49ef-8cee-5a5190592503">
       <ItemAddTime>636622539833921888</ItemAddTime>
       <ItemAddTimeCount>2</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="7dbfdfa2-fd3b-45ad-8c06-4b4f7970f94f">
+      <ItemAddTime>636702522730494784</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
+    </Instance>
+    <Instance Guid="0ce203fb-cb2c-4c96-a6ff-444b5d9da917">
+      <ItemAddTime>636702526557798176</ItemAddTime>
+      <ItemAddTimeCount>0</ItemAddTimeCount>
     </Instance>
     <Instance Guid="a7be515f-f007-45ed-9059-4e1500c0f74d">
       <TimeTagModified-SourceItem0--0>-8586749963190738128</TimeTagModified-SourceItem0--0>
