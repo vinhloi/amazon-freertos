@@ -220,43 +220,18 @@
 </tool>
 <tool id="Pins" version="1.0.0.0">
 <pinItem allocation="E1" direction="None" id="XTAL" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_TCON3" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_TCON0" locked="false" status="0"/>
 <pinItem allocation="59" direction="None" id="RMII0_RXD0" locked="false" status="0"/>
 <pinItem allocation="61" direction="None" id="RMII0_RXD1" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="ET0_WOL" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="ET0_EXOUT" locked="false" status="0"/>
 <pinItem allocation="54" direction="None" id="RMII0_TXD1" locked="false" status="0"/>
 <pinItem allocation="55" direction="None" id="RMII0_TXD0" locked="false" status="0"/>
 <pinItem allocation="58" direction="None" id="REF50CK0" locked="false" status="0"/>
 <pinItem allocation="66" direction="None" id="ET0_MDC" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_CLK" locked="false" status="0"/>
 <pinItem allocation="F1" direction="None" id="EXTAL" locked="false" status="0"/>
 <pinItem allocation="65" direction="None" id="ET0_LINKSTA" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA15" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA10" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA14" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA13" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA12" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA11" locked="false" status="0"/>
 <pinItem allocation="57" direction="None" id="RMII0_RX_ER" locked="false" status="0"/>
 <pinItem allocation="56" direction="None" id="RMII0_TXD_EN" locked="false" status="0"/>
 <pinItem allocation="67" direction="None" id="ET0_MDIO" locked="false" status="0"/>
 <pinItem allocation="53" direction="None" id="RMII0_CRS_DV" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA0" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA1" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA2" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA3" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA4" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA5" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA6" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA7" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA8" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="LCD_DATA9" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="RXD2" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="TXD2" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="RXD1" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="TXD1" locked="false" status="0"/>
 <pinItem allocation="77" direction="None" id="TXD12" locked="false" status="0"/>
 <pinItem allocation="76" direction="None" id="RXD12" locked="false" status="0"/>
 </tool>
