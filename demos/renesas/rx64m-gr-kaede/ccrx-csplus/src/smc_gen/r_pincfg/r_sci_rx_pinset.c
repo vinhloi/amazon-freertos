@@ -19,10 +19,10 @@
 /***********************************************************************************************************************
 * File Name    : r_sci_rx_pinset.c
 * Version      : 1.0.2
-* Device(s)    : R5F565NEDxLJ
+* Device(s)    : R5F564MLCxFB
 * Tool-Chain   : RXC toolchain
 * Description  : Setting of port and mpc registers
-* Creation Date: 2018-07-16
+* Creation Date: 2018-08-19
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -36,7 +36,7 @@ Global variables and functions
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* Function Name: R_SCI_PinSet_SCI12
+* Function Name: R_SCI_PinSet_SCI7
 * Description  : This function initializes pins for r_sci_rx module
 * Arguments    : none
 * Return Value : none
@@ -45,15 +45,13 @@ void R_SCI_PinSet_SCI7()
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 
-    /* Set RXD7 pin */
+    /* Set RXD7/SMISO7 pin */
     MPC.P92PFS.BYTE = 0x0AU;
-    PORT9.PMR.BYTE |= 0x04U;
+    PORT9.PMR.BIT.B2 = 1U;
 
-    /* Set TXD7 pin */
-    PORT9.PODR.BYTE |= 0x01U;
+    /* Set TXD7/SMOSI7 pin */
     MPC.P90PFS.BYTE = 0x0AU;
-    PORT9.PMR.BYTE |= 0x01U;
-    PORT9.PDR.BYTE |= 0x01U;
+    PORT9.PMR.BIT.B0 = 1U;
 
     R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
 }

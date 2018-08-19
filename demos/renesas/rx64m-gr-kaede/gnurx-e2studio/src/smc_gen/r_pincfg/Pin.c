@@ -20,9 +20,9 @@
 /***********************************************************************************************************************
 * File Name    : Pin.c
 * Version      : 1.0.2
-* Device(s)    : R5F565NEDxLJ
+* Device(s)    : R5F564MLCxFB
 * Description  : This file implements SMC pin code generation.
-* Creation Date: 2018-07-16
+* Creation Date: 2018-08-19
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -103,9 +103,8 @@ void R_Pins_Create(void)
     /* Set TXD7 pin */
     PORT9.PODR.BYTE |= 0x01U;
     MPC.P90PFS.BYTE = 0x0AU;
-    PORT9.PMR.BYTE |= 0x01U;
     PORT9.PDR.BYTE |= 0x01U;
 
     R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
-}   
+}
 

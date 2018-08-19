@@ -79,7 +79,7 @@
  Please set the value 1 ETHER_CFG_CH0_PHY_ACCESS and ETHER_CFG_CH1_PHY_ACCESS when use default setting of the RSK+RX64M/RSK+RX71M.
  */
     #define ETHER_CFG_CH0_PHY_ACCESS                    (0)
-    #define ETHER_CFG_CH1_PHY_ACCESS                    (0)
+    #define ETHER_CFG_CH1_PHY_ACCESS                    (1)
 
 /* Define the access timing of MII/RMII register */
     #define ETHER_CFG_PHY_MII_WAIT                      (8)     /* Plese define the value of 1 or more */

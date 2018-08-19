@@ -22,7 +22,7 @@
 * Version      : 1.1.0
 * Device(s)    : R5F564MLCxFB
 * Description  : This file implements interrupt setting.
-* Creation Date: 2018-08-16
+* Creation Date: 2018-08-19
 ***********************************************************************************************************************/
 
 #ifndef SMC_INTERRUPT_H
@@ -210,21 +210,21 @@ Macro definitions
 #define ICU_CAN1_TXF1_PRIORITY                     _0F_ICU_PRIORITY_LEVEL15
 #define ICU_CAN1_RXM1_PRIORITY                     _0F_ICU_PRIORITY_LEVEL15
 #define ICU_CAN1_TXM1_PRIORITY                     _0F_ICU_PRIORITY_LEVEL15
+#define ICU_CAN2_RXF2_PRIORITY                     _0F_ICU_PRIORITY_LEVEL15
+#define ICU_CAN2_TXF2_PRIORITY                     _0F_ICU_PRIORITY_LEVEL15
+#define ICU_CAN2_RXM2_PRIORITY                     _0F_ICU_PRIORITY_LEVEL15
+#define ICU_CAN2_TXM2_PRIORITY                     _0F_ICU_PRIORITY_LEVEL15
 #define ICU_USB0_USBI0_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
 #define ICU_S12AD_S12ADI_PRIORITY                  _0F_ICU_PRIORITY_LEVEL15
 #define ICU_S12AD_S12GBADI_PRIORITY                _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB188_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
 #define ICU_S12AD1_S12ADI1_PRIORITY                _0F_ICU_PRIORITY_LEVEL15
 #define ICU_S12AD1_S12GBADI1_PRIORITY              _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB191_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB192_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
+#define ICU_DES_DESEND_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
+#define ICU_SHA_SHADEND_PRIORITY                   _0F_ICU_PRIORITY_LEVEL15
+#define ICU_SHA_SHAEND_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
+#define ICU_RNG_RNGEND_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
 #define ICU_ELC_ELSR18I_PRIORITY                   _0F_ICU_PRIORITY_LEVEL15
 #define ICU_ELC_ELSR19I_PRIORITY                   _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB195_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB196_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB197_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB198_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIB_INTB199_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
 #define ICU_PERIB_INTB200_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
 #define ICU_PERIB_INTB201_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
 #define ICU_PERIB_INTB202_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
@@ -276,9 +276,9 @@ Macro definitions
 #define ICU_MTU8_TGIC8_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
 #define ICU_MTU8_TGID8_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
 #define ICU_MTU8_TCIV8_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIA_INTA251_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIA_INTA252_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
-#define ICU_PERIA_INTA253_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
+#define ICU_EPTPC_IPLS_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
+#define ICU_AES_AESRDY_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
+#define ICU_AES_AESEND_PRIORITY                    _0F_ICU_PRIORITY_LEVEL15
 #define ICU_PERIA_INTA254_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
 #define ICU_PERIA_INTA255_PRIORITY                 _0F_ICU_PRIORITY_LEVEL15
 

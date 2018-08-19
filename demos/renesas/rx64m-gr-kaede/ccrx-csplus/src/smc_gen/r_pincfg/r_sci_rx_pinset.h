@@ -19,10 +19,10 @@
 /***********************************************************************************************************************
 * File Name    : r_sci_rx_pinset.h
 * Version      : 1.0.2
-* Device(s)    : R5F565NEDxLJ
+* Device(s)    : R5F564MLCxFB
 * Tool-Chain   : RXC toolchain
 * Description  : Setting of port and mpc registers
-* Creation Date: 2018-07-16
+* Creation Date: 2018-08-19
 ***********************************************************************************************************************/
 
 #ifndef R_SCI_RX_H

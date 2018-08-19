@@ -19,10 +19,10 @@
 /***********************************************************************************************************************
 * File Name    : r_ether_rx_pinset.c
 * Version      : 1.0.2
-* Device(s)    : R5F565NEDxLJ
+* Device(s)    : R5F564MLCxFB
 * Tool-Chain   : RXC toolchain
 * Description  : Setting of port and mpc registers
-* Creation Date: 2018-07-16
+* Creation Date: 2018-08-19
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -45,45 +45,45 @@ void R_ETHER_PinSet_ETHERC0_RMII()
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 
-    /* Set ET0_MDC pin */
-    MPC.P72PFS.BYTE = 0x11U;
-    PORT7.PMR.BYTE |= 0x04U;
-
-    /* Set ET0_MDIO pin */
-    MPC.P71PFS.BYTE = 0x11U;
-    PORT7.PMR.BYTE |= 0x02U;
-
     /* Set REF50CK0 pin */
     MPC.P76PFS.BYTE = 0x12U;
-    PORT7.PMR.BYTE |= 0x40U;
-
-    /* Set RMII0_CRS_DV pin */
-    MPC.P83PFS.BYTE = 0x12U;
-    PORT8.PMR.BYTE |= 0x08U;
-
-    /* Set RMII0_RXD0 pin */
-    MPC.P75PFS.BYTE = 0x12U;
-    PORT7.PMR.BYTE |= 0x20U;
-
-    /* Set RMII0_RXD1 pin */
-    MPC.P74PFS.BYTE = 0x12U;
-    PORT7.PMR.BYTE |= 0x10U;
-
-    /* Set RMII0_RX_ER pin */
-    MPC.P77PFS.BYTE = 0x12U;
-    PORT7.PMR.BYTE |= 0x80U;
-
-    /* Set RMII0_TXD0 pin */
-    MPC.P81PFS.BYTE = 0x12U;
-    PORT8.PMR.BYTE |= 0x02U;
-
-    /* Set RMII0_TXD1 pin */
-    MPC.P82PFS.BYTE = 0x12U;
-    PORT8.PMR.BYTE |= 0x04U;
+    PORT7.PMR.BIT.B6 = 1U;
 
     /* Set RMII0_TXD_EN pin */
     MPC.P80PFS.BYTE = 0x12U;
-    PORT8.PMR.BYTE |= 0x01U;
+    PORT8.PMR.BIT.B0 = 1U;
+
+    /* Set RMII0_TXD1 pin */
+    MPC.P82PFS.BYTE = 0x12U;
+    PORT8.PMR.BIT.B2 = 1U;
+
+    /* Set RMII0_TXD0 pin */
+    MPC.P81PFS.BYTE = 0x12U;
+    PORT8.PMR.BIT.B1 = 1U;
+
+    /* Set RMII0_RXD1 pin */
+    MPC.P74PFS.BYTE = 0x12U;
+    PORT7.PMR.BIT.B4 = 1U;
+
+    /* Set RMII0_RXD0 pin */
+    MPC.P75PFS.BYTE = 0x12U;
+    PORT7.PMR.BIT.B5 = 1U;
+
+    /* Set RMII0_RX_ER pin */
+    MPC.P77PFS.BYTE = 0x12U;
+    PORT7.PMR.BIT.B7 = 1U;
+
+    /* Set RMII0_CRS_DV pin */
+    MPC.P83PFS.BYTE = 0x12U;
+    PORT8.PMR.BIT.B3 = 1U;
+
+    /* Set ET0_MDC pin */
+    MPC.P72PFS.BYTE = 0x11U;
+    PORT7.PMR.BIT.B2 = 1U;
+
+    /* Set ET0_MDIO pin */
+    MPC.P71PFS.BYTE = 0x11U;
+    PORT7.PMR.BIT.B1 = 1U;
 
     R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
 }
