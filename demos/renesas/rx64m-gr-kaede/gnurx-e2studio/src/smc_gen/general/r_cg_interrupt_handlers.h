@@ -65,5 +65,8 @@ void group_al1_handler_isr(void) __attribute__ ((interrupt));
 /* Idle Vectors */
 void undefined_interrupt_source_isr(void) __attribute__ ((interrupt));
 /* Start user code for function. Do not edit comment generated here */
+
+#include "r_cg_vector_pragma.h"
+
 /* End user code. Do not edit comment generated here */
 #endif
