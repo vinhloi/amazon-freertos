@@ -303,6 +303,8 @@ static int InitializeNetwork(void)
 	R_ETHER_PinSet_ETHERC0_RMII();
 #elif (BSP_CFG_BOARD_REVISION == 3) 	/* RX65N GR-ROSE proto1 */
 	R_ETHER_PinSet_ETHERC0_RMII();
+#elif (BSP_CFG_BOARD_REVISION == 4)	/* RX64M GR-KAEDE */
+	R_ETHER_PinSet_ETHERC0_RMII();
 #endif
 	R_ETHER_Initial();
 	callback_ether_regist();
