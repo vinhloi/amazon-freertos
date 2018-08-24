@@ -186,6 +186,8 @@ uint8_t *buffer_pointer;
                 is provided further down this page. */
             	memcpy(pxBufferDescriptor->pucEthernetBuffer, buffer_pointer, xBytesReceived);
                 //ReceiveData( pxBufferDescriptor->pucEthernetBuffer );
+
+                /* Set the actual packet length, in case a larger buffer was returned. */
                 pxBufferDescriptor->xDataLength = xBytesReceived;
 
                 R_ETHER_Read_ZC2_BufRelease(ETHER_CHANNEL_0);

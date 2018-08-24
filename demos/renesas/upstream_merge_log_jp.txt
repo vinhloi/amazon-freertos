@@ -2,6 +2,171 @@
 upstream merge log (only Japanese language)
 --------------------------------------------------------------------------
 
+主にプロジェクト構造に関するメモ。ソースに関しては特記事項のある時のみ。
+
+--------------------------------------------------------------------------
+2018/08/24
+
+Follow the upstream v1.3.2 by NoMaY
+
+● ソース
+
+(1) lib\secure_sockets\portable\freertos_plus_tcp\aws_secure_sockets.cが変更されたので以下へ反映
+
+(1-1) 以下に関しては上記ソースのuint32_t ulRand(void){略}を#if 0～#endifで括ってソースを上書き
+
+lib\secure_sockets\portable\renesas\rx64m-gr-kaede\aws_secure_sockets.c
+lib\secure_sockets\portable\renesas\rx65n-envision-kit\aws_secure_sockets.c
+lib\secure_sockets\portable\renesas\rx65n-gr-rose\aws_secure_sockets.c
+lib\secure_sockets\portable\renesas\rx65n-rsk\aws_secure_sockets.c
+
+(1-2) 以下に関しては取りあえずビルドエラーが出ないように上記ソースから継ぎはぎ(シェルティさんのチェックが必要)
+但しint32_t SOCKETS_SetSockOpt(略){略}では変更が含まれていたcase SOCKETS_SO_ALPN_PROTOCOLS:節が無く未対処(同上)
+
+lib\secure_sockets\portable\renesas\rx65n-rsk-uart-wifi\aws_secure_sockets.c
+
+(2) lib\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\○○○\NetworkInterface.cが変更されたので以下へ反映
+といっても上記ソースで追加されたコード自体は既にあったのでコメントのみ追加((シェルティさんのチェックが必要))
+
+lib\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\RX\NetworkInterface.c
+
+● CC-RX & CS+ for CC
+
+(1) プロジェクトツリーの修正
+
+・以下のカテゴリを削除
+
+ファイル→lib→aws→FreeRTOS-Plus-TCP→source→protocol
+
+(2) インクルードパスの修正
+
+・以下のパスを削除
+
+..\..\..\..\lib\FreeRTOS-Plus-TCP\source\protocols\include
+
+(3) リンク順の修正
+
+・以下のファイルをaws_demos_link_order_import.mtlsから削除して再度インポート
+
+FreeRTOS_FTP_commands.obj
+FreeRTOS_HTTP_commands.obj
+
+● CC-RX & e2 studio
+
+(1) プロジェクトツリーの修正
+
+・以下のファイルについて[ビルドから除外]の設定を解除(.cprojectファイルを直接編集)
+
+aws/FreeRTOS-Plus-TCP/source/protocols/Common/FreeRTOS_TCP_server.c
+aws/FreeRTOS-Plus-TCP/source/protocols/FTP/FreeRTOS_FTP_server.c
+aws/FreeRTOS-Plus-TCP/source/protocols/HTTP/FreeRTOS_HTTP_server.c
+aws/FreeRTOS-Plus-TCP/source/protocols/NTP/NTPDemo.c
+
+(2) インクルードパスの修正(上記修正のついでに.cprojectファイルを直接編集)
+
+・以下のパスを削除
+
+${workspace_loc:/${ProjName}/lib/aws/FreeRTOS-Plus-TCP/source/protocols/include}
+
+● GNURX & e2 studio
+
+(1) プロジェクトツリーの修正
+
+・以下のファイルについて[ビルドから除外]の設定を解除(.cprojectファイルを直接編集)
+
+aws/FreeRTOS-Plus-TCP/source/protocols/Common/FreeRTOS_TCP_server.c
+aws/FreeRTOS-Plus-TCP/source/protocols/FTP/FreeRTOS_FTP_server.c
+aws/FreeRTOS-Plus-TCP/source/protocols/HTTP/FreeRTOS_HTTP_server.c
+aws/FreeRTOS-Plus-TCP/source/protocols/NTP/NTPDemo.c
+
+(2) インクルードパスの修正(上記修正のついでに.cprojectファイルを直接編集)
+
+・以下のパスを削除
+
+${workspace_loc:/${ProjName}/lib/aws/FreeRTOS-Plus-TCP/source/protocols/include}
+
+--------------------------------------------------------------------------
+2018/08/14
+
+Follow the upstream v1.3.1 by NoMaY
+
+● ソース
+
+(1) ★以下のソースのプロジェクトツリーへの追加は暫く保留(ファイル自体は取り込み済み)
+
+demos/common/defender/aws_defender_demo.c
+(併せてdemos/common/include/aws_defender_demo.hも同様)
+
+(2) 以下のソースを各ボードフォルダに追加
+
+demos/renesas/rx65n-envision-kit/common/config_files/aws_ota_agent_config.h
+demos/renesas/rx65n-gr-rose/common/config_files/aws_ota_agent_config.h
+demos/renesas/rx65n-rsk/common/config_files/aws_ota_agent_config.h
+demos/renesas/rx65n-rsk-uart-wifi/common/config_files/aws_ota_agent_config.h
+
+● CC-RX & CS+ for CC
+
+(1) プロジェクトツリーの修正
+
+・以下のファイルを追加
+
+demos/common/include/aws_ota_codesigner_certificate.h
+demos/renesas/rx65n-envision-kit/common/config_files/aws_ota_agent_config.h
+demos/renesas/rx65n-gr-rose/common/config_files/aws_ota_agent_config.h
+demos/renesas/rx65n-rsk/common/config_files/aws_ota_agent_config.h
+(未だrx65n-rsk-uart-wifiのCS+プロジェクトは無い(e2 studioプロジェクトは有る)ので対応は後日)
+lib/include/aws_appversion32.h
+
+・以下のファイルを削除
+
+lib/ota/aws_rsprintf.c
+lib/include/private/aws_rsprintf.h
+
+(2) インクルードパスの修正
+
+・今回は無し
+
+(3) リンク順の修正
+
+・以下のファイルをaws_demos_link_order_import.mtlsから削除して再度インポート
+
+aws_rsprintf.obj
+
+● CC-RX & e2 studio
+
+(1) プロジェクトツリーの修正
+
+・以下のファイルの削除に追従(リンクされたりソースの削除)
+
+lib/ota/aws_rsprintf.c
+
+(2) インクルードパスの修正
+
+・今回は無し
+
+● GNURX & e2 studio
+
+(1) プロジェクトツリーの修正
+
+・以下のファイルの削除に追従(リンクされたりソースの削除)
+
+lib/ota/aws_rsprintf.c
+
+(2) インクルードパスの修正
+
+・今回は無し
+
+--------------------------------------------------------------------------
+2018/08/03
+
+Follow upstream v1.3.0 by NoMaY
+
+後で書く？
+
+--------------------------------------------------------------------------
+
+...
+
 --------------------------------------------------------------------------
 2018/05/18
 
@@ -9,7 +174,7 @@ Follow upstream v1.2.5 by NoMaY
 
 ● CC-RX & e2 studio
 
-後で書く
+後で書く？
 
 ● CC-RX & CS+ for CC
 
@@ -315,12 +480,12 @@ B_1,R_1,B_2,R_2,B,R/00800000,B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,SU,SI/
 
 Follow upstream v1.2.3 by NoMaY
 
-後で書く
+後で書く？
 
 --------------------------------------------------------------------------
 2018/03/18
 
 Follow upstream v1.2.2 by NoMaY
 
-後で書く
+後で書く？
 

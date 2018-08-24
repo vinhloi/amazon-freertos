@@ -34,8 +34,6 @@ FreeRTOS_UDP_IP.obj
 BufferAllocation_2.obj
 NetworkInterface.obj
 ether_callback.obj
-FreeRTOS_FTP_commands.obj
-FreeRTOS_HTTP_commands.obj
 aws_bufferpool_static_thread_safe.obj
 aws_crypto.obj
 aws_greengrass_discovery.obj
