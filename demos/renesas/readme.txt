@@ -24,7 +24,7 @@ This is our root directory called <root>.
 Getting Start Steps:
  step1:  Refer to the Development Environment (recommended) section to get the board and tools.
  step2:  Setup tools for your PC.
- step3:  Download RX65N Amazon FreeRTOS from GitHub. (Maybe you already done)
+ step3:  Download RX MCUs Amazon FreeRTOS from GitHub. (Maybe you already done)
          https://github.com/renesas-rx/amazon-freertos
  step4:  Make your AWS account, and make your "Things" on AWS,
          and enable Security Policy to allow all your device will connect to your "Things".
@@ -40,9 +40,12 @@ Getting Start Steps:
          import sequence: file->import->existing project into workspace -> select a root directory
          The project folder is placed into <root>/demos/renesas/rx65n-rsk/ccrx-e2studio6
          Please specify this directory only.
+         This directory is top of reference. You can also use other project.
+         Please select tested project shown into Development Environment (tested or no matrix) section
+         in this Readme.
  step7:  Build
  step8:  Execute, confirm console log will show the Echo message from AWS.
-         The log will be output from G1CUSB connector as UART/USB.
+         The log will be output from G1CUSB (or other UART/USB) connector as UART/USB.
          Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
          and "LF" only as return code for your console.
   
@@ -56,6 +59,23 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.2:
+[UPDATED] Follow the upstream from Amazon FreeRTOS v1.3.2.
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite
+         RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite
+
 v0.1.1:
 [TESTED] Following projetcs.
          RX65N RSK CC-RX e2 studio with E2 Emulator Lite
@@ -68,7 +88,7 @@ v0.1.1:
          RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
          RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite
          RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
-         
+
 v0.1.1-pre5:
 [REMOVED] link to FreeRTOS+TCP from rx65n-rsk-uart-wifi.
 [FIXED] Wrong behavior of rx65n-rsk-uart-wifi: can set optimize level 2, can set log-off.
@@ -328,11 +348,11 @@ Board: RX65N GR-ROSE proto1
          Please contact as following.
          PMOD UART/USB ----- RX65N GR-ROSE CN9
          1             -----
-         2             ----- 10pin
+         2(TxD)        ----- 10pin
          3             -----
          4             -----
-         5             ----- 5pin
-         6             ----- 6pin
+         5(GND)        ----- 5pin
+         6(VCC)        ----- 6pin
 
          [How to connect E2 Emulator Lite]
          GR-ROSE CN2-TH 4pins are connected to RX65N Debug Interface called FINE.
@@ -354,12 +374,21 @@ Board: RX64M GR-KAEDE
     [en] http://gadget.renesas.com/en/product/kaede.html
     [ja] http://gadget.renesas.com/ja/product/kaede.html
 
-         The log will be output from CNx xxpin=TxDxx(Pxx) connector as UART. (x=now confirming)
+         The log will be output from CN8 2pin=TxD7(P90) connector as UART.
          Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
          and "LF" only as return code for your console.
          PMOD UART/USB convertor is provided by Digilent.
          https://store.digilentinc.com/pmod-usbuart-usb-to-uart-interface/
 
+         Please contact as following.
+         PMOD UART/USB ----- RX65N GR-KAEDE CN8/CN10
+         1             -----
+         2(TxD)        ----- CN8-2pin
+         3             -----
+         4             -----
+         5(GND)        ----- CN10-1pin
+         6(VCC)        ----- CN10-2pin
+         
 WIFI Module: Silex SX-ULPGN PMOD
     [en] https://www.renesas.com/us/en/products/synergy/gallery/partner-projects/silex-wifi-pmod.html
     [ja] https://www.renesas.com/jp/ja/products/synergy/gallery/partner-projects/silex-wifi-pmod.html
@@ -489,7 +518,8 @@ Compiler number:
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (1)   (2)        /           x   x       x   -   -   -   -     
 (2)   (2)        /           x   x       x   -   -   -   -   * 
-(3)   (2)        /           x   x           -   -   -   -     
+(3)   (2)        /           x   x       x   -   -   -   -     
+(4)   (2)        /           x   x       x   -   -   -   -     
 (5)   (4)        /           x               -   -   -   -     
 
   x: tested (MQTT echo demo)
@@ -556,6 +586,12 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■課題まとめ★
 --------------------------------------------------------------------------
+　2018/08/26
+　　性能面で改善点がまだありそうな予感がするので tracealyzer を導入して詳細評価する予定。
+　　RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Liteの
+　　プロジェクトのスマートコンフィグレータ設定に不要なEtherドライバが含まれているので
+　　スマートコンフィグレータの設定を変更する必要がある。NoMaY氏に相談。
+
 　2018/08/05
 　　スマートコンフィグレータでRX65N RSK 2MBボードの設定をしていると
 　　SCI6でP01、P00を使おうとすると警告がでる。なぜなのか。ツール部門に問い合わせてみる。
@@ -612,6 +648,70 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/08/26
+　NoMaY氏が本家最新版v132に追従してくれている。
+　その他、細かい調整を実施したり、モッチー氏の協力もありGR-KAEDE用の
+　プロジェクトも追加できた。それぞれのプロジェクトの動作確認を実施し
+　リリースビルドを作成する。
+　
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Liteの
+　プロジェクトのスマートコンフィグレータ設定に不要なEtherドライバが含まれているので
+　スマートコンフィグレータの設定を変更する必要がある。NoMaY氏に相談。
+　
+　また、性能評価を実施した。性能評価の過程で、Etherドライバのハンドリングに
+　不備があることが分かった。
+　\lib\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\RX\NetworkInterface.c
+　ソフトウェアが追い付かずに、FIFOにデータが溜まる状況において、
+　FIFOに溜まったデータを適切に解放できないケースがあり、それが続くと
+　やがてFIFOが溢れて通信が止まるというもの。パケットロスがあったら
+　FIFOから処理しきれなかったパケットを取り出し捨てる機構を追加。
+　
+　以下は性能評価レポート。
+　
+　FreeRTOS+TCPは非常によくできている。
+　性能を引き出すためにはネットワーク関連パラメータの調整が必要。
+
+　まず、\demos\renesas\rx65n-rsk\common\config_files\FreeRTOSIPConfig.h
+　デフォルトOFFになっているが、以下TCPウィンドウウィングメカニズムをONに
+　することでハードウェアの性能を最大限に引き出すことができる。
+　/* USE_WIN: Let TCP use windowing mechanism. */
+　#define ipconfigUSE_TCP_WIN                            ( 0 )
+　
+　また、性能を出すためにはTCPウィンドウウィングのために多くのRAMが
+　必要となる。以下設定変更を施すことでハードウェア性能が引き出せる。
+　/* Define the size of Tx buffer for TCP sockets. */
+　#define ipconfigTCP_TX_BUFFER_LENGTH                   ( 1460*8 )
+
+　さらにEtherドライバの受信ディスクリプタも複数用意する必要がある。
+　\demos\renesas\rx65n-rsk\ccrx-e2studio\src\smc_gen\r_config\r_ether_rx_config.h
+　/* The number of Rx descriptors. */
+　#define ETHER_CFG_EMAC_RX_DESCRIPTORS               (12)
+　/* The number of Tx descriptors. */
+　#define ETHER_CFG_EMAC_TX_DESCRIPTORS               (4)
+
+　RX65N@120MHzでTCP/IP通信の中で最も性能を出すことが難しいTCP送信において、
+　45Mbpsを安定的に出せることを確認。
+　改善点がまだありそうな予感がするので tracealyzer を導入して詳細評価する予定。
+　https://percepio.com/tracealyzer/
+　
+　この状態でリリースビルドを作成。以下環境を順次実機動作確認していく。
+　
+　RX65N RSK CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N RSK CC-RX CS+ with E2 Emulator Lite...OK
+　RX65N RSK GCC e2 studio with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite...OK
+　RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite...OK
+　RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite...OK エミュレータ設定変更：電源供給OFF
+　RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite...OK エミュレータ設定変更：E1->E2 Lite、電源供給OFF
+　RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite...OK エミュレータ設定変更：E1->E2 Lite、電源供給OFF
+
+　全部OK。問題なし。
+　
 2018/08/10
 　夏休みだ！
 　

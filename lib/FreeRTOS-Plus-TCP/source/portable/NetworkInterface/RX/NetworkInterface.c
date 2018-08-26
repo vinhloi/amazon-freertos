@@ -69,6 +69,7 @@ static int16_t SendData( uint8_t *pucBuffer, size_t length );
 static int InitializeNetwork(void);
 static void check_ether_link(TimerHandle_t xTimer );
 static void prvEMACDeferredInterruptHandlerTask( void *pvParameters );
+static void clear_all_ether_rx_discriptors(uint32_t event);
 
 
 /***********************************************************************************************************************
@@ -156,7 +157,6 @@ uint8_t *buffer_pointer;
 
     for( ;; )
     {
-		vTaskDelay(10);
     	xTaskToNotify = ether_receive_check_task_handle;
 
         /* Wait for the Ethernet MAC interrupt to indicate that another packet
@@ -213,6 +213,7 @@ uint8_t *buffer_pointer;
 
                         /* Make a call to the standard trace macro to log the occurrence. */
                         iptraceETHERNET_RX_EVENT_LOST();
+                        clear_all_ether_rx_discriptors(0);
                     }
                     else
                     {
@@ -233,6 +234,7 @@ uint8_t *buffer_pointer;
                 /* The event was lost because a network buffer was not available.
                 Call the standard trace macro to log the occurrence. */
                 iptraceETHERNET_RX_EVENT_LOST();
+                clear_all_ether_rx_discriptors(1);
             }
         }
     }
@@ -346,13 +348,11 @@ static int InitializeNetwork(void)
     }
 
 	timer_id = 1;
-
-	timer_handle = xTimerCreate("ETHER_TIMER",
+	timer_handle = xTimerCreate("CHECK_ETHER_LINK_TIMER",
                                 250,
 								pdTRUE,
 								&timer_id,
 								&check_ether_link);
-
 	xTimerStart(timer_handle, 0);
 
     return pdTRUE;
@@ -442,6 +442,26 @@ static void check_ether_link(TimerHandle_t xTimer )
 	tcpudp_time_cnt++;
 } /* End of function check_ether_link() */
 
+static void clear_all_ether_rx_discriptors(uint32_t event)
+{
+	size_t xBytesReceived;
+	uint8_t *buffer_pointer;
+
+	while(1)
+	{
+		/* See how much data was received.  */
+		xBytesReceived = R_ETHER_Read_ZC2(ETHER_CHANNEL_0, (void **)&buffer_pointer);
+		if(0 < xBytesReceived)
+		{
+			R_ETHER_Read_ZC2_BufRelease(ETHER_CHANNEL_0);
+			iptraceETHERNET_RX_EVENT_LOST();
+		}
+		else
+		{
+			break;
+		}
+	}
+}
 
 /***********************************************************************************************************************
  * Function Name: ulRand ()
