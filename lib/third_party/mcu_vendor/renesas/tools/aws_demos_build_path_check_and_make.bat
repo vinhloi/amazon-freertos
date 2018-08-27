@@ -58,7 +58,7 @@ if %ef%==1 goto ERROR
 rem If you don't want to do the next steps, you can skip them by removing the src\FIT_modified_code\attention!.txt file.
 if not exist "%pj%src\FIT_modified_code\attention!.txt" goto NOERROR
 
-set MODIFIED_FIT_MODULES=r_bsp r_cmt_rx r_ether_rx r_flash_rx r_sci_rx r_byteq
+set MODIFIED_FIT_MODULES=r_bsp r_cmt_rx r_ether_rx r_flash_rx r_sci_rx r_byteq r_riic_rx r_sci_iic_rx
 
 rem goto MOVE_STEP_1 && rem # For debug
 rem goto MOVE_STEP_2 && rem # For debug
