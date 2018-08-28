@@ -43,8 +43,6 @@
 #include "r_sci_rx_if.h"
 #include "sx_ulpgn_driver.h"
 
-int32_t sx_ulpgn_wifi_connect(uint8_t *ptextstring);
-
 /**
  * @brief Wi-Fi initialization status.
  */
