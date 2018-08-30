@@ -7,6 +7,13 @@ upstream merge log (only Japanese language)
 --------------------------------------------------------------------------
 2018/08/31
 
+Follow the upstream v1.4.1 Step 2/2 by NoMaY
+
+今回はStep 2/2は非該当
+
+--------------------------------------------------------------------------
+2018/08/31
+
 Follow the upstream v1.4.1 Step 1/2 by NoMaY
 
 今回はStep 1/2のみ該当
