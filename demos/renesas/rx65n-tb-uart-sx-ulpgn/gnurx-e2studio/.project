@@ -186,16 +186,6 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flash_rx</locationURI>
 		</link>
 		<link>
-			<name>src/FIT_modified_code/r_riic_rx</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx</locationURI>
-		</link>
-		<link>
-			<name>src/FIT_modified_code/r_sci_iic_rx</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx</locationURI>
-		</link>
-		<link>
 			<name>src/FIT_modified_code/r_sci_rx</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_rx</locationURI>
@@ -386,24 +376,6 @@
 		<filter>
 			<id>1564441856894</id>
 			<name>src/FIT_modified_code/r_flash_rx/src/targets</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx65n</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1535360922766</id>
-			<name>src/FIT_modified_code/r_riic_rx/src/targets</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx65n</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1535360980389</id>
-			<name>src/FIT_modified_code/r_sci_iic_rx/src/targets</name>
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>

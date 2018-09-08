@@ -227,7 +227,7 @@
 <pinItem allocation="58" direction="None" id="REF50CK0" locked="false" status="0"/>
 <pinItem allocation="66" direction="None" id="ET0_MDC" locked="false" status="0"/>
 <pinItem allocation="F1" direction="None" id="EXTAL" locked="false" status="0"/>
-<pinItem allocation="65" direction="None" id="ET0_LINKSTA" locked="false" status="0"/>
+<pinItem allocation="" direction="None" id="ET0_LINKSTA" locked="false" status="0"/>
 <pinItem allocation="57" direction="None" id="RMII0_RX_ER" locked="false" status="0"/>
 <pinItem allocation="56" direction="None" id="RMII0_TXD_EN" locked="false" status="0"/>
 <pinItem allocation="67" direction="None" id="ET0_MDIO" locked="false" status="0"/>
@@ -607,7 +607,7 @@
 <gridItem id="ET0_COL" selectedIndex="0"/>
 <gridItem id="ET0_MDC" selectedIndex="1"/>
 <gridItem id="ET0_MDIO" selectedIndex="1"/>
-<gridItem id="ET0_LINKSTA" selectedIndex="1"/>
+<gridItem id="ET0_LINKSTA" selectedIndex="0"/>
 <gridItem id="ET0_EXOUT" selectedIndex="0"/>
 <gridItem id="ET0_WOL" selectedIndex="0"/>
 <gridItem id="ETHERC0_MII" selectedIndex="0"/>
@@ -621,7 +621,7 @@
 <gridItem id="RMII0_CRS_DV" selectedIndex="1"/>
 <gridItem id="ET0_MDC" selectedIndex="1"/>
 <gridItem id="ET0_MDIO" selectedIndex="1"/>
-<gridItem id="ET0_LINKSTA" selectedIndex="1"/>
+<gridItem id="ET0_LINKSTA" selectedIndex="0"/>
 <gridItem id="ET0_EXOUT" selectedIndex="0"/>
 <gridItem id="ET0_WOL" selectedIndex="0"/>
 <gridItem id="ETHERC0_RMII" selectedIndex="1"/>
@@ -674,7 +674,7 @@
 <gridItem id="ETHER_CFG_PHY_MII_WAIT" selectedIndex="8"/>
 <gridItem id="ETHER_CFG_PHY_DELAY_RESET" selectedIndex="0x00020000L"/>
 <gridItem id="ETHER_CFG_LINK_PRESENT" selectedIndex="0"/>
-<gridItem id="ETHER_CFG_USE_LINKSTA" selectedIndex="1"/>
+<gridItem id="ETHER_CFG_USE_LINKSTA" selectedIndex="0"/>
 <gridItem id="ETHER_CFG_USE_PHY_KSZ8041NL" selectedIndex="0"/>
 </component>
 <source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>

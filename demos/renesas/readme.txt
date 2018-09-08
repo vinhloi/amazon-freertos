@@ -59,6 +59,36 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.3:
+[UPDATED] Follow the upstream from Amazon FreeRTOS v1.4.1.
+[FIXED] no use ET_LINKSTA setting for RX65N GR-ROSE projects.
+[ADDED] Following projetcs.
+         RX65N Target Board + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Target Board + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite (on board)
+         RX65N Target Board + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N RSK + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite
+
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite
+         RX65N Target Board + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Target Board + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite (on board)
+         RX65N Target Board + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite
+         RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite
+
 v0.1.2:
 [UPDATED] Follow the upstream from Amazon FreeRTOS v1.3.2.
 [TESTED] Following projetcs.
@@ -284,36 +314,36 @@ v0.0.1:
 Development Environment (recommended)
 --------------------------------------------------------------------------
 Board: Renesas Starter Kit+ for RX65N-2MB
-    [en] https://www.renesas.com/en-us/products/software-tools/boards-and-kits/renesas-starter-kits/renesas-starter-kitplus-for-rx65n-2mb.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/boards-and-kits/renesas-starter-kits/renesas-starter-kitplus-for-rx65n-2mb.html
+    [en] https://www.renesas.com/us/en/products/software-tools/boards-and-kits/renesas-starter-kits/renesas-starter-kitplus-for-rx65n-2mb.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/boards-and-kits/renesas-starter-kits/renesas-starter-kitplus-for-rx65n-2mb.html
 
 Compiler: CC-RX V2.08 (you need non-expired evaluation license or product license to build Amazon FreeRTOS)
-    [en] https://www.renesas.com/en-us/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
+    [en] https://www.renesas.com/us/en/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
 
 IDE: e2 studio V7.0.0
-    [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/e2studio.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/e2studio.html
+    [en] https://www.renesas.com/us/en/products/software-tools/tools/ide/e2studio.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/tools/ide/e2studio.html
     
 Debugger: E2 Emulator Lite (no need to buy because Renesas Starter Kit has this one into package)
-    [en] https://www.renesas.com/en-us/products/software-tools/tools/emulator/e2-emulator-lite.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/emulator/e2-emulator-lite.html
+    [en] https://www.renesas.com/us/en/products/software-tools/tools/emulator/e2-emulator-lite.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/tools/emulator/e2-emulator-lite.html
     
     Notice: You can also use E1 Emulator but you have to modify the debugger settings on your IDE.
     
 Device Driver: RX Driver Package v115
-    [en] https://www.renesas.com/en-us/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
+    [en] https://www.renesas.com/us/en/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/software-os-middleware-driver/software-package/rx-driver-package.html
 
 Special Device Driver for FreeRTOS: RX65N Group RX65N Real-time OS Package V1.1.00
-    [en] https://www.renesas.com/en-us/products/software-tools/software-os-middleware-driver/software-package/rx-real-time-os-package.html
-    [ja] none
+    [en] https://www.renesas.com/us/en/products/software-tools/software-os-middleware-driver/software-package/rx-real-time-os-package.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/software-os-middleware-driver/software-package/rx-real-time-os-package.html
     
 Comment:
  Renesas Starter Kit+ for RX65N-2MB is expensive/huge spec for just prototyping phase.
  I am preparing low-priced/small-spec kit as expansion board for "Target Board for RX Family".
-    [en] https://www.renesas.com/en-us/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
+    [en] https://www.renesas.com/us/en/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
  Current developments is using Ethernet but I will move this to WiFi.
  And I am also preparing to corresponds to GCC for release from CC-RX compiler limitation.
  
@@ -321,8 +351,8 @@ Comment:
 Development Environment (optional)
 --------------------------------------------------------------------------
 Board: RX65N Envision Kit
-    [en] https://www.renesas.com/en-us/products/software-tools/boards-and-kits/renesas-promotion-boards/rx65n-envision-kit.html
-    [ja] https://www.renesas.com/ja-jp/products/software-tools/boards-and-kits/renesas-promotion-boards/rx65n-envision-kit.html
+    [en] https://www.renesas.com/us/en/products/software-tools/boards-and-kits/renesas-promotion-boards/rx65n-envision-kit.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/boards-and-kits/renesas-promotion-boards/rx65n-envision-kit.html
 
          The log will be output from CN14(PMOD:1-6pin) connector as PMOD UART/USB.
          Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
@@ -381,13 +411,43 @@ Board: RX64M GR-KAEDE
          https://store.digilentinc.com/pmod-usbuart-usb-to-uart-interface/
 
          Please contact as following.
-         PMOD UART/USB ----- RX65N GR-KAEDE CN8/CN10
+         PMOD UART/USB ----- RX64M GR-KAEDE CN8/CN10
          1             -----
          2(TxD)        ----- CN8-2pin
          3             -----
          4             -----
          5(GND)        ----- CN10-1pin
          6(VCC)        ----- CN10-2pin
+
+Board: RX65N Target Board
+    [en] https://www.renesas.com/us/en/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
+    [ja] https://www.renesas.com/jp/ja/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
+
+         The log will be output from J2 16pin=TxD5(PA4) connector as UART.
+         Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
+         and "LF" only as return code for your console.
+         PMOD UART/USB convertor is provided by Digilent.
+         https://store.digilentinc.com/pmod-usbuart-usb-to-uart-interface/
+
+         Please contact as following.
+         PMOD UART/USB ----- RX65N Target Board J2
+         1             -----
+         2(TxD)        ----- 16pin
+         3             -----
+         4             -----
+         5(GND)        ----- 12pin
+         6(VCC)        ----- 10pin
+
+         The communication will be output/input from/to J1 45pin=TxD(PC7) and 46pin=RxD(PC6) as UART.
+         Silex SX-ULPGN PMOD can be connected.
+         Please contact as following.
+         PMOD UART     ----- RX65N Target Board J1
+         1             -----
+         2(TxD)        ----- 45pin
+         3(RxD)        ----- 46pin
+         4             -----
+         5(GND)        ----- 12pin
+         6(VCC)        ----- 14pin
          
 WIFI Module: Silex SX-ULPGN PMOD
     [en] https://www.renesas.com/us/en/products/synergy/gallery/partner-projects/silex-wifi-pmod.html
@@ -495,6 +555,7 @@ Borad number:
  (3)RX65N GR-ROSE proto1
  (4)RX64M GR-KAEDE
  (5)Renesas Starter Kit+ for RX65N-2MB + Silex SX-ULPGN PMOD
+ (6)RX65N Target Board + Silex SX-ULPGN PMOD
 
 Connection pattern number:
  (1)pattern1: wifi module has TCP/IP and SSL/TLS, Amazon recommends this pattern as RAM<16KB.
@@ -520,7 +581,8 @@ Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (2)   (2)        /           x   x       x   -   -   -   -   * 
 (3)   (2)        /           x   x       x   -   -   -   -     
 (4)   (2)        /           x   x       x   -   -   -   -     
-(5)   (4)        /           x               -   -   -   -     
+(5)   (4)        /           x   x       x   -   -   -   -     
+(6)   (4)        /           x   x       x   -   -   -   -     
 
   x: tested (MQTT echo demo)
   *: now trying(still junk)
@@ -648,6 +710,38 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/09/08
+　NoMaY氏が本家最新版v141に追従してくれている。
+　RX65N Target Board用の拡張ボードが仕上がってきた。
+　最終的にはRX65N Target Board + 拡張ボード + Silex SX-ULPGN のセット品で
+　販売する計画。現状は拡張ボードの仕様がまだウェブ公開されてないため、
+　RX65N Target Boardに直接Silex SX-ULPGNを接続した体でGitHubにはコード登録を
+　行っていく。あと、BSPをマージする話が持ち上がっているがまだ作戦が完璧に
+　仕上がってないため、BSPは現状維持（GNU、CC-RX別個）のままとする。
+　BSP周りは別途調整する。
+　この状態でひとまず全環境の動作を確認し、リリースビルドを作成する。
+
+　RX65N RSK CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N RSK CC-RX CS+ with E2 Emulator Lite...OK
+　RX65N RSK GCC e2 studio with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite...OK
+　RX65N Target Board + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N Target Board + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite (on board)...OK
+　RX65N Target Board + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite...OK
+　RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite...OK
+　RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite...OK
+　RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite...OK
+　RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite...OK
+
+　RX65N GR-ROSEのEtherのLINKSTA設定がなぜか有効になっていたので無効化した。
+　
 2018/08/26
 　NoMaY氏が本家最新版v132に追従してくれている。
 　その他、細かい調整を実施したり、モッチー氏の協力もありGR-KAEDE用の

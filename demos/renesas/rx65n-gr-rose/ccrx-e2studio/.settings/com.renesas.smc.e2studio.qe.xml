@@ -13,7 +13,6 @@
 <Setting id="E1" value="XTAL"/>
 <Setting id="61" value="RMII0_RXD1"/>
 <Setting id="53" value="RMII0_CRS_DV"/>
-<Setting id="65" value="ET0_LINKSTA"/>
 <Setting id="54" value="RMII0_TXD1"/>
 <Setting id="76" value="RXD12"/>
 </Segment>

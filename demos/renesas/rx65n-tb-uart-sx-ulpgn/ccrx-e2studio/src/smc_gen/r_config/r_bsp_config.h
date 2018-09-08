@@ -252,14 +252,14 @@ Configuration Options
    1 = 18MHz
    2 = 20MHz
 */
-#define BSP_CFG_HOCO_FREQUENCY          (0) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_HOCO_FREQUENCY          (2) // <-- Updated by GUI. Do not edit this value manually
 
 /* PLL clock source (PLLSRCEL). Choose which clock source to input to the PLL circuit.
    Available clock sources:
    0 = Main clock (default)
    1 = HOCO
 */
-#define BSP_CFG_PLL_SRC                 (0) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_PLL_SRC                 (1) // <-- Updated by GUI. Do not edit this value manually
 
 /* PLL Input Frequency Division Ratio Select (PLIDIV).
    Available divisors = /1 (no division), /2, /3
@@ -269,7 +269,7 @@ Configuration Options
 /* PLL Frequency Multiplication Factor Select (STC). 
    Available multipliers = x10.0 to x30.0 in 0.5 increments (e.g. 10.0, 10.5, 11.0, 11.5, ..., 29.0, 29.5, 30.0)
 */
-#define BSP_CFG_PLL_MUL                 (20.0) // <-- Updated by GUI. Do not edit this value manually
+#define BSP_CFG_PLL_MUL                 (12.0) // <-- Updated by GUI. Do not edit this value manually
 
 /* System Clock Divider (ICK).
    Available divisors = /1 (no division), /2, /4, /8, /16, /32, /64

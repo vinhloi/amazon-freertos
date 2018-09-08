@@ -107,11 +107,33 @@
 							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.archiver.449099544" name="Archiver" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355.1185079424" name="/" resourcePath="src/FIT_modified_code/r_cmt_rx">
+						<toolChain id="com.renesas.cdt.managedbuild.gcc.rx.toolchain.debug.79858087" name="GCC for Renesas RX" superClass="com.renesas.cdt.managedbuild.gcc.rx.toolchain.debug" unusedChildren="">
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.optimization.optimizationLevel.1078252783.355055455" name="Optimization Level" superClass="com.renesas.cdt.managedbuild.gcc.core.option.optimization.optimizationLevel.1078252783"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.optimization.fdatasections.1414087664.1804494367" name="Data sections (-fdata-sections)" superClass="com.renesas.cdt.managedbuild.gcc.core.option.optimization.fdatasections.1414087664"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.debug.debugFormat.327718620.1927671395" name="Debug format" superClass="com.renesas.cdt.managedbuild.gcc.core.option.debug.debugFormat.327718620"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.cpu.architecture.1869682329.1226371020" name="Architecture" superClass="com.renesas.cdt.managedbuild.gcc.core.option.cpu.architecture.1869682329"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.cpu.architecture.applicability.712483360.859859818" name="Architecture Applicability" superClass="com.renesas.cdt.managedbuild.gcc.core.option.cpu.architecture.applicability.712483360"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.cpu.cpuType.1819133008.989634703" name="CPU Type" superClass="com.renesas.cdt.managedbuild.gcc.core.option.cpu.cpuType.1819133008"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.deviceShortName.146134098.1561576436" name="DeviceName" superClass="com.renesas.cdt.managedbuild.gcc.core.option.deviceShortName.146134098"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.deviceCommand.23330833.1653806512" name="DeviceCommand" superClass="com.renesas.cdt.managedbuild.gcc.core.option.deviceCommand.23330833"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.debug.warnStackSize.646604743.1630800469" name="Warn if stack size exceeds the limit (-Wstack-usage) (H')" superClass="com.renesas.cdt.managedbuild.gcc.core.option.debug.warnStackSize.646604743"/>
+							<option id="com.renesas.cdt.managedbuild.gcc.core.option.warnings.allwarn.1138925181.69632353" name="Enable all warnings (-Wall)" superClass="com.renesas.cdt.managedbuild.gcc.core.option.warnings.allwarn.1138925181"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.libgen.771662019" name="Library Generator" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.libgen.1966989309"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.compiler.83585697" name="Compiler" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.compiler.873673720"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler.1271303654" name="Compiler CPP" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler.1299520236"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.assembler.8477431" name="Assembler" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.assembler.1235254367"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.linker.1383965253" name="Linker" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.linker.1096068320"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.linker.1253949924" name="Linker CPP" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.linker.418534035"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.objcopy.336705936" name="Objcopy" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.objcopy.1244099803"/>
+							<tool id="com.renesas.cdt.managedbuild.gcc.rx.tool.archiver.1773741347" name="Archiver" superClass="com.renesas.cdt.managedbuild.gcc.rx.tool.archiver.449099544"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application_code"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="config_files"/>
 						<entry excluding="third_party/mcu_vendor/renesas/FIT" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lib"/>
-						<entry excluding="FIT_modified_code/r_cmt_rx|smc_gen/r_bsp|smc_gen/UNUSED_generated_code|smc_gen/general/r_cg_vector_table.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="smc_gen/r_bsp|smc_gen/UNUSED_generated_code|smc_gen/general/r_cg_vector_table.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -128,6 +150,10 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="HardwareDebug">
+			<resource resourceType="PROJECT" workspacePath="/aws_demos"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

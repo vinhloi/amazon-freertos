@@ -280,9 +280,9 @@ int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length, uint32_t timeout_ms)
 
 	while(sended_length < length)
 	{
-		if(length - sended_length > SCI_CFG_CH6_TX_BUFSIZ)
+		if(length - sended_length > SCI_TX_BUSIZ)
 		{
-			lenghttmp1 = SCI_CFG_CH6_TX_BUFSIZ;
+			lenghttmp1 = SCI_TX_BUSIZ;
 		}
 		else
 		{
@@ -439,7 +439,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t respons
 	{
 		if(0 != g_sx_ulpgn_uart_teiflag)
 //		ercd = R_SCI_Control(sx_ulpgn_uart_sci_handle, SCI_CMD_TX_Q_BYTES_FREE, &non_used);
-//		if(non_used == SCI_CFG_CH6_TX_BUFSIZ)
+//		if(non_used == SCI_TX_BUSIZ)
 		{
 			break;
 		}
@@ -606,7 +606,11 @@ static int32_t sx_ulpgn_serial_open(void)
 {
 	sci_err_t   my_sci_err;
 
+#if (BSP_CFG_BOARD_REVISION == 1)
 	R_SCI_PinSet_SCI6();
+#elif (BSP_CFG_BOARD_REVISION == 5)
+	R_SCI_PinSet_SCI10();
+#endif
 
 	g_sx_ulpgn_sci_config.async.baud_rate    = 115200;
 	g_sx_ulpgn_sci_config.async.clk_src      = SCI_CLK_INT;
@@ -616,7 +620,11 @@ static int32_t sx_ulpgn_serial_open(void)
 	g_sx_ulpgn_sci_config.async.stop_bits    = SCI_STOPBITS_1;
 	g_sx_ulpgn_sci_config.async.int_priority = 3;    // 1=lowest, 15=highest
 
+#if (BSP_CFG_BOARD_REVISION == 1)
     my_sci_err = R_SCI_Open(SCI_CH6, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config, sx_ulpgn_uart_callback, &sx_ulpgn_uart_sci_handle);
+#elif  (BSP_CFG_BOARD_REVISION == 5)
+    my_sci_err = R_SCI_Open(SCI_CH10, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config, sx_ulpgn_uart_callback, &sx_ulpgn_uart_sci_handle);
+#endif
 
     if(SCI_SUCCESS != my_sci_err)
     {

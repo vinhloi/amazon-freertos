@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <QE>
 <Segment id="Pin">
-<Setting id="E1" value="XTAL"/>
-<Setting id="F1" value="EXTAL"/>
-<Setting id="17" value="RXD6"/>
-<Setting id="18" value="TXD6"/>
-<Setting id="76" value="RXD12"/>
-<Setting id="77" value="TXD12"/>
+<Setting id="66" value="TXD5"/>
+<Setting id="67" value="RXD5"/>
+<Setting id="45" value="TXD10"/>
+<Setting id="46" value="RXD10"/>
 </Segment>
 <Segment id="Device">
 <Setting id="Series" value="RX600"/>
@@ -20,8 +18,8 @@
 <Segment id="Clock">
 <Setting id="UsbCLK" value="48000.0"/>
 <Setting id="PCLKD" value="60000.0"/>
-<Setting id="CacMCLK" value="12000.0"/>
 <Setting id="PCLKB" value="60000.0"/>
+<Setting id="CacHocoCLK" value="20000.0"/>
 <Setting id="VCC" value="3.3"/>
 <Setting id="PCLKC" value="60000.0"/>
 <Setting id="BusCLK" value="120000.0"/>

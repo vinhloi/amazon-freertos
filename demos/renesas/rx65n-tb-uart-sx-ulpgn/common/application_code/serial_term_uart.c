@@ -82,10 +82,12 @@ void uart_config(void)
     R_SCI_PinSet_SCI2();
 #elif (BSP_CFG_BOARD_REVISION == 1)
     R_SCI_PinSet_SCI8();
-#elif (BSP_CFG_BOARD_REVISION == 3) || (BSP_CFG_BOARD_REVISION == 5 /* toriaezu */)
+#elif (BSP_CFG_BOARD_REVISION == 3)
     R_SCI_PinSet_SCI12();
 #elif (BSP_CFG_BOARD_REVISION == 4)
     R_SCI_PinSet_SCI7();
+#elif (BSP_CFG_BOARD_REVISION == 5)
+    R_SCI_PinSet_SCI5();
 #endif
     /* Set up the configuration data structure for asynchronous (UART) operation. */
     my_sci_config.async.baud_rate    = 115200;
@@ -106,6 +108,8 @@ void uart_config(void)
     my_sci_err = R_SCI_Open(SCI_CH8, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
 #elif (BSP_CFG_BOARD_REVISION == 3)
     my_sci_err = R_SCI_Open(SCI_CH12, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
+#elif (BSP_CFG_BOARD_REVISION == 5)
+    my_sci_err = R_SCI_Open(SCI_CH5, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
 #endif
 
     /* If there were an error this would demonstrate error detection of API calls. */
