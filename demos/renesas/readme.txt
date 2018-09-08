@@ -59,6 +59,10 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.4:
+[ADDED] Missing parts for RX65N Target Board + Silex SX-ULPGN PMOD CC-RX
+        e2 studio with E2 Emulator Lite (on board).
+
 v0.1.3:
 [UPDATED] Follow the upstream from Amazon FreeRTOS v1.4.1.
 [FIXED] no use ET_LINKSTA setting for RX65N GR-ROSE projects.
