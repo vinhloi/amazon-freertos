@@ -78,4 +78,9 @@ to perform a TLS negotiation. */
 /* Send AWS IoT MQTT traffic encrypted. */
 #define democonfigMQTT_AGENT_CONNECT_FLAGS          	     ( mqttagentREQUIRE_TLS )
 
+/* Workaround for the incompatibility between GNU/IAR C compilers and the CC-RX compiler. */
+#if defined(__CCRX__)
+#define __FUNCTION__    __func__
+#endif
+
 #endif /* _AWS_DEMO_CONFIG_H_ */

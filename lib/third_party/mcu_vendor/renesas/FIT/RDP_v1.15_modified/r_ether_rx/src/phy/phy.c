@@ -27,13 +27,12 @@
  *         : 16.12.2014 1.01     Made changes related to header file include.
  *         : 29.01.2015 1.02     Correction of ETHER_CFG_USE_PHY_KSZ8041NL.
  *         : 31.03.2016 1.10     Added changes behavior of phy_get_link_status function depending on number of Ethernet channel.
+ *         : xx.xx.xxxx x.xx     Added support for GNUC and ICCRX.
  ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
  Includes   <System Includes> , "Project Includes"
  ***********************************************************************************************************************/
-#include <machine.h>
-
 /* Access to peripherals and board defines. */
 #include "platform.h"
 
@@ -264,7 +263,7 @@ int16_t phy_set_autonegotiate (uint32_t ether_channel, uint16_t *pline_speed_dup
     /* When the link isn't up, return error */
     if (PHY_STATUS_LINK_UP != (reg & PHY_STATUS_LINK_UP))
     {
-        nop();
+        R_NOP();
         return R_PHY_ERROR;
     }
 
@@ -343,7 +342,7 @@ int16_t phy_get_link_status (uint32_t ether_channel)
     /* When the link isn't up, return error */
     if (PHY_STATUS_LINK_UP != (reg & PHY_STATUS_LINK_UP))
     {
-        nop();
+        R_NOP();
 
         /* Link is down */
         return R_PHY_ERROR;

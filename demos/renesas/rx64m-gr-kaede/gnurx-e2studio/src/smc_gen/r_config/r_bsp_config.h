@@ -51,6 +51,19 @@
 *                              Added the following macro definition.
 *                                - BSP_CFG_RTC_ENABLE
 *                                - BSP_CFG_SOSC_DRV_CAP
+*         : 01.11.2017 2.00    Added the following macro definition.
+*                                - BSP_CFG_STARTUP_DISABLE
+*         : 01.07.2018 2.01      Added the following macro definition.
+*                                - BSP_CFG_CONFIGURATOR_SELECT
+*                                Add RTOS support. FreeRTOS. Define a timer for RTOS.
+*         : xx.xx.xxxx x.xx      Added the following macro definition for ID code protection.
+*                                 - BSP_CFG_ID_CODE_LONG_1
+*                                 - BSP_CFG_ID_CODE_LONG_2
+*                                 - BSP_CFG_ID_CODE_LONG_3
+*                                 - BSP_CFG_ID_CODE_LONG_4
+*                                Added the following macro definition.
+*                                 - BSP_CFG_FIT_IPL_MAX
+*                                Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 #ifndef R_BSP_CONFIG_REF_HEADER_FILE
 #define R_BSP_CONFIG_REF_HEADER_FILE
@@ -58,6 +71,18 @@
 /***********************************************************************************************************************
 Configuration Options
 ***********************************************************************************************************************/
+
+/* NOTE:
+ The default settings are the same as when using RSKRX64M.
+ Change to the settings for the user board.
+*/
+
+/* Start up select
+   0 = Enable BSP startup program.
+   1 = Disable BSP startup program. (e.g. Using user startup program.)
+*/
+#define BSP_CFG_STARTUP_DISABLE (0)
+
 /* Enter the product part number for your MCU. This information will be used to obtain information about your MCU such 
    as package and memory size. 
    To help parse this information, the part number will be defined using multiple macros.
@@ -122,6 +147,44 @@ Configuration Options
 */
 #define BSP_CFG_MCU_PART_MEMORY_TYPE    (0x0) // <-- Updated by GUI. Do not edit this value manually
 
+/* Whether to use 1 stack or 2. RX MCUs have the ability to use 2 stacks: an interrupt stack and a user stack.
+ * When using 2 stacks the user stack will be used during normal user code. When an interrupt occurs the CPU
+ * will automatically shift to using the interrupt stack. Having 2 stacks can make it easier to figure out how
+ * much stack space to allocate since the user does not have to worry about always having enough room on the
+ * user stack for if-and-when an interrupt occurs. Some users will not want 2 stacks though because it is not
+ * needed in all applications and can lead to wasted RAM (i.e. space in between stacks that is not used).
+ * If only 1 stack is used then the interrupt stack is the one that will be used. If 1 stack is chosen then
+ * the user may want to remove the 'SU' section from the linker sections to remove any linker warnings.
+ *
+ * 0 = Use 1 stack. Disable user stack. User stack size set below will be ignored.
+ * 1 = Use 2 stacks. User stack and interrupt stack will both be used.
+ */
+#define BSP_CFG_USER_STACK_ENABLE       (1)
+
+#if defined(__CCRX__)
+
+/* When using the user startup program, disable the following code. */
+#if (BSP_CFG_STARTUP_DISABLE == 0)
+
+/* The 'BSP_DECLARE_STACK' macro is checked so that the stack is only declared in one place (resetprg.c). Every time a 
+   '#pragma stacksize' is encountered, the stack size is increased. This prevents multiplication of stack size. */
+#if defined(BSP_DECLARE_STACK)
+    /* If only 1 stack is chosen using BSP_CFG_USER_STACK_ENABLE then no RAM will be allocated for the user stack. */
+    #if (BSP_CFG_USER_STACK_ENABLE == 1)
+    /* User Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive. */
+    #pragma stacksize su=0x3000
+    #endif
+
+/* Interrupt Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive.
+ * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
+ * below.
+ */
+#pragma stacksize si=0x3000
+#endif
+
+#endif /* BSP_CFG_STARTUP_DISABLE == 0 */
+
+#endif /* defined(__CCRX__) */
 
 /* Heap size in bytes.
    To disable the heap you must follow these steps:
@@ -134,10 +197,14 @@ Configuration Options
 */
 #define BSP_CFG_HEAP_BYTES              (0x2000)
 
+#if defined(__CCRX__)
+
 /* Initializes C input & output library functions.
    0 = Disable I/O library initialization in resetprg.c. If you are not using stdio then use this value.
    1 = Enable I/O library initialization in resetprg.c. This is default and needed if you are using stdio. */
-#define BSP_CFG_IO_LIB_ENABLE           (0)
+#define BSP_CFG_IO_LIB_ENABLE           (1)
+
+#endif /* defined(__CCRX__) */
 
 /* If desired the user may redirect the stdio charget() and/or charput() functions to their own respective functions
    by enabling below and providing and replacing the my_sw_... function names with the names of their own functions. */
@@ -163,6 +230,21 @@ Configuration Options
    1 = User Boot Mode
 */
 #define BSP_CFG_USER_BOOT_ENABLE        (0)
+
+/* Set your desired ID code. NOTE, leave at the default (all 0xFF's) if you do not wish to use an ID code. If you set 
+   this value and program it into the MCU then you will need to remember the ID code because the debugger will ask for 
+   it when trying to connect. Note that the E1/E20 will ignore the ID code when programming the MCU during debugging.
+   If you set this value and then forget it then you can clear the ID code by connecting up in serial boot mode using 
+   FDT. The ID Code is 16 bytes long. The macro below define the ID Code in 4-byte sections. */
+/* Lowest 4-byte section, address 0x00120050. From MSB to LSB: ID code 4, ID code 3, ID code 2, ID code 1/Control Code.
+ */
+#define BSP_CFG_ID_CODE_LONG_1          (0xFFFFFFFF)
+/* 2nd ID Code section, address 0x00120054. From MSB to LSB: ID code 8, ID code 7, ID code 6, ID code 5. */
+#define BSP_CFG_ID_CODE_LONG_2          (0xFFFFFFFF)
+/* 3rd ID Code section, address 0x00120058. From MSB to LSB: ID code 12, ID code 11, ID code 10, ID code 9. */
+#define BSP_CFG_ID_CODE_LONG_3          (0xFFFFFFFF)
+/* 4th ID Code section, address 0x0012005C. From MSB to LSB: ID code 16, ID code 15, ID code 14, ID code 13. */
+#define BSP_CFG_ID_CODE_LONG_4          (0xFFFFFFFF)
 
 /* Clock source select (CKSEL).
    0 = Low Speed On-Chip Oscillator  (LOCO)
@@ -468,6 +550,16 @@ Configuration Options
    1 = Smart Configurator initialization code used
 */
 #define BSP_CFG_CONFIGURATOR_SELECT                 (1) // <-- Updated by GUI. Do not edit this value manually
+
+/* For some BSP functions, it is necessary to ensure that, while these functions are executing, interrupts from other 
+   FIT modules do not occur. By controlling the IPL, these functions disable interrupts that are at or below the 
+   specified interrupt priority level.
+   This macro sets the IPL. Range is 0x0 - 0xF.
+   Please set this macro more than IPR for other FIT module interrupts.
+   The default value is 0xF (maximum value).
+   Don't change if there is no special processing with higher priority than all fit modules.
+*/
+#define BSP_CFG_FIT_IPL_MAX                         (0xF)
 
 /* There are multiple versions of the RSKRX64M. Choose which board is currently being used below.
    0 = 1st Prototype Board (R0K50564MC000BR, R0K50564MC010BR)

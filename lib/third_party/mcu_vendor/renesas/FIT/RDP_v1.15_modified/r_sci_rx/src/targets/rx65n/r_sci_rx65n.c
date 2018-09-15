@@ -1011,7 +1011,7 @@ sci_err_t sci_async_cmds(sci_hdl_t const hdl,
             SCI_TDR(0);
             while (0 == hdl->rom->regs->SSR.BIT.TEND)
             {
-                nop();
+                R_NOP();
             }
 
             /* restore original baud rate */

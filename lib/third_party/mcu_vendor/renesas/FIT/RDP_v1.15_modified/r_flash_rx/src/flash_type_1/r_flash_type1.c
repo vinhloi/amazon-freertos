@@ -38,6 +38,7 @@
 *                              Added check in Open() for another operation in progress when in BGO mode.
 *           18.11.2016 3.00    Removed functions common to other MCUs for new merged source code.
 *           02.08.2017 3.10    Removed #include "r_mcu_config.h". Now in targets.h (r_flash_rx_if.h includes)
+*           xx.xx.xxxx x.xx    Added support for GNUC and ICCRX.
 ********************************************************************************************************************/
 
 /********************************************************************************************************************
@@ -46,8 +47,6 @@ Includes   <System Includes> , "Project Includes"
 /* Includes board and MCU related header files. */
 #include "r_flash_rx_if.h"
 #if (FLASH_TYPE == FLASH_TYPE_1)
-#include <machine.h>
-
 /* Private header file for this package. */
 #include "r_flash_type1_if.h"
 #include "r_flash_common.h"
@@ -117,18 +116,34 @@ flash_err_t flash_get_status (void)
 * Arguments    : R1 : Waiting loop counter
 * Return Value : none
 *******************************************************************************/
-#pragma inline_asm r_flash_delay
 FLASH_PE_MODE_SECTION
-static void r_flash_delay  (unsigned long loop_cnt)
+R_PRAGMA_INLINE_STATIC_ASM(r_flash_delay)
+void r_flash_delay (unsigned long loop_cnt)
 {
-    BRA     ?+
+#if defined(__CCRX__)
+    BRA ?+
     NOP
-?:
+    ?:
     NOP
-    SUB     #01H,R1
-    BNE     ?-
-
+    SUB #01H, R1
+    BNE ?-
+#elif defined(__GNUC__)
+    __asm("BRA ?+");
+    __asm("NOP");
+    __asm("?:");
+    __asm("NOP");
+    __asm("SUB #01H, R1");
+    __asm("BNE ?-");
+#elif defined(__ICCRX__)
+    asm("BRA.B _lab\n"
+        "NOP\n"
+        "_lab:\n"
+        "NOP\n"
+        "SUB #01H, R1\n"
+        "BNE.B _lab");
+#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
 }
+
 
 /*******************************************************************************
 * Outline      : Function that specifies the execution time

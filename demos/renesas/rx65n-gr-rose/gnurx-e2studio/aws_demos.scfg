@@ -224,7 +224,6 @@
 <pinItem allocation="58" direction="None" id="REF50CK0" locked="false" status="512"/>
 <pinItem allocation="66" direction="None" id="ET0_MDC" locked="false" status="512"/>
 <pinItem allocation="F1" direction="None" id="EXTAL" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="ET0_LINKSTA" locked="false" status="0"/>
 <pinItem allocation="57" direction="None" id="RMII0_RX_ER" locked="false" status="512"/>
 <pinItem allocation="56" direction="None" id="RMII0_TXD_EN" locked="false" status="512"/>
 <pinItem allocation="67" direction="None" id="ET0_MDIO" locked="false" status="512"/>

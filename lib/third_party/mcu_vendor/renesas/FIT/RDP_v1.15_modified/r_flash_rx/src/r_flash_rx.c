@@ -29,6 +29,7 @@
 *              : 05.10.2016 3.00    Modified API functions to call either flash_api_xxx Flash Type 2 functions
 *                                   or r_flash_xxx Flash Type 1, 3, 4 functions.
 *              : 31.10.2017 3.10    Added function R_FLASH_Close().
+*              : xx.xx.xxxx x.xx    Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -251,7 +252,7 @@ flash_err_t R_FLASH_Control(flash_cmd_t cmd, void *pcfg)
 * Return Value : Version of this module.
 ***********************************************************************************************************************/
 FLASH_PE_MODE_SECTION
-R_ATTRIB_INLINE
+R_PRAGMA_INLINE(R_FLASH_GetVersion)
 uint32_t R_FLASH_GetVersion (void)
 {
     /* These version macros are defined in r_flash_if.h. */
@@ -332,7 +333,7 @@ bool flash_softwareLock(int32_t * const plock)
     int32_t is_locked = true;
 
     /* Try to acquire semaphore to obtain lock */
-    xchg(&is_locked, plock);
+    R_EXCHANGE((R_EXCHANGE_CAST_ARGS1)&is_locked, (R_EXCHANGE_CAST_ARGS2)plock);
 
     /* Check to see if semaphore was successfully taken */
     if (is_locked == false)

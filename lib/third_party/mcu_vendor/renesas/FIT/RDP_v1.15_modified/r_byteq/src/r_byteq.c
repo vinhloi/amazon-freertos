@@ -26,6 +26,7 @@
 *         : 30.09.2015 1.50     Added dependency to BSP
 *         : 29.01.2016 1.60     Fixed the initial setting process in the R_LONGQ_Open function.
 *         :                     Fixed a program according to the Renesas coding rules.
+*         : xx.xx.xxxx x.xx     Added support for GNUC and ICCRX.
 ******************************************************************************/
 
 /*****************************************************************************
@@ -410,7 +411,7 @@ byteq_err_t R_BYTEQ_Close(byteq_hdl_t const hdl)
 * Arguments    : none
 * Return Value : version number
 ******************************************************************************/
-R_ATTRIB_INLINE
+R_PRAGMA_INLINE(R_BYTEQ_GetVersion)
 uint32_t  R_BYTEQ_GetVersion(void)
 {
 

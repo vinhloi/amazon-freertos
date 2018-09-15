@@ -26,7 +26,7 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
-#include "rskrx65n_uart.h"
+#include "serial_term_uart.h"
 
 /*-----------------------------------------------------------
 * Application specific definitions.
@@ -270,7 +270,7 @@ extern uint32_t ulRand();
 /* Header required for the tracealyzer recorder library. */
 //#include "trcRecorder.h"
 
-/* Header required for the compatibility between GNU/IAR C compilers and the CC-RX compiler. */
-#include "SCFGcompiler.h"
+/* When the FIT configurator or the Smart Configurator is used, platform.h has to be used. */
+#define configINCLUDE_PLATFORM_H_INSTEAD_OF_IODEFINE_H  1
 
 #endif /* FREERTOS_CONFIG_H */

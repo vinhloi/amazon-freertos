@@ -227,7 +227,6 @@
 <pinItem allocation="58" direction="None" id="REF50CK0" locked="false" status="0"/>
 <pinItem allocation="66" direction="None" id="ET0_MDC" locked="false" status="0"/>
 <pinItem allocation="F1" direction="None" id="EXTAL" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="ET0_LINKSTA" locked="false" status="0"/>
 <pinItem allocation="57" direction="None" id="RMII0_RX_ER" locked="false" status="0"/>
 <pinItem allocation="56" direction="None" id="RMII0_TXD_EN" locked="false" status="0"/>
 <pinItem allocation="67" direction="None" id="ET0_MDIO" locked="false" status="0"/>
@@ -460,11 +459,6 @@
 <tool id="SWComponent" version="1.0.0.0">
 <configuration inuse="true" name="r_byteq">
 <component description="依存モジュール: r_bsp バージョン 3.10&#10;This module allocates a queue control block in an Open() call to handle indexing for buffers provided by the user application. Additional functions are provided to put and get data from the buffer queue, inspect the number of bytes available or in use, and to flush the queue. There is no limit to the number of queues supported, and queue control blocks can be allocated statically at build time or dynamically at run time." detailDescription="Byte-based circular buffer library." display="r_byteq" id="r_byteq1.60" version="1.60"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-</configuration>
-<configuration inuse="true" name="r_cmt_rx">
-<component description="依存モジュール: r_bsp バージョン 2.90, 3.00, 3.01, 3.10, 3.20, 3.30, 3.40, 3.50, 3.60&#10;This module creates a timer tick using a CMT channel based on a frequency input by the user." detailDescription="Simple CMT driver for creating timer tick." display="r_cmt_rx" id="r_cmt_rx3.21" version="3.21"/>
 <source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 <source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 </configuration>

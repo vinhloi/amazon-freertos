@@ -97,7 +97,7 @@ Macro definitions
 #define SCI_SCR_DUMMY_READ                \
     if (0x00 == hdl->rom->regs->SCR.BYTE) \
     {                                     \
-        nop();                            \
+        R_NOP();                            \
     }
 
 /* Interrupt Request register flag clear */

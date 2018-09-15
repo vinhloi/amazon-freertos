@@ -9,12 +9,7 @@ aws_shadow_lightbulb_on_off.obj
 aws_subscribe_publish_loop.obj
 aws_tcp_echo_client_separate_tasks.obj
 aws_tcp_echo_client_single_task.obj
-entropy_hardware_poll.obj
-freertos_usr_func.obj
-helper.obj
 main.obj
-serial_term_uart.obj
-sx_ulpgn_driver.obj
 event_groups.obj
 list.obj
 heap_4.obj
@@ -112,6 +107,11 @@ x509_csr.obj
 x509write_crt.obj
 x509write_csr.obj
 xtea.obj
+exit.obj
+entropy_hardware_poll.obj
+freertos_start.obj
+sx_ulpgn_driver.obj
+serial_term_uart.obj
 cborencoder.obj
 cborencoder_close_container_checked.obj
 cborerrorstrings.obj
@@ -146,10 +146,6 @@ r_flash_type4.obj
 r_flash_fcu.obj
 r_flash_group.obj
 r_flash_rx.obj
-r_riic_rx.obj
-r_riic_rx65n.obj
-r_sci_iic_rx.obj
-r_sci_iic_rx65n.obj
 r_sci_rx.obj
 r_sci_rx65n.obj
 r_sci_rx65n_data.obj

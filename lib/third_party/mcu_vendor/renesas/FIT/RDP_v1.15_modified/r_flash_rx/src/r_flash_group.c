@@ -29,6 +29,7 @@
 *                                   Added is_cf_addr(), is_cf_overflow(), and get_cf_addr_info().
 *              : 31.10.2017 1.20    Added function r_flash_close().
 *                                   Added error check FLASH_ERR_ALREADY_OPEN to r_flash_open().
+*              : xx.xx.xxxx x.xx    Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -1311,7 +1312,7 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
         FLASH.ROMCIV.BIT.ROMCIV = 1;                // start invalidation
         while (FLASH.ROMCIV.BIT.ROMCIV != 0)        // wait for invalidation to complete
         {
-            nop();
+            R_NOP();
         }
         FLASH.ROMCE.BIT.ROMCEN = 1;                 // enable cache
         if (FLASH.ROMCE.BIT.ROMCEN != 1)

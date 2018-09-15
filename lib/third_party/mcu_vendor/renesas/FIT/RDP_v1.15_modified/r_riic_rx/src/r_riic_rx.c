@@ -62,6 +62,7 @@
  *              : 01.10.2016 2.00     Fixed a program according to the Renesas coding rules.
  *              : 02.06.2017 2.10     Deleted interrupt functions of RIIC3.
  *                                    Fixed processing of the riic_bps_calc function.
+ *              : xx.xx.xxxx x.xx     Added support for GNUC and ICCRX.
  **********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -1464,7 +1465,7 @@ static void riic_close (riic_info_t * p_riic_info)
  * Arguments    : none
  * Return Value : version number
  **********************************************************************************************************************/
-R_ATTRIB_INLINE
+R_PRAGMA_INLINE(R_RIIC_GetVersion)
 uint32_t R_RIIC_GetVersion (void)
 {
     uint32_t const version = (RIIC_VERSION_MAJOR << 16) | RIIC_VERSION_MINOR;

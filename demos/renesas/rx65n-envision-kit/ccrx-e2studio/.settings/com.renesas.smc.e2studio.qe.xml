@@ -24,7 +24,6 @@
 </Segment>
 <Segment id="Component">
 <Setting id="r_bsp" value="FIT"/>
-<Setting id="r_cmt_rx" value="FIT"/>
 <Setting id="r_ether_rx" value="FIT"/>
 <Setting id="r_byteq" value="FIT"/>
 <Setting id="r_sci_rx" value="FIT"/>

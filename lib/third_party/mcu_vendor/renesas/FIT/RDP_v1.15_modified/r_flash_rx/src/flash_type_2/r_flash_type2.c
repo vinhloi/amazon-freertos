@@ -43,6 +43,7 @@
 *           02.08.2017 2.20    Removed #include r_mcu_config.h (now done via r_flash_rx_if.h"
 *           31.10.2017 2.30    Modified flash_api_open() to check for FLASH_ERR_ALREADY_OPEN.
 *                              Added function flash_api_close();
+*           xx.xx.xxxx x.xx    Added support for GNUC and ICCRX.
 ********************************************************************************************************************/
 
 /********************************************************************************************************************
@@ -51,8 +52,6 @@ Includes   <System Includes> , "Project Includes"
 /* Includes board and MCU related header files. */
 #include "r_flash_rx_if.h"
 #if (FLASH_TYPE == FLASH_TYPE_2)
-#include <machine.h>
-
 /* Configuration for this package. */
 #include "r_flash_rx_config.h"
 
@@ -1019,7 +1018,7 @@ R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
         (FLASH.FSTATR0.BIT.PRGERR == 1) )
     {
         /* Should never get here with FIFERR enabled */
-        nop();
+        R_NOP();
     }
 
     /* Check state and see if anything else needs to be done */
@@ -1246,7 +1245,7 @@ R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
          * traced occurrence of this is doing a large write to data flash when
          * the area is not erased first.
          */
-        nop();
+        R_NOP();
     }
 }
 /******************************************************************************

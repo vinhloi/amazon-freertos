@@ -35,6 +35,15 @@
 *         : 01.07.2018 1.02      Added the following macro definition.
 *                                - BSP_CFG_CONFIGURATOR_SELECT
 *                                Add RTOS support. FreeRTOS. Define a timer for RTOS.
+*         : 27.07.2018 1.03      Modified the comment of PLL clock source.
+*                                Added the following macro definition for ID code protection.
+*                                 - BSP_CFG_ID_CODE_LONG_1
+*                                 - BSP_CFG_ID_CODE_LONG_2
+*                                 - BSP_CFG_ID_CODE_LONG_3
+*                                 - BSP_CFG_ID_CODE_LONG_4
+*                                Added the following macro definition.
+*                                 - BSP_CFG_FIT_IPL_MAX
+*         : xx.xx.xxxx 1.04      Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 #ifndef R_BSP_CONFIG_REF_HEADER_FILE
 #define R_BSP_CONFIG_REF_HEADER_FILE
@@ -136,6 +145,8 @@ Configuration Options
  */
 #define BSP_CFG_USER_STACK_ENABLE       (1)
 
+#if defined(__CCRX__)
+
 /* When using the user startup program, disable the following code. */
 #if (BSP_CFG_STARTUP_DISABLE == 0)
 
@@ -157,6 +168,8 @@ Configuration Options
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 
+#endif /* defined(__CCRX__) */
+
 /* Heap size in bytes.
    To disable the heap you must follow these steps:
    1) Set this macro (BSP_CFG_HEAP_BYTES) to 0.
@@ -168,10 +181,14 @@ Configuration Options
 */
 #define BSP_CFG_HEAP_BYTES              (0x2000)
 
+#if defined(__CCRX__)
+
 /* Initializes C input & output library functions.
    0 = Disable I/O library initialization in resetprg.c. If you are not using stdio then use this value.
    1 = Enable I/O library initialization in resetprg.c. This is default and needed if you are using stdio. */
 #define BSP_CFG_IO_LIB_ENABLE           (1)
+
+#endif /* defined(__CCRX__) */
 
 /* If desired the user may redirect the stdio charget() and/or charput() functions to their own respective functions
    by enabling below and providing and replacing the my_sw_... function names with the names of their own functions. */
@@ -187,6 +204,21 @@ Configuration Options
    1 = Switch to User mode.
 */
 #define BSP_CFG_RUN_IN_USER_MODE        (0)
+
+/* Set your desired ID code. NOTE, leave at the default (all 0xFF's) if you do not wish to use an ID code. If you set 
+   this value and program it into the MCU then you will need to remember the ID code because the debugger will ask for 
+   it when trying to connect. Note that the E1/E20 will ignore the ID code when programming the MCU during debugging.
+   If you set this value and then forget it then you can clear the ID code by connecting up in serial boot mode using 
+   FDT. The ID Code is 16 bytes long. The macro below define the ID Code in 4-byte sections. */
+/* Lowest 4-byte section, address 0xFE7F5D50. From MSB to LSB: ID code 4, ID code 3, ID code 2, ID code 1/Control Code.
+ */
+#define BSP_CFG_ID_CODE_LONG_1          (0xFFFFFFFF)
+/* 2nd ID Code section, address 0xFE7F5D54. From MSB to LSB: ID code 8, ID code 7, ID code 6, ID code 5. */
+#define BSP_CFG_ID_CODE_LONG_2          (0xFFFFFFFF)
+/* 3rd ID Code section, address 0xFE7F5D58. From MSB to LSB: ID code 12, ID code 11, ID code 10, ID code 9. */
+#define BSP_CFG_ID_CODE_LONG_3          (0xFFFFFFFF)
+/* 4th ID Code section, address 0xFE7F5D5C. From MSB to LSB: ID code 16, ID code 15, ID code 14, ID code 13. */
+#define BSP_CFG_ID_CODE_LONG_4          (0xFFFFFFFF)
 
 /* Clock source select (CKSEL).
    0 = Low Speed On-Chip Oscillator  (LOCO)
@@ -581,6 +613,16 @@ Configuration Options
 */
 #define BSP_CFG_CONFIGURATOR_SELECT                 (1) // <-- Updated by GUI. Do not edit this value manually
 
+/* For some BSP functions, it is necessary to ensure that, while these functions are executing, interrupts from other 
+   FIT modules do not occur. By controlling the IPL, these functions disable interrupts that are at or below the 
+   specified interrupt priority level.
+   This macro sets the IPL. Range is 0x0 - 0xF.
+   Please set this macro more than IPR for other FIT module interrupts.
+   The default value is 0xF (maximum value).
+   Don't change if there is no special processing with higher priority than all fit modules.
+*/
+#define BSP_CFG_FIT_IPL_MAX                         (0xF)
+
 /* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
    0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
    1 = rev. 1.00 Board (RTK50565N2C00000BE)
@@ -588,7 +630,6 @@ Configuration Options
    3 = RX65N GR-ROSE
 */
 #define BSP_CFG_BOARD_REVISION                      (1)
-
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

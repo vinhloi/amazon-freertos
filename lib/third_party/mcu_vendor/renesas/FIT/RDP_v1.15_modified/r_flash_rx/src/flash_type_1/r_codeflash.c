@@ -1,4 +1,4 @@
-﻿/*******************************************************************************
+/*******************************************************************************
 * DISCLAIMER
 * This software is supplied by Renesas Electronics Corporation and is only
 * intended for use with Renesas products. No other uses are authorized. This
@@ -43,10 +43,11 @@
 *                                      more include files.
 *                02.08.2017 2.20     Removed #include "r_mcu_config.h". Now in
 *                                    targets.h (r_flash_rx_if.h includes)
+*                xx.xx.xxxx x.xx     Added support for GNUC and ICCRX.
 *******************************************************************************/
 
 /******************************************************************************
-Includes   <System Includes> , “Project Includes”
+Includes   <System Includes> , "Project Includes"
 ******************************************************************************/
 #include "r_flash_rx_if.h"
 #if (FLASH_TYPE == FLASH_TYPE_1)
@@ -478,7 +479,7 @@ static void r_cf_write_fpmcr (uint8_t value)
 
     if(value == FLASH.FPMCR.BYTE)
     {
-        nop();
+        R_NOP();
     }
 
 }

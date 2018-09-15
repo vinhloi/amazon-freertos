@@ -220,7 +220,7 @@ uint8_t *buffer_pointer;
                         /* The message was successfully sent to the TCP/IP stack.
                         Call the standard trace macro to log the occurrence. */
                         iptraceNETWORK_INTERFACE_RECEIVE();
-                        nop();
+                        R_NOP();
                     }
                 }
                 else
@@ -475,74 +475,6 @@ uint32_t ulRand( void )   //TODO make true random number
 	get_random_number((uint8_t*)&tmp, 4);
 	return tmp;
 } /* End of function ulRand() */
-
-/******************************************************************************
-Functions : random number generator(XorShift method)
-******************************************************************************/
-void get_random_number(uint8_t *data, uint32_t len)
-{
-    static uint32_t y = 2463534242;
-    uint32_t res;
-    uint32_t lp;
-    uint8_t *bPtr;
-
-    y += tcpudp_time_cnt;
-    res = len / 4;
-    for (lp = 0; lp < res; lp++)
-    {
-        y = y ^ (y << 13);
-        y = y ^ (y >> 17);
-        y = y ^ (y << 5);
-        bPtr = (uint8_t*) & y;
-#if __LIT
-        *((uint32_t *)data) = (*(bPtr + 3) << 24) | (*(bPtr + 2) << 16) | (*(bPtr + 1) << 8) | *(bPtr + 0);
-#else
-        *((uint32_t *)data) = y;
-#endif
-        data += 4;
-    }
-    y = y ^ (y << 13);
-    y = y ^ (y >> 17);
-    y = y ^ (y << 5);
-    res = (uint32_t)len % 4;
-    bPtr = (uint8_t*) & y;
-    switch (res)
-    {
-        case 3:
-#if __LIT
-            *data++ = bPtr[3];
-            *data++ = bPtr[2];
-            *data++ = bPtr[1];
-#else
-            *data++ = bPtr[0];
-            *data++ = bPtr[1];
-            *data++ = bPtr[2];
-#endif
-            break;
-
-        case 2:
-#if __LIT
-            *data++ = bPtr[3];
-            *data++ = bPtr[2];
-#else
-            *data++ = bPtr[0];
-            *data++ = bPtr[1];
-#endif
-            break;
-
-        case 1:
-#if __LIT
-            *data++ = bPtr[3];
-#else
-            *data++ = bPtr[0];
-#endif
-            break;
-
-        default:
-            /* no op */
-            break;
-    }
-}
 
 /***********************************************************************************************************************
  End of file "NetworkInterface.c"

@@ -36,6 +36,7 @@
 *         : 19.12.2016 3.10    Added support for RX24U, RX24T(512KB).
 *                              Fix to stop timer before callback function is executed.
 *         : 21.07.2017 3.20    Added support for RX65N-2M, RX130-512KB
+*         : xx.xx.xxxx x.xx    Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -859,7 +860,7 @@ static bool cmt_setup_channel (uint32_t channel, uint32_t frequency_hz)
 * Arguments    : none
 * Return Value : Version of this module.
 ***********************************************************************************************************************/
-R_ATTRIB_INLINE
+R_PRAGMA_INLINE(R_CMT_GetVersion)
 uint32_t R_CMT_GetVersion (void)
 {
     /* These version macros are defined in r_cmt_rx_if.h. */

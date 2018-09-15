@@ -217,16 +217,10 @@
 <Item current="20" id="cachclk.CurrentValue"/>
 </tool>
 <tool id="Pins" version="1.0.0.0">
-<pinItem allocation="" direction="None" id="XTAL" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="EXTAL" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="TXD12" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="RXD12" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="RXD6" locked="false" status="0"/>
-<pinItem allocation="" direction="None" id="TXD6" locked="false" status="0"/>
 <pinItem allocation="45" direction="None" id="TXD10" locked="false" status="512"/>
-<pinItem allocation="67" direction="None" id="RXD5" locked="false" status="512"/>
-<pinItem allocation="66" direction="None" id="TXD5" locked="false" status="512"/>
 <pinItem allocation="46" direction="None" id="RXD10" locked="false" status="512"/>
+<pinItem allocation="66" direction="None" id="TXD5" locked="false" status="512"/>
+<pinItem allocation="67" direction="None" id="RXD5" locked="false" status="512"/>
 </tool>
 <tool id="Interrupt">
 <Item id="BSC_BUSERR" priority="15"/>

@@ -51,13 +51,13 @@
  *                                 The issue occurs when R_ETHER_LinkProcess function is called
  *                                 in the interrupt function.
  *                               Corrected source code of the R_ETHER_Read_ZC2 function.
+ *         : xx.xx.xxxx x.xx     Added support for GNUC and ICCRX.
  ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
  Includes   <System Includes> , "Project Includes"
  ***********************************************************************************************************************/
 #include <string.h>
-#include <machine.h>
 
 /* Access to peripherals and board defines. */
 #include "platform.h"
@@ -1451,7 +1451,7 @@ ether_return_t R_ETHER_Control (ether_cmd_t const cmd, ether_param_t const contr
  * Arguments    : none
  * Return Value : Version number
  ***********************************************************************************************************************/
-R_ATTRIB_INLINE
+R_PRAGMA_INLINE(R_ETHER_GetVersion)
 uint32_t R_ETHER_GetVersion (void)
 {
     return ((((uint32_t) ETHER_RX_VERSION_MAJOR) << 16) | ((uint32_t) ETHER_RX_VERSION_MINOR));

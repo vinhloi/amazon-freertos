@@ -34,17 +34,12 @@
  *         : 04.03.2016 1.90     RX24T support added.
  *         : 01.10.2016 2.00     Fixed a program according to the Renesas coding rules.
  *         : 31.08.2017 2.20     Changed about the calculation processing for address of PIDR.
+ *         : xx.xx.xxxx x.xx     Added support for GNUC and ICCRX.
+ *                               Deleted stddef.h, stdio.h, and stdint.h includes because platform.h.includes them.
  **********************************************************************************************************************/
 /***********************************************************************************************************************
  Includes   <System Includes> , "Project Includes"
  **********************************************************************************************************************/
-#include <stddef.h>
-/* Fixed width integers */
-#include <stdint.h>
-/* Boolean defines */
-#include <stdbool.h>
-/* Used for xchg() intrinsic */
-#include <machine.h>
 /* Access to peripherals and board defines. */
 #include "platform.h"
 
@@ -893,7 +888,7 @@ static void sci_iic_close (sci_iic_info_t * p_sci_iic_info)
  * Arguments    : none
  * Return Value : version number
  **********************************************************************************************************************/
-R_ATTRIB_INLINE
+R_PRAGMA_INLINE(R_SCI_IIC_GetVersion)
 uint32_t R_SCI_IIC_GetVersion (void)
 {
     uint32_t const version = (SCI_IIC_VERSION_MAJOR << 16) | SCI_IIC_VERSION_MINOR;
