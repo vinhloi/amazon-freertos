@@ -59,6 +59,29 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.5:
+[UPDATED] Unifying BSP(CC-RX/GCC/IAR)
+[UPDATED] Increase configMINIMAL_STACK_SIZE value from 140 to 180
+[TESTED] Following projetcs.
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite
+         RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite
+         RX65N Target Board + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Target Board + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite (on board)
+         RX65N Target Board + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite
+         RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite
+         
 v0.1.4:
 [ADDED] Missing parts for RX65N Target Board + Silex SX-ULPGN PMOD CC-RX
         e2 studio with E2 Emulator Lite (on board).
@@ -72,7 +95,6 @@ v0.1.3:
          RX65N Target Board + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite (on board)
          RX65N RSK + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite
          RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite
-
 [TESTED] Following projetcs.
          RX65N RSK CC-RX e2 studio with E2 Emulator Lite
          RX65N RSK CC-RX CS+ with E2 Emulator Lite
@@ -652,6 +674,11 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■課題まとめ★
 --------------------------------------------------------------------------
+　2018/09/24
+　　岡宮氏からGR-ROSE(GCC)用のリンカスクリプトをもらった。
+　　ユーザアプリによりRAMが割りあたる設定になっている。
+　　全体的にRAM割り当てを見直してから一斉に修正することにする。
+　　
 　2018/08/26
 　　性能面で改善点がまだありそうな予感がするので tracealyzer を導入して詳細評価する予定。
 　　RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Liteの
@@ -714,6 +741,60 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/09/24
+　NoMaY氏がBSPを共通化してくれている。
+　この状態でひとまず全環境の動作を確認し、リリースビルドを作成する。
+
+　RX65N RSK CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N RSK CC-RX CS+ with E2 Emulator Lite...OK
+　RX65N RSK GCC e2 studio with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite...NG
+　RX65N Target Board + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite (on board)
+　RX65N Target Board + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite (on board)
+　RX65N Target Board + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite (on board)
+　RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+　RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite
+　RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+　RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite
+　RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite
+　RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite
+　
+　RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite の環境でNGとなった。
+　追いかけていったところ、sx_ulpgn_driver.c の sx_ulpgn_uart_sci_handle が
+　main.c の198行目のconfigPRINTF( ( "WiFi module initialized. Connecting to AP...\r\n" ) );、
+　奥底のsnprintf()を実行したところで破壊される。
+　
+　FreeRTOSのスタックを増やしたら直った。
+　#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 140 )
+　#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 180 )
+　
+　他のプロジェクトもスタックを増やしておく。
+　もう一度テストやりなおし。
+　
+　RX65N RSK CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N RSK CC-RX CS+ with E2 Emulator Lite...OK
+　RX65N RSK GCC e2 studio with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite...OK
+　RX65N RSK + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite...OK
+　RX65N Target Board + Silex SX-ULPGN PMOD CC-RX e2 studio with E2 Emulator Lite (on board)...OK デバッガのデバイス設定を修正
+　RX65N Target Board + Silex SX-ULPGN PMOD CC-RX CS+with E2 Emulator Lite (on board)...OK デバッガの電源設定を修正
+　RX65N Target Board + Silex SX-ULPGN PMOD GCC e2 studio with E2 Emulator Lite (on board)
+　RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)...OK
+　RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite...OK
+　RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite...OK
+　RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite...OK
+　RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite...OK
+　RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite...OK
+　RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite...OK
+　
 2018/09/08
 　NoMaY氏が本家最新版v141に追従してくれている。
 　RX65N Target Board用の拡張ボードが仕上がってきた。
