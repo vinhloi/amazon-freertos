@@ -99,7 +99,7 @@ Typedef definitions
 Private global variables and functions
 ***********************************************************************************************************************/
 
-static int32_t g_flash_lock;
+extern int32_t g_flash_lock;
 static bool    g_driver_opened=false;
 
 /* Signals whether FCU firmware has been transferred to the FCU RAM
