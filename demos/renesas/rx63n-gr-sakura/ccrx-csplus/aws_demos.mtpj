@@ -4735,7 +4735,7 @@ src
       <LinkOptionListShow-1>List</LinkOptionListShow-1>
       <LinkOptionOptimize-1>None</LinkOptionOptimize-1>
       <LinkOptionStack-1>False</LinkOptionStack-1>
-      <LinkOptionStart-1>B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,B_1,R_1,B_2,R_2,B,R,SU,SI/00000100,C_1,C_2,C,C$*,D*,W*,L,P*/FFC00000,FIXEDVECT/FFFFFF80</LinkOptionStart-1>
+      <LinkOptionStart-1>B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,B_1,R_1,B_2,R_2,B,R,SI/00000100,C_1,C_2,C,C$*,D*,W*,L,P*/FFC00000,FIXEDVECT/FFFFFF80</LinkOptionStart-1>
       <LinkOptionCompress-1>False</LinkOptionCompress-1>
       <LinkOptionCpuInformation-1 />
       <LinkOptionDebug-1>Debug</LinkOptionDebug-1>

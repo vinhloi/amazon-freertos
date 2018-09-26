@@ -83,15 +83,32 @@ SECTIONS
 		. = ALIGN(2);
 		_mdata = .;
 	} > ROM
-	.ustack 0x3000: AT(0x3000)
+	_ETHERNET_BUFFERS 0x100 : AT(0x100)
 	{
+		___sectop__ETHERNET_BUFFERS = .;
+		*(_ETHERNET_BUFFERS)
+	} >RAM
+	_RX_DESC :
+	{
+		___sectop__RX_DESC = .;
+		*(_RX_DESC)
+	} >RAM
+	_TX_DESC :
+	{
+		___sectop__TX_DESC = .;
+		*(_TX_DESC)
+	} >RAM
+	.ustack BLOCK(4) :
+	{
+		. += 0;
 		_ustack = .;
 	} > RAM
-	.istack 0x6000: AT(0x6000)
+	.istack BLOCK(4) :
 	{
+		. += 0x1000;
 		_istack = .;
 	} > RAM
-	.data 0x6004: AT(_mdata)
+	.data : AT(_mdata)
 	{
 		_data = .;
 		*(.data)
@@ -117,19 +134,4 @@ SECTIONS
 		_ebss = .;
 		_end = .;
 	} > RAM
-	_ETHERNET_BUFFERS 0x100 : AT(0x100)
-	{
-		___sectop__ETHERNET_BUFFERS = .;
-		*(_ETHERNET_BUFFERS)
-	} >RAM
-	_RX_DESC :
-	{
-		___sectop__RX_DESC = .;
-		*(_RX_DESC)
-	} >RAM
-	_TX_DESC :
-	{
-		___sectop__TX_DESC = .;
-		*(_TX_DESC)
-	} >RAM
 }
