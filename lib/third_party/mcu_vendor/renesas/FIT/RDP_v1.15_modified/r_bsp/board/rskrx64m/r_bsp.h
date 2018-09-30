@@ -26,7 +26,9 @@
 *         : 07.08.2013 1.00     First Release
 *         : 01.11.2017 2.00     Added include path of "mcu_startup.h".
 *         : 01.07.2018 2.01     Additional RTOS header file.
-*         : xx.xx.xxxx x.xx     Added support for GNUC and ICCRX.
+*         : xx.xx.xxxx 2.02     Added support for GNUC and ICCRX.
+*                               Added #include for board/all/cksetup.h.
+*                               Relocated hwsetup.h, lowsrc.h and vecttbl.h to the 'board/all' folder.
 ***********************************************************************************************************************/
 
 #ifndef BSP_BOARD_RSKRX64M
@@ -63,9 +65,10 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include    "mcu/rx64m/mcu_mapped_interrupts.h"
 #include    "mcu/rx64m/mcu_startup.h"
 #include    "board/rskrx64m/rskrx64m.h"
-#include    "board/rskrx64m/hwsetup.h"
-#include    "board/rskrx64m/lowsrc.h"
-#include    "board/rskrx64m/vecttbl.h"
+#include    "board/all/cksetup.h"
+#include    "board/all/hwsetup.h"
+#include    "board/all/lowsrc.h"
+#include    "board/all/vecttbl.h"
 #if BSP_CFG_RTOS_USED == 0      // Non-OS
 #elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
 #include "FreeRTOS.h"

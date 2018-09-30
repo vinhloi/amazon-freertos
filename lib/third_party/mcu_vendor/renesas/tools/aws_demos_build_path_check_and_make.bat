@@ -5,6 +5,8 @@ rem ############################################################################
 
 setlocal
 
+set verbose=0
+
 if exist ".\aws_demos_build_path_check.bat" (
     set ide=csp
     set pj=.\
@@ -16,8 +18,18 @@ if exist ".\aws_demos_build_path_check.bat" (
     echo Error: Unable to find the project folder.
     goto ERROR
 )
-rem echo IDE is %ide%  && rem # For debug
-rem echo Project Folder is %pj% && rem # For debug
+if exist "%pj%src\smc_gen\r_config\" (
+    set gen=smc
+) else if exist "%pj%r_config\" (
+    set gen=fit
+) else (
+    echo\
+    echo Error: Unable to find the r_config folder.
+    goto ERROR
+)
+if %verbose%==1 echo IDE is %ide%
+if %verbose%==1 echo Project Folder is %pj%
+if %verbose%==1 echo Project Type is %gen%
 
 if %ide%==e2 if "%1"=="clean" goto CLEAN
 if %ide%==e2 if "%2"=="clean" goto CLEAN
@@ -42,9 +54,9 @@ if %ide%==csp (
 ) else if %ide%==e2 (
     set FN=%CD%\.\lib\aws\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\RX\NetworkInterface.obj
 )
-rem echo Maximum Path is "%FN%" && rem # For debug
+if %verbose%==1 echo Maximum Path is "%FN%"
 set FX=%FN:~259%
-rem echo Over of Path is "%FX%" && rem # For debug
+if %verbose%==1 echo Over of Path is "%FX%"
 
 :DEPTH_CHECK_STEP
 set ef=0
@@ -55,8 +67,16 @@ if not "%FX%"=="" (
 )
 if %ef%==1 goto ERROR
 
-rem If you don't want to do the next steps, you can skip them by removing the src\FIT_modified_code\attention!.txt file.
-if not exist "%pj%src\FIT_modified_code\attention!.txt" goto NOERROR
+if %gen%==fit goto FIT
+
+:SMC
+if %verbose%==1 echo Do pre-build operation for Smart Configurator generated code
+
+rem If you don't want to do pre-build operation, you can skip it by adding one of following files.
+rem     src/NO_USE_FIT_modified_code
+rem     src/NO_USE_FIT_pre_generated_code
+rem if exist "%pj%src\NO_USE_FIT_modified_code" goto MAKE
+rem if exist "%pj%src\NO_USE_FIT_pre_generated_code" goto MAKE
 
 set MODIFIED_FIT_MODULES=r_bsp r_ether_rx r_flash_rx r_sci_rx r_byteq r_riic_rx r_sci_iic_rx r_cmt_rx
 
@@ -120,7 +140,24 @@ if exist "%pj%src\smc_gen\general\r_cg_vector_table.c" (
     )
 )
 
-:NOERROR
+goto MAKE
+
+:FIT
+if %verbose%==1 echo Do pre-build operation for FIT Configurator generated/based code
+
+set MODIFIED_FIT_MODULES=r_bsp r_ether_rx r_flash_rx r_byteq r_sci_rx r_riic_rx r_sci_iic_rx r_cmt_rx
+
+:SHOW_MESSAGE
+set ef=0
+for %%S in (%MODIFIED_FIT_MODULES%) do (
+    if exist "%pj%%%S" (
+        if exist "%pj%%%S\*.h" (
+            echo Use "src\FIT_modified_code\%%S" module instead of generated %%S
+        )
+    )
+)
+
+:MAKE
 if %ide%==csp (
     endlocal
     exit 0

@@ -12,11 +12,8 @@ src/FIT_modified_code/r_byteq
 src/FIT_modified_code/r_cmt_rx
 src/FIT_modified_code/r_ether_rx
 src/FIT_modified_code/r_flash_rx
-src/FIT_modified_code/r_riic_rx
 src/FIT_modified_code/r_sci_iic_rx
 src/FIT_modified_code/r_sci_rx
-
-* Some of them may not exist depending on the type of RX MCU on the board.
 
 CC-RX/e2 studio
 ~~~~~~~~~~~~~~~
@@ -44,7 +41,6 @@ amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_byte
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_cmt_rx
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_ether_rx
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flash_rx
-amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_rx
 

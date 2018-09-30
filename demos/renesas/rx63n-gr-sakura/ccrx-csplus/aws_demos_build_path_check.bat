@@ -3,9 +3,9 @@ rem ############################################################################
 rem # This batch file executes some preprocess for build
 rem ################################################################################
 
-if not exist "%~dp0..\..\..\..\lib\third_party\mcu_vendor\renesas\tools\aws_demos_build_path_check_and_make_fit.bat" (
-    echo ERROR: Unable to find "%~dp0..\..\..\..\lib\third_party\mcu_vendor\renesas\tools\aws_demos_build_path_check_and_make_fit.bat"
+if not exist "%~dp0..\..\..\..\lib\third_party\mcu_vendor\renesas\tools\aws_demos_build_path_check_and_make.bat" (
+    echo ERROR: Unable to find "%~dp0..\..\..\..\lib\third_party\mcu_vendor\renesas\tools\aws_demos_build_path_check_and_make.bat"
     exit 2
 )
 
-"%~dp0..\..\..\..\lib\third_party\mcu_vendor\renesas\tools\aws_demos_build_path_check_and_make_fit.bat" %*
+"%~dp0..\..\..\..\lib\third_party\mcu_vendor\renesas\tools\aws_demos_build_path_check_and_make.bat" %*

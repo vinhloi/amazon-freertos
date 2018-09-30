@@ -32,8 +32,11 @@
 *         : 17.01.2013 1.50     Added #include for lowsrc.h.
 *         : 07.05.2013 1.60     Added #include for r_bsp_common.h, cpu.h, and mcu_init.h.
 *         : 19.06.2013 1.70     Moved C99 includes (stdint.h, stdbool.h, stddef.h) to r_bsp_common.h.
-*         : xx.xx.xxxx x.xx     Additional RTOS header file.
+*         : xx.xx.xxxx 1.71     Additional RTOS header file.
 *                               Added support for GNUC and ICCRX.
+*                               Added #include for mcu/rx63n/mcu_startup.h.
+*                               Added #include for board/all/cksetup.h.
+*                               Relocated hwsetup.h, lowsrc.h and vecttbl.h to the 'board/all' folder.
 ***********************************************************************************************************************/
 
 #ifndef BSP_BOARD_RSKRX63N
@@ -66,9 +69,11 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include    "mcu/rx63n/mcu_init.h"
 #include    "mcu/rx63n/mcu_interrupts.h"
 #include    "board/rskrx63n/rskrx63n.h"
-#include    "board/rskrx63n/hwsetup.h"
-#include    "board/rskrx63n/lowsrc.h"
-#include    "board/rskrx63n/vecttbl.h"
+#include    "mcu/rx63n/mcu_startup.h"
+#include    "board/all/cksetup.h"
+#include    "board/all/hwsetup.h"
+#include    "board/all/lowsrc.h"
+#include    "board/all/vecttbl.h"
 #if BSP_CFG_RTOS_USED == 0      // Non-OS
 #elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
 #include "FreeRTOS.h"

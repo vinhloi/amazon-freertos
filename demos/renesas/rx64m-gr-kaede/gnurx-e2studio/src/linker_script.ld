@@ -24,7 +24,7 @@ SECTIONS
 	.rvectors :
 	{
 		_rvectors_start = .;
-		INCLUDE ../src/linker_script_rvectors.inc
+		INCLUDE ../src/linker_script_rvectors.ld_inc
 		_rvectors_end = .;
 	} >ROM
 	.init :

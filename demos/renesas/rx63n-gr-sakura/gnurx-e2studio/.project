@@ -338,7 +338,7 @@
 			<type>6</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-aws_demos_build_path_check_and_make*.bat</arguments>
+				<arguments>1.0-name-matches-false-false-aws_demos_build_path_check_and_make.bat</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -410,7 +410,7 @@
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-generic_rx63n</arguments>
+				<arguments>1.0-name-matches-false-true-all|rx63n|generic_rx63n</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -419,16 +419,7 @@
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-all</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1536291078112</id>
-			<name>src/FIT_modified_code/r_bsp/mcu</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx63n</arguments>
+				<arguments>1.0-name-matches-false-true-all|rx63n</arguments>
 			</matcher>
 		</filter>
 		<filter>

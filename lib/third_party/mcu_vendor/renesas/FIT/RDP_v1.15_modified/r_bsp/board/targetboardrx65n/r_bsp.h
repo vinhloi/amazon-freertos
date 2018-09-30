@@ -22,10 +22,12 @@
 * Description  : Has the header files that should be included for this platform.
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
-* History : DD.MM.YYYY Version   Description
-*         : 01.11.2017 1.00      First Release
-*         : 01.07.2018 1.01      Additional RTOS header file.
-*         : xx.xx.xxxx 1.02      Added support for GNUC and ICCRX.
+* History : DD.MM.YYYY Version  Description
+*         : 01.11.2017 1.00     First Release
+*         : 01.07.2018 1.01     Additional RTOS header file.
+*         : xx.xx.xxxx 1.02     Added support for GNUC and ICCRX.
+*                               Added #include for board/all/cksetup.h.
+*                               Relocated hwsetup.h, lowsrc.h and vecttbl.h to the 'board/all' folder.
 ***********************************************************************************************************************/
 
 #ifndef BSP_BOARD_TARGETBOARDRX65N
@@ -62,9 +64,10 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include    "mcu/rx65n/mcu_mapped_interrupts.h"
 #include    "mcu/rx65n/mcu_startup.h"
 #include    "board/targetboardrx65n/targetboardrx65n.h"
-#include    "board/targetboardrx65n/hwsetup.h"
-#include    "board/targetboardrx65n/lowsrc.h"
-#include    "board/targetboardrx65n/vecttbl.h"
+#include    "board/all/cksetup.h"
+#include    "board/all/hwsetup.h"
+#include    "board/all/lowsrc.h"
+#include    "board/all/vecttbl.h"
 #if BSP_CFG_RTOS_USED == 0      // Non-OS
 #elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
 #include "FreeRTOS.h"

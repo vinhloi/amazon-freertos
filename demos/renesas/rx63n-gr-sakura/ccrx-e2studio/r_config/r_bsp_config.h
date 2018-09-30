@@ -84,9 +84,10 @@
 *                                                               to "8 = 0x8  = 512KB/128KB/32KB".
 *                              Changed the default value of the following macro definition.
 *                              - BSP_CFG_MCU_PART_MEMORY_SIZE - Changed the default value from 0xB to 0xF.
-*         : xx.xx.xxxx x.xx      Added the following macro definition.
-*                                 - BSP_CFG_FIT_IPL_MAX
-*                                Added support for GNUC and ICCRX.
+*         : xx.xx.xxxx x.xx    Added the following macro definition.
+*                              - BSP_CFG_STARTUP_DISABLE
+*                              - BSP_CFG_FIT_IPL_MAX
+*                              Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 
 #ifndef R_BSP_CONFIG_REF_HEADER_FILE
@@ -95,6 +96,18 @@
 /***********************************************************************************************************************
 Configuration Options
 ***********************************************************************************************************************/
+
+/* NOTE:
+ The default settings are the same as when using RSKRX63N.
+ Change to the settings for the user board.
+*/
+
+/* Start up select
+   0 = Enable BSP startup program.
+   1 = Disable BSP startup program. (e.g. Using user startup program.)
+*/
+#define BSP_CFG_STARTUP_DISABLE (0)
+
 /* Enter the product part number for your MCU. This information will be used to obtain information about your MCU such 
    as package and memory size. 
    To help parse this information, the part number will be defined using multiple macros.

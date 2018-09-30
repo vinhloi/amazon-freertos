@@ -130,11 +130,12 @@ cborparser.obj
 cborparser_dup_string.obj
 cborpretty.obj
 dbsct.obj
-hwsetup.obj
 lowlvl.obj
 lowsrc.obj
 resetprg.obj
 sbrk.obj
+hwsetup.obj
+cksetup.obj
 vecttbl.obj
 r_bsp_common.obj
 cpu.obj

@@ -131,11 +131,12 @@ cborparser_dup_string.obj
 cborpretty.obj
 r_pinset.obj
 dbsct.obj
-hwsetup.obj
 lowlvl.obj
 lowsrc.obj
 resetprg.obj
 sbrk.obj
+hwsetup.obj
+cksetup.obj
 vecttbl.obj
 r_bsp_common.obj
 cpu.obj
@@ -144,6 +145,7 @@ mcu_clocks.obj
 mcu_init.obj
 mcu_interrupts.obj
 mcu_locks.obj
+mcu_startup.obj
 r_byteq.obj
 phy.obj
 r_ether_rx.obj

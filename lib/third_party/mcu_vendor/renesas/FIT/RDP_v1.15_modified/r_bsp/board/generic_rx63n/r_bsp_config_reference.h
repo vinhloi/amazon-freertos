@@ -84,14 +84,10 @@
 *                                                               to "8 = 0x8  = 512KB/128KB/32KB".
 *                              Changed the default value of the following macro definition.
 *                              - BSP_CFG_MCU_PART_MEMORY_SIZE - Changed the default value from 0xB to 0xF.
-*         : xx.xx.xxxx x.xx      Added the following macro definition for ID code protection.
-*                                 - BSP_CFG_ID_CODE_LONG_1
-*                                 - BSP_CFG_ID_CODE_LONG_2
-*                                 - BSP_CFG_ID_CODE_LONG_3
-*                                 - BSP_CFG_ID_CODE_LONG_4
-*                                Added the following macro definition.
-*                                 - BSP_CFG_FIT_IPL_MAX
-*                                Added support for GNUC and ICCRX.
+*         : xx.xx.xxxx x.xx    Added the following macro definition.
+*                              - BSP_CFG_STARTUP_DISABLE
+*                              - BSP_CFG_FIT_IPL_MAX
+*                              Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 
 #ifndef R_BSP_CONFIG_REF_HEADER_FILE
@@ -105,6 +101,12 @@ Configuration Options
  The default settings are the same as when using RSKRX63N.
  Change to the settings for the user board.
 */
+
+/* Start up select
+   0 = Enable BSP startup program.
+   1 = Disable BSP startup program. (e.g. Using user startup program.)
+*/
+#define BSP_CFG_STARTUP_DISABLE (0)
 
 /* Enter the product part number for your MCU. This information will be used to obtain information about your MCU such 
    as package and memory size. 
@@ -208,6 +210,9 @@ Configuration Options
 
 #if defined(__CCRX__)
 
+/* When using the user startup program, disable the following code. */
+#if (BSP_CFG_STARTUP_DISABLE == 0)
+
 /* The 'BSP_DECLARE_STACK' macro is checked so that the stack is only declared in one place (resetprg.c). Every time a 
    '#pragma stacksize' is encountered, the stack size is increased. This prevents multiplication of stack size. */
 #if defined(BSP_DECLARE_STACK)
@@ -223,6 +228,8 @@ Configuration Options
  */
 #pragma stacksize si=0x400
 #endif
+
+#endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 
 #endif /* defined(__CCRX__) */
 
