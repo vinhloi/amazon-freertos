@@ -2570,9 +2570,9 @@
       <Property>9f33f20c-4ca5-465e-861a-74bf7146ecdb</Property>
     </Instance>
     <Instance Guid="851d34f2-a54e-4002-8aa0-d56b20b17ed0">
-      <Name>cksetup.h</Name>
+      <Name>clkconf.h</Name>
       <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\all\cksetup.h</RelativePath>
+      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\all\clkconf.h</RelativePath>
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>6fd438bb-9c79-48ea-b145-298ff92e6553</ParentItem>
     </Instance>
@@ -2654,9 +2654,9 @@
       <ParentItem>c55931ca-38ff-49be-8024-142e8a2ce72b</ParentItem>
     </Instance>
     <Instance Guid="db5ca82b-3db4-4945-88d8-ec7380a27a52">
-      <Name>cksetup.c</Name>
+      <Name>clkconf.c</Name>
       <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\rx65n\cksetup.c</RelativePath>
+      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\rx65n\clkconf.c</RelativePath>
       <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
       <ParentItem>953ed571-8eb9-4e18-aca3-c8427421e3a6</ParentItem>
     </Instance>

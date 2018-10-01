@@ -14,31 +14,35 @@
 * following link:
 * http://www.renesas.com/disclaimer 
 *
-* Copyright (C) 2016 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2014 Renesas Electronics Corporation. All rights reserved.    
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
-* File Name    : cksetup.c
-* Device(s)    : RX65N
-* Description  : Configures the clock settings for each of the device clocks
+* File Name    : clkconf.c
+* Device(s)    : RX71x
+* Description  : Configures the clock settings for each of the device clocks.
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
 * History : DD.MM.YYYY Version  Description
-*         : 01.10.2016 1.00     First Release
-*         : 15.05.2017 2.00     Deleted unnecessary comments.
-*                               Applied the following technical update.
-*                               - TN-RX*-A164A - Added initialization procedure when the realtime clock
-*                                                is not to be used.
+*         : 07.08.2013 0.01     First Release (as of resetprg.c)
+*         : 07.01.2014 0.02     Added initialization of EXTB register
+*         : 31.03.2014 0.10     Added the ability for user defined 'warm start' callback functions to be made from
+*                               PowerON_Reset_PC() when defined in r_bsp_config.h.
+*         : 13.04.2016 0.11     Changed the method of setting the following registers.
+*                                - Main Clock Oscillator Forced Oscillation Control Register (MOFCR.MOSEL)
+*                                - Main Clock Oscillator Wait Control Register (MOSCWTCR)
+*                                - Sub-Clock Oscillator Wait Control Register (SOSCWTCR)
+*                               Changed the setup procedure of HOCO oscillator.
+*         : 15.05.2017 1.10     Deleted unnecessary comments.
 *                               Changed the sub-clock oscillator settings.
-*                               Added the bsp startup module disable function.
+*         : 01.11.2017 2.00     Added the bsp startup module disable function.
 *         : 01.07.2018 2.01     Include RTOS /timer preprocessing.
-*                               Added processing after writing ROMWT register.
-*         : 27.07.2018 2.02     Added the comment to for statement.
+*                               Added processing after writing MEMWAIT register.
+*         : xx.xx.xxxx x.xx     Added the comment to for statement.
 *                               Added the comment to while statement.
-*         : xx.xx.xxxx 2.03     Added bsp_ram_initialize function call.
-*                               Added wait time after LOCO stop.
+*                               Added bsp_ram_initialize function call.
 *                               Removed RTOS header files because they are included in the platform.h.
 *                               Added support for GNUC and ICCRX.
-*                               Splitted resetprg.c between resetprg.c and cksetup.c.
+*                               Splitted resetprg.c between resetprg.c and clkconf.c.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -53,16 +57,7 @@ Includes   <System Includes> , "Project Includes"
 /***********************************************************************************************************************
 Macro definitions
 ***********************************************************************************************************************/
-#define ROMWT_FREQ_THRESHOLD_01 50000000         // ICLK > 50MHz requires ROMWT register update
-#define ROMWT_FREQ_THRESHOLD_02 100000000        // ICLK > 100MHz requires ROMWT register update
-
-/***********************************************************************************************************************
-Pre-processor Directives
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-External function Prototypes
-***********************************************************************************************************************/
+#define MEMWAIT_FREQ_THRESHOLD 120000000        // ICLK > 120MHz requires MEMWAIT register update
 
 /***********************************************************************************************************************
 Private global variables and functions
@@ -87,7 +82,7 @@ void operating_frequency_set (void)
     ----------------------------------------
     Input Clock Frequency............  24 MHz
     PLL frequency (x10).............. 240 MHz
-    Internal Clock Frequency......... 120 MHz
+    Internal Clock Frequency......... 240 MHz
     Peripheral Clock Frequency A..... 120 MHz
     Peripheral Clock Frequency B.....  60 MHz
     Peripheral Clock Frequency C.....  60 MHz
@@ -290,27 +285,6 @@ void operating_frequency_set (void)
 #if (BSP_CFG_CLOCK_SOURCE != 0)
     /* We can now turn LOCO off since it is not going to be used. */
     SYSTEM.LOCOCR.BYTE = 0x01;
-    
-    /* Wait for five the LOCO cycles */
-    /* 5 count of LOCO : (1000000/216000)*5Å‡23.148148148us
-       23 + 2 = 25us ("+2" is overhead cycle) */
-    R_BSP_SoftwareDelay((uint32_t)25, BSP_DELAY_MICROSECS);
-#endif
-
-#if (BSP_CFG_ROM_CACHE_ENABLE == 1)
-    FLASH.ROMCIV.WORD = 0x0001;
-    /* WAIT_LOOP */
-    while (FLASH.ROMCIV.WORD != 0x0000)
-    {
-        /* wait for bit to set */
-    }
-    
-    FLASH.ROMCE.WORD = 0x0001;
-    /* WAIT_LOOP */
-    while (FLASH.ROMCE.WORD != 0x0001)
-    {
-        /* wait for bit to set */
-    }
 #endif
 
     /* Protect on. */
@@ -756,16 +730,15 @@ static void clock_source_select (void)
     #error "ERROR - Valid clock source must be chosen in r_bsp_config.h using BSP_CFG_CLOCK_SOURCE macro."
 #endif
 
-    /* RX65N has a ROMWT register which controls the cycle waiting for access to code flash memory.
-       It is set as zero coming out of reset. 
-       When setting ICLK to [50 MHz < ICLK <= 100 MHz], set the ROMWT.ROMWT[1:0] bits to 01b. 
-       When setting ICLK to [100 MHz < ICLK <= 120 MHz], set the ROMWT.ROMWT[1:0] bits to 10b. */
-    if (BSP_ICLK_HZ > ROMWT_FREQ_THRESHOLD_02)
+    // RX71M has a MEMWAIT register which controls the cycle waiting for access to code flash memory.
+    // It is set as zero coming out of reset. We only want to set this if we are > 120 MHz AND we are in High Speed Mode.
+    // Coming out of reset we are always in High Speed mode, so that's not a concern here.
+    if (BSP_ICLK_HZ > MEMWAIT_FREQ_THRESHOLD)
     {
-        SYSTEM.ROMWT.BYTE = 0x02;
+        SYSTEM.MEMWAIT.LONG = 1;
         
         /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual. */
-        if(0x02 == SYSTEM.ROMWT.BYTE)
+        if(1 ==  SYSTEM.MEMWAIT.LONG)
         {
             /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual.
                This is done to ensure that the register has been written before the next register access. The RX has a 
@@ -774,25 +747,6 @@ static void clock_source_select (void)
             R_NOP();
         }
     }
-    else if (BSP_ICLK_HZ > ROMWT_FREQ_THRESHOLD_01)
-    {
-        SYSTEM.ROMWT.BYTE = 0x01;
-
-        /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual. */
-        if(0x01 == SYSTEM.ROMWT.BYTE)
-        {
-            /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual.
-               This is done to ensure that the register has been written before the next register access. The RX has a 
-               pipeline architecture so the next instruction could be executed before the previous write had finished.
-            */
-            R_NOP();
-        }
-    }
-    else
-    {
-        /* Do nothing. */
-    }
-
 }
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */

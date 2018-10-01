@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer 
 *
-* Copyright (C) 2014 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2014 Renesas Electronics Corporation. All rights reserved.    
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
-* File Name    : cksetup.c
-* Device(s)    : RX631/N
-* Description  : Configures the clock settings for each of the device clocks
+* File Name    : clkconf.c
+* Device(s)    : RX63x
+* Description  : Configures the clock settings for each of the device clocks.
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
 * History : DD.MM.YYYY Version  Description
-*         : 26.10.2011 1.00     First Release
+*         : 26.10.2011 1.00     First Release (as of resetprg.c)
 *         : 13.03.2012 1.10     Stack sizes are now defined in r_bsp_config.h. Because of this the #include for 
 *                               stacksct.h was removed. Settings for SCKCR are now set in r_bsp_config.h and used here
 *                               to setup clocks based on user settings.
@@ -47,7 +47,7 @@
 *                               Added the comment to while statement.
 *                               Added bsp_ram_initialize function call.
 *                               Added support for GNUC and ICCRX.
-*                               Splitted resetprg.c between resetprg.c and cksetup.c.
+*                               Splitted resetprg.c between resetprg.c and clkconf.c.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -56,24 +56,11 @@ Includes   <System Includes> , "Project Includes"
 /* Define the target platform */
 #include    "platform.h"
 
-/* BCH - 01/16/2013 */
-/* 0602: Defect for macro names with '_[A-Z]' is also being suppressed since these are defaut names from toolchain.  
-   3447: External linkage is not needed for these toolchain supplied library functions. */
-/* PRQA S 0602, 3447 ++ */
-
 /* When using the user startup program, disable the following code. */
 #if (BSP_CFG_STARTUP_DISABLE == 0)
 
 /***********************************************************************************************************************
 Macro definitions
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-Pre-processor Directives
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-External function Prototypes
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************

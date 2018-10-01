@@ -64,7 +64,7 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include    "mcu/rx65n/mcu_mapped_interrupts.h"
 #include    "mcu/rx65n/mcu_startup.h"
 #include    "board/rskrx65n_2mb/rskrx65n_2mb.h"
-#include    "board/all/cksetup.h"
+#include    "board/all/clkconf.h"
 #include    "board/all/hwsetup.h"
 #include    "board/all/lowsrc.h"
 #include    "board/all/vecttbl.h"

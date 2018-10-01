@@ -135,7 +135,7 @@ lowsrc.obj
 resetprg.obj
 sbrk.obj
 hwsetup.obj
-cksetup.obj
+clkconf.obj
 vecttbl.obj
 r_bsp_common.obj
 cpu.obj

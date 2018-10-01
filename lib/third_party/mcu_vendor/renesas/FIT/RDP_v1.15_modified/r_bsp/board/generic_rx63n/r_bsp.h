@@ -69,7 +69,7 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include    "mcu/rx63n/mcu_init.h"
 #include    "mcu/rx63n/mcu_interrupts.h"
 #include    "mcu/rx63n/mcu_startup.h"
-#include    "board/all/cksetup.h"
+#include    "board/all/clkconf.h"
 #include    "board/all/hwsetup.h"
 #include    "board/all/lowsrc.h"
 #include    "board/all/vecttbl.h"

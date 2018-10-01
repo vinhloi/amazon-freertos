@@ -14,16 +14,16 @@
 * following link:
 * http://www.renesas.com/disclaimer 
 *
-* Copyright (C) 2014 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2014 Renesas Electronics Corporation. All rights reserved.    
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
-* File Name    : cksetup.c
-* Device(s)    : RX71M
-* Description  : Configures the clock settings for each of the device clocks
+* File Name    : clkconf.c
+* Device(s)    : RX64x
+* Description  : Configures the clock settings for each of the device clocks.
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
 * History : DD.MM.YYYY Version  Description
-*         : 07.08.2013 0.01     First Release
+*         : 07.08.2013 0.01     First Release (as of resetprg.c)
 *         : 07.01.2014 0.02     Added initialization of EXTB register
 *         : 31.03.2014 0.10     Added the ability for user defined 'warm start' callback functions to be made from
 *                               PowerON_Reset_PC() when defined in r_bsp_config.h.
@@ -36,13 +36,12 @@
 *                               Changed the sub-clock oscillator settings.
 *         : 01.11.2017 2.00     Added the bsp startup module disable function.
 *         : 01.07.2018 2.01     Include RTOS /timer preprocessing.
-*                               Added processing after writing MEMWAIT register.
 *         : xx.xx.xxxx x.xx     Added the comment to for statement.
 *                               Added the comment to while statement.
 *                               Added bsp_ram_initialize function call.
 *                               Removed RTOS header files because they are included in the platform.h.
 *                               Added support for GNUC and ICCRX.
-*                               Splitted resetprg.c between resetprg.c and cksetup.c.
+*                               Splitted resetprg.c between resetprg.c and clkconf.c.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -56,15 +55,6 @@ Includes   <System Includes> , "Project Includes"
 
 /***********************************************************************************************************************
 Macro definitions
-***********************************************************************************************************************/
-#define MEMWAIT_FREQ_THRESHOLD 120000000        // ICLK > 120MHz requires MEMWAIT register update
-
-/***********************************************************************************************************************
-Pre-processor Directives
-***********************************************************************************************************************/
-
-/***********************************************************************************************************************
-External function Prototypes
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -90,13 +80,13 @@ void operating_frequency_set (void)
     ----------------------------------------
     Input Clock Frequency............  24 MHz
     PLL frequency (x10).............. 240 MHz
-    Internal Clock Frequency......... 240 MHz
+    Internal Clock Frequency......... 120 MHz
     Peripheral Clock Frequency A..... 120 MHz
     Peripheral Clock Frequency B.....  60 MHz
     Peripheral Clock Frequency C.....  60 MHz
     Peripheral Clock Frequency D.....  60 MHz
-    Flash IF Clock Frequency.........  60 MHz
-    External Bus Clock Frequency..... 120 MHz
+    External Bus Clock Frequency..... 120 MHz 
+    Flash IF Clock Frequency.........  60 MHz 
     USB Clock Frequency..............  48 MHz */
 
     /* Protect off. */
@@ -736,25 +726,7 @@ static void clock_source_select (void)
     /* Make sure a valid clock was chosen. */
 #if (BSP_CFG_CLOCK_SOURCE > 4) || (BSP_CFG_CLOCK_SOURCE < 0)
     #error "ERROR - Valid clock source must be chosen in r_bsp_config.h using BSP_CFG_CLOCK_SOURCE macro."
-#endif
-
-    // RX71M has a MEMWAIT register which controls the cycle waiting for access to code flash memory.
-    // It is set as zero coming out of reset. We only want to set this if we are > 120 MHz AND we are in High Speed Mode.
-    // Coming out of reset we are always in High Speed mode, so that's not a concern here.
-    if (BSP_ICLK_HZ > MEMWAIT_FREQ_THRESHOLD)
-    {
-        SYSTEM.MEMWAIT.LONG = 1;
-        
-        /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual. */
-        if(1 ==  SYSTEM.MEMWAIT.LONG)
-        {
-            /* Dummy read and compare. cf."5. I/O Registers", "(2) Notes on writing to I/O registers" in User's manual.
-               This is done to ensure that the register has been written before the next register access. The RX has a 
-               pipeline architecture so the next instruction could be executed before the previous write had finished.
-            */
-            R_NOP();
-        }
-    }
+#endif 
 }
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */

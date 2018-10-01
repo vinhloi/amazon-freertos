@@ -65,7 +65,7 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include    "mcu/rx64m/mcu_mapped_interrupts.h"
 #include    "mcu/rx64m/mcu_startup.h"
 #include    "board/rskrx64m/rskrx64m.h"
-#include    "board/all/cksetup.h"
+#include    "board/all/clkconf.h"
 #include    "board/all/hwsetup.h"
 #include    "board/all/lowsrc.h"
 #include    "board/all/vecttbl.h"

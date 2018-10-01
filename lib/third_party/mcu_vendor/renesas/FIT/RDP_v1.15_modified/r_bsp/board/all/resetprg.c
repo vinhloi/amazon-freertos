@@ -56,7 +56,7 @@
 *         : xx.xx.xxxx 2.03     Added bsp_ram_initialize function call.
 *                               Removed RTOS header files because they are included in the platform.h.
 *                               Added support for GNUC and ICCRX.
-*                               Splitted resetprg.c between resetprg.c and cksetup.c.
+*                               Splitted resetprg.c between resetprg.c and clkconf.c.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
