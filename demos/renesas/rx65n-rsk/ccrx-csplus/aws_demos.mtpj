@@ -2631,18 +2631,18 @@
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>166559f0-69cf-446f-be1f-7fd5051612d5</ParentItem>
     </Instance>
-    <Instance Guid="d9a6f3d6-5354-4cd8-85b3-dd572f8e2284">
-      <Name>hwsetup.c</Name>
-      <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\generic_rx65n\hwsetup.c</RelativePath>
-      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
-      <ParentItem>13d3afb3-5bf8-4a79-bbd2-445faa0ff42e</ParentItem>
-    </Instance>
     <Instance Guid="31eb2d12-ee5d-480f-8d83-6bd9ccd960c3">
       <Name>r_bsp_config_reference.h</Name>
       <Type>File</Type>
       <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\generic_rx65n\r_bsp_config_reference.h</RelativePath>
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
+      <ParentItem>13d3afb3-5bf8-4a79-bbd2-445faa0ff42e</ParentItem>
+    </Instance>
+    <Instance Guid="d9a6f3d6-5354-4cd8-85b3-dd572f8e2284">
+      <Name>r_bsp_hwsetup_reference.c</Name>
+      <Type>File</Type>
+      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\generic_rx65n\r_bsp_hwsetup_reference.c</RelativePath>
+      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
       <ParentItem>13d3afb3-5bf8-4a79-bbd2-445faa0ff42e</ParentItem>
     </Instance>
     <Instance Guid="8de84d8a-2ef1-4ada-b1de-5d96e5f689e9">

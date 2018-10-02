@@ -123,7 +123,7 @@ lowlvl.obj
 lowsrc.obj
 resetprg.obj
 sbrk.obj
-hwsetup.obj
+r_bsp_hwsetup_reference.obj
 clkconf.obj
 vecttbl.obj
 r_bsp_common.obj
