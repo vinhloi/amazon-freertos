@@ -1,1 +1,4 @@
 /HardwareDebug/
+*.mtud
+*.rcpe
+*.mtsp
