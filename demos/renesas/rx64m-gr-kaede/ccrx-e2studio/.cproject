@@ -95,8 +95,7 @@
 								</option>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.langFileC.416754408" name="Cソース" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.langFileC" useByScannerDiscovery="false" value="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.langFileC.c99" valueType="enumerated"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.debug.494805343" name="デバッグ情報を出力する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.debug" useByScannerDiscovery="false"/>
-								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.changeMessageInfo.1727278324" name="ウォーニング・メッセージの種別をインフォメーションに変更する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.changeMessageInfo" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.changeMessageInfoNum.1921813303" name="メッセージ番号" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.changeMessageInfoNum" useByScannerDiscovery="false" value="21644" valueType="string"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.nomessage.718949383" name="出力を抑止するメッセージ番号" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.option.nomessage" useByScannerDiscovery="false" value="11174,20177,20826,21644,23034,23035" valueType="string"/>
 								<inputType id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gcc.inputType.16071463" name="Compiler Input C" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gcc.inputType"/>
 								<inputType id="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gpp.inputType.334789223" name="Compiler Input CPP" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.compiler.gpp.inputType"/>
 							</tool>

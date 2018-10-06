@@ -5546,11 +5546,11 @@
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx\src
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src
--change_message=information=21644
--output=obj=%ConfigDir%\%FileLeaf%.obj
+-nomessage=11174,20177,20826,21644,23034,23035
+-output=obj
+-obj_path=%BuildModeName%
 -debug
 -nologo
--exec_time
 </COptionCommandLine-DefaultValue>
       <COptionDefine-DefaultValue />
       <COptionInline-DefaultValue>Auto</COptionInline-DefaultValue>
@@ -5759,11 +5759,11 @@ src\smc_gen\general
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx\src
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src
--change_message=information=21644
--output=obj=%ConfigDir%\%FileLeaf%.obj
+-nomessage=11174,20177,20826,21644,23034,23035
+-output=obj
+-obj_path=%BuildModeName%
 -debug
 -nologo
--exec_time
 </COptionCommandLine-0>
       <COptionDefine-0 />
       <COptionInline-0>Auto</COptionInline-0>
@@ -5996,11 +5996,11 @@ src
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx\src
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
 -include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src
--change_message=information=21644
--output=obj=%ConfigDir%\%FileLeaf%.obj
+-nomessage=11174,20177,20826,21644,23034,23035
+-output=obj
+-obj_path=%BuildModeName%
 -debug
 -nologo
--exec_time
 </COptionCommandLine-1>
       <COptionDefine-1 />
       <COptionInline-1>Auto</COptionInline-1>
@@ -6011,14 +6011,14 @@ src
       <COptionSectionB-1>B</COptionSectionB-1>
       <COptionUndefine-1 />
       <COptionFileInline-1 />
-      <COptionMessage-1>False</COptionMessage-1>
+      <COptionMessage-1>True</COptionMessage-1>
       <COptionMisra2012-1>None</COptionMisra2012-1>
       <COptionSectionL-1>L</COptionSectionL-1>
       <COptionCase-1>Auto</COptionCase-1>
       <COptionMisra2012RuleFile-1 />
       <COptionSectionW-1>W</COptionSectionW-1>
       <COptionMisra2012RuleNumberApply-1 />
-      <COptionNoMessageErrorNumber-1 />
+      <COptionNoMessageErrorNumber-1>11174,5177,5826,21644,6,8</COptionNoMessageErrorNumber-1>
       <COptionNostuffB-1>False</COptionNostuffB-1>
       <COptionVolatile-1>False</COptionVolatile-1>
       <COptionConstCopy-1>Auto</COptionConstCopy-1>
@@ -6028,11 +6028,11 @@ src
       <COptionMisra2012RuleNumberRequiredAdd-1 />
       <COptionNoWarning-1 />
       <COptionNostuffC-1>False</COptionNostuffC-1>
-      <COptionChangeMessageInformation-1>Specified</COptionChangeMessageInformation-1>
+      <COptionChangeMessageInformation-1>No</COptionChangeMessageInformation-1>
       <COptionLibrary-1>Intrinsic</COptionLibrary-1>
       <COptionMisra2012RuleNumberRequiredRemove-1 />
       <COptionNostuffW-1>False</COptionNostuffW-1>
-      <COptionChangeMessageInformationNumber-1>21644</COptionChangeMessageInformationNumber-1>
+      <COptionChangeMessageInformationNumber-1 />
       <COptionIgnoreFilesMisra-1 />
       <COptionInstalign-1>Noinstalign</COptionInstalign-1>
       <COptionScope-1>Auto</COptionScope-1>
