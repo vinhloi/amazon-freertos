@@ -181,19 +181,22 @@ void uart_string_printf(char * pString)
 {
 	uint8_t out_str[configLOGGING_MAX_MESSAGE_LENGTH];
 	//uint8_t out_str[120];
-	uint32_t length = 0;
+	int32_t length = 0;
 	sci_err_t sci_err;
 	uint32_t retry = 0xFFFF;
 
 	length = sprintf((char *)out_str, pString);
-	do
+	if (length > 0)
 	{
-		sci_err = R_SCI_Send(my_sci_handle, out_str, length);
-		retry--;
-	} while ((SCI_ERR_XCVR_BUSY == sci_err) && (retry > 0)); // retry if previous transmission still in progress.
+		do
+		{
+			sci_err = R_SCI_Send(my_sci_handle, out_str, (uint16_t)length);
+			retry--;
+		} while ((SCI_ERR_XCVR_BUSY == sci_err) && (retry > 0)); // retry if previous transmission still in progress.
 
-	if (SCI_SUCCESS != sci_err)
-	{
-		R_NOP(); //TODO error handling code
+		if (SCI_SUCCESS != sci_err)
+		{
+			R_NOP(); //TODO error handling code
+		}
 	}
 }

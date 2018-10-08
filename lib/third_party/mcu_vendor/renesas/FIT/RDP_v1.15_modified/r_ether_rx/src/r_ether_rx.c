@@ -1782,7 +1782,7 @@ static ether_return_t ether_do_link (uint32_t channel, const uint8_t mode)
     uint16_t transmit_pause_set = 0;
     uint16_t receive_pause_set = 0;
     uint16_t full_duplex = 0;
-    uint16_t link_result = 0;
+    int16_t link_result = 0;
     volatile struct st_etherc __evenaccess * petherc_adr;
     volatile struct st_edmac __evenaccess * pedmac_adr;
     const ether_control_t * pether_ch;

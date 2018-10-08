@@ -147,7 +147,7 @@ BaseType_t xNetworkInterfaceOutput( NetworkBufferDescriptor_t * const pxDescript
 static void prvEMACDeferredInterruptHandlerTask( void *pvParameters )
 {
 NetworkBufferDescriptor_t *pxBufferDescriptor;
-size_t xBytesReceived;
+int32_t xBytesReceived;
 
 /* Used to indicate that xSendEventStructToIPTask() is being called because
 of an Ethernet receive event. */
@@ -157,7 +157,7 @@ uint8_t *buffer_pointer;
 
     for( ;; )
     {
-    	xTaskToNotify = ether_receive_check_task_handle;
+        xTaskToNotify = ether_receive_check_task_handle;
 
         /* Wait for the Ethernet MAC interrupt to indicate that another packet
         has been received.  */
@@ -166,13 +166,17 @@ uint8_t *buffer_pointer;
         /* See how much data was received.  */
         xBytesReceived = R_ETHER_Read_ZC2(ETHER_CHANNEL_0, (void **)&buffer_pointer);
 
-        if( xBytesReceived > 0 )
+        if( xBytesReceived < 0 )
+        {
+            /* This is an error. Ignored. */
+        }
+        else if( xBytesReceived > 0 )
         {
             /* Allocate a network buffer descriptor that points to a buffer
             large enough to hold the received frame.  As this is the simple
             rather than efficient example the received data will just be copied
             into this buffer. */
-            pxBufferDescriptor = pxGetNetworkBufferWithDescriptor( xBytesReceived, 0 );
+            pxBufferDescriptor = pxGetNetworkBufferWithDescriptor( (size_t)xBytesReceived, 0 );
 
             if( pxBufferDescriptor != NULL )
             {
@@ -184,11 +188,11 @@ uint8_t *buffer_pointer;
                 parameter.  Remember! While is is a simple robust technique -
                 it is not efficient.  An example that uses a zero copy technique
                 is provided further down this page. */
-            	memcpy(pxBufferDescriptor->pucEthernetBuffer, buffer_pointer, xBytesReceived);
+                memcpy(pxBufferDescriptor->pucEthernetBuffer, buffer_pointer, (size_t)xBytesReceived);
                 //ReceiveData( pxBufferDescriptor->pucEthernetBuffer );
 
                 /* Set the actual packet length, in case a larger buffer was returned. */
-                pxBufferDescriptor->xDataLength = xBytesReceived;
+                pxBufferDescriptor->xDataLength = (size_t)xBytesReceived;
 
                 R_ETHER_Read_ZC2_BufRelease(ETHER_CHANNEL_0);
 
@@ -446,14 +450,18 @@ static void check_ether_link(TimerHandle_t xTimer )
 
 static void clear_all_ether_rx_discriptors(uint32_t event)
 {
-	size_t xBytesReceived;
+	int32_t xBytesReceived;
 	uint8_t *buffer_pointer;
 
 	while(1)
 	{
 		/* See how much data was received.  */
 		xBytesReceived = R_ETHER_Read_ZC2(ETHER_CHANNEL_0, (void **)&buffer_pointer);
-		if(0 < xBytesReceived)
+		if(0 > xBytesReceived)
+		{
+			/* This is an error. Ignored. */
+		}
+		else if(0 < xBytesReceived)
 		{
 			R_ETHER_Read_ZC2_BufRelease(ETHER_CHANNEL_0);
 			iptraceETHERNET_RX_EVENT_LOST();
