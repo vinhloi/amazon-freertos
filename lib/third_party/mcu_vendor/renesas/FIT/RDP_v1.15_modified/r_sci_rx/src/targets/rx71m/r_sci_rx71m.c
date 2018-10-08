@@ -727,7 +727,7 @@ sci_err_t sci_async_cmds(sci_hdl_t const hdl,
     switch(cmd)
     {
     case (SCI_CMD_EN_NOISE_CANCEL):
-        hdl->rom->regs->SCR.BYTE &= (~SCI_EN_XCVR_MASK);
+        hdl->rom->regs->SCR.BYTE &= (uint8_t) (~SCI_EN_XCVR_MASK);
         SCI_SCR_DUMMY_READ;
         hdl->rom->regs->SEMR.BIT.NFEN = 1;      /* enable noise filter */
         hdl->rom->regs->SNFR.BYTE = 0;          /* clock divided by 1 (default) */
@@ -736,7 +736,7 @@ sci_err_t sci_async_cmds(sci_hdl_t const hdl,
     break;
 
     case (SCI_CMD_OUTPUT_BAUD_CLK):
-        hdl->rom->regs->SCR.BYTE &= (~SCI_EN_XCVR_MASK);
+        hdl->rom->regs->SCR.BYTE &= (uint8_t) (~SCI_EN_XCVR_MASK);
         SCI_SCR_DUMMY_READ;
         hdl->rom->regs->SCR.BIT.CKE = 0x01;     /* output baud clock on SCK pin */
         SCI_IR_TXI_CLEAR;
@@ -744,7 +744,7 @@ sci_err_t sci_async_cmds(sci_hdl_t const hdl,
     break;
 
     case (SCI_CMD_START_BIT_EDGE):
-        hdl->rom->regs->SCR.BYTE &= (~SCI_EN_XCVR_MASK);
+        hdl->rom->regs->SCR.BYTE &= (uint8_t) (~SCI_EN_XCVR_MASK);
         SCI_SCR_DUMMY_READ;
         hdl->rom->regs->SEMR.BIT.RXDESEL = 1;   /* detect start bit on falling edge */
         SCI_IR_TXI_CLEAR;
@@ -787,7 +787,7 @@ sci_err_t sci_async_cmds(sci_hdl_t const hdl,
 
         /* set baud rate 1.5x slower */
         slow_baud = (hdl->baud_rate << 1) / 3;
-        hdl->rom->regs->SCR.BYTE &= (~SCI_EN_XCVR_MASK);
+        hdl->rom->regs->SCR.BYTE &= (uint8_t) (~SCI_EN_XCVR_MASK);
         SCI_SCR_DUMMY_READ;
         bit_err = sci_init_bit_rate(hdl, hdl->pclk_speed, slow_baud);
         SCI_IR_TXI_CLEAR;
@@ -806,7 +806,7 @@ sci_err_t sci_async_cmds(sci_hdl_t const hdl,
             }
 
             /* restore original baud rate */
-            hdl->rom->regs->SCR.BYTE &= (~SCI_EN_XCVR_MASK);
+            hdl->rom->regs->SCR.BYTE &= (uint8_t) (~SCI_EN_XCVR_MASK);
             SCI_SCR_DUMMY_READ;
             sci_init_bit_rate(hdl, hdl->pclk_speed, hdl->baud_rate);
             SCI_IR_TXI_CLEAR;
