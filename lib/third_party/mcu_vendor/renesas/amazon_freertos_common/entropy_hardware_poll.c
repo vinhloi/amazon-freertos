@@ -44,7 +44,7 @@ void get_random_number(uint8_t *data, uint32_t len)
         y = y ^ (y << 5);
         bPtr = (uint8_t*) & y;
 #if __LIT
-        *((uint32_t *)data) = (*(bPtr + 3) << 24) | (*(bPtr + 2) << 16) | (*(bPtr + 1) << 8) | *(bPtr + 0);
+        *((uint32_t *)data) = (uint32_t)((*(bPtr + 3) << 24) | (*(bPtr + 2) << 16) | (*(bPtr + 1) << 8) | *(bPtr + 0));
 #else
         *((uint32_t *)data) = y;
 #endif

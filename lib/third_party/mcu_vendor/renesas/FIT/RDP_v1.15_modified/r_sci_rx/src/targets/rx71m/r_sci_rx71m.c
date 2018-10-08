@@ -300,7 +300,7 @@ int32_t sci_init_bit_rate(sci_hdl_t const  hdl,
     if ((abs_error <= 1.0) || (hdl->mode != SCI_MODE_ASYNC))
     {
         hdl->rom->regs->SEMR.BIT.BRME = 0;          // disable MDDR
-        return (uint32_t)(error*10);
+        return (int32_t)(error*10);
     }
 
     /* CALCULATE M ASSUMING A 0% ERROR then WRITE REGISTER */
@@ -314,7 +314,7 @@ int32_t sci_init_bit_rate(sci_hdl_t const  hdl,
     hdl->rom->regs->SEMR.BIT.BRME = 1;          // enable MDDR
     error = (( (float)(pclk) / (((divisor * tmp) * baud) * ((float)(256)/int_M)) ) - 1) * 100;
 
-    return (error*10);
+    return (int32_t)(error*10);
 } /* End of function sci_init_bit_rate() */
 
 /*****************************************************************************

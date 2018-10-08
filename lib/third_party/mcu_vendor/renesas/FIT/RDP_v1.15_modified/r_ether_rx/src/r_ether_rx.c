@@ -853,9 +853,9 @@ ether_return_t R_ETHER_Write_ZC2_SetBuf (uint32_t channel, const uint32_t len)
     else
     {
         /* The data of the buffer is made active.  */
-        papp_tx_desc[channel]->bufsize = len;
-        papp_tx_desc[channel]->status &= (~(TFP1 | TFP0));
-        papp_tx_desc[channel]->status |= ((TFP1 | TFP0) | TACT);
+        papp_tx_desc[channel]->bufsize = (uint16_t) len;
+        papp_tx_desc[channel]->status &= (uint32_t) (~(TFP1 | TFP0));
+        papp_tx_desc[channel]->status |= (uint32_t) ((TFP1 | TFP0) | TACT);
         papp_tx_desc[channel] = papp_tx_desc[channel]->next;
 
         pether_ch = g_eth_control_ch[channel].pether_control;
@@ -923,7 +923,7 @@ void R_ETHER_LinkProcess (uint32_t channel)
     const ether_control_t * pether_ch;
     uint32_t phy_access;
 
-    int32_t ret;
+    int16_t ret;
     ether_cb_arg_t cb_arg;
 
     if (ETHER_CHANNEL_MAX <= channel)

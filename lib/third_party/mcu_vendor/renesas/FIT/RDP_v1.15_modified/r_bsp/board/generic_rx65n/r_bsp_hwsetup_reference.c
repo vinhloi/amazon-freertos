@@ -152,7 +152,7 @@ static void peripheral_modules_enable(void)
 ***********************************************************************************************************************/
 static void bsp_adc_initial_configure(void)
 {
-    volatile uint8_t tmp_mstp;
+    unsigned long tmp_mstp; /* The unsigned long is for GNURX's -Wconversion because S12AD1 is as unsigned long:1. */
 
     /* Protect off. */
     SYSTEM.PRCR.WORD = 0xA502;

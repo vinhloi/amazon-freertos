@@ -50,8 +50,8 @@ sci_err_t   g_sx_ulpgn_sci_err;
 uint8_t g_sx_ulpgn_return_mode;
 uint8_t socket_create_flag;
 static void sx_ulpgn_uart_callback(void *pArgs);
-static void timeout_init(uint16_t timeout_ms);
-static void bytetimeout_init(uint16_t timeout_ms);
+static void timeout_init(uint32_t timeout_ms);
+static void bytetimeout_init(uint32_t timeout_ms);
 static int32_t check_timeout(uint32_t rcvcount);
 static int32_t check_bytetimeout(uint32_t rcvcount);
 static int32_t sx_ulpgn_serial_open(void);
@@ -289,7 +289,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length, uint32_t timeout_ms)
 			lenghttmp1 = length - sended_length;
 		}
 		g_sx_ulpgn_uart_teiflag = 0;
-		ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, pdata, lenghttmp1);
+		ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, pdata, (uint16_t)lenghttmp1);
 		if(SCI_SUCCESS != ercd)
 		{
 			return -1;
@@ -328,7 +328,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t *pdata, int32_t length, uint32_t timeout_ms)
 {
 	int32_t timeout;
 	sci_err_t ercd;
-	uint32_t recvcnt = 0;
+	int32_t recvcnt = 0;
 #if DEBUGLOG == 1
 	TickType_t tmptime2;
 #endif
@@ -429,7 +429,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t respons
 	timeout = 0;
 	recvcnt = 0;
 	g_sx_ulpgn_uart_teiflag = 0;
-	ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, ptextstring, strlen((const char *)ptextstring));
+	ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, ptextstring, (uint16_t)strlen((const char *)ptextstring));
 	if(SCI_SUCCESS != ercd)
 	{
 		return -1;
@@ -522,7 +522,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t respons
 	return 0;
 }
 
-static void timeout_init(uint16_t timeout_ms)
+static void timeout_init(uint32_t timeout_ms)
 {
 	starttime = xTaskGetTickCount();
 	endtime = starttime + timeout_ms;
@@ -562,7 +562,7 @@ static int32_t check_timeout(uint32_t rcvcount)
 	return 0;
 }
 
-static void bytetimeout_init(uint16_t timeout_ms)
+static void bytetimeout_init(uint32_t timeout_ms)
 {
 	startbytetime = xTaskGetTickCount();
 	endbytetime = startbytetime + timeout_ms;

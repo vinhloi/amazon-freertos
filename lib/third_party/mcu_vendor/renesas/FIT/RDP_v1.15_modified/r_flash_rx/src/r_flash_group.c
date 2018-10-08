@@ -909,7 +909,7 @@ flash_err_t set_blankcheck_params(uint32_t address, uint32_t num_bytes, flash_ty
         }
 
         /* WAIT constant may be for 1, 2, or 4 bytes at a time */
-        g_current_parameters.wait_cnt = (WAIT_MAX_BLANK_CHECK * (num_bytes / FLASH_DF_MIN_PGM_SIZE));
+        g_current_parameters.wait_cnt = (uint32_t) (WAIT_MAX_BLANK_CHECK * (num_bytes / FLASH_DF_MIN_PGM_SIZE));
 #endif
     }
     else // CODE FLASH
@@ -927,7 +927,7 @@ flash_err_t set_blankcheck_params(uint32_t address, uint32_t num_bytes, flash_ty
         }
 
         /* CF 4-byte check takes same time as DF 1-byte check */
-        g_current_parameters.wait_cnt = (WAIT_MAX_BLANK_CHECK * (num_bytes / FLASH_CF_MIN_PGM_SIZE));
+        g_current_parameters.wait_cnt = (uint32_t) (WAIT_MAX_BLANK_CHECK * (num_bytes / FLASH_CF_MIN_PGM_SIZE));
 #endif
     }
 
@@ -1164,7 +1164,7 @@ flash_err_t set_write_params(uint32_t address, uint32_t num_bytes, flash_type_t 
             g_current_parameters.current_operation = FLASH_CUR_DF_WRITE;
         }
 
-        g_current_parameters.wait_cnt = (WAIT_MAX_DF_WRITE * (num_bytes / FLASH_DF_MIN_PGM_SIZE));
+        g_current_parameters.wait_cnt = (uint32_t) (WAIT_MAX_DF_WRITE * (num_bytes / FLASH_DF_MIN_PGM_SIZE));
 #ifdef FLASH_HAS_FCU
         g_current_parameters.fcu_min_write_cnt = (FLASH_DF_MIN_PGM_SIZE >> 1);
 #endif
@@ -1184,7 +1184,7 @@ flash_err_t set_write_params(uint32_t address, uint32_t num_bytes, flash_type_t 
             g_current_parameters.current_operation = FLASH_CUR_CF_WRITE;
         }
 
-        g_current_parameters.wait_cnt = (WAIT_MAX_ROM_WRITE * (num_bytes / FLASH_CF_MIN_PGM_SIZE));
+        g_current_parameters.wait_cnt = (uint32_t) (WAIT_MAX_ROM_WRITE * (num_bytes / FLASH_CF_MIN_PGM_SIZE));
 #ifdef FLASH_HAS_FCU
         g_current_parameters.fcu_min_write_cnt = (FLASH_CF_MIN_PGM_SIZE >> 1);
 #endif
@@ -1455,7 +1455,7 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
                 speed_mhz++;    // must round up to nearest MHz
             }
 
-            FLASH.FPCKAR.WORD = (uint16_t)(0x1E00) + (uint16_t)speed_mhz;
+            FLASH.FPCKAR.WORD = (uint16_t)(0x1E00 + speed_mhz);
 #if ((FLASH_TYPE == 4) && (MCU_DATA_FLASH_SIZE_BYTES != 0))
             FLASH.EEPFCLK = (uint8_t)speed_mhz;
 #endif
