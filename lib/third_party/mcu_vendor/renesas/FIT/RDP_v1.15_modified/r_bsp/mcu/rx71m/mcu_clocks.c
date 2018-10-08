@@ -97,7 +97,7 @@ uint32_t get_iclk_freq_hz(void)
             /* The RX64M/RX71M have two possible sources for the PLL */
 
             /* (The cast to uint32_t is for GNURX's -Wconversion or -Wsign-conversion and other two casts are the same) */
-            pll_multiplier = (uint32_t)(((SYSTEM.PLLCR.BIT.STC + 1) * NORMALIZE_X10) / 2);
+            pll_multiplier = ((((uint32_t)(SYSTEM.PLLCR.BIT.STC + 1)) * NORMALIZE_X10) / 2);
 
             pll_source_freq = BSP_CFG_XTAL_HZ; // Default to the MAIN OSC as the PLL source
             if (SYSTEM.PLLCR.BIT.PLLSRCSEL == 0x1) // If 1 then the HOCO is the PLL source
@@ -105,7 +105,7 @@ uint32_t get_iclk_freq_hz(void)
                 pll_source_freq = hoco_frequency[SYSTEM.HOCOCR2.BIT.HCFRQ];
             }
 
-            sysClockSrcFreq = (pll_source_freq / ((uint32_t)(SYSTEM.PLLCR.BIT.PLIDIV + 1) * NORMALIZE_X10)) * pll_multiplier;
+            sysClockSrcFreq = ((pll_source_freq / (((uint32_t)(SYSTEM.PLLCR.BIT.PLIDIV + 1)) * NORMALIZE_X10)) * pll_multiplier);
 
             break;
 

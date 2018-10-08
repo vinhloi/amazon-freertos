@@ -93,9 +93,9 @@ uint32_t get_iclk_freq_hz(void)
 
         case CKSEL_PLL:
             /* (The cast to uint32_t is for GNURX's -Wconversion or -Wsign-conversion and other two casts are the same) */
-            pll_multiplier = (uint32_t)((SYSTEM.PLLCR.BIT.STC + 1) * NORMALIZE_X10);
+            pll_multiplier = (((uint32_t)(SYSTEM.PLLCR.BIT.STC + 1)) * NORMALIZE_X10);
 
-            sysClockSrcFreq = (BSP_CFG_XTAL_HZ / ((uint32_t)(1 << SYSTEM.PLLCR.BIT.PLIDIV) * NORMALIZE_X10)) * pll_multiplier;
+            sysClockSrcFreq = ((BSP_CFG_XTAL_HZ / (((uint32_t)(1 << SYSTEM.PLLCR.BIT.PLIDIV)) * NORMALIZE_X10)) * pll_multiplier);
 
             break;
 
