@@ -5798,14 +5798,14 @@ src
       <COptionSectionB-1>B</COptionSectionB-1>
       <COptionUndefine-1 />
       <COptionFileInline-1 />
-      <COptionMessage-1>True</COptionMessage-1>
+      <COptionMessage-1>False</COptionMessage-1>
       <COptionMisra2012-1>None</COptionMisra2012-1>
       <COptionSectionL-1>L</COptionSectionL-1>
       <COptionCase-1>Auto</COptionCase-1>
       <COptionMisra2012RuleFile-1 />
       <COptionSectionW-1>W</COptionSectionW-1>
       <COptionMisra2012RuleNumberApply-1 />
-      <COptionNoMessageErrorNumber-1>11174,5177,5826,21644,6,8</COptionNoMessageErrorNumber-1>
+      <COptionNoMessageErrorNumber-1>11174,5177,21644,6,8</COptionNoMessageErrorNumber-1>
       <COptionNostuffB-1>False</COptionNostuffB-1>
       <COptionVolatile-1>False</COptionVolatile-1>
       <COptionConstCopy-1>Auto</COptionConstCopy-1>

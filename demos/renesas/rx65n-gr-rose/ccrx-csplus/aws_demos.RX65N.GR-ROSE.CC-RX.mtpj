@@ -5476,82 +5476,7 @@
       <COptionPreinclude-DefaultValue />
       <COptionSectionC-DefaultValue>C</COptionSectionC-DefaultValue>
       <COptionShowExpansions-DefaultValue>False</COptionShowExpansions-DefaultValue>
-      <COptionCommandLine-DefaultValue>-isa=rxv2
--fpu
--branch=32
--include=src\smc_gen\r_bsp\board\user
--include=src\smc_gen\r_sci_rx\src\targets\rx65n
--include=src\smc_gen\r_sci_rx\src
--include=src\smc_gen\r_sci_rx\ref
--include=src\smc_gen\r_sci_rx
--include=src\smc_gen\r_byteq\src
--include=src\smc_gen\r_byteq\ref
--include=src\smc_gen\r_byteq
--include=src\smc_gen\r_flash_rx\src\targets\rx65n
--include=src\smc_gen\r_flash_rx\src\flash_type_4
--include=src\smc_gen\r_flash_rx\src\flash_type_3
--include=src\smc_gen\r_flash_rx\src\flash_type_2
--include=src\smc_gen\r_flash_rx\src\flash_type_1
--include=src\smc_gen\r_flash_rx\src
--include=src\smc_gen\r_flash_rx\ref
--include=src\smc_gen\r_flash_rx
--include=src\smc_gen\r_ether_rx\src\phy
--include=src\smc_gen\r_ether_rx\src
--include=src\smc_gen\r_ether_rx\ref
--include=src\smc_gen\r_ether_rx
--include=src\smc_gen\r_pincfg
--include=src\smc_gen\r_config
--include=src\smc_gen\r_bsp\mcu\rx65n\register_access
--include=src\smc_gen\r_bsp\mcu\rx65n
--include=src\smc_gen\r_bsp\mcu\all
--include=src\smc_gen\r_bsp\board\generic_rx65n
--include=src\smc_gen\r_bsp
--include=src\smc_gen\general
--include=.
--include=..\common\config_files
--include=..\common\application_code
--include=..\common\application_code\renesas_code
--include=..\..\..\..\demos\common\include
--include=..\..\..\..\lib\include
--include=..\..\..\..\lib\include\private
--include=..\..\..\..\lib\FreeRTOS\portable\Renesas\RX600v2
--include=..\..\..\..\lib\FreeRTOS-Plus-TCP\include
--include=..\..\..\..\lib\FreeRTOS-Plus-TCP\source\portable\Compiler\Renesas
--include=..\..\..\..\lib\ota\portable\renesas\rx65n-gr-rose
--include=..\..\..\..\lib\third_party\jsmn
--include=..\..\..\..\lib\third_party\pkcs11
--include=..\..\..\..\lib\third_party\tinycbor
--include=..\..\..\..\lib\third_party\mbedtls\include
--include=src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\compiler_support\ccrx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\onchipt_rx_ether
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\generic_rx65n
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_ether_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_1
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_2
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_3
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_4
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\targets
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_byteq
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_byteq\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_riic_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_riic_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src
--nomessage=11174,20177,20826,21644,23034,23035
--output=obj
--obj_path=%BuildModeName%
--debug
--nologo
-</COptionCommandLine-DefaultValue>
+      <COptionCommandLine-DefaultValue />
       <COptionDefine-DefaultValue />
       <COptionInline-DefaultValue>Auto</COptionInline-DefaultValue>
       <COptionMisra2004RuleNumberRequiredAdd-DefaultValue />
@@ -5689,82 +5614,7 @@ src\smc_gen\general
       <COptionPreinclude-0 />
       <COptionSectionC-0>C</COptionSectionC-0>
       <COptionShowExpansions-0>False</COptionShowExpansions-0>
-      <COptionCommandLine-0>-isa=rxv2
--fpu
--branch=32
--include=src\smc_gen\r_bsp\board\user
--include=src\smc_gen\r_sci_rx\src\targets\rx65n
--include=src\smc_gen\r_sci_rx\src
--include=src\smc_gen\r_sci_rx\ref
--include=src\smc_gen\r_sci_rx
--include=src\smc_gen\r_byteq\src
--include=src\smc_gen\r_byteq\ref
--include=src\smc_gen\r_byteq
--include=src\smc_gen\r_flash_rx\src\targets\rx65n
--include=src\smc_gen\r_flash_rx\src\flash_type_4
--include=src\smc_gen\r_flash_rx\src\flash_type_3
--include=src\smc_gen\r_flash_rx\src\flash_type_2
--include=src\smc_gen\r_flash_rx\src\flash_type_1
--include=src\smc_gen\r_flash_rx\src
--include=src\smc_gen\r_flash_rx\ref
--include=src\smc_gen\r_flash_rx
--include=src\smc_gen\r_ether_rx\src\phy
--include=src\smc_gen\r_ether_rx\src
--include=src\smc_gen\r_ether_rx\ref
--include=src\smc_gen\r_ether_rx
--include=src\smc_gen\r_pincfg
--include=src\smc_gen\r_config
--include=src\smc_gen\r_bsp\mcu\rx65n\register_access
--include=src\smc_gen\r_bsp\mcu\rx65n
--include=src\smc_gen\r_bsp\mcu\all
--include=src\smc_gen\r_bsp\board\generic_rx65n
--include=src\smc_gen\r_bsp
--include=src\smc_gen\general
--include=.
--include=..\common\config_files
--include=..\common\application_code
--include=..\common\application_code\renesas_code
--include=..\..\..\..\demos\common\include
--include=..\..\..\..\lib\include
--include=..\..\..\..\lib\include\private
--include=..\..\..\..\lib\FreeRTOS\portable\Renesas\RX600v2
--include=..\..\..\..\lib\FreeRTOS-Plus-TCP\include
--include=..\..\..\..\lib\FreeRTOS-Plus-TCP\source\portable\Compiler\Renesas
--include=..\..\..\..\lib\ota\portable\renesas\rx65n-gr-rose
--include=..\..\..\..\lib\third_party\jsmn
--include=..\..\..\..\lib\third_party\pkcs11
--include=..\..\..\..\lib\third_party\tinycbor
--include=..\..\..\..\lib\third_party\mbedtls\include
--include=src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\compiler_support\ccrx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\onchipt_rx_ether
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\generic_rx65n
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_ether_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_1
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_2
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_3
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_4
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\targets
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_byteq
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_byteq\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_riic_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_riic_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src
--nomessage=11174,20177,20826,21644,23034,23035
--output=obj
--obj_path=%BuildModeName%
--debug
--nologo
-</COptionCommandLine-0>
+      <COptionCommandLine-0 />
       <COptionDefine-0 />
       <COptionInline-0>Auto</COptionInline-0>
       <COptionMisra2004RuleNumberRequiredAdd-0 />
@@ -5926,82 +5776,7 @@ src
       <COptionPreinclude-1 />
       <COptionSectionC-1>C</COptionSectionC-1>
       <COptionShowExpansions-1>False</COptionShowExpansions-1>
-      <COptionCommandLine-1>-isa=rxv2
--fpu
--branch=32
--include=src\smc_gen\r_bsp\board\user
--include=src\smc_gen\r_sci_rx\src\targets\rx65n
--include=src\smc_gen\r_sci_rx\src
--include=src\smc_gen\r_sci_rx\ref
--include=src\smc_gen\r_sci_rx
--include=src\smc_gen\r_byteq\src
--include=src\smc_gen\r_byteq\ref
--include=src\smc_gen\r_byteq
--include=src\smc_gen\r_flash_rx\src\targets\rx65n
--include=src\smc_gen\r_flash_rx\src\flash_type_4
--include=src\smc_gen\r_flash_rx\src\flash_type_3
--include=src\smc_gen\r_flash_rx\src\flash_type_2
--include=src\smc_gen\r_flash_rx\src\flash_type_1
--include=src\smc_gen\r_flash_rx\src
--include=src\smc_gen\r_flash_rx\ref
--include=src\smc_gen\r_flash_rx
--include=src\smc_gen\r_ether_rx\src\phy
--include=src\smc_gen\r_ether_rx\src
--include=src\smc_gen\r_ether_rx\ref
--include=src\smc_gen\r_ether_rx
--include=src\smc_gen\r_pincfg
--include=src\smc_gen\r_config
--include=src\smc_gen\r_bsp\mcu\rx65n\register_access
--include=src\smc_gen\r_bsp\mcu\rx65n
--include=src\smc_gen\r_bsp\mcu\all
--include=src\smc_gen\r_bsp\board\generic_rx65n
--include=src\smc_gen\r_bsp
--include=src\smc_gen\general
--include=.
--include=..\common\config_files
--include=..\common\application_code
--include=..\common\application_code\renesas_code
--include=..\..\..\..\demos\common\include
--include=..\..\..\..\lib\include
--include=..\..\..\..\lib\include\private
--include=..\..\..\..\lib\FreeRTOS\portable\Renesas\RX600v2
--include=..\..\..\..\lib\FreeRTOS-Plus-TCP\include
--include=..\..\..\..\lib\FreeRTOS-Plus-TCP\source\portable\Compiler\Renesas
--include=..\..\..\..\lib\ota\portable\renesas\rx65n-gr-rose
--include=..\..\..\..\lib\third_party\jsmn
--include=..\..\..\..\lib\third_party\pkcs11
--include=..\..\..\..\lib\third_party\tinycbor
--include=..\..\..\..\lib\third_party\mbedtls\include
--include=src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\compiler_support\ccrx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\onchipt_rx_ether
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\generic_rx65n
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_ether_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_1
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_2
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_3
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\flash_type_4
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx\src\targets
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_byteq
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_byteq\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_riic_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_riic_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_sci_iic_rx\src
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx
--include=..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_cmt_rx\src
--nomessage=11174,20177,20826,21644,23034,23035
--output=obj
--obj_path=%BuildModeName%
--debug
--nologo
-</COptionCommandLine-1>
+      <COptionCommandLine-1 />
       <COptionDefine-1 />
       <COptionInline-1>Auto</COptionInline-1>
       <COptionMisra2004RuleNumberRequiredAdd-1 />
@@ -6011,14 +5786,14 @@ src
       <COptionSectionB-1>B</COptionSectionB-1>
       <COptionUndefine-1 />
       <COptionFileInline-1 />
-      <COptionMessage-1>True</COptionMessage-1>
+      <COptionMessage-1>False</COptionMessage-1>
       <COptionMisra2012-1>None</COptionMisra2012-1>
       <COptionSectionL-1>L</COptionSectionL-1>
       <COptionCase-1>Auto</COptionCase-1>
       <COptionMisra2012RuleFile-1 />
       <COptionSectionW-1>W</COptionSectionW-1>
       <COptionMisra2012RuleNumberApply-1 />
-      <COptionNoMessageErrorNumber-1>11174,5177,5826,21644,6,8</COptionNoMessageErrorNumber-1>
+      <COptionNoMessageErrorNumber-1>11174,5177,21644,6,8</COptionNoMessageErrorNumber-1>
       <COptionNostuffB-1>False</COptionNostuffB-1>
       <COptionVolatile-1>False</COptionVolatile-1>
       <COptionConstCopy-1>Auto</COptionConstCopy-1>
