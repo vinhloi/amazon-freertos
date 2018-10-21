@@ -1,3 +1,4 @@
+/* This file is the same as r_bsp/mcu/all/r_compiler.h. */
 /***********************************************************************************************************************
 * DISCLAIMER
 * This software is supplied by Renesas Electronics Corporation and is only intended for use with Renesas products. No
@@ -244,7 +245,7 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 #endif
 
 #define R_ATTRIB_SECTION_CHANGE_V(section_name)    R_PRAGMA(section section_name)
-#define R_ATTRIB_SECTION_CHANGE_F(section_name)    R_PRAGMA(section section_name)
+#define R_ATTRIB_SECTION_CHANGE_F(section_name)    R_PRAGMA(section P section_name)
 #define R_ATTRIB_SECTION_CHANGE_END                R_PRAGMA(section)
 
 #elif defined(__GNUC__)

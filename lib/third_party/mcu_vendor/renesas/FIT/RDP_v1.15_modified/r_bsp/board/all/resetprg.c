@@ -97,12 +97,16 @@ Pre-processor Directives
 /***********************************************************************************************************************
 External function Prototypes
 ***********************************************************************************************************************/
+/* Initialize C runtime environment */
 extern void _INITSCT(void);
+
+#if defined(CPPAPP)
+/* Initialize C++ global class object */
+extern void _CALL_INIT(void);
+#endif
+
+/* Initialize g_bsp_Locks[] variable. */
 extern void bsp_ram_initialize(void);
-#if defined(__ICCRX__)
-extern void __iar_data_init2(void);
-extern void _iar_main_call(void);
-#endif /* defined(__ICCRX__) */
 
 #if BSP_CFG_USER_WARM_START_CALLBACK_PRE_INITC_ENABLED != 0
 /* If user is requesting warm start callback functions then these are the prototypes. */
@@ -125,9 +129,11 @@ Private global variables and functions
 /* Power-on reset function declaration */
 #if defined(__CCRX__)
 void PowerON_Reset_PC(void);
+#elif defined(__GNUC__)
+void PowerON_Reset_PC_Prg(void);
 #elif defined(__ICCRX__)
 int __low_level_init ( void );
-#endif /* defined(__CCRX__), defined(__ICCRX__) */
+#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
 
 /* Main program function declaration */
 #if BSP_CFG_RTOS_USED == 0	// Non-OS
@@ -162,25 +168,36 @@ void main(void);
 * Arguments    : none
 * Return value : none
 ***********************************************************************************************************************/
-#if defined(__CCRX__) || defined(__GNUC__)
+#if defined(__CCRX__)
 void PowerON_Reset_PC(void)
+#elif defined(__GNUC__)
+void PowerON_Reset_PC_Prg(void)
 #elif defined(__ICCRX__)
 int __low_level_init ( void )
 #endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
 {
-#if defined(__CCRX__)
     /* Stack pointers are setup prior to calling this function - see comments above */    
     
+    /* You can use auto variables in this funcion but such variables other than register variables 
+     * will be unavailable after you change the stack from the I stack to the U stack (if change). */
+    
+    /* The bss sections have not been cleared and the data sections have not been initialized 
+     * and constructors of C++ objects have not been executed until the _INITSCT() is executed. */
+
+#if BSP_CFG_USER_STACK_ENABLE == 1
+    /* Initialize the U stack pointer (This is not necessary for the CC-RX but we do like others) */
+    R_SET_USP(R_SECEND_USTACK);
+#endif
+
     /* Initialize the Interrupt Table Register */
-    set_intb((void *)__sectop("C$VECT"));
+    R_SET_INTB(R_SECTOP_INTVECTTBL);
 
 #ifdef __RXV2
     /* Initialize the Exception Table Register */
-    set_extb((void *)__sectop("EXCEPTVECT"));
+    R_SET_EXTB(R_SECTOP_EXCEPTVECTTBL);
 #endif
-#endif /* defined(__CCRX__) */
 
-#if defined(__CCRX__)
+#ifdef __FPU
     /* Initialize FPSW for floating-point operations */
 #ifdef __ROZ
 #define FPU_ROUND 0x00000001  /* Let FPSW RMbits=01 (round to zero) */
@@ -193,8 +210,8 @@ int __low_level_init ( void )
 #define FPU_DENOM 0x00000000  /* Let FPSW DNbit=0 (denormal as is) */
 #endif 
 
-    R_SET_FPSW((R_SET_FPSW_CAST_ARGS1)(FPSW_init | FPU_ROUND | FPU_DENOM));
-#endif /* defined(__CCRX__) */
+    R_SET_FPSW(FPSW_init | FPU_ROUND | FPU_DENOM);
+#endif 
 
     /* Switch to high-speed operation */
     operating_frequency_set();
@@ -205,14 +222,15 @@ int __low_level_init ( void )
 #endif
 
     /* Initialize C runtime environment */
-#if defined(__CCRX__) || defined(__GNUC__)
     _INITSCT();
-#elif defined(__ICCRX__)
-    __iar_data_init2();
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
+
+#if defined(CPPAPP)
+    /* Initialize C++ global class object */
+    _CALL_INIT();
+#endif
 
     /* Initialize RAM */
-    bsp_ram_initialize();
+    bsp_ram_initialize(); // FIXME: What is the purpose of this function?
 
     /* If the warm start Post C runtime callback is enabled, then call it. */
 #if BSP_CFG_USER_WARM_START_CALLBACK_POST_INITC_ENABLED == 1
@@ -235,18 +253,17 @@ int __low_level_init ( void )
     /* Configure the MCU and board hardware */
     hardware_setup();
 
-    /* Change the MCU's user mode from supervisor to user */
-#if defined(__CCRX__) || defined(__GNUC__)
-    R_NOP();
-    R_SET_PSW((R_SET_PSW_CAST_ARGS1)PSW_init);
-#elif defined(__ICCRX__)
-    asm("POP R15");
-    R_SET_PSW((R_SET_PSW_CAST_ARGS1)PSW_init);
-    asm("PUSH.L R15");
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
+    /* Enable interrupt and select the I stack or the U stack */
+    R_NOP(); // FIXME: What is the purpose of this NOP?
+    R_SET_PSW(PSW_init);
 
-#if BSP_CFG_RUN_IN_USER_MODE==1
-    R_CHG_PMUSR();
+#if BSP_CFG_RUN_IN_USER_MODE == 1
+    /* Change the MCU's user mode from supervisor to user */
+    #if BSP_CFG_USER_STACK_ENABLE == 1
+        R_BSP_Change_PSW_PM_to_UserMode();
+    #else
+        #error "Settings of BSP_CFG_RUN_IN_USER_MODE and BSP_CFG_USER_STACK_ENABLE are inconsistent with each other."
+    #endif
 #endif
 
     /* Enable the bus error interrupt to catch accesses to illegal/reserved areas of memory */
@@ -254,12 +271,7 @@ int __low_level_init ( void )
 
 #if BSP_CFG_RTOS_USED == 0		// Non-OS
     /* Call the main program function (should not return) */
-#if defined(__CCRX__) || defined(__GNUC__)
     main();
-#elif defined(__ICCRX__)
-    _iar_main_call();
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
-
 #elif BSP_CFG_RTOS_USED == 1    // FreeRTOS
     /* Lock the channel that system timer of RTOS is using. */
     #if (((BSP_CFG_RTOS_SYSTEM_TIMER) >=0) && ((BSP_CFG_RTOS_SYSTEM_TIMER) <= 3))

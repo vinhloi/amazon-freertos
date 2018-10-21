@@ -268,14 +268,8 @@ void vNetworkInterfaceAllocateRAMToBuffers( NetworkBufferDescriptor_t pxNetworkB
 	uint32_t ul;
     uint8_t *buffer_address;
 
-#if defined(__CCRX__)
-    buffer_address = __sectop("B_ETHERNET_BUFFERS_1");
-#elif defined(__GNUC__)
-    extern void *__sectop__ETHERNET_BUFFERS;
-    buffer_address = __sectop__ETHERNET_BUFFERS;
-#elif defined(__ICCRX__)
-    buffer_address = __section_begin("_ETHERNET_BUFFERS");
-#endif
+    R_EXTERN_SEC(B_ETHERNET_BUFFERS_1)
+    buffer_address = R_SECTOP(B_ETHERNET_BUFFERS_1);
 
 	for( ul = 0; ul < ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS; ul++ )
 	{

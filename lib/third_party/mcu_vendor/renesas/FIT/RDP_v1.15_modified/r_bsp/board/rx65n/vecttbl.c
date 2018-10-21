@@ -53,11 +53,7 @@ Macro definitions
 /***********************************************************************************************************************
 Private global variables and functions
 ***********************************************************************************************************************/
-#if defined(__CCRX__)
 extern void PowerON_Reset_PC(void);
-#elif defined(__GNUC__)
-extern void PowerON_Reset(void);
-#endif /* defined(__CCRX__), defined(__GNUC__) */
 
 #if defined(__CCRX__) || defined(__GNUC__)
 R_PRAGMA_INTERRUPT_FUNCTION(excep_supervisor_inst_isr)
@@ -146,7 +142,7 @@ R_ATTRIB_INTERRUPT void _float_placeholder(void)
     /* Get current FPSW. */
     temp_fpsw = (uint32_t)R_GET_FPSW();
     /* Clear only the FPU exception flags. */
-    R_SET_FPSW((R_SET_FPSW_CAST_ARGS1)(temp_fpsw & ((uint32_t)~FPU_CAUSE_FLAGS)));
+    R_SET_FPSW(temp_fpsw & ((uint32_t)~FPU_CAUSE_FLAGS));
 }
 
 /***********************************************************************************************************************
@@ -383,12 +379,7 @@ const unsigned long __ROMCODEreg __attribute__ ((section(".ofs7"))) = BSP_CFG_RO
 * The following array fills in the exception vector table.
 ***********************************************************************************************************************/
 #if defined(__CCRX__) || defined(__GNUC__)
-#if defined(__CCRX__)
-#pragma section C EXCEPTVECT
-void (* const Except_Vectors[])(void) =
-#elif defined(__GNUC__)
-void * const Except_Vectors[] __attribute__ ((section (".exvectors"))) =
-#endif /* defined(__CCRX__), defined(__GNUC__) */
+R_ATTRIB_SECTION_CHANGE_EXCEPTVECT void * const Except_Vectors[] =
 {
     /* Offset from EXTB: Reserved area - must be all 0xFF */
     (void (*)(void))0xFFFFFFFF,  /* 0x00 - Reserved */
@@ -425,23 +416,19 @@ void * const Except_Vectors[] __attribute__ ((section (".exvectors"))) =
     undefined_interrupt_source_isr,    /* 0x74  Reserved */
     non_maskable_isr,                  /* 0x78  NMI */
 };
-#endif /* defined(__CCRX__), defined(__GNUC__) */
+R_ATTRIB_SECTION_CHANGE_END
+#endif /* defined(__CCRX__) || defined(__GNUC__) */
 
 /***********************************************************************************************************************
 * The following array fills in the reset vector.
 ***********************************************************************************************************************/
-#if defined(__CCRX__)
-#pragma section C RESETVECT
-void (* const Reset_Vector[])(void) =
+#if defined(__CCRX__) || defined(__GNUC__)
+R_ATTRIB_SECTION_CHANGE_RESETVECT void (* const Reset_Vector[])(void) =
 {
     PowerON_Reset_PC                   /* 0xfffffffc  RESET */
 };
-#elif defined(__GNUC__)
-void * const Reset_Vector[] __attribute__((section(".fvectors"))) =
-{
-    PowerON_Reset                      /* 0xfffffffc  RESET */
-};
-#endif /* defined(__CCRX__), defined(__GNUC__) */
+R_ATTRIB_SECTION_CHANGE_END
+#endif /* defined(__CCRX__) || defined(__GNUC__) */
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 

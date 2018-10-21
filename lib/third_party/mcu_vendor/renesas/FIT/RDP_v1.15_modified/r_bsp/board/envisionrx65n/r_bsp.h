@@ -44,9 +44,9 @@
 INCLUDE APPROPRIATE MCU AND BOARD FILES
 ***********************************************************************************************************************/
 #include    "mcu/all/r_bsp_common.h"
+#include    "mcu/all/r_compiler.h"
 #include    "r_bsp_config.h"
 #include    "r_bsp_interrupt_config.h"
-#include    "mcu/all/r_compiler.h"
 #if defined(__CCRX__)
 #include    "mcu/rx65n/register_access/ccrx/iodefine.h"
 #elif defined(__GNUC__)

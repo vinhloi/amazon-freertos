@@ -31,41 +31,26 @@
 
     .list
     .section .text
-    .global _PowerON_Reset  ;;global Start routine
+    .global _PowerON_Reset_PC  ;;global Start routine
+    .global _PowerON_Reset     ;;for backward compatibility
 
-    .extern _PowerON_Reset_PC  ;;external Sub-routine to initialise Hardware
+    .extern _PowerON_Reset_PC_Prg  ;;external Power ON Reset main function in RESETPRG.C
     .extern _data
     .extern _mdata
     .extern _ebss
     .extern _bss
     .extern _edata
-    .extern _main
-    .extern _ustack
     .extern _istack
-    .extern _rvectors
     .extern _exit
 
 
+_PowerON_Reset_PC :
 _PowerON_Reset :
-;;initialise user stack pointer
-    mvtc    #_ustack,USP
-
 ;;initialise interrupt stack pointer
     mvtc    #_istack,ISP
 
-#ifdef __RXv2__
-;; setup exception vector
-    mvtc    #_Except_Vectors, extb     ;;EXCEPTION VECTOR ADDRESS
-#endif
-;;setup intb
-    mvtc    #_rvectors_start, intb    ;;INTERRUPT VECTOR ADDRESS  definition
-
-;;setup FPSW
-    mvtc    #100h, fpsw
-
-;;call the hardware initialiser
-    bsr.a    _PowerON_Reset_PC
-    nop
+;;jump to Power ON Reset main function in RESETPRG.C
+    bra     _PowerON_Reset_PC_Prg
 
 ;;init section
     .global __INITSCT
@@ -90,13 +75,12 @@ __INITSCT:
     rts
 
 #ifdef CPPAPP
-    bsr.a    __rx_init
-#endif
-;;start user program
-    bsr.a   _main
-    bsr.a   _exit
+;;init global class object
+    .global __CALL_INIT
+    .type   __CALL_INIT,@function
+__CALL_INIT:
+    bra      __rx_init
 
-#ifdef CPPAPP
     .global _rx_run_preinit_array
     .type   _rx_run_preinit_array,@function
 _rx_run_preinit_array:

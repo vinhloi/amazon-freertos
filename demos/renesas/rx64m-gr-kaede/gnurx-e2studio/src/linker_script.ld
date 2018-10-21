@@ -8,7 +8,9 @@ SECTIONS
 {
 	.exvectors 0xFFFFFF80 : AT(0xFFFFFF80)
 	{
+		_exvectors_start = .;
 		KEEP(*(.exvectors))
+		_exvectors_end = .;
 	} >ROM
 	.fvectors 0xFFFFFFFC : AT(0xFFFFFFFC)
 	{
@@ -88,15 +90,28 @@ SECTIONS
 		. = ALIGN(2);
 		_mdata = .;
 	} >ROM
-	.ustack 0x3000 : AT(0x3000)
+	.r_bsp_NULL 0 : AT(0)
+	{
+		. += 0x100;
+		_r_bsp_NULL_end = .;
+	} >RAM
+	.r_bsp_ustack BLOCK(4) :
+	{
+		KEEP(*(.r_bsp_ustack))
+	} >RAM
+	.ustack :
 	{
 		_ustack = .;
 	} >RAM
-	.istack 0x6000 : AT(0x6000)
+	.r_bsp_istack BLOCK(4) :
+	{
+		KEEP(*(.r_bsp_istack))
+	} >RAM
+	.istack :
 	{
 		_istack = .;
 	} >RAM
-	.data 0x9004 : AT(_mdata)
+	.data : AT(_mdata)
 	{
 		_data = .;
 		*(.data)
@@ -122,6 +137,24 @@ SECTIONS
 		_ebss = .;
 		_end = .;
 	} >RAM
+	_ETHERNET_BUFFERS BLOCK(16) :
+	{
+		_B_ETHERNET_BUFFERS_1_start = .;
+		*(_ETHERNET_BUFFERS)
+		_B_ETHERNET_BUFFERS_1_end = .;
+	} >RAM
+	_RX_DESC :
+	{
+		_B_RX_DESC_1_start = .;
+		*(_RX_DESC)
+		_B_RX_DESC_1_end = .;
+	} >RAM
+	_TX_DESC :
+	{
+		_B_TX_DESC_1_start = .;
+		*(_TX_DESC)
+		_B_TX_DESC_1_end = .;
+	} >RAM
 	.ofs1 0x120040 : AT(0x120040)
 	{
 		KEEP(*(.ofs1))
@@ -138,19 +171,4 @@ SECTIONS
 	{
 		KEEP(*(.ofs4))
 	} >OFS
-	_ETHERNET_BUFFERS 0x0 : AT(0x0)
-	{
-		___sectop__ETHERNET_BUFFERS = .;
-		*(_ETHERNET_BUFFERS)
-	} >RAM
-	_RX_DESC :
-	{
-		___sectop__RX_DESC = .;
-		*(_RX_DESC)
-	} >RAM
-	_TX_DESC :
-	{
-		___sectop__TX_DESC = .;
-		*(_TX_DESC)
-	} >RAM
 }

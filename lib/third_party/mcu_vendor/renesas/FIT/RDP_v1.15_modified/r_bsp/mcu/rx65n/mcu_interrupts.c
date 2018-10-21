@@ -284,12 +284,12 @@ bsp_int_err_t bsp_interrupt_enable_disable (bsp_int_src_t vector, bool enable)
             if (true == enable)
             {
                 /* Set the FPU exception flags. */
-                R_SET_FPSW((R_SET_FPSW_CAST_ARGS1)(temp_fpsw | (uint32_t)FPU_EXCEPTIONS_ENABLE));
+                R_SET_FPSW(temp_fpsw | (uint32_t)FPU_EXCEPTIONS_ENABLE);
             }
             else
             {
                 /* Clear only the FPU exception flags. */
-                R_SET_FPSW((R_SET_FPSW_CAST_ARGS1)(temp_fpsw & (uint32_t)~FPU_EXCEPTIONS_ENABLE));
+                R_SET_FPSW(temp_fpsw & (uint32_t)~FPU_EXCEPTIONS_ENABLE);
             }
 
         break;

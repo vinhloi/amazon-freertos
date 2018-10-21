@@ -333,7 +333,7 @@ bool flash_softwareLock(int32_t * const plock)
     int32_t is_locked = true;
 
     /* Try to acquire semaphore to obtain lock */
-    R_EXCHANGE((R_EXCHANGE_CAST_ARGS1)&is_locked, (R_EXCHANGE_CAST_ARGS2)plock);
+    R_EXCHANGE(&is_locked, plock);
 
     /* Check to see if semaphore was successfully taken */
     if (is_locked == false)

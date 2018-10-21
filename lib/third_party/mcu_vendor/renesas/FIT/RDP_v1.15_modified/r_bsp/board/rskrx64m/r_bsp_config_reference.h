@@ -155,7 +155,7 @@ Configuration Options
  */
 #define BSP_CFG_USER_STACK_ENABLE       (1)
 
-#if defined(__CCRX__)
+#if defined(__CCRX__) || defined(__GNUC__)
 
 /* When using the user startup program, disable the following code. */
 #if (BSP_CFG_STARTUP_DISABLE == 0)
@@ -166,19 +166,19 @@ Configuration Options
     /* If only 1 stack is chosen using BSP_CFG_USER_STACK_ENABLE then no RAM will be allocated for the user stack. */
     #if (BSP_CFG_USER_STACK_ENABLE == 1)
     /* User Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive. */
-    #pragma stacksize su=0x1000
+    R_PRAGMA_USTACK_SIZE                (0x1000)
     #endif
 
 /* Interrupt Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive.
  * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
  * below.
  */
-#pragma stacksize si=0x400
+R_PRAGMA_ISTACK_SIZE                    (0x400)
 #endif
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 
-#endif /* defined(__CCRX__) */
+#endif /* defined(__CCRX__) || defined(__GNUC__) */
 
 /* Heap size in bytes.
    To disable the heap you must follow these steps:

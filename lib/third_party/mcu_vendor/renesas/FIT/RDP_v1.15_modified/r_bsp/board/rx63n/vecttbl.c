@@ -56,11 +56,7 @@ Private global variables and functions
 /* BCH - 01/16/2013 */
 /* 3447: External linkage is not needed for this special function as it is the function that is run out of reset. */
 /* PRQA S 3447 ++ */
-#if defined(__CCRX__)
 extern void PowerON_Reset_PC(void);
-#elif defined(__GNUC__)
-extern void PowerON_Reset(void);
-#endif /* defined(__CCRX__), defined(__GNUC__) */
 
 #if defined(__CCRX__) || defined(__GNUC__)
 R_PRAGMA_INTERRUPT_FUNCTION(excep_supervisor_inst_isr)
@@ -132,7 +128,7 @@ R_ATTRIB_INTERRUPT void _float_placeholder(void)
     /* Get current FPSW. */
     temp_fpsw = (uint32_t)R_GET_FPSW();
     /* Clear only the FPU exception flags. */
-    R_SET_FPSW((R_SET_FPSW_CAST_ARGS1)(temp_fpsw & ((uint32_t)~FPU_CAUSE_FLAGS)));
+    R_SET_FPSW(temp_fpsw & ((uint32_t)~FPU_CAUSE_FLAGS));
 }
 
 /***********************************************************************************************************************
@@ -273,29 +269,16 @@ R_ATTRIB_INTERRUPT void bus_error_isr (void)
 
 /* Use this array if you are using User Boot. Make sure to fill in valid address for UB Reset Vector. */
 /* Allocate this space in the user boot sector. */
-#if defined(__CCRX__)
-#pragma section C UBSETTINGS 
-const uint32_t user_boot_settings[6] = 
-#elif defined(__GNUC__)
-const uint32_t user_boot_settings[6] __attribute__ ((section ("UBSETTINGS"))) =
-#elif defined(__ICCRX__)
-#pragma location = "UBSETTINGS"
-const uint32_t user_boot_settings[6] = 
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
+R_ATTRIB_SECTION_CHANGE_UBSETTINGS const uint32_t user_boot_settings[6] = 
 {
     0x55736572,                 //Required setting for UB Code A to get into User Boot
     0x426f6f74,                 //Required setting for UB Code A to get into User Boot
     0xffffff07,                 //Required setting for UB Code B to get into User Boot
     0x0008c04c,                 //Required setting for UB Code B to get into User Boot
     MDE_VALUE,
-#if defined(__CCRX__)
     (uint32_t) PowerON_Reset_PC //This is the User Boot Reset Vector. When using User Boot put in the reset address here
-#elif defined(__GNUC__)
-    (uint32_t) PowerON_Reset    //This is the User Boot Reset Vector. When using User Boot put in the reset address here
-#elif defined(__ICCRX__)
-    #error "FIXME: What is a name of the ICCRX's reset routine?"
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
 };
+R_ATTRIB_SECTION_CHANGE_END
 
 #endif /* BSP_CFG_USER_BOOT_ENABLE == 1 */
 
@@ -303,15 +286,8 @@ const uint32_t user_boot_settings[6] =
 * The following array fills in the option function select registers, fixed vector table, and the ID code protection 
 * bytes.
 ***********************************************************************************************************************/
-#if defined(__CCRX__)
-#pragma section C FIXEDVECT
-void * const Fixed_Vectors[] = 
-#elif defined(__GNUC__)
-void * const Fixed_Vectors[] __attribute__ ((section ("FIXEDVECT"))) =
-#elif defined(__ICCRX__)
-#pragma location = "FIXEDVECT"
-void * const Fixed_Vectors[] = 
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
+#if defined(__CCRX__) || defined(__GNUC__)
+R_ATTRIB_SECTION_CHANGE_FIXEDVECT void * const Fixed_Vectors[] = 
 {
     /* The Endian select register S (MDES), Option function select register 1 (OFS1), and Option function select 
        register 0 (OFS0) are located in User ROM. */
@@ -401,13 +377,9 @@ void * const Fixed_Vectors[] =
     (void *) undefined_interrupt_source_isr,    /* 0xfffffff0  Reserved */
     (void *) undefined_interrupt_source_isr,    /* 0xfffffff4  Reserved */
     (void *) non_maskable_isr,                  /* 0xfffffff8  NMI */
-#if defined(__CCRX__)
     (void *) PowerON_Reset_PC                   /* 0xfffffffc  RESET */
-#elif defined(__GNUC__)
-    (void *) PowerON_Reset                      /* 0xfffffffc  RESET */
-#elif defined(__ICCRX__)
-    #error "FIXME: What is a name of the ICCRX's reset routine?"
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
 };
+R_ATTRIB_SECTION_CHANGE_END
+#endif /* defined(__CCRX__) || defined(__GNUC__) */
 
 

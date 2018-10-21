@@ -8,7 +8,9 @@ SECTIONS
 {
 	.exvectors 0xFFFFFF80 : AT(0xFFFFFF80)
 	{
+		_exvectors_start = .;
 		KEEP(*(.exvectors))
+		_exvectors_end = .;
 	} >ROM
 	.fvectors 0xFFFFFFFC : AT(0xFFFFFFFC)
 	{
@@ -88,15 +90,28 @@ SECTIONS
 		. = ALIGN(2);
 		_mdata = .;
 	} >ROM
-	.ustack 0x3000 : AT(0x3000)
+	.r_bsp_NULL 0 : AT(0)
+	{
+		. += 0x100;
+		_r_bsp_NULL_end = .;
+	} >RAM
+	.r_bsp_ustack BLOCK(4) :
+	{
+		KEEP(*(.r_bsp_ustack))
+	} >RAM
+	.ustack :
 	{
 		_ustack = .;
 	} >RAM
-	.istack 0x6000 : AT(0x6000)
+	.r_bsp_istack BLOCK(4) :
+	{
+		KEEP(*(.r_bsp_istack))
+	} >RAM
+	.istack :
 	{
 		_istack = .;
 	} >RAM
-	.data 0x9004 : AT(_mdata)
+	.data : AT(_mdata)
 	{
 		_data = .;
 		*(.data)

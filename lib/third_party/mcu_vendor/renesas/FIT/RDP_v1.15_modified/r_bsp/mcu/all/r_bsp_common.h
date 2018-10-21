@@ -45,6 +45,8 @@
 *                               Added support for GNUC and ICCRX.
 ***********************************************************************************************************************/
 
+/* Neither r_compiler.h nor r_bsp_config.h is included yet in r_bsp.h so that defines in these files can not be used. */
+
 /***********************************************************************************************************************
 Includes   <System Includes> , "Project Includes"
 ***********************************************************************************************************************/
@@ -99,10 +101,6 @@ Exported global functions (to be accessed by other files)
 uint32_t R_BSP_GetVersion(void);
 bool R_BSP_SoftwareDelay(uint32_t delay, bsp_delay_units_t units);
 uint32_t R_BSP_GetIClkFreqHz(void);
-#if BSP_CFG_RUN_IN_USER_MODE==1
-#if defined(__GNUC__) || defined(__ICCRX__)
-void Change_PSW_PM_to_UserMode(void);
-#endif /* defined(__GNUC__), defined(__ICCRX__) */
-#endif
+void R_BSP_Change_PSW_PM_to_UserMode(void);
 
 

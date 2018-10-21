@@ -117,31 +117,18 @@ flash_err_t flash_get_status (void)
 * Return Value : none
 *******************************************************************************/
 FLASH_PE_MODE_SECTION
-R_PRAGMA_INLINE_STATIC_ASM(r_flash_delay)
+R_PRAGMA_STATIC_INLINE_ASM(r_flash_delay)
 void r_flash_delay (unsigned long loop_cnt)
 {
-#if defined(__CCRX__)
-    BRA ?+
-    NOP
-    ?:
-    NOP
-    SUB #01H, R1
-    BNE ?-
-#elif defined(__GNUC__)
-    __asm("BRA ?+");
-    __asm("NOP");
-    __asm("?:");
-    __asm("NOP");
-    __asm("SUB #01H, R1");
-    __asm("BNE ?-");
-#elif defined(__ICCRX__)
-    asm("BRA.B _lab\n"
-        "NOP\n"
-        "_lab:\n"
-        "NOP\n"
-        "SUB #01H, R1\n"
-        "BNE.B _lab");
-#endif /* defined(__CCRX__), defined(__GNUC__), defined(__ICCRX__) */
+    R_ASM_INTERNAL_USED(loop_cnt)
+    R_ASM_BEGIN
+    R_ASM(    BRA.B    R_LAB_NEXT(0)    )
+    R_ASM(    NOP                       ) // FIXME: What is the purpose of this NOP?
+    R_LAB(0:                            )
+    R_ASM(    NOP                       )
+    R_ASM(    SUB     #01H, R1          )
+    R_ASM(    BNE.B   R_LAB_PREV(0)     )
+    R_ASM_END
 }
 
 
