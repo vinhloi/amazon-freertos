@@ -267,8 +267,8 @@ void vNetworkInterfaceAllocateRAMToBuffers( NetworkBufferDescriptor_t pxNetworkB
 {
 	uint32_t ul;
     uint8_t *buffer_address;
-
     R_EXTERN_SEC(B_ETHERNET_BUFFERS_1)
+
     buffer_address = R_SECTOP(B_ETHERNET_BUFFERS_1);
 
 	for( ul = 0; ul < ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS; ul++ )

@@ -232,43 +232,54 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 
 #endif
 
-/* ---------- Section Switch ---------- */
+/* ---------- Section Switch (part1) ---------- */
 #if defined(__CCRX__)
 
-#define R_ATTRIB_SECTION_CHANGE_UBSETTINGS         R_PRAGMA(section C UBSETTINGS)
+#define R_ATTRIB_SECTION_CHANGE_UBSETTINGS                      R_PRAGMA(section C UBSETTINGS)
 #if defined(__RXV2)
-#define R_ATTRIB_SECTION_CHANGE_EXCEPTVECT         R_PRAGMA(section C EXCEPTVECT)
-#define R_ATTRIB_SECTION_CHANGE_RESETVECT          R_PRAGMA(section C RESETVECT)
+#define R_ATTRIB_SECTION_CHANGE_EXCEPTVECT                      R_PRAGMA(section C EXCEPTVECT)
+#define R_ATTRIB_SECTION_CHANGE_RESETVECT                       R_PRAGMA(section C RESETVECT)
 #else
-#define R_ATTRIB_SECTION_CHANGE_FIXEDVECT          R_PRAGMA(section C FIXEDVECT)
+#define R_ATTRIB_SECTION_CHANGE_FIXEDVECT                       R_PRAGMA(section C FIXEDVECT)
 #endif
-
-#define R_ATTRIB_SECTION_CHANGE_V(section_name)    R_PRAGMA(section section_name)
-#define R_ATTRIB_SECTION_CHANGE_F(section_name)    R_PRAGMA(section section_name)
-#define R_ATTRIB_SECTION_CHANGE_END                R_PRAGMA(section)
 
 #elif defined(__GNUC__)
 
-#define R_ATTRIB_SECTION_CHANGE_UBSETTINGS         __attribute__((section(R_SECNAME_UBSETTINGS)))
+#define R_ATTRIB_SECTION_CHANGE_UBSETTINGS                      __attribute__((section(R_SECNAME_UBSETTINGS)))
 #if defined (__RXV2)
-#define R_ATTRIB_SECTION_CHANGE_EXCEPTVECT         __attribute__((section(R_SECNAME_EXCEPTVECTTBL)))
-#define R_ATTRIB_SECTION_CHANGE_RESETVECT          __attribute__((section(R_SECNAME_RESETVECT)))
+#define R_ATTRIB_SECTION_CHANGE_EXCEPTVECT                      __attribute__((section(R_SECNAME_EXCEPTVECTTBL)))
+#define R_ATTRIB_SECTION_CHANGE_RESETVECT                       __attribute__((section(R_SECNAME_RESETVECT)))
 #else
-#define R_ATTRIB_SECTION_CHANGE_FIXEDVECT          __attribute__((section(R_SECNAME_FIXEDVECTTBL)))
+#define R_ATTRIB_SECTION_CHANGE_FIXEDVECT                       __attribute__((section(R_SECNAME_FIXEDVECTTBL)))
 #endif
-
-#define R_ATTRIB_SECTION_CHANGE_V(section_name)    __attribute__((section(#section_name)))
-#define R_ATTRIB_SECTION_CHANGE_F(section_name)    __attribute__((section(#section_name)))
-#define R_ATTRIB_SECTION_CHANGE_END                /* none */
 
 #elif defined(__ICCRX__)
 
-#define R_ATTRIB_SECTION_CHANGE_UBSETTINGS         R_PRAGMA(location=R_SECNAME_UBSETTINGS)
+#define R_ATTRIB_SECTION_CHANGE_UBSETTINGS                      R_PRAGMA(location=R_SECNAME_UBSETTINGS)
 
-#define R_ATTRIB_SECTION_CHANGE_V(section_name)    R_PRAGMA(location=#section_name)\
-                                                   __no_init
-#define R_ATTRIB_SECTION_CHANGE_F(section_name)    R_PRAGMA(location=#section_name)
-#define R_ATTRIB_SECTION_CHANGE_END                /* none */
+#endif
+
+/* ---------- Section Switch (part2) ---------- */
+#if defined(__CCRX__)
+
+#define R_ATTRIB_SECTION_CHANGE_V(section_name, type, block)    R_PRAGMA(section type type##section_name) /* parameter 'block' is not used */
+#define R_ATTRIB_SECTION_CHANGE_F(section_name)                 R_PRAGMA(section P P##section_name)
+#define R_ATTRIB_SECTION_CHANGE_END                             R_PRAGMA(section)
+
+#elif defined(__GNUC__)
+
+#define _R_ATTRIB_SECTION_CHANGE(name)                          __attribute__((section(#name)))
+#define R_ATTRIB_SECTION_CHANGE_V(section_name, type, block)    _R_ATTRIB_SECTION_CHANGE(type##section_name##_##block)
+#define R_ATTRIB_SECTION_CHANGE_F(section_name)                 _R_ATTRIB_SECTION_CHANGE(P##section_name)
+#define R_ATTRIB_SECTION_CHANGE_END                             /* none */
+
+#elif defined(__ICCRX__)
+
+#define _R_ATTRIB_SECTION_CHANGE(name)                          R_PRAGMA(location=#name)
+#define R_ATTRIB_SECTION_CHANGE_V(section_name, type, block)    _R_ATTRIB_SECTION_CHANGE(type##section_name##_##block)\
+                                                                __no_init
+#define R_ATTRIB_SECTION_CHANGE_F(section_name)                 _R_ATTRIB_SECTION_CHANGE(P##section_name)
+#define R_ATTRIB_SECTION_CHANGE_END                             /* none */
 
 #endif
 

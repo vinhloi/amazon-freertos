@@ -137,22 +137,22 @@ SECTIONS
 		_ebss = .;
 		_end = .;
 	} >RAM
-	_ETHERNET_BUFFERS BLOCK(16) :
+	B_ETHERNET_BUFFERS_1 BLOCK(16) :
 	{
 		_B_ETHERNET_BUFFERS_1_start = .;
-		*(_ETHERNET_BUFFERS)
+		*(B_ETHERNET_BUFFERS_1)
 		_B_ETHERNET_BUFFERS_1_end = .;
 	} >RAM
-	_RX_DESC :
+	B_RX_DESC_1 :
 	{
 		_B_RX_DESC_1_start = .;
-		*(_RX_DESC)
+		*(B_RX_DESC_1)
 		_B_RX_DESC_1_end = .;
 	} >RAM
-	_TX_DESC :
+	B_TX_DESC_1 :
 	{
 		_B_TX_DESC_1_start = .;
-		*(_TX_DESC)
+		*(B_TX_DESC_1)
 		_B_TX_DESC_1_end = .;
 	} >RAM
 	.ofs1 0x120040 : AT(0x120040)

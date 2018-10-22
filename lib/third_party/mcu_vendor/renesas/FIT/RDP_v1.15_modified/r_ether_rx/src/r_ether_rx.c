@@ -233,9 +233,9 @@ static const pauseresolution_t pause_resolution[PAUSE_TABLE_ENTRIES] =
  * defined with section pragma directives to easily locate them
  * on the memory map.
  */
-R_ATTRIB_SECTION_CHANGE_V(_RX_DESC)
+R_ATTRIB_SECTION_CHANGE_V(_RX_DESC, B, 1)
 static descriptor_t rx_descriptors[ETHER_CHANNEL_MAX][ETHER_CFG_EMAC_RX_DESCRIPTORS];
-R_ATTRIB_SECTION_CHANGE_V(_TX_DESC)
+R_ATTRIB_SECTION_CHANGE_V(_TX_DESC, B, 1)
 static descriptor_t tx_descriptors[ETHER_CHANNEL_MAX][ETHER_CFG_EMAC_TX_DESCRIPTORS];
 
 /* 
@@ -245,7 +245,7 @@ static descriptor_t tx_descriptors[ETHER_CHANNEL_MAX][ETHER_CFG_EMAC_TX_DESCRIPT
  * The ETHER_CFG_BUFSIZE and EMAC_NUM_BUFFERS are defined by macro in the file "r_ether_private.h".
  * It is sequentially used from the head of the buffer as a receive buffer or a transmission buffer.
  */
-R_ATTRIB_SECTION_CHANGE_V(_ETHERNET_BUFFERS)
+R_ATTRIB_SECTION_CHANGE_V(_ETHERNET_BUFFERS, B, 1)
 static etherbuffer_t ether_buffers[ETHER_CHANNEL_MAX];
 
 R_ATTRIB_SECTION_CHANGE_END
