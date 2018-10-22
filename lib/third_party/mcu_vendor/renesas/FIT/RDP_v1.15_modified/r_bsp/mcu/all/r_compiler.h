@@ -106,42 +106,6 @@ Macro definitions
 
 /* ========== Sections ========== */
 
-/* ---------- Names ---------- */
-#if defined(__CCRX__)
-
-#define R_SECNAME_INTVECTTBL       "C$VECT"
-#if defined(__RXV2)
-#define R_SECNAME_EXCEPTVECTTBL    "EXCEPTVECT"
-#else
-#define R_SECNAME_FIXEDVECTTBL     "FIXEDVECT"
-#define R_SECNAME_RESETVECT        "RESETVECT"
-#endif
-#define R_SECNAME_UBSETTINGS       "UBSETTINGS"
-
-#elif defined(__GNUC__)
-
-#define R_SECNAME_INTVECTTBL       ".rvectors"
-#if defined(__RXV2)
-#define R_SECNAME_EXCEPTVECTTBL    ".exvectors"
-#define R_SECNAME_RESETVECT        ".fvectors"
-#else
-#define R_SECNAME_FIXEDVECTTBL     ".fvectors"
-#endif
-#define R_SECNAME_UBSETTINGS       ".ubsettings"
-
-#elif defined(__ICCRX__)
-
-#define R_SECNAME_INTVECTTBL       ".inttable"
-#if defined(__RXV2)
-#define R_SECNAME_EXCEPTVECTTBL    ".nmivec"
-#else
-#define R_SECNAME_FIXEDVECTTBL     ".nmivec"
-#define R_SECNAME_RESETVECT        //FIXME: Is the section defined? If so, what is the name?
-#endif
-#define R_SECNAME_UBSETTINGS       ".ubsettings"
-
-#endif
-
 /* ---------- Operators ---------- */
 #if defined(__CCRX__)
 
@@ -166,6 +130,42 @@ Macro definitions
 #define R_SECSIZE(name)       __section_size(#name)
 
 #define R_EXTERN_SEC(name)    /* none */
+
+#endif
+
+/* ---------- Names ---------- */
+#if defined(__CCRX__)
+
+#define R_SECNAME_INTVECTTBL       "C$VECT"
+#if defined(__RXV2)
+#define R_SECNAME_EXCEPTVECTTBL    "EXCEPTVECT"
+#define R_SECNAME_RESETVECT        "RESETVECT"
+#else
+#define R_SECNAME_FIXEDVECTTBL     "FIXEDVECT"
+#endif
+#define R_SECNAME_UBSETTINGS       "UBSETTINGS"
+
+#elif defined(__GNUC__)
+
+#define R_SECNAME_INTVECTTBL       ".rvectors"
+#if defined(__RXV2)
+#define R_SECNAME_EXCEPTVECTTBL    ".exvectors"
+#define R_SECNAME_RESETVECT        ".fvectors"
+#else
+#define R_SECNAME_FIXEDVECTTBL     ".fvectors"
+#endif
+#define R_SECNAME_UBSETTINGS       ".ubsettings"
+
+#elif defined(__ICCRX__)
+
+#define R_SECNAME_INTVECTTBL       ".inttable"
+#if defined(__RXV2)
+#define R_SECNAME_EXCEPTVECTTBL    ".nmivec"
+#define R_SECNAME_RESETVECT        //FIXME: Is the section defined? If so, what is the name?
+#else
+#define R_SECNAME_FIXEDVECTTBL     ".nmivec"
+#endif
+#define R_SECNAME_UBSETTINGS       ".ubsettings"
 
 #endif
 
@@ -201,9 +201,9 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 
 #elif defined(__ICCRX__)
 
-#define R_SECTOP_INTVECTTBL       R_SECTOP(.inttable)
+#define R_SECTOP_INTVECTTBL       __section_begin(R_SECNAME_INTVECTTBL)
 #if defined(__RXV2)
-#define R_SECTOP_EXCEPTVECTTBL    R_SECTOP(.nmivec)
+#define R_SECTOP_EXCEPTVECTTBL    __section_begin(R_SECNAME_EXCEPTVECTTBL)
 #endif
 
 #define R_SECEND_ISTACK           R_SECEND(ISTACK)
@@ -227,8 +227,8 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 
 #elif defined(__ICCRX__)
 
-#define R_PRAGMA_ISTACK_SIZE(size)    /* none */
-#define R_PRAGMA_USTACK_SIZE(size)    /* none */
+//#define R_PRAGMA_ISTACK_SIZE(size)    FIXME: Is there any way? If so, what to do?
+//#define R_PRAGMA_USTACK_SIZE(size)    FIXME: Is there any way? If so, what to do?
 
 #endif
 
@@ -441,8 +441,8 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 /* ---------- Inline Expansion of Assembly-Language Function (part3) ---------- */
 #if defined(__CCRX__)
 
-#define R_ASM_INTERNAL_USED(p)        /* none */
-#define R_ASM_INTERNAL_NOT_USED(p)    /* none */
+#define R_ASM_INTERNAL_USED(p)        /* no way */
+#define R_ASM_INTERNAL_NOT_USED(p)    /* no way */
 
 #elif defined(__GNUC__)
 
