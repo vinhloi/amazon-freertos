@@ -263,24 +263,43 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 /* ---------- Section Switch (part2) ---------- */
 #if defined(__CCRX__)
 
-#define R_ATTRIB_SECTION_CHANGE_B(section_name, block)    R_PRAGMA(section B B##section_name) /* parameter 'block' is not used */
-#define R_ATTRIB_SECTION_CHANGE_P(section_name)           R_PRAGMA(section P P##section_name)
-#define R_ATTRIB_SECTION_CHANGE_END                       R_PRAGMA(section)
+#define __R_ATTRIB_SECTION_CHANGE_V(type, section_name)    R_PRAGMA(section type section_name)
+#define __R_ATTRIB_SECTION_CHANGE_F(type, section_name)    R_PRAGMA(section type section_name)
+
+#define _R_ATTRIB_SECTION_CHANGE_B1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B, B##section_tag) /* The CC-RX adds postfix '_1' automatically */
+#define _R_ATTRIB_SECTION_CHANGE_B2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B, B##section_tag) /* The CC-RX adds postfix '_2' automatically */
+#define _R_ATTRIB_SECTION_CHANGE_B4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B, B##section_tag) /* The CC-RX does not add postfix '_4' */
+#define _R_ATTRIB_SECTION_CHANGE_P(section_tag)            __R_ATTRIB_SECTION_CHANGE_F(P, P##section_tag)
+
+#define R_ATTRIB_SECTION_CHANGE(type, section_tag, ...)    _R_ATTRIB_SECTION_CHANGE_##type##__VA_ARGS__(section_tag)
+#define R_ATTRIB_SECTION_CHANGE_END                        R_PRAGMA(section)
 
 #elif defined(__GNUC__)
 
-#define _R_ATTRIB_SECTION_CHANGE(name)                    __attribute__((section(#name)))
-#define R_ATTRIB_SECTION_CHANGE_B(section_name, block)    _R_ATTRIB_SECTION_CHANGE(B##section_name##block)
-#define R_ATTRIB_SECTION_CHANGE_P(section_name)           _R_ATTRIB_SECTION_CHANGE(P##section_name)
-#define R_ATTRIB_SECTION_CHANGE_END                             /* none */
+#define __R_ATTRIB_SECTION_CHANGE_V(section_name)          __attribute__((section(#section_name)))
+#define __R_ATTRIB_SECTION_CHANGE_F(section_name)          __attribute__((section(#section_name)))
+
+#define _R_ATTRIB_SECTION_CHANGE_B1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag##_1)
+#define _R_ATTRIB_SECTION_CHANGE_B2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag##_2)
+#define _R_ATTRIB_SECTION_CHANGE_B4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag) /* No postfix '_4' because the CC-RX does not add it */
+#define _R_ATTRIB_SECTION_CHANGE_P(section_tag)            __R_ATTRIB_SECTION_CHANGE_F(P##section_tag)
+
+#define R_ATTRIB_SECTION_CHANGE(type, section_tag, ...)    _R_ATTRIB_SECTION_CHANGE_##type##__VA_ARGS__(section_tag)
+#define R_ATTRIB_SECTION_CHANGE_END                        /* none */
 
 #elif defined(__ICCRX__)
 
-#define _R_ATTRIB_SECTION_CHANGE(name)                    R_PRAGMA(location=#name)
-#define R_ATTRIB_SECTION_CHANGE_B(section_name, block)    _R_ATTRIB_SECTION_CHANGE(B##section_name##block)\
-                                                          __no_init
-#define R_ATTRIB_SECTION_CHANGE_P(section_name)           _R_ATTRIB_SECTION_CHANGE(P##section_name)
-#define R_ATTRIB_SECTION_CHANGE_END                             /* none */
+#define __R_ATTRIB_SECTION_CHANGE_V(section_name)          R_PRAGMA(location=#section_name)\
+                                                           __no_init
+#define __R_ATTRIB_SECTION_CHANGE_F(section_name)          R_PRAGMA(location=#section_name)
+
+#define _R_ATTRIB_SECTION_CHANGE_B1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag##_1)
+#define _R_ATTRIB_SECTION_CHANGE_B2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag##_2)
+#define _R_ATTRIB_SECTION_CHANGE_B4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag) /* No postfix '_4' because the CC-RX does not add it */
+#define _R_ATTRIB_SECTION_CHANGE_P(section_tag)            __R_ATTRIB_SECTION_CHANGE_F(P##section_tag)
+
+#define R_ATTRIB_SECTION_CHANGE(type, section_tag, ...)    _R_ATTRIB_SECTION_CHANGE_##type##__VA_ARGS__(section_tag)
+#define R_ATTRIB_SECTION_CHANGE_END                        /* none */
 
 #endif
 
