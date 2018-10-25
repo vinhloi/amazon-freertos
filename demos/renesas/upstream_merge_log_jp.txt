@@ -5,6 +5,26 @@ upstream merge log (only Japanese language)
 主にプロジェクト構造に関するメモ。ソースに関しては特記事項のある時のみ。
 
 --------------------------------------------------------------------------
+2018/10/25
+
+Follow the upstream v1.4.2 Step 2/2 by NoMaY
+
+commit message:
+"Follow upstream v1.4.2 Step 2/2 : Update files which cause changes of the MOT files of the Renesas Projects. i.e. common files which are used in the Renesas Projects (some of them are not actually used but only linked), and Renesas specific files which need to follow changes of vendor specific files."
+
+特記事項無し
+
+--------------------------------------------------------------------------
+2018/10/25
+
+Follow the upstream v1.4.2 Step 1/2 by NoMaY
+
+commit message:
+"Follow upstream v1.4.2 Step 1/2 : Update files which do not cause any changes of the MOT files of the Renesas Projects. i.e. common files in which only comments change such as v1.4.1 --> v1.4.2 or etc... and/or only white spaces and/or only blank lines, common files which are not used in the Renesas Projects, and vendor specific files."
+
+特記事項無し
+
+--------------------------------------------------------------------------
 2018/08/31
 
 Follow the upstream v1.4.1 Step 2/2 by NoMaY
