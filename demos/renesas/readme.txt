@@ -23,7 +23,8 @@ This is our root directory called <root>.
 
 Getting Start Steps:
  step1:  Refer to the Development Environment (recommended) section to get the board and tools.
- step2:  Setup tools for your PC.
+ step2:  Setup tools for your PC, Compiler and IDE are mandatory.
+         Others are just reference information, already implemented into step3 data, no need setup.
  step3:  Download RX MCUs Amazon FreeRTOS from GitHub. (Maybe you already done)
          https://github.com/renesas-rx/amazon-freertos
  step4:  Make your AWS account, and make your "Things" on AWS,
@@ -38,11 +39,14 @@ Getting Start Steps:
            clientcredentialCLIENT_PRIVATE_KEY_PEM[]
  step6:  Start Renesas IDE (e2 studio) and import Amazon FreeRTOS project.
          import sequence: file->import->existing project into workspace -> select a root directory
-         The project folder is placed into <root>/demos/renesas/rx65n-rsk/ccrx-e2studio6
+         The project folder is placed into <root>/demos/renesas/rx65n-rsk/ccrx-e2studio
          Please specify this directory only.
          This directory is top of reference. You can also use other project.
          Please select tested project shown into Development Environment (tested or no matrix) section
          in this Readme.
+         Note: "DO NOT SET" the check for "Copy projects into workspace" in "Import Projects" dialog.
+               Because, some of source in "<root>/lib" folder are outside of project directory.
+               So if this check would exist, some of source in "<root>/lib" folder will be missing.
  step7:  Build
  step8:  Execute, confirm console log will show the Echo message from AWS.
          The log will be output from G1CUSB (or other UART/USB) connector as UART/USB.
