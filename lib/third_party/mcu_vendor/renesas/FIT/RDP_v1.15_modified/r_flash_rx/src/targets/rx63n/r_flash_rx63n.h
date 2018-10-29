@@ -1254,11 +1254,11 @@ typedef struct _rom_block_info
 
 #define NUM_BLOCK_TABLE_ENTRIES 5
 static rom_block_sizes_t g_flash_RomBlockSizes[NUM_BLOCK_TABLE_ENTRIES] = {
-         8,  4096,    /* 8 blocks of 4K   */
-        30, 16384,    /* 30 blocks of 16K */
-        16, 32768,    /* 16 blocks of 32K */
-        16, 65536,     /* 16 blocks of 64K */
-        0,  0
+        { 8,  4096},    /* 8 blocks of 4K   */
+        {30, 16384},    /* 30 blocks of 16K */
+        {16, 32768},    /* 16 blocks of 32K */
+        {16, 65536},    /* 16 blocks of 64K */
+        {0,  0}
 };
 
 

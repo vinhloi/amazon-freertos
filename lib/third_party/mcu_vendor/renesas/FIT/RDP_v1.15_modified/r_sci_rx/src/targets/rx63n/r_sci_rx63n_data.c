@@ -99,7 +99,7 @@ const sci_ch_rom_t  ch0_rom = {(volatile __evenaccess struct st_sci12 *)&SCI0,
                                 BIT0_MASK, BIT6_MASK, BIT7_MASK, BIT0_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch0_ctrl = {&ch0_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch0_ctrl = {&ch0_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -123,7 +123,7 @@ const sci_ch_rom_t  ch1_rom = {(volatile __evenaccess struct st_sci12 *)&SCI1,
                                 BIT1_MASK, BIT1_MASK, BIT2_MASK, BIT3_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch1_ctrl = {&ch1_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch1_ctrl = {&ch1_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -147,7 +147,7 @@ const sci_ch_rom_t  ch2_rom = {(volatile __evenaccess struct st_sci12 *)&SCI2,
                                 BIT2_MASK, BIT4_MASK, BIT5_MASK, BIT6_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch2_ctrl = {&ch2_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch2_ctrl = {&ch2_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -171,7 +171,7 @@ const sci_ch_rom_t  ch3_rom = {(volatile __evenaccess struct st_sci12 *)&SCI3,
                                 BIT3_MASK, BIT7_MASK, BIT0_MASK, BIT1_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch3_ctrl = {&ch3_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch3_ctrl = {&ch3_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -195,7 +195,7 @@ const sci_ch_rom_t  ch4_rom = {(volatile __evenaccess struct st_sci12 *)&SCI4,
                                 BIT4_MASK, BIT2_MASK, BIT3_MASK, BIT4_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch4_ctrl = {&ch4_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch4_ctrl = {&ch4_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -219,7 +219,7 @@ const sci_ch_rom_t  ch5_rom = {(volatile __evenaccess struct st_sci12 *)&SCI5,
                                 BIT5_MASK, BIT5_MASK, BIT6_MASK, BIT7_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch5_ctrl = {&ch5_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch5_ctrl = {&ch5_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -243,7 +243,7 @@ const sci_ch_rom_t  ch6_rom = {(volatile __evenaccess struct st_sci12 *)&SCI6,
                                 BIT6_MASK, BIT0_MASK, BIT1_MASK, BIT2_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch6_ctrl = {&ch6_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch6_ctrl = {&ch6_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -267,7 +267,7 @@ const sci_ch_rom_t  ch7_rom = {(volatile __evenaccess struct st_sci12 *)&SCI7,
                                 BIT7_MASK, BIT3_MASK, BIT4_MASK, BIT5_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch7_ctrl = {&ch7_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch7_ctrl = {&ch7_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -291,7 +291,7 @@ const sci_ch_rom_t  ch8_rom = {(volatile __evenaccess struct st_sci12 *)&SCI8,
                                 BIT8_MASK, BIT6_MASK, BIT7_MASK, BIT0_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch8_ctrl = {&ch8_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch8_ctrl = {&ch8_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -315,7 +315,7 @@ const sci_ch_rom_t  ch9_rom = {(volatile __evenaccess struct st_sci12 *)&SCI9,
                                 BIT9_MASK, BIT1_MASK, BIT2_MASK, BIT3_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch9_ctrl = {&ch9_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch9_ctrl = {&ch9_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -339,7 +339,7 @@ const sci_ch_rom_t  ch10_rom = {(volatile __evenaccess struct st_sci12 *)&SCI10,
                                 BIT10_MASK, BIT4_MASK, BIT5_MASK, BIT6_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch10_ctrl = {&ch10_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch10_ctrl = {&ch10_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -363,7 +363,7 @@ const sci_ch_rom_t  ch11_rom = {(volatile __evenaccess struct st_sci12 *)&SCI11,
                                 BIT11_MASK, BIT7_MASK, BIT0_MASK, BIT1_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch11_ctrl = {&ch11_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch11_ctrl = {&ch11_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
@@ -387,7 +387,7 @@ const sci_ch_rom_t  ch12_rom = {(volatile __evenaccess struct st_sci12 *)&SCI12,
                                 BIT12_MASK, BIT2_MASK, BIT3_MASK, BIT4_MASK
                                 };
 /* channel control block */
-sci_ch_ctrl_t   ch12_ctrl = {&ch12_rom, SCI_MODE_OFF, 0, NULL, NULL, NULL, true
+sci_ch_ctrl_t   ch12_ctrl = {&ch12_rom, SCI_MODE_OFF, 0, NULL, {NULL}, {NULL}, true
                             #if (SCI_CFG_SSPI_INCLUDED || SCI_CFG_SYNC_INCLUDED)
                             , true, 0, 0, false
                             #endif
