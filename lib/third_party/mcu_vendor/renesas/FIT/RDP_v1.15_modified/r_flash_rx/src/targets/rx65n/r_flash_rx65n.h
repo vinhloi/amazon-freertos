@@ -46,13 +46,13 @@ Macro definitions
 #elif (MCU_CFG_PART_MEMORY_SIZE == 0x9 )    // 1 Mb
      #define FLASH_NUM_BLOCKS_CF (30+8)
 #elif (MCU_CFG_PART_MEMORY_SIZE == 0xC)
-    #if FLASH_IN_DUAL_BANK_MODE
+    #ifdef FLASH_IN_DUAL_BANK_MODE
         #define FLASH_NUM_BLOCKS_CF (22+8)  // .75 Mb per bank dual mode
     #else
         #define FLASH_NUM_BLOCKS_CF (46+8)  // 1.5 Mb linear mode
     #endif
 #elif (MCU_CFG_PART_MEMORY_SIZE == 0xE)
-    #if FLASH_IN_DUAL_BANK_MODE
+    #ifdef FLASH_IN_DUAL_BANK_MODE
         #define FLASH_NUM_BLOCKS_CF (30+8)  // 1 Mb per bank dual mode
     #else
         #define FLASH_NUM_BLOCKS_CF (62+8)  // 2 Mb linear mode
