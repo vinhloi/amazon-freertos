@@ -2147,7 +2147,7 @@ flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t 
 #if (FLASH_CFG_CODE_FLASH_ENABLE == 0)
         /* ROM operations are not enabled! Enable them in r_flash_rx_config.h */
         return FLASH_ERR_FAILURE;
-#endif
+#else
 
         /* Check if the number of bytes were passed is a multiple of the
            programming size for ROM */
@@ -2191,6 +2191,7 @@ flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t 
 
         /* Set FCU to ROM PE mode */
         g_current_mode = ROM_PE_MODE;
+#endif
     }
     else
     {
