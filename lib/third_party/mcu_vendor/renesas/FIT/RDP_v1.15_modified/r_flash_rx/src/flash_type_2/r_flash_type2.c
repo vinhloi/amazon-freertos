@@ -2827,6 +2827,11 @@ static uint32_t flash_get_program_size (uint32_t bytes, uint32_t flash_addr)
 {
     uint32_t num_byte_to_write = 0;
 
+#if !defined(DF_PROGRAM_SIZE_LARGE)
+    R_INTERNAL_NOT_USED(bytes);
+    R_INTERNAL_NOT_USED(flash_addr);
+#endif
+
     if( g_current_mode == FLD_PE_MODE )
     {
         /* This is a DF write. */

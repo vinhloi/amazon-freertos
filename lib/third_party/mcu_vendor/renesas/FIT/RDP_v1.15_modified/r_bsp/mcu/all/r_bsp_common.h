@@ -77,6 +77,9 @@ Macro definitions
 #define R_BSP_VERSION_MAJOR           (3)
 #define R_BSP_VERSION_MINOR           (80)
 
+/* Warning suppression macro for 'M0520826: Parameter "XXXX" was never referenced'. */
+#define R_INTERNAL_NOT_USED(p)        ((void)(p))
+
 /***********************************************************************************************************************
 Typedef definitions
 ***********************************************************************************************************************/

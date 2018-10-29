@@ -533,6 +533,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci12_txi12_isr(void)
 #if SCI_CFG_CH0_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci0_tei0_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch0_ctrl);
 } /* End of function sci0_tei0_isr() */
 #endif
@@ -540,6 +541,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci0_tei0_isr(void *cb_args)
 #if SCI_CFG_CH1_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci1_tei1_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch1_ctrl);
 } /* End of function sci1_tei1_isr() */
 #endif
@@ -547,6 +549,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci1_tei1_isr(void *cb_args)
 #if SCI_CFG_CH2_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci2_tei2_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch2_ctrl);
 } /* End of function sci2_tei2_isr() */
 #endif
@@ -554,6 +557,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci2_tei2_isr(void *cb_args)
 #if SCI_CFG_CH3_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci3_tei3_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch3_ctrl);
 } /* End of function sci3_tei3_isr() */
 #endif
@@ -561,6 +565,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci3_tei3_isr(void *cb_args)
 #if SCI_CFG_CH4_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci4_tei4_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch4_ctrl);
 } /* End of function sci4_tei4_isr() */
 #endif
@@ -568,6 +573,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci4_tei4_isr(void *cb_args)
 #if SCI_CFG_CH5_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci5_tei5_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch5_ctrl);
 } /* End of function sci5_tei5_isr() */
 #endif
@@ -575,6 +581,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci5_tei5_isr(void *cb_args)
 #if SCI_CFG_CH6_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci6_tei6_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch6_ctrl);
 } /* End of function sci6_tei6_isr() */
 #endif
@@ -582,6 +589,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci6_tei6_isr(void *cb_args)
 #if SCI_CFG_CH7_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci7_tei7_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch7_ctrl);
 } /* End of function sci7_tei7_isr() */
 #endif
@@ -589,6 +597,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci7_tei7_isr(void *cb_args)
 #if SCI_CFG_CH8_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci8_tei8_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch8_ctrl);
 } /* End of function sci8_tei8_isr() */
 #endif
@@ -596,6 +605,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci8_tei8_isr(void *cb_args)
 #if SCI_CFG_CH9_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci9_tei9_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch9_ctrl);
 } /* End of function sci9_tei9_isr() */
 #endif
@@ -603,6 +613,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci9_tei9_isr(void *cb_args)
 #if SCI_CFG_CH10_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci10_tei10_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch10_ctrl);
 } /* End of function sci10_tei10_isr() */
 #endif
@@ -610,6 +621,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci10_tei10_isr(void *cb_args)
 #if SCI_CFG_CH11_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci11_tei11_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch11_ctrl);
 } /* End of function sci11_tei11_isr() */
 #endif
@@ -617,6 +629,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci11_tei11_isr(void *cb_args)
 #if SCI_CFG_CH12_INCLUDED
 R_ATTRIB_STATIC_INTERRUPT void sci12_tei12_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch12_ctrl);
 } /* End of function sci12_tei12_isr() */
 #endif

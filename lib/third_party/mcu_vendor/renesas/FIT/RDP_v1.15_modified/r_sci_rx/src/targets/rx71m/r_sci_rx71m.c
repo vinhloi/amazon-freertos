@@ -487,6 +487,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci12_txi12_isr(void)
 #if SCI_CFG_CH0_INCLUDED
 void sci0_tei0_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch0_ctrl);
 } /* End of function sci0_tei0_isr() */
 #endif
@@ -494,6 +495,7 @@ void sci0_tei0_isr(void *cb_args)
 #if SCI_CFG_CH1_INCLUDED
 void sci1_tei1_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch1_ctrl);
 } /* End of function sci1_tei1_isr() */
 #endif
@@ -501,6 +503,7 @@ void sci1_tei1_isr(void *cb_args)
 #if SCI_CFG_CH2_INCLUDED
 void sci2_tei2_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch2_ctrl);
 } /* End of function sci2_tei2_isr() */
 #endif
@@ -508,6 +511,7 @@ void sci2_tei2_isr(void *cb_args)
 #if SCI_CFG_CH3_INCLUDED
 void sci3_tei3_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch3_ctrl);
 } /* End of function sci3_tei3_isr() */
 #endif
@@ -515,6 +519,7 @@ void sci3_tei3_isr(void *cb_args)
 #if SCI_CFG_CH4_INCLUDED
 void sci4_tei4_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch4_ctrl);
 } /* End of function sci4_tei4_isr() */
 #endif
@@ -522,6 +527,7 @@ void sci4_tei4_isr(void *cb_args)
 #if SCI_CFG_CH5_INCLUDED
 void sci5_tei5_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch5_ctrl);
 } /* End of function sci5_tei5_isr() */
 #endif
@@ -529,6 +535,7 @@ void sci5_tei5_isr(void *cb_args)
 #if SCI_CFG_CH6_INCLUDED
 void sci6_tei6_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch6_ctrl);
 } /* End of function sci6_tei6_isr() */
 #endif
@@ -536,6 +543,7 @@ void sci6_tei6_isr(void *cb_args)
 #if SCI_CFG_CH7_INCLUDED
 void sci7_tei7_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch7_ctrl);
 } /* End of function sci7_tei7_isr() */
 #endif
@@ -543,6 +551,7 @@ void sci7_tei7_isr(void *cb_args)
 #if SCI_CFG_CH12_INCLUDED
 void sci12_tei12_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     tei_handler(&ch12_ctrl);
 } /* End of function sci12_tei12_isr() */
 #endif
@@ -629,6 +638,7 @@ R_ATTRIB_STATIC_INTERRUPT void sci12_rxi12_isr(void)
 #if SCI_CFG_CH0_INCLUDED
 void sci0_eri0_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch0_ctrl);
 } /* End of function sci0_eri0_isr() */
 #endif
@@ -636,6 +646,7 @@ void sci0_eri0_isr(void *cb_args)
 #if SCI_CFG_CH1_INCLUDED
 void sci1_eri1_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch1_ctrl);
 } /* End of function sci1_eri1_isr() */
 #endif
@@ -643,6 +654,7 @@ void sci1_eri1_isr(void *cb_args)
 #if SCI_CFG_CH2_INCLUDED
 void sci2_eri2_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch2_ctrl);
 } /* End of function sci2_eri2_isr() */
 #endif
@@ -650,6 +662,7 @@ void sci2_eri2_isr(void *cb_args)
 #if SCI_CFG_CH3_INCLUDED
 void sci3_eri3_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch3_ctrl);
 } /* End of function sci3_eri3_isr() */
 #endif
@@ -657,6 +670,7 @@ void sci3_eri3_isr(void *cb_args)
 #if SCI_CFG_CH4_INCLUDED
 void sci4_eri4_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch4_ctrl);
 } /* End of function sci4_eri4_isr() */
 #endif
@@ -664,6 +678,7 @@ void sci4_eri4_isr(void *cb_args)
 #if SCI_CFG_CH5_INCLUDED
 void sci5_eri5_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch5_ctrl);
 } /* End of function sci5_eri5_isr() */
 #endif
@@ -671,6 +686,7 @@ void sci5_eri5_isr(void *cb_args)
 #if SCI_CFG_CH6_INCLUDED
 void sci6_eri6_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch6_ctrl);
 } /* End of function sci6_eri6_isr() */
 #endif
@@ -678,6 +694,7 @@ void sci6_eri6_isr(void *cb_args)
 #if SCI_CFG_CH7_INCLUDED
 void sci7_eri7_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch7_ctrl);
 } /* End of function sci7_eri7_isr() */
 #endif
@@ -685,6 +702,7 @@ void sci7_eri7_isr(void *cb_args)
 #if SCI_CFG_CH12_INCLUDED
 void sci12_eri12_isr(void *cb_args)
 {
+    R_INTERNAL_NOT_USED(cb_args);
     eri_handler(&ch12_ctrl);
 } /* End of function sci12_eri12_isr() */
 #endif
