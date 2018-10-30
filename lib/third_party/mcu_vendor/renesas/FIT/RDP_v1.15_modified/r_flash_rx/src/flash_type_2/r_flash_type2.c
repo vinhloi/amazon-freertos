@@ -91,6 +91,12 @@ Includes   <System Includes> , "Project Includes"
 #define FCU_RAM_SIZE    0x2000
 
 
+/* Neither ROM to ROM nor DF to DF transfer */
+#ifndef FLASH_CFG_FLASH_TO_FLASH
+#define FLASH_CFG_FLASH_TO_FLASH (0) /* It is better for XXXX_CFG_YYYY to be defined as 0 rather than not defined. */
+#endif
+
+
 /******************************************************************************
 Typedef definitions
 ******************************************************************************/
@@ -1005,7 +1011,7 @@ R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
     /* Local variables */
     uint32_t num_byte_to_write;
     uint8_t  ret;
-#ifdef FLASH_CFG_FLASH_TO_FLASH
+#if (FLASH_CFG_FLASH_TO_FLASH == 1)
     uint32_t i;
 #endif
     rom_block_info_t block_info;
@@ -1115,7 +1121,7 @@ R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
             /* Get maximum programming size that can currently be used. */
             num_byte_to_write = flash_get_program_size(g_bgo_bytes, g_bgo_flash_addr);
 
-#ifdef FLASH_CFG_FLASH_TO_FLASH
+#if (FLASH_CFG_FLASH_TO_FLASH == 1)
             /* Check to see if we need to buffer more data */
             if( g_flash_to_flash_op == 1 )
             {
@@ -1152,7 +1158,7 @@ R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
             {
                 /* Writing DF */
                 /* Call the Programming function again for next bytes */
-#ifdef FLASH_CFG_FLASH_TO_FLASH
+#if (FLASH_CFG_FLASH_TO_FLASH == 1)
                 if( g_flash_to_flash_op == 1 )
                 {
                     ret = data_flash_write( g_bgo_flash_addr,
@@ -1175,7 +1181,7 @@ R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
             {
                 /* Writing ROM */
                 /* Call the Programming function */
-#ifdef FLASH_CFG_FLASH_TO_FLASH
+#if (FLASH_CFG_FLASH_TO_FLASH == 1)
                 if( g_flash_to_flash_op == 1 )
                 {
                     /* Use RAM array */
@@ -2095,7 +2101,7 @@ flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t 
 
     /* Declare result container and number of bytes to write variables */
     uint32_t num_byte_to_write;
-#ifdef FLASH_CFG_FLASH_TO_FLASH
+#if (FLASH_CFG_FLASH_TO_FLASH == 1)
     /* Local variable when using FLASH_CFG_FLASH_TO_FLASH */
     uint16_t i;
 #endif
@@ -2206,7 +2212,7 @@ flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t 
         return FLASH_ERR_BUSY;
     }
 
-#ifdef FLASH_CFG_FLASH_TO_FLASH
+#if (FLASH_CFG_FLASH_TO_FLASH == 1)
     /* Are we doing a ROM to ROM or DF to DF transfer? */
     if( (buffer_addr >= ROM_PE_ADDR) ||
         ((buffer_addr >= DF_ADDRESS) && (buffer_addr < (DF_ADDRESS + MCU_DATA_FLASH_SIZE_BYTES))))
@@ -2384,7 +2390,7 @@ flash_err_t flash_api_write(uint32_t buffer_addr, uint32_t flash_addr, uint32_t 
            flash write */
         bytes -= num_byte_to_write;
 
-    #ifdef FLASH_CFG_FLASH_TO_FLASH
+    #if (FLASH_CFG_FLASH_TO_FLASH == 1)
         /* Check to see if we need to buffer more data */
         if( (bytes > 0) &&
             (g_flash_to_flash_op == 1) )
