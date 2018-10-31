@@ -127,9 +127,9 @@ extern char fptell(unsigned char, long*);
 /* RX */
 #elif defined( __RX )
 /* Output one character to standard output */
-extern void charput(unsigned char);
+extern void charput(uint32_t); // uint32_t is used for the E1 Virtual Console
 /* Input one character from standard input */
-extern unsigned char charget(void);
+extern uint32_t charget(void); // uint32_t is used for the E1 Virtual Console
 
 /* H8 Advanced mode */
 #elif defined( __2000A__ ) || defined( __2600A__ ) || defined( __300HA__ ) || defined( __H8SXN__ ) || defined( __H8SXA__ ) || defined( __H8SXM__ ) || defined( __H8SXX__ )
