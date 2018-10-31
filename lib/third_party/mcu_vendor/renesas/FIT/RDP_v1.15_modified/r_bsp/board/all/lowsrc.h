@@ -41,5 +41,10 @@ extern void _INIT_IOLIB(void);
 extern void _CLOSEALL(void);
 #endif /* defined(__CCRX__) */
 
+/* Output one character to standard output (the E1 Virtual Console or a serial port via user own charput function) */
+void charput (uint32_t output_char);
+/* Input one character from standard input (the E1 Virtual Console or a serial port via user own charget function) */
+uint32_t charget (void);
+
 /* End of multiple inclusion prevention macro */
 #endif

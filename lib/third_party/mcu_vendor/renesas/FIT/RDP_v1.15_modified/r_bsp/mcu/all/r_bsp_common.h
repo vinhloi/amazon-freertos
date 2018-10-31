@@ -106,4 +106,7 @@ bool R_BSP_SoftwareDelay(uint32_t delay, bsp_delay_units_t units);
 uint32_t R_BSP_GetIClkFreqHz(void);
 void R_BSP_Change_PSW_PM_to_UserMode(void);
 
+/* Return the current ICLK frequency in Hz.  Called by R_BSP_GetIClkFreqHz(). */
+uint32_t get_iclk_freq_hz(void);
+
 
