@@ -43,7 +43,7 @@ Includes   <System Includes> , "Project Includes"
 #if (BSP_CFG_STARTUP_DISABLE == 0)
 
 /* Do not include this file if stdio is disabled in r_bsp_config. */
-#if defined(BSP_CFG_IO_LIB_ENABLE) && (BSP_CFG_IO_LIB_ENABLE == 1)
+#if (BSP_CFG_IO_LIB_ENABLE == 1)
 
 #if defined(__CCRX__)
 

@@ -36,10 +36,14 @@ Macro definitions
 /***********************************************************************************************************************
 Exported global functions (to be accessed by other files)
 ***********************************************************************************************************************/
+#if BSP_CFG_IO_LIB_ENABLE == 1
 #if defined(__CCRX__)
-extern void _INIT_IOLIB(void);
-extern void _CLOSEALL(void);
+/*  Initialize the stream I/O library */
+void _INIT_IOLIB(void);
+/* Clean up open files */
+void _CLOSEALL(void);
 #endif /* defined(__CCRX__) */
+#endif
 
 /* Output one character to standard output (the E1 Virtual Console or a serial port via user own charput function) */
 void charput (uint32_t output_char);
