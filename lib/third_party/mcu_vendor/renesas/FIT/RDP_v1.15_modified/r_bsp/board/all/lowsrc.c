@@ -32,6 +32,7 @@
 *         :(01.11.2017 2.00     Added the bsp startup module disable function.)
 *         : 27.07.2018 2.01     Added the comment to for statement.
 *         : xx.xx.xxxx 2.02     Added support for GNUC and ICCRX.
+*                               Removed the wrong comment to for statement.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -233,7 +234,6 @@ void _CLOSEALL( void )
 {
     long i;
 
-    /* WAIT_LOOP */
     for( i=0; i < _nfiles; i++ )
     {
         /* Checks if the file is opened or not                               */
@@ -336,7 +336,6 @@ int write(int  fileno,               /* File number                       */
         else if( (fileno == STDOUT) || (fileno == STDERR) ) 
                                                 /* Standard Error/output   */
         {
-            /* WAIT_LOOP */
             for( i = count; i > 0; --i )
             {
                 c = *buf++;
@@ -367,7 +366,6 @@ int read( int fileno, char *buf, unsigned int count )
 
        if((flmod[fileno]&_MOPENR) || (flmod[fileno]&O_RDWR))
        {
-             /* WAIT_LOOP */
              for(i = count; i > 0; i--)
              {
                    *buf = charget();
