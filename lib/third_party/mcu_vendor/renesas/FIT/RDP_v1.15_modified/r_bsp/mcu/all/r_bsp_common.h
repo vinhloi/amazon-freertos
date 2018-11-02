@@ -77,7 +77,15 @@ Macro definitions
 #define R_BSP_VERSION_MAJOR           (3)
 #define R_BSP_VERSION_MINOR           (80)
 
-/* Warning suppression macro for 'M0520826: Parameter "XXXX" was never referenced'. */
+/* This macro is used to suppress compiler messages about not only a parameter but also a auto variable not being used
+ * in a function. The nice thing about using this implementation is that it does not take any extra RAM or ROM.
+ * This macro is available for the followings:
+ * CC-RX's 'M0520826:Parameter "XXXX" was never referenced'
+ * CC-RX's 'W0520550:Variable "XXXX" was set but never used'
+ * GNURX's 'unused parameter 'XXXX' [-Wunused-parameter]'
+ * GNURX's 'variable 'XXXX' set but not used [-Wunused-but-set-variable]'
+ * When the variable is declared as volatile, the '&' can be applied like 'R_INTERNAL_NOT_USED(&volatile_variable);'.
+ */
 #define R_INTERNAL_NOT_USED(p)        ((void)(p))
 
 /***********************************************************************************************************************

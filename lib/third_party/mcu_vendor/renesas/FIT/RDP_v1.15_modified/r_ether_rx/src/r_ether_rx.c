@@ -437,7 +437,9 @@ ether_return_t R_ETHER_Open_ZC2 (uint32_t channel, const uint8_t mac_addr[], uin
     if (false == is_entry)
     {
         bsp_int_err = R_BSP_InterruptWrite(BSP_INT_SRC_AL1_EDMAC0_EINT0, ether_eint0); /* EINT0 */
+        R_INTERNAL_NOT_USED(&bsp_int_err); /* The '&' is for the volatile declaration of the "bsp_int_err". */
         bsp_int_err = R_BSP_InterruptWrite(BSP_INT_SRC_AL1_EDMAC1_EINT1, ether_eint1); /* EINT1 */
+        R_INTERNAL_NOT_USED(&bsp_int_err); /* The '&' is for the volatile declaration of the "bsp_int_err". */
         is_entry = true;
     }
 #elif (defined(BSP_MCU_RX65N))
@@ -445,6 +447,7 @@ ether_return_t R_ETHER_Open_ZC2 (uint32_t channel, const uint8_t mac_addr[], uin
     if (false == is_entry)
     {
         bsp_int_err = R_BSP_InterruptWrite(BSP_INT_SRC_AL1_EDMAC0_EINT0, ether_eint0); /* EINT0 */
+        R_INTERNAL_NOT_USED(&bsp_int_err); /* The '&' is for the volatile declaration of the "bsp_int_err". */
         is_entry = true;
     }
 #endif
@@ -2515,11 +2518,12 @@ R_ATTRIB_INTERRUPT void ether_eint(void)
  ***********************************************************************************************************************/
 static void ether_eint0 (void * pparam)
 {
-    volatile uint32_t dummy;
+    volatile uint32_t dummy; /* FIXME: Replace this line and last two lines to one "R_INTERNAL_NOT_USED(pparam);". */
 
     ether_int_common(ETHER_CHANNEL_0);
 
     dummy = (uint32_t) pparam;
+    R_INTERNAL_NOT_USED(&dummy); /* The '&' is for the volatile declaration of the "dummy". */
 } /* End of function ether_eint0() */
 #endif
 
@@ -2533,11 +2537,12 @@ static void ether_eint0 (void * pparam)
  ***********************************************************************************************************************/
 static void ether_eint1(void * pparam)
 {
-    volatile uint32_t dummy;
+    volatile uint32_t dummy; /* FIXME: Replace this line and last two lines to one "R_INTERNAL_NOT_USED(pparam);". */
 
     ether_int_common(ETHER_CHANNEL_1);
 
     dummy = (uint32_t)pparam;
+    R_INTERNAL_NOT_USED(&dummy); /* The '&' is for the volatile declaration of the "dummy". */
 } /* End of function ether_eint1() */
 #endif
 

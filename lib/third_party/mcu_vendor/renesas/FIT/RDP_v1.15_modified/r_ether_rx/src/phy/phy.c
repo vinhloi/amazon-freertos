@@ -230,6 +230,7 @@ void phy_start_autonegotiate (uint32_t ether_channel, uint8_t pause)
     PHY_CONTROL_AN_RESTART));
 
     reg = phy_read(ether_channel, PHY_REG_AN_ADVERTISEMENT);
+    R_INTERNAL_NOT_USED(&reg); /* The '&' is for the volatile declaration of the "reg". */
 
 } /* End of function phy_start_autonegotiate() */
 

@@ -452,6 +452,7 @@ static void clock_source_select (void)
         for (i = 0; i < 4; i++)
         {
             dummy = RTC.RCR4.BYTE;
+            R_INTERNAL_NOT_USED(&dummy); /* The '&' is for volatile declaration of the "dummy". */
         }
 
         if (0 != RTC.RCR4.BIT.RCKSEL)
@@ -471,6 +472,7 @@ static void clock_source_select (void)
         for (i = 0; i < 4; i++)
         {
             dummy = RTC.RCR3.BYTE;
+            R_INTERNAL_NOT_USED(&dummy); /* The '&' is for volatile declaration of the "dummy". */
         }
 
         if (0 != RTC.RCR3.BIT.RTCEN)
@@ -515,6 +517,7 @@ static void clock_source_select (void)
         for (i = 0; i < 4; i++)
         {
             dummy = RTC.RCR3.BYTE;
+            R_INTERNAL_NOT_USED(&dummy); /* The '&' is for volatile declaration of the "dummy". */
         }
 
         if (tmp != RTC.RCR3.BIT.RTCDV)
@@ -559,6 +562,7 @@ static void clock_source_select (void)
         for (i = 0; i < 4; i++)
         {
              dummy = RTC.RCR3.BIT.RTCEN;
+             R_INTERNAL_NOT_USED(&dummy); /* The '&' is for volatile declaration of the "dummy". */
         }
 
         if (1 != RTC.RCR3.BIT.RTCEN)
