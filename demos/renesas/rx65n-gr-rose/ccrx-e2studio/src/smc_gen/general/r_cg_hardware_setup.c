@@ -45,6 +45,7 @@ Includes
 Global variables and functions
 ***********************************************************************************************************************/
 /* Start user code for global. Do not edit comment generated here */
+void r_undefined_exception(void);
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************

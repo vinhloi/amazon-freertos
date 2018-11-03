@@ -36,6 +36,7 @@ Includes
 ***********************************************************************************************************************/
 #include "r_cg_macrodriver.h"
 /* Start user code for include. Do not edit comment generated here */
+#include "Pin.h"
 /* End user code. Do not edit comment generated here */
 #include "r_cg_userdefine.h"
 

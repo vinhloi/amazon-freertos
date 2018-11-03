@@ -66,6 +66,7 @@ static void R_Interrupt_Create_Workaround(void)
 }
 #define R_Interrupt_Create R_Interrupt_Create_Workaround
 
+void r_undefined_exception(void);
 /* End user code. Do not edit comment generated here */
 
 /***********************************************************************************************************************
