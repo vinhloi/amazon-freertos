@@ -213,5 +213,5 @@ Typedef definitions
 Global functions
 ***********************************************************************************************************************/
 void R_CGC_Create(void);
-void R_CGC_Create_UserInit();
+void R_CGC_Create_UserInit(void);
 #endif
