@@ -41,7 +41,7 @@ Global variables and functions
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_ETHER_PinSet_ETHERC_RMII()
+void R_ETHER_PinSet_ETHERC_RMII(void)
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 
@@ -98,7 +98,7 @@ void R_ETHER_PinSet_ETHERC_RMII()
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_SCI_PinSet_SCI0()
+void R_SCI_PinSet_SCI0(void)
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 

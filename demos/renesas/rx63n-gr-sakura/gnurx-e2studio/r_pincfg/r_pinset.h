@@ -36,7 +36,7 @@ Includes
 Global variables and functions
 ***********************************************************************************************************************/
 
-void R_ETHER_PinSet_ETHERC_RMII();
-void R_SCI_PinSet_SCI0();
+void R_ETHER_PinSet_ETHERC_RMII(void);
+void R_SCI_PinSet_SCI0(void);
 
 #endif
