@@ -41,7 +41,7 @@ Global variables and functions
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_ETHER_PinSet_ETHERC0_MII()
+void R_ETHER_PinSet_ETHERC0_MII(void)
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 

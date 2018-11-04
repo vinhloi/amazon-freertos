@@ -41,7 +41,7 @@ Global variables and functions
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_SCI_PinSet_SCI5()
+void R_SCI_PinSet_SCI5(void)
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 
@@ -62,7 +62,7 @@ void R_SCI_PinSet_SCI5()
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_SCI_PinSet_SCI10()
+void R_SCI_PinSet_SCI10(void)
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 

@@ -36,6 +36,6 @@ Includes
 Global variables and functions
 ***********************************************************************************************************************/
 
-void R_ETHER_PinSet_ETHERC0_MII();
+void R_ETHER_PinSet_ETHERC0_MII(void);
 
 #endif
