@@ -38,6 +38,7 @@ Includes   <System Includes> , "Project Includes"
 #include "task.h"
 #include "FreeRTOS_IP.h"
 #include "FreeRTOS_IP_Private.h"
+#include "FreeRTOS_DNS.h"
 #include "NetworkBufferManagement.h"
 #include "NetworkInterface.h"
 
@@ -71,6 +72,8 @@ static void check_ether_link(TimerHandle_t xTimer );
 static void prvEMACDeferredInterruptHandlerTask( void *pvParameters );
 static void clear_all_ether_rx_discriptors(uint32_t event);
 
+
+void EINT_Trig_isr(void *);
 
 /***********************************************************************************************************************
  * Function Name: xNetworkInterfaceInitialise ()
