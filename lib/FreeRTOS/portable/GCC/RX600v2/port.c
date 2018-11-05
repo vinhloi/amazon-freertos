@@ -405,6 +405,9 @@ uint32_t ulPortGetIPL( void )
 
 void vPortSetIPL( uint32_t ulNewIPL )
 {
+	/* Avoid compiler warning about unreferenced parameter. */
+	( void ) ulNewIPL;
+
 	__asm volatile
 	(
 		"PUSH	R5				\n" \
