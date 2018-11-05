@@ -261,7 +261,7 @@ extern void vLoggingPrintf( const char * pcFormat, ... );
 #define configPROFILING                      ( 0 )
 
 /* Pseudo random number generater used by some demo tasks. */
-extern uint32_t ulRand();
+uint32_t ulRand(void);
 #define configRAND32()    ulRand()
 
 /* The platform FreeRTOS is running on. */
