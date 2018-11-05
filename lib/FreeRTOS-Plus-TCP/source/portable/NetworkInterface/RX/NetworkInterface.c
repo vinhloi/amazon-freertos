@@ -25,6 +25,7 @@
 * History : DD.MM.YYYY Version  Description
 *         : 07.03.2018 0.1     Development
 ***********************************************************************************************************************/
+
 /***********************************************************************************************************************
 Includes   <System Includes> , "Project Includes"
 ***********************************************************************************************************************/
@@ -46,14 +47,10 @@ Includes   <System Includes> , "Project Includes"
 #include "r_ether_rx_if.h"
 #include "r_pinset.h"
 
-int32_t callback_ether_regist(void);
-
 /***********************************************************************************************************************
  Macro definitions
  **********************************************************************************************************************/
 #define ETHER_BUFSIZE_MIN 60
-
-void get_random_number(uint8_t *data, uint32_t len);
 
 /***********************************************************************************************************************
  Private global variables and functions
@@ -65,15 +62,15 @@ static uint32_t timer_id;
 
 static uint32_t tcpudp_time_cnt;
 
-
 static int16_t SendData( uint8_t *pucBuffer, size_t length );
 static int InitializeNetwork(void);
 static void check_ether_link(TimerHandle_t xTimer );
 static void prvEMACDeferredInterruptHandlerTask( void *pvParameters );
 static void clear_all_ether_rx_discriptors(uint32_t event);
 
-
+int32_t callback_ether_regist(void);
 void EINT_Trig_isr(void *);
+void get_random_number(uint8_t *data, uint32_t len);
 
 /***********************************************************************************************************************
  * Function Name: xNetworkInterfaceInitialise ()
@@ -152,14 +149,14 @@ static void prvEMACDeferredInterruptHandlerTask( void *pvParameters )
 NetworkBufferDescriptor_t *pxBufferDescriptor;
 int32_t xBytesReceived;
 
+/* Avoid compiler warning about unreferenced parameter. */
+( void ) pvParameters;
+
 /* Used to indicate that xSendEventStructToIPTask() is being called because
 of an Ethernet receive event. */
 IPStackEvent_t xRxEvent;
 
 uint8_t *buffer_pointer;
-
-/* Avoid compiler warning about unreferenced parameter. */
-( void ) pvParameters;
 
     for( ;; )
     {

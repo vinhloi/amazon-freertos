@@ -40,14 +40,11 @@ static void callback_wakeon_lan(uint32_t channel);
 static void callback_link_on(uint32_t channel);
 static void callback_link_off(uint32_t channel);
 
-/***********************************************************************************************************************
-Private global variables and functions
-***********************************************************************************************************************/
 volatile uint8_t  pause_enable = ETHER_FLAG_OFF;
 volatile uint8_t  magic_packet_detect[ETHER_CHANNEL_MAX];
 volatile uint8_t  link_detect[ETHER_CHANNEL_MAX];
 
-extern void EINT_Trig_isr(void *);
+void EINT_Trig_isr(void *);
 
 /***********************************************************************************************************************
 * Function Name: callback_ether
