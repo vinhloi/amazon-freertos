@@ -141,6 +141,7 @@ extern uint32_t ulRand();
 #define ipconfigUSE_DHCP                         1
 #define ipconfigDHCP_REGISTER_HOSTNAME           1
 #define ipconfigDHCP_USES_UNICAST                1
+#define ipconfigDHCP_SEND_DISCOVER_AFTER_AUTO_IP 0
 
 /* If ipconfigDHCP_USES_USER_HOOK is set to 1 then the application writer must
  * provide an implementation of the DHCP callback function,
@@ -305,6 +306,17 @@ extern uint32_t ulRand();
 
 #define ipconfigZERO_COPY_TX_DRIVER              ( 0 )
 #define ipconfigZERO_COPY_RX_DRIVER              ( 0 )
+
+/* Possible optimisation for expert users - requires network driver support.
+ * When ipconfigUSE_LINKED_RX_MESSAGES is set to non-zero value then
+ * instead of passing received packets into the IP task one at a time the
+ * network interface can chain received packets together and pass them into
+ * the IP task in one go.  The packets are chained using the pxNextBuffer
+ * member. This optimisation is useful when there is high network traffic.
+ * When ipconfigUSE_LINKED_RX_MESSAGES is set to 0 then only one buffer will
+ * be sent at a time.  This is the default way for +TCP to pass messages from
+ * the MAC to the TCP/IP stack. */
+#define ipconfigUSE_LINKED_RX_MESSAGES           ( 0 )
 
 #if defined(__GNUC__)
 #define portINLINE                               __inline
