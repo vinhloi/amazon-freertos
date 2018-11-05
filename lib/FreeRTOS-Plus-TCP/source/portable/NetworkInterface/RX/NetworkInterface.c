@@ -45,7 +45,7 @@ Includes   <System Includes> , "Project Includes"
 #include "r_ether_rx_if.h"
 #include "r_pinset.h"
 
-extern int32_t callback_ether_regist();
+int32_t callback_ether_regist(void);
 
 /***********************************************************************************************************************
  Macro definitions
