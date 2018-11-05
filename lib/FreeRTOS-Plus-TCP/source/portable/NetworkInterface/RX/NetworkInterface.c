@@ -158,6 +158,9 @@ IPStackEvent_t xRxEvent;
 
 uint8_t *buffer_pointer;
 
+/* Avoid compiler warning about unreferenced parameter. */
+( void ) pvParameters;
+
     for( ;; )
     {
         xTaskToNotify = ether_receive_check_task_handle;
@@ -441,6 +444,9 @@ void EINT_Trig_isr(void *ectrl)
  **********************************************************************************************************************/
 static void check_ether_link(TimerHandle_t xTimer )
 {
+	/* Avoid compiler warning about unreferenced parameter. */
+	(void)xTimer;
+
 	R_ETHER_LinkProcess(0);
 	tcpudp_time_cnt++;
 } /* End of function check_ether_link() */
@@ -449,6 +455,9 @@ static void clear_all_ether_rx_discriptors(uint32_t event)
 {
 	int32_t xBytesReceived;
 	uint8_t *buffer_pointer;
+
+	/* Avoid compiler warning about unreferenced parameter. */
+	(void)event;
 
 	while(1)
 	{
