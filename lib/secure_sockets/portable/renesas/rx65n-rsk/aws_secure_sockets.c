@@ -51,6 +51,13 @@ typedef struct SSOCKETContext
     BaseType_t xConnectAttempted;
 } SSOCKETContext_t, * SSOCKETContextPtr_t;
 
+/* Generate a randomized TCP Initial Sequence Number per RFC. */
+uint32_t ulApplicationGetNextSequenceNumber( 
+    uint32_t ulSourceAddress,
+    uint16_t usSourcePort,
+    uint32_t ulDestinationAddress,
+    uint16_t usDestinationPort );
+
 /*
  * Helper routines.
  */

@@ -73,6 +73,12 @@ typedef struct SSOCKETContext
  */
 static uint8_t ssockets_num_allocated = 0;
 
+/* Generate a randomized TCP Initial Sequence Number per RFC. */
+uint32_t ulApplicationGetNextSequenceNumber( 
+    uint32_t ulSourceAddress,
+    uint16_t usSourcePort,
+    uint32_t ulDestinationAddress,
+    uint16_t usDestinationPort );
 
 /*
  * @brief Network send callback.
