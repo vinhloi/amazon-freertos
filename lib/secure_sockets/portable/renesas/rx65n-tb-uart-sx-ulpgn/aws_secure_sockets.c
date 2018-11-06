@@ -33,14 +33,16 @@
 #include "FreeRTOSIPConfig.h"
 #include "list.h"
 //#include "FreeRTOS_IP.h"
-#include "aws_secure_sockets.h"
 //#include "FreeRTOS_Sockets.h"
+#include "aws_secure_sockets.h"
 #include "aws_tls.h"
 #include "task.h"
 #include "aws_pkcs11.h"
 #include "aws_crypto.h"
+
 #include "sx_ulpgn_driver.h"
 #include "machine.h"
+#include <string.h>
 
 /* Internal context structure. */
 typedef struct SSOCKETContext
