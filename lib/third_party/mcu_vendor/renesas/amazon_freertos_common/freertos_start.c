@@ -90,12 +90,12 @@ void Processing_Before_Start_Kernel(void);
 extern void main(void *pvParameters);
 
 /* Memory functions used by FreeRTOS. */
-//void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
-//                                   StackType_t ** ppxIdleTaskStackBuffer,
-//                                   uint32_t * pulIdleTaskStackSize );
-//void vApplicationGetTimerTaskMemory(StaticTask_t ** ppxTimerTaskTCBBuffer,
-//                                    StackType_t ** ppxTimerTaskStackBuffer,
-//                                    uint32_t * pulTimerTaskStackSize );
+void vApplicationGetIdleTaskMemory(StaticTask_t ** ppxIdleTaskTCBBuffer,
+                                   StackType_t ** ppxIdleTaskStackBuffer,
+                                   uint32_t * pulIdleTaskStackSize );
+void vApplicationGetTimerTaskMemory(StaticTask_t ** ppxTimerTaskTCBBuffer,
+                                    StackType_t ** ppxTimerTaskStackBuffer,
+                                    uint32_t * pulTimerTaskStackSize );
 
 
 /******************************************************************************

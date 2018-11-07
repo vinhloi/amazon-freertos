@@ -62,6 +62,7 @@ int32_t sx_ulpgn_socket_create(uint32_t type,uint32_t ipversion);
 int32_t sx_ulpgn_tcp_connect(uint32_t ipaddr, uint16_t port);
 int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_recv(uint8_t *pdata, int32_t length, uint32_t timeout);
+int32_t sx_ulpgn_serial_tcp_timeout_set(TickType_t timeout_ms);
 int32_t sx_ulpgn_tcp_disconnect(void);
 int32_t sx_ulpgn_dns_query(uint8_t *ptextstring, uint32_t *ulipaddr);
 
