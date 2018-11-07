@@ -418,7 +418,7 @@ int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr)
 	{
 		return -1;
 	}
-	scanf_ret = sscanf((const char *)recvbuff, "%d\r\n%d.%d.%d.%d\r\n",&result, &ipaddr[0], &ipaddr[1], &ipaddr[2], &ipaddr[3]);
+	scanf_ret = sscanf((const char *)recvbuff, "%lu\r\n%lu.%lu.%lu.%lu\r\n",&result, &ipaddr[0], &ipaddr[1], &ipaddr[2], &ipaddr[3]);
 	if(scanf_ret != 5)
 	{
 		return -1;
