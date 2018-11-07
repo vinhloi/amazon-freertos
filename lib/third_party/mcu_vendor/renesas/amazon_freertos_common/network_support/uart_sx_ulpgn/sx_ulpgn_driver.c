@@ -3,6 +3,7 @@
 
 #include "platform.h"
 #include "r_sci_rx_if.h"
+#include "r_sci_rx_pinset.h"
 #include "sx_ulpgn_driver.h"
 
 
