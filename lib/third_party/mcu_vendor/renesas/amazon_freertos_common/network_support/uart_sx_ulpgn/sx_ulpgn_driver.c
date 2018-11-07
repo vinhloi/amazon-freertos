@@ -56,7 +56,7 @@ static void bytetimeout_init(uint32_t timeout_ms);
 static int32_t check_timeout(uint32_t rcvcount);
 static int32_t check_bytetimeout(uint32_t rcvcount);
 static int32_t sx_ulpgn_serial_open(void);
-static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code);
+static int32_t sx_ulpgn_serial_send_basic(const char *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code);
 static sci_hdl_t sx_ulpgn_uart_sci_handle;
 static TickType_t starttime, thistime, endtime;
 static uint8_t timeout_overflow_flag;
@@ -135,7 +135,7 @@ int32_t sx_ulpgn_init(void)
 	return 0;
 }
 
-int32_t sx_ulpgn_wifi_connect(uint8_t *pssid, uint32_t security, uint8_t *ppass)
+int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *ppass)
 {
 	int32_t ret;
 	char *pstr,pstr2;
@@ -241,7 +241,7 @@ int32_t sx_ulpgn_wifi_connect(uint8_t *pssid, uint32_t security, uint8_t *ppass)
 	strcat((char *)buff,(const char *)ppass);
 	strcat((char *)buff,"\r");
 
-	ret = sx_ulpgn_serial_send_basic(buff, 3, 5000, ULPGN_RETURN_OK);
+	ret = sx_ulpgn_serial_send_basic((char *)buff, 3, 5000, ULPGN_RETURN_OK);
 	if(0 == ret)
 	{
 		sx_ulpgn_serial_send_basic("ATW\r", 3, 1000, ULPGN_RETURN_OK);
@@ -262,7 +262,7 @@ int32_t sx_ulpgn_socket_create(uint32_t type,uint32_t ipversion)
 
 	sprintf((char *)buff,"ATNSOCK=%d,%d\r",(uint8_t)(type),(uint8_t)(ipversion));
 
-	ret = sx_ulpgn_serial_send_basic(buff, 3, 200, ULPGN_RETURN_OK);
+	ret = sx_ulpgn_serial_send_basic((char *)buff, 3, 200, ULPGN_RETURN_OK);
 	if(ret != 0)
 	{
 		return ret;
@@ -279,10 +279,10 @@ int32_t sx_ulpgn_tcp_connect(uint32_t ipaddr, uint16_t port)
 	strcpy((char *)buff,"ATNCTCP=");
 	sprintf((char *)buff+strlen((char *)buff),"%d.%d.%d.%d,%d\r",(uint8_t)(ipaddr>>24),(uint8_t)(ipaddr>>16),(uint8_t)(ipaddr>>8),(uint8_t)(ipaddr),port);
 
-	return sx_ulpgn_serial_send_basic(buff, 3, 10000, ULPGN_RETURN_CONNECT);
+	return sx_ulpgn_serial_send_basic((char *)buff, 3, 10000, ULPGN_RETURN_CONNECT);
 }
 
-int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length, uint32_t timeout_ms)
+int32_t sx_ulpgn_tcp_send(const uint8_t *pdata, int32_t length, uint32_t timeout_ms)
 {
 	int32_t timeout;
 	volatile int32_t sended_length;
@@ -306,7 +306,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length, uint32_t timeout_ms)
 			lenghttmp1 = length - sended_length;
 		}
 		g_sx_ulpgn_uart_teiflag = 0;
-		ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, pdata, (uint16_t)lenghttmp1);
+		ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, (uint8_t *)pdata, (uint16_t)lenghttmp1);
 		if(SCI_SUCCESS != ercd)
 		{
 			return -1;
@@ -404,7 +404,7 @@ int32_t sx_ulpgn_tcp_disconnect(void)
 
 }
 
-int32_t sx_ulpgn_dns_query(uint8_t *ptextstring, uint32_t *ulipaddr)
+int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr)
 {
 	uint32_t result;
 	uint32_t ipaddr[4];
@@ -413,7 +413,7 @@ int32_t sx_ulpgn_dns_query(uint8_t *ptextstring, uint32_t *ulipaddr)
 	strcpy((char *)buff,"ATNDNSQUERY=");
 	sprintf((char *)buff+strlen((char *)buff),"%s\r",ptextstring);
 
-	func_ret = sx_ulpgn_serial_send_basic(buff, 3, 3000, ULPGN_RETURN_OK);
+	func_ret = sx_ulpgn_serial_send_basic((char *)buff, 3, 3000, ULPGN_RETURN_OK);
 	if(func_ret != 0)
 	{
 		return -1;
@@ -432,7 +432,7 @@ int32_t sx_ulpgn_dns_query(uint8_t *ptextstring, uint32_t *ulipaddr)
 }
 
 
-static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code )
+static int32_t sx_ulpgn_serial_send_basic(const char *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code )
 {
 #if DEBUGLOG == 1
 	TickType_t tmptime1,tmptime2;
@@ -446,7 +446,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t *ptextstring, uint16_t respons
 	timeout = 0;
 	recvcnt = 0;
 	g_sx_ulpgn_uart_teiflag = 0;
-	ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, ptextstring, (uint16_t)strlen((const char *)ptextstring));
+	ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle, (uint8_t *)ptextstring, (uint16_t)strlen((const char *)ptextstring));
 	if(SCI_SUCCESS != ercd)
 	{
 		return -1;

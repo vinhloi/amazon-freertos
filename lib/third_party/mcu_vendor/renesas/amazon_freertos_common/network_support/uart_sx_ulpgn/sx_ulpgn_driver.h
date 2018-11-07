@@ -57,13 +57,13 @@ typedef enum
 
 int32_t sx_ulpgn_init(void);
 int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *ptextstring);
-int32_t sx_ulpgn_wifi_connect(uint8_t *pssid, uint32_t security, uint8_t *ppass);
+int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *ppass);
 int32_t sx_ulpgn_socket_create(uint32_t type,uint32_t ipversion);
 int32_t sx_ulpgn_tcp_connect(uint32_t ipaddr, uint16_t port);
-int32_t sx_ulpgn_tcp_send(uint8_t *pdata, int32_t length, uint32_t timeout);
+int32_t sx_ulpgn_tcp_send(const uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_recv(uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_serial_tcp_timeout_set(TickType_t timeout_ms);
 int32_t sx_ulpgn_tcp_disconnect(void);
-int32_t sx_ulpgn_dns_query(uint8_t *ptextstring, uint32_t *ulipaddr);
+int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr);
 
 #endif /* #define SX_ULPGN_DRIVER_H */
