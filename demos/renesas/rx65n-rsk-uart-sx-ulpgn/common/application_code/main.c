@@ -26,6 +26,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
+//#include "FreeRTOS_IP.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -227,14 +228,14 @@ void prvWifiConnect( void )
 #endif
 /*-----------------------------------------------------------*/
 
-#if ( ipconfigUSE_LLMNR != 0 ) || ( ipconfigUSE_NBNS != 0 ) || ( ipconfigDHCP_REGISTER_HOSTNAME == 1 )
-
-const char * pcApplicationHostnameHook( void )
-{
-    /* Assign the name "FreeRTOS" to this network node.  This function will
-     * be called during the DHCP: the machine will be registered with an IP
-     * address plus this name. */
-    return "RX65N_FREERTOS_TCP_TEST";
-}
-
-#endif
+//#if ( ipconfigUSE_LLMNR != 0 ) || ( ipconfigUSE_NBNS != 0 ) || ( ipconfigDHCP_REGISTER_HOSTNAME == 1 )
+//
+//const char * pcApplicationHostnameHook( void )
+//{
+//    /* Assign the name "FreeRTOS" to this network node.  This function will
+//     * be called during the DHCP: the machine will be registered with an IP
+//     * address plus this name. */
+//    return "RX65N_FREERTOS_TCP_TEST";
+//}
+//
+//#endif

@@ -64,6 +64,22 @@ static uint8_t byte_timeout_overflow_flag;
 static TickType_t g_sl_ulpgn_tcp_timeout = 3000;		/* ## slowly problem ## unit: 1ms */
 volatile uint32_t g_sx_ulpgn_uart_teiflag;
 
+
+
+#if BSP_CFG_BOARD_REVISION == 1
+#define SCI_TX_BUSIZ SCI_CFG_CH6_TX_BUFSIZ
+#elif BSP_CFG_BOARD_REVISION == 5
+#define SCI_TX_BUSIZ SCI_CFG_CH10_TX_BUFSIZ
+#endif
+
+#if BSP_CFG_BOARD_REVISION == 1
+#define SCI_RX_BUSIZ SCI_CFG_CH6_RX_BUFSIZ
+#elif BSP_CFG_BOARD_REVISION == 5
+#define SCI_RX_BUSIZ SCI_CFG_CH10_RX_BUFSIZ
+#endif
+
+
+
 int32_t sx_ulpgn_init(void)
 {
 	int32_t ret;
