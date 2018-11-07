@@ -119,7 +119,7 @@ static void prvMiscInitialization( void );
 /**
  * @brief Application runtime entry point.
  */
-int main( void )
+void main( void )
 {
     /* Perform any hardware initialization that does not require the RTOS to be
      * running.  */
@@ -133,8 +133,6 @@ int main( void )
     {
     	vTaskDelay(10000);
     }
-
-    return 0;
 }
 /*-----------------------------------------------------------*/
 
