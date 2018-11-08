@@ -215,7 +215,7 @@ typedef struct {
 									
         int32_t     iFileHandle;        /*!< Device internal file pointer or handle.
 	                                     * File type is handle after file is open for write. */
-#if WIN32
+#if defined(WIN32) && WIN32 != 0
         FILE       *pstFile;            /*!< File type is stdio FILE structure after file is open for write. */
 #endif
 		uint8_t    *pucFile;            /*!< File type is RAM/Flash image pointer after file is open for write. */

@@ -36,19 +36,19 @@
 #endif
 typedef struct {
 	union {
-#if (defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) || (__little_endian__ == 1) || WIN32 || (__BYTE_ORDER == __LITTLE_ENDIAN) \
+#if (defined(__BYTE_ORDER__) && defined(__ORDER_LITTLE_ENDIAN__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) || (defined(__little_endian__) && __little_endian__ == 1) || (defined(WIN32) && WIN32 != 0) || (defined(__BYTE_ORDER) && defined(__LITTLE_ENDIAN) && __BYTE_ORDER == __LITTLE_ENDIAN) \
  || (defined(__RX) && defined(__CCRX__) && defined(__LIT))
-		struct {
+		struct version {
 			uint16_t    usBuild;
-			uint8_t		ucMinor;
-			uint8_t		ucMajor;
+			uint8_t     ucMinor;
+			uint8_t     ucMajor;
 		} x;
-#elif (defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__) || (__big_endian__ == 1) || (__BYTE_ORDER == __BIG_ENDIAN) \
+#elif (defined(__BYTE_ORDER__) && defined(__ORDER_BIG_ENDIAN__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__) || (defined(__big_endian__) && __big_endian__ == 1) || (defined(__BYTE_ORDER) && defined(__BIG_ENDIAN) && __BYTE_ORDER == __BIG_ENDIAN) \
    || (defined(__RX) && defined(__CCRX__) && defined(__BIG))
 		struct version {
-			uint8_t		ucMajor;
-			uint8_t		ucMinor;
-			uint16_t	usBuild;
+			uint8_t     ucMajor;
+			uint8_t     ucMinor;
+			uint16_t    usBuild;
 		} x;
 #else
 #error "Unable to determine byte order!"

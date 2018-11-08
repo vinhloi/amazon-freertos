@@ -46,7 +46,9 @@
 #include "queue.h"
 #include "event_groups.h"
 
-/* FreeRTOS+TCP includes. */
+/* FreeRTOS-Plus-TCP configuration (for ipconfigUSE_TCP_WIN only) */
+#include "FreeRTOSIPConfig.h"
+
 /* TCP/IP abstraction includes. */
 #include "aws_secure_sockets.h"
 
