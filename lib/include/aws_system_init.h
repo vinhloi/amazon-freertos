@@ -26,6 +26,6 @@
 #ifndef _AWS_SYSTEM_INIT_H_
 #define _AWS_SYSTEM_INIT_H_
 
-BaseType_t SYSTEM_Init();
+BaseType_t SYSTEM_Init(void);
 
 #endif /* _AWS_SYSTEM_INIT_H_ */
