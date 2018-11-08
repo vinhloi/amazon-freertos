@@ -139,6 +139,8 @@ static char cTxBuffers[ echoNUM_ECHO_CLIENTS ][ echoBUFFER_SIZES ],
 
 /*-----------------------------------------------------------*/
 
+void vStartTCPEchoClientTasks_SingleTasks( void );
+
 void vStartTCPEchoClientTasks_SingleTasks( void )
 {
     BaseType_t x;
@@ -389,6 +391,8 @@ static BaseType_t prvCreateTxData( char * cBuffer,
     return ulCharactersToAdd;
 }
 /*-----------------------------------------------------------*/
+
+BaseType_t xAreSingleTaskTCPEchoClientsStillRunning( void );
 
 BaseType_t xAreSingleTaskTCPEchoClientsStillRunning( void )
 {

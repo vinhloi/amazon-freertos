@@ -75,6 +75,8 @@ static const char *pcStateStr[eOTA_NumAgentStates] =
      "Shutting down"
 };
 
+void vOTAUpdateDemoTask( void * pvParameters );
+
 void vOTAUpdateDemoTask( void * pvParameters )
 {
     MQTTAgentConnectParams_t xConnectParams;

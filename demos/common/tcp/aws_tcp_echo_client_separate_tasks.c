@@ -112,6 +112,8 @@ int32_t lShuttingDown = pdFALSE;
 
 /*-----------------------------------------------------------*/
 
+void vStartTCPEchoClientTasks_SeparateTasks( void );
+
 void vStartTCPEchoClientTasks_SeparateTasks( void )
 {
     /* Create the queue used to pass the socket to use from the Tx task to the
@@ -406,6 +408,8 @@ static void prvEchoClientRxTask( void * pvParameters )
     }
 }
 /*-----------------------------------------------------------*/
+
+BaseType_t xAreSeparateTaskTCPEchoClientsStillRunning( void );
 
 BaseType_t xAreSeparateTaskTCPEchoClientsStillRunning( void )
 {
