@@ -42,6 +42,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "aws_wifi.h"
 #include "aws_clientcredential.h"
 #include "aws_application_version.h"
+#include "aws_dev_mode_key_provisioning.h"
 
 #define mainLOGGING_TASK_STACK_SIZE         ( configMINIMAL_STACK_SIZE * 6 )
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
@@ -169,6 +170,8 @@ void vApplicationDaemonTaskStartupHook( void )
     	/* Connect to the wifi before running the demos */
         prvWifiConnect();
 
+        /* Provision the device with AWS certificate and private key. */
+        vDevModeKeyProvisioning();
 
         /* Run all demos. */
         DEMO_RUNNER_RunDemos();

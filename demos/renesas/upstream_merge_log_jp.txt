@@ -7,6 +7,59 @@ upstream merge log (only Japanese language)
 --------------------------------------------------------------------------
 2018/11/11
 
+Follow the upstream v1.4.3 + patches Step 2/2 by NoMaY
+
+commit message:
+"Follow upstream v1.4.3+patches Step 2/2 : Update files which cause changes of the MOT files of the Renesas Projects. i.e. common files which are used in the Renesas Projects (some of them are not actually used but only linked), and Renesas specific files which need to follow changes of vendor specific files."
+
+特記事項
+
+(1) lib\secure_sockets\portable\freertos_plus_tcp\aws_secure_sockets.cが変更されたので以下の通りに対処
+
+(1-1) 以下に関しては上記ソースのuint32_t ulRand(void){略}を#if 0～#endifで括ってソースを上書き
+
+lib\secure_sockets\portable\renesas\rx64m-gr-kaede\aws_secure_sockets.c
+lib\secure_sockets\portable\renesas\rx65n-envision-kit\aws_secure_sockets.c
+lib\secure_sockets\portable\renesas\rx65n-gr-rose\aws_secure_sockets.c
+lib\secure_sockets\portable\renesas\rx65n-rsk\aws_secure_sockets.c
+
+(1-2) 以下に関しては(1-1)との差分が大きくなってきているので今回は未変更(それでもビルドエラーは無し)
+
+lib\secure_sockets\portable\renesas\rx65n-rsk-uart-wifi\aws_secure_sockets.c
+lib\secure_sockets\portable\renesas\rx65n-tb-uart-wifi\aws_secure_sockets.c
+
+(2) Amazon本家のPKCS #11ライブラリの抜本的変更が今回あったことを鑑みて今までのソースを破棄することにしたもの
+
+(2-1) 以下のソースにはICCRX対応の試作時の暫定コード(恐らく動作しない)が存在したが本家ソースで該当箇所が無くなった
+⇒ 本家ソースのファイル(そのまま)へ変更
+
+lib\pkcs11\mbedtls\aws_pkcs11_mbedtls.c
+
+(2-2) 以下のソースには以前にルネサスボードへの移植に着手したコード(ただし動作しない)が存在したが意味が無くなった
+⇒ 本家テンプレート(関数の中が空)のlib\pkcs11\portable\vendor\board\aws_pkcs11_pal.cをコピペして/* FIX ME. */を追加
+
+lib\pkcs11\portable\renesas\rx63n-gr-sakura\aws_pkcs11_pal.c
+lib\pkcs11\portable\renesas\rx64m-gr-kaede\aws_pkcs11_pal.c
+lib\pkcs11\portable\renesas\rx65n-envision-kit\aws_pkcs11_pal.c
+lib\pkcs11\portable\renesas\rx65n-gr-rose\aws_pkcs11_pal.c
+lib\pkcs11\portable\renesas\rx65n-rsk\aws_pkcs11_pal.c
+lib\pkcs11\portable\renesas\rx65n-rsk-uart-sx-ulpgn\aws_pkcs11_pal.c
+lib\pkcs11\portable\renesas\rx65n-tb-uart-sx-ulpgn\aws_pkcs11_pal.c
+
+(3) 以下のソースが追加されたのでCS+プロジェクトに追加(e2 studioでは自動的に認識されるので対処不要)
+併せてリンク順序インポートファイルaws_demos_link_order_import.mtlsも変更
+
+lib\include\private\threading_alt.h
+lib\third_party\mbedtls\include\mbedtls\platform_util.h
+lib\third_party\mbedtls\library\platform_util.c
+
+(4) 以下のファイルが追加されたのでCS+プロジェクトから削除(e2 studioでは元々認識されないので対処不要)
+
+lib\third_party\mbedtls\library\Makefile
+
+--------------------------------------------------------------------------
+2018/11/11
+
 Follow the upstream v1.4.3 + patches Step 1/2 by NoMaY
 
 commit message:
@@ -102,7 +155,7 @@ lib\secure_sockets\portable\renesas\rx65n-rsk\aws_secure_sockets.c
 lib\secure_sockets\portable\renesas\rx65n-rsk-uart-wifi\aws_secure_sockets.c
 
 (2) lib\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\○○○\NetworkInterface.cが変更されたので以下へ反映
-といっても上記ソースで追加されたコード自体は既にあったのでコメントのみ追加((シェルティさんのチェックが必要))
+といっても上記ソースで追加されたコード自体は既にあったのでコメントのみ追加(シェルティさんのチェックが必要)
 
 lib\FreeRTOS-Plus-TCP\source\portable\NetworkInterface\RX\NetworkInterface.c
 

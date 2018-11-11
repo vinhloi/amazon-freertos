@@ -116,5 +116,9 @@
  */
 #define mqttconfigRX_BUFFER_SIZE         ( 1024 )
 
+/**
+ * @brief The maximum time in ticks for which the MQTT task is permitted to block.
+ */
+#define mqttconfigMQTT_TASK_MAX_BLOCK_TICKS    ( 100 )
 
 #endif /* _AWS_MQTT_AGENT_CONFIG_H_ */

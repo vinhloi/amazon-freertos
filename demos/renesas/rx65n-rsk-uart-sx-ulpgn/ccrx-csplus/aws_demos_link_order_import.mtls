@@ -82,6 +82,7 @@ pkcs5.obj
 pkparse.obj
 pkwrite.obj
 platform.obj
+platform_util.obj
 ripemd160.obj
 rsa.obj
 rsa_internal.obj
