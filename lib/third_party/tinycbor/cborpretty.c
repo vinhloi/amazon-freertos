@@ -122,7 +122,7 @@ static int hexDump(FILE *out, const uint8_t *buffer, size_t n)
 
 /* This function decodes buffer as UTF-8 and prints as escaped UTF-16.
  * On UTF-8 decoding error, it returns CborErrorInvalidUtf8TextString */
-static int utf8EscapedDump(FILE *out, const char *buffer, size_t n)
+static CborError utf8EscapedDump(FILE *out, const char *buffer, size_t n)
 {
     uint32_t uc;
     while (n--) {
