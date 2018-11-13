@@ -25,6 +25,13 @@
 #ifndef MATH_SUPPORT_H
 #define MATH_SUPPORT_H
 
+#if defined(__RX) && defined(__CCRX__)
+/* Avoid CC-RX's compiler warning message 'M0520193: Zero used for 
+ * undefined preprocessing identifier "XXXX"' in CC-RX's math.h */
+#define _FEVAL 0
+#define _HAS_C9X_FAST_FMA 0
+#endif
+
 #include <math.h>
 
 /* this function was copied & adapted from RFC 7049 Appendix D */
