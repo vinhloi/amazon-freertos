@@ -1243,25 +1243,25 @@ FLASH_PE_MODE_SECTION
 flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
 {
 #if (FLASH_CFG_CODE_FLASH_ENABLE == 1)
-#if (FLASH_HAS_BOOT_SWAP)
+#ifdef FLASH_HAS_BOOT_SWAP
     uint8_t *pSwapInfo = pcfg;
 #endif
-#if (FLASH_HAS_CF_ACCESS_WINDOW)
+#ifdef FLASH_HAS_CF_ACCESS_WINDOW
     flash_access_window_config_t *pAccessInfo = pcfg;
 #endif
-#if (FLASH_HAS_SEQUENTIAL_CF_BLOCKS_LOCK)
+#ifdef FLASH_HAS_SEQUENTIAL_CF_BLOCKS_LOCK
     flash_lockbit_config_t *pLockbitCfg = pcfg;
 #endif
-#if (FLASH_HAS_ROM_CACHE)
+#ifdef FLASH_HAS_ROM_CACHE
     uint8_t *pCacheStatus = pcfg;
 #endif
-#if (FLASH_IN_DUAL_BANK_MODE)
+#ifdef FLASH_IN_DUAL_BANK_MODE
     uint32_t        banksel_val;
     flash_bank_t    *pBank = pcfg;
 #endif
 #endif // FLASH_CFG_CODE_FLASH_ENABLE
 
-#if (FLASH_HAS_FCU)
+#ifdef FLASH_HAS_FCU
     uint32_t *pFlashClkHz = pcfg, speed_mhz;
 #endif
     flash_err_t err = FLASH_SUCCESS;
@@ -1307,7 +1307,7 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
     break;
 
 
-#if (FLASH_HAS_ROM_CACHE && FLASH_CFG_CODE_FLASH_ENABLE)
+#if (defined(FLASH_HAS_ROM_CACHE) && FLASH_CFG_CODE_FLASH_ENABLE)
     case FLASH_CMD_ROM_CACHE_ENABLE:
         FLASH.ROMCIV.BIT.ROMCIV = 1;                // start invalidation
         while (FLASH.ROMCIV.BIT.ROMCIV != 0)        // wait for invalidation to complete
@@ -1331,7 +1331,7 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
 #endif // FLASH_HAS_ROM_CACHE
 
 
-#if (FLASH_HAS_BOOT_SWAP && FLASH_CFG_CODE_FLASH_ENABLE)
+#if (defined(FLASH_HAS_BOOT_SWAP) && FLASH_CFG_CODE_FLASH_ENABLE)
 
     case FLASH_CMD_SWAPSTATE_GET:
         /* GET CURRENT STARTUP AREA (NOT NECESSARILY PRESERVED THROUGH RESET */
@@ -1377,7 +1377,7 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
 #endif // FLASH_HAS_BOOT_SWAP
 
 
-#if (FLASH_HAS_CF_ACCESS_WINDOW && FLASH_CFG_CODE_FLASH_ENABLE)
+#if (defined(FLASH_HAS_CF_ACCESS_WINDOW) && FLASH_CFG_CODE_FLASH_ENABLE)
 
     case FLASH_CMD_ACCESSWINDOW_GET:
         FLASH_RETURN_IF_PCFG_NULL;
@@ -1417,7 +1417,7 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
 #endif // FLASH_HAS_CF_ACCESS_WINDOW
 
 
-#if (FLASH_HAS_SEQUENTIAL_CF_BLOCKS_LOCK && FLASH_CFG_CODE_FLASH_ENABLE)
+#if (defined(FLASH_HAS_SEQUENTIAL_CF_BLOCKS_LOCK) && FLASH_CFG_CODE_FLASH_ENABLE)
     case FLASH_CMD_LOCKBIT_ENABLE:
         g_lkbit_mode = FLASH_LOCKBIT_MODE_NORMAL;
         break;
@@ -1437,10 +1437,10 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
         FLASH_RETURN_IF_BGO_AND_NO_CALLBACK;
         err = flash_api_lockbit_set(pLockbitCfg->block_start_address, pLockbitCfg->num_blocks);
         break;
-#endif
+#endif // FLASH_HAS_SEQUENTIAL_CF_BLOCKS_LOCK
 
 
-#if (FLASH_HAS_FCU)
+#ifdef FLASH_HAS_FCU
     case FLASH_CMD_CONFIG_CLOCK:
         FLASH_RETURN_IF_PCFG_NULL;
         if ((*pFlashClkHz > FLASH_FREQ_HI) || (*pFlashClkHz < FLASH_FREQ_LO))
@@ -1464,7 +1464,7 @@ flash_err_t r_flash_control(flash_cmd_t cmd, void *pcfg)
 #endif
 
 
-#if (FLASH_IN_DUAL_BANK_MODE)
+#ifdef FLASH_IN_DUAL_BANK_MODE
     case FLASH_CMD_BANK_TOGGLE:
         err = flash_toggle_banksel_reg();
         break;
