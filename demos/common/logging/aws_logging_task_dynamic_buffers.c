@@ -139,7 +139,11 @@ void vLoggingPrintf( const char *pcFormat, ... )
 {
     size_t xLength = 0;
     int32_t xLength2 = 0;
+#if defined(__RX) && defined(__CCRX__)
+    va_list args = NULL; /* Avoid CC-RX's compiler warning caused by CC-RX's va_start() implementation */
+#else
     va_list args;
+#endif
     char *pcPrintString = NULL;
 
     /* The queue is created by xLoggingTaskInitialize().  Check
