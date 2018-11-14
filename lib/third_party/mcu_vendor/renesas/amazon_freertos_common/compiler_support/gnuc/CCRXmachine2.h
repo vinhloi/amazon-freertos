@@ -546,7 +546,7 @@ The difference from the rmpab() is the RMPA.B --> RMPA.L instruction.
 #ifndef rolc
 #define rolc(data) ccrx_machine_h_rolc(data)
 #endif
-__STATIC_FORCEINLINE long ccrx_machine_h_rolc(unsigned long data)
+__STATIC_FORCEINLINE unsigned long ccrx_machine_h_rolc(unsigned long data)
 {
 /* CC-RX V2.03 -optimize=2
         ROLC R1
@@ -569,7 +569,7 @@ __STATIC_FORCEINLINE long ccrx_machine_h_rolc(unsigned long data)
 #ifndef rorc
 #define rorc(data) ccrx_machine_h_rorc(data)
 #endif
-__STATIC_FORCEINLINE long ccrx_machine_h_rorc(unsigned long data)
+__STATIC_FORCEINLINE unsigned long ccrx_machine_h_rorc(unsigned long data)
 {
 /* CC-RX V2.03 -optimize=2
         RORC R1
@@ -592,7 +592,7 @@ __STATIC_FORCEINLINE long ccrx_machine_h_rorc(unsigned long data)
 #ifndef rotl
 #define rotl(data, num) ccrx_machine_h_rotl(data, num)
 #endif
-__STATIC_FORCEINLINE long ccrx_machine_h_rotl(unsigned long data, unsigned long num)
+__STATIC_FORCEINLINE unsigned long ccrx_machine_h_rotl(unsigned long data, unsigned long num)
 {
 /* CC-RX V2.03 -optimize=2
         ROTL R2, R1
@@ -617,7 +617,7 @@ __STATIC_FORCEINLINE long ccrx_machine_h_rotl(unsigned long data, unsigned long 
 #ifndef rotr
 #define rotr(data, num) ccrx_machine_h_rotr(data, num)
 #endif
-__STATIC_FORCEINLINE long ccrx_machine_h_rotr(unsigned long data, unsigned long num)
+__STATIC_FORCEINLINE unsigned long ccrx_machine_h_rotr(unsigned long data, unsigned long num)
 {
 /* CC-RX V2.03 -optimize=2
         ROTR R2, R1
