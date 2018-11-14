@@ -482,9 +482,8 @@ static flash_err_t data_flash_write (uint32_t address, uint32_t data, uint32_t s
 
 #if (FLASH_CFG_DATA_FLASH_BGO == 1)
         /* Program is ongoing, return */
-        return FLASH_SUCCESS;
-#endif
-
+        /* No more things to do here so that falls through to the last return statement */
+#else
         /* Set the wait counter with timeout value */
         wait_cnt = WAIT_MAX_DF_WRITE;
 
@@ -512,6 +511,7 @@ static flash_err_t data_flash_write (uint32_t address, uint32_t data, uint32_t s
             /* Return FLASH_FAILURE, operation failure */
             return FLASH_ERR_FAILURE;
         }
+#endif
     }
     /* Data size is invalid */
     else
@@ -1064,7 +1064,7 @@ R_ATTRIB_STATIC_INTERRUPT void Excep_FCU_FRDYI(void)
 
                 if (g_bgo_bytes > 0)
                 {
-                    block_number = block_info.block_number - 1;         // next block to erase
+                    block_number = (uint32_t)(block_info.block_number - 1); // next block to erase
                     flash_get_romBlock_info (block_number, &block_info);
 
                     g_bgo_flash_addr = block_info.start_addr;
@@ -1314,9 +1314,8 @@ static flash_err_t rom_write (uint32_t address, uint32_t data, uint32_t size)
 
     #if (FLASH_CFG_CODE_FLASH_BGO == 1)
     /* Return, rest of programming will be done in interrupt */
-    return FLASH_SUCCESS;
-    #endif
-
+    /* No more things to do here so that falls through to the last return statement */
+    #else
     /* Set timeout wait counter value */
     wait_cnt = WAIT_MAX_ROM_WRITE;
 
@@ -1344,6 +1343,7 @@ static flash_err_t rom_write (uint32_t address, uint32_t data, uint32_t size)
         /* Return FLASH_FAILURE, operation failure */
         return FLASH_ERR_FAILURE;
     }
+    #endif
 
 #endif /* FLASH_CFG_ENABLE_ROM_PROGRAMMING */
 
@@ -1914,7 +1914,7 @@ flash_err_t flash_api_erase(flash_block_address_t block_start_address, uint32_t 
              {
 #if (FLASH_CFG_CODE_FLASH_BGO == 1)
                  break;
-#endif
+#else
 
                 // Code Flash Erase
                  /* Advance pointer to next block */
@@ -1933,18 +1933,20 @@ flash_err_t flash_api_erase(flash_block_address_t block_start_address, uint32_t 
                      return(FLASH_ERR_ADDRESS);
                  }
                  block_start_address = (flash_block_address_t)block_info.start_addr;
+#endif
              }
              else
              {
 #if (FLASH_CFG_DATA_FLASH_BGO == 1)
                  break;
-#endif
+#else
                  // Data Flash Erase
                  /* Advance pointer to next block */
                   block_start_address += DF_ERASE_BLOCK_SIZE;
 
                   /* Subtract off bytes erased */
                   bytes_to_erase -= DF_ERASE_BLOCK_SIZE;
+#endif
              }
 
          }
