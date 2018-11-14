@@ -142,7 +142,7 @@ __STATIC_FORCEINLINE signed long ccrx_machine_h_min(signed long data1, signed lo
 #ifndef revl
 #define revl(data) ccrx_machine_h_revl(data)
 #endif
-__STATIC_FORCEINLINE signed long revl(signed long data)
+__STATIC_FORCEINLINE unsigned long revl(unsigned long data)
 {
 /* CC-RX V2.03 -optimize=2
         REVL R1, R1
@@ -165,7 +165,7 @@ __STATIC_FORCEINLINE signed long revl(signed long data)
 #ifndef revw
 #define revw(data) ccrx_machine_h_revw(data)
 #endif
-__STATIC_FORCEINLINE signed long revw(signed long data)
+__STATIC_FORCEINLINE unsigned long revw(unsigned long data)
 {
 /* CC-RX V2.03 -optimize=2
         REVW R1, R1
@@ -1457,7 +1457,7 @@ __STATIC_FORCEINLINE signed long long ccrx_machine_h_get_acc(void)
  1369 0517 EF 52                        mov.L   r5, r2
  1370 0519 3F 6B 06                     rtsd    #24, r6-r11
 */
-/* GNURX 2018q1 -O2 -mbig-endian-data
+/* GNURX 2018q1 -O0 -mbig-endian-data
  1351 04ff 6E 6B                        pushm   r6-r11
  1353 0501 EF 06                        mov.L   r0, r6
  1359 0503 FD 1F 24                     MVFACMI r4
