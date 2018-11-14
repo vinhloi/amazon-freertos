@@ -1771,7 +1771,7 @@ flash_err_t flash_api_erase(flash_block_address_t block_start_address, uint32_t 
     uint32_t block_size;
 #endif
 
-    volatile int32_t bytes_to_erase = (int32_t)(FLASH_DF_BLOCK_1 - FLASH_DF_BLOCK_0)  * num_blocks;   // for DF this is correct
+    volatile uint32_t bytes_to_erase = (FLASH_DF_BLOCK_1 - FLASH_DF_BLOCK_0) * num_blocks;   // for DF this is correct
 
     /* Take off upper byte since for programming/erase addresses for ROM are
           the same as read addresses except upper byte is masked off to 0's.
@@ -1921,7 +1921,7 @@ flash_err_t flash_api_erase(flash_block_address_t block_start_address, uint32_t 
                  block_number--;
 
                  // Decrease by the amount we just wrote
-                 bytes_to_erase -= (int32_t)block_info.block_size;
+                 bytes_to_erase -= block_info.block_size;
 
                  if (bytes_to_erase == 0)
                  {
