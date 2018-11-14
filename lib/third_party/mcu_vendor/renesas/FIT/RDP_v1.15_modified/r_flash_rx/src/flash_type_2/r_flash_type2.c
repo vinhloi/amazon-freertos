@@ -465,7 +465,7 @@ static flash_err_t data_flash_write (uint32_t address, uint32_t data, uint32_t s
         *(FCU_BYTE_PTR)DF_ADDRESS = 0xE8;
 
         /* Specify data transfer size to data flash area */
-        *(FCU_BYTE_PTR)DF_ADDRESS = size;
+        *(FCU_BYTE_PTR)DF_ADDRESS = (uint8_t)size;
 
         /* Iterate through the number of data bytes */
         while(n++ < size)
@@ -1297,7 +1297,7 @@ static flash_err_t rom_write (uint32_t address, uint32_t data, uint32_t size)
 
     /* Write the FCU Program command */
     *(FCU_BYTE_PTR)address = 0xE8;
-    *(FCU_BYTE_PTR)address = size;
+    *(FCU_BYTE_PTR)address = (uint8_t)size;
 
     /* Write 'size' bytes into flash, 16-bits at a time */
     for(i = 0; i < size; i++)

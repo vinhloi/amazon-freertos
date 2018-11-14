@@ -76,7 +76,7 @@ Macro definitions
 #define DISABLE_TXI_INT     (*hdl->rom->icu_txi &= (uint8_t)~hdl->rom->txi_en_mask)
 
 #define ENABLE_ERI_INT      (ICU.GEN[12].LONG |= hdl->rom->group12_ch_mask)
-#define DISABLE_ERI_INT     (ICU.GEN[12].LONG &= ~hdl->rom->group12_ch_mask)
+#define DISABLE_ERI_INT     (ICU.GEN[12].LONG &= (uint32_t)~hdl->rom->group12_ch_mask)
 #define ENABLE_TEI_INT      (*hdl->rom->icu_tei |= hdl->rom->tei_en_mask)
 #define DISABLE_TEI_INT     (*hdl->rom->icu_tei &= (uint8_t)~hdl->rom->tei_en_mask)
 
