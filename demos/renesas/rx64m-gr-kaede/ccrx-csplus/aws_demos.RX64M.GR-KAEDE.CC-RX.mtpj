@@ -5797,7 +5797,7 @@ src
       <COptionMisra2012RuleFile-1 />
       <COptionSectionW-1>W</COptionSectionW-1>
       <COptionMisra2012RuleNumberApply-1 />
-      <COptionNoMessageErrorNumber-1>11174,5177,21644,6,8</COptionNoMessageErrorNumber-1>
+      <COptionNoMessageErrorNumber-1>11174,21644,5010,6,8,5177,5</COptionNoMessageErrorNumber-1>
       <COptionNostuffB-1>False</COptionNostuffB-1>
       <COptionVolatile-1>False</COptionVolatile-1>
       <COptionConstCopy-1>Auto</COptionConstCopy-1>
