@@ -1189,13 +1189,6 @@
       <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
       <ParentItem>be7a1ed2-6806-4bb3-8c00-0a9be8c9eaf5</ParentItem>
     </Instance>
-    <Instance Guid="2048e7c3-fcfc-4765-b575-bba1b114f261">
-      <Name>aws_wifi.c</Name>
-      <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\wifi\portable\renesas\rx65n-envision-kit\aws_wifi.c</RelativePath>
-      <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
-      <ParentItem>340aa7bc-12ed-4453-9f41-b6029b0734cb</ParentItem>
-    </Instance>
     <Instance Guid="9639f578-a3aa-4ed9-a361-072c5b4a828a">
       <Name>jsmn</Name>
       <Type>Category</Type>
@@ -4944,101 +4937,101 @@
       <SourceItemType46>CSource</SourceItemType46>
       <SourceItemGuid47>3222c773-2aeb-46ee-8bbb-4c9851f4ef4b</SourceItemGuid47>
       <SourceItemType47>CSource</SourceItemType47>
-      <SourceItemGuid48>2048e7c3-fcfc-4765-b575-bba1b114f261</SourceItemGuid48>
+      <SourceItemGuid48>c729e189-f437-45b9-91eb-d71a7d441201</SourceItemGuid48>
       <SourceItemType48>CSource</SourceItemType48>
-      <SourceItemGuid49>c729e189-f437-45b9-91eb-d71a7d441201</SourceItemGuid49>
+      <SourceItemGuid49>6a56edf7-5a23-480a-86fc-e87cfc282270</SourceItemGuid49>
       <SourceItemType49>CSource</SourceItemType49>
-      <SourceItemGuid50>6a56edf7-5a23-480a-86fc-e87cfc282270</SourceItemGuid50>
+      <SourceItemGuid50>d9ab9501-24c8-4bfa-b140-c7e55aa775d9</SourceItemGuid50>
       <SourceItemType50>CSource</SourceItemType50>
-      <SourceItemGuid51>d9ab9501-24c8-4bfa-b140-c7e55aa775d9</SourceItemGuid51>
+      <SourceItemGuid51>ea9b87fb-6b5b-4d17-afba-480e4709669c</SourceItemGuid51>
       <SourceItemType51>CSource</SourceItemType51>
-      <SourceItemGuid52>ea9b87fb-6b5b-4d17-afba-480e4709669c</SourceItemGuid52>
+      <SourceItemGuid52>ccd6a92b-8592-483e-a04b-cca769d12694</SourceItemGuid52>
       <SourceItemType52>CSource</SourceItemType52>
-      <SourceItemGuid53>ccd6a92b-8592-483e-a04b-cca769d12694</SourceItemGuid53>
+      <SourceItemGuid53>6e9898f1-6bb9-47ba-86bf-81c4d1812bd5</SourceItemGuid53>
       <SourceItemType53>CSource</SourceItemType53>
-      <SourceItemGuid54>6e9898f1-6bb9-47ba-86bf-81c4d1812bd5</SourceItemGuid54>
+      <SourceItemGuid54>c240dc06-1827-44fe-9e7a-bdcae4148f56</SourceItemGuid54>
       <SourceItemType54>CSource</SourceItemType54>
-      <SourceItemGuid55>c240dc06-1827-44fe-9e7a-bdcae4148f56</SourceItemGuid55>
+      <SourceItemGuid55>9e5e61ce-9551-4a56-9b1d-03c36b46f1a7</SourceItemGuid55>
       <SourceItemType55>CSource</SourceItemType55>
-      <SourceItemGuid56>9e5e61ce-9551-4a56-9b1d-03c36b46f1a7</SourceItemGuid56>
+      <SourceItemGuid56>3aab3314-af27-45a6-bb13-42b8ad389a99</SourceItemGuid56>
       <SourceItemType56>CSource</SourceItemType56>
-      <SourceItemGuid57>3aab3314-af27-45a6-bb13-42b8ad389a99</SourceItemGuid57>
+      <SourceItemGuid57>b8138c77-3c81-4117-af4c-7a44e1c5b0c9</SourceItemGuid57>
       <SourceItemType57>CSource</SourceItemType57>
-      <SourceItemGuid58>b8138c77-3c81-4117-af4c-7a44e1c5b0c9</SourceItemGuid58>
+      <SourceItemGuid58>219af80f-129a-4431-88c1-d83bfb68aa09</SourceItemGuid58>
       <SourceItemType58>CSource</SourceItemType58>
-      <SourceItemGuid59>219af80f-129a-4431-88c1-d83bfb68aa09</SourceItemGuid59>
+      <SourceItemGuid59>7bb642cd-294f-4e05-82a1-f22dc0e74bc1</SourceItemGuid59>
       <SourceItemType59>CSource</SourceItemType59>
-      <SourceItemGuid60>7bb642cd-294f-4e05-82a1-f22dc0e74bc1</SourceItemGuid60>
+      <SourceItemGuid60>cb177dbc-704f-479d-954b-5acdf7f59178</SourceItemGuid60>
       <SourceItemType60>CSource</SourceItemType60>
-      <SourceItemGuid61>cb177dbc-704f-479d-954b-5acdf7f59178</SourceItemGuid61>
+      <SourceItemGuid61>4e31e1e9-8ce1-47fe-a123-7705fa549c89</SourceItemGuid61>
       <SourceItemType61>CSource</SourceItemType61>
-      <SourceItemGuid62>4e31e1e9-8ce1-47fe-a123-7705fa549c89</SourceItemGuid62>
+      <SourceItemGuid62>ddfee1d3-1935-4fa4-8527-95bd159b045e</SourceItemGuid62>
       <SourceItemType62>CSource</SourceItemType62>
-      <SourceItemGuid63>ddfee1d3-1935-4fa4-8527-95bd159b045e</SourceItemGuid63>
+      <SourceItemGuid63>f957189c-247c-4acf-8756-cf89f778726f</SourceItemGuid63>
       <SourceItemType63>CSource</SourceItemType63>
-      <SourceItemGuid64>f957189c-247c-4acf-8756-cf89f778726f</SourceItemGuid64>
+      <SourceItemGuid64>fe73ecb7-7632-4477-80dd-35b74f61ed1b</SourceItemGuid64>
       <SourceItemType64>CSource</SourceItemType64>
-      <SourceItemGuid65>fe73ecb7-7632-4477-80dd-35b74f61ed1b</SourceItemGuid65>
+      <SourceItemGuid65>dba53a79-a836-49df-8dd1-2a89114e6dc3</SourceItemGuid65>
       <SourceItemType65>CSource</SourceItemType65>
-      <SourceItemGuid66>dba53a79-a836-49df-8dd1-2a89114e6dc3</SourceItemGuid66>
+      <SourceItemGuid66>d013ff9b-2b4a-4c6d-9d98-d7c842096ab9</SourceItemGuid66>
       <SourceItemType66>CSource</SourceItemType66>
-      <SourceItemGuid67>d013ff9b-2b4a-4c6d-9d98-d7c842096ab9</SourceItemGuid67>
+      <SourceItemGuid67>a3c93a41-3989-4fab-a593-2619bd99bde5</SourceItemGuid67>
       <SourceItemType67>CSource</SourceItemType67>
-      <SourceItemGuid68>a3c93a41-3989-4fab-a593-2619bd99bde5</SourceItemGuid68>
+      <SourceItemGuid68>01bcfdfa-e61d-458a-a17b-20a84b3eca49</SourceItemGuid68>
       <SourceItemType68>CSource</SourceItemType68>
-      <SourceItemGuid69>01bcfdfa-e61d-458a-a17b-20a84b3eca49</SourceItemGuid69>
+      <SourceItemGuid69>e0a9b642-ef7d-40cf-b1c8-c3421655d11e</SourceItemGuid69>
       <SourceItemType69>CSource</SourceItemType69>
-      <SourceItemGuid70>e0a9b642-ef7d-40cf-b1c8-c3421655d11e</SourceItemGuid70>
+      <SourceItemGuid70>10162877-88c0-4649-8ffa-fd560894e0bc</SourceItemGuid70>
       <SourceItemType70>CSource</SourceItemType70>
-      <SourceItemGuid71>10162877-88c0-4649-8ffa-fd560894e0bc</SourceItemGuid71>
+      <SourceItemGuid71>5a6ff526-7014-4b28-a16c-b5d7a580d07a</SourceItemGuid71>
       <SourceItemType71>CSource</SourceItemType71>
-      <SourceItemGuid72>5a6ff526-7014-4b28-a16c-b5d7a580d07a</SourceItemGuid72>
+      <SourceItemGuid72>30b440e0-61eb-40be-87e7-a80da72c4554</SourceItemGuid72>
       <SourceItemType72>CSource</SourceItemType72>
-      <SourceItemGuid73>30b440e0-61eb-40be-87e7-a80da72c4554</SourceItemGuid73>
+      <SourceItemGuid73>03de3117-b4fa-4ae7-86be-d09116ff67e3</SourceItemGuid73>
       <SourceItemType73>CSource</SourceItemType73>
-      <SourceItemGuid74>03de3117-b4fa-4ae7-86be-d09116ff67e3</SourceItemGuid74>
+      <SourceItemGuid74>32140f0c-a977-4823-8c8b-9b4f8b34ba32</SourceItemGuid74>
       <SourceItemType74>CSource</SourceItemType74>
-      <SourceItemGuid75>32140f0c-a977-4823-8c8b-9b4f8b34ba32</SourceItemGuid75>
+      <SourceItemGuid75>ca64a9db-7a36-4c9a-a4e7-11cd98c4e1fb</SourceItemGuid75>
       <SourceItemType75>CSource</SourceItemType75>
-      <SourceItemGuid76>ca64a9db-7a36-4c9a-a4e7-11cd98c4e1fb</SourceItemGuid76>
+      <SourceItemGuid76>5005d159-a4cc-4767-bca2-28afd2ea871a</SourceItemGuid76>
       <SourceItemType76>CSource</SourceItemType76>
-      <SourceItemGuid77>5005d159-a4cc-4767-bca2-28afd2ea871a</SourceItemGuid77>
+      <SourceItemGuid77>e5823661-8ef5-4e82-b835-d611d820bf56</SourceItemGuid77>
       <SourceItemType77>CSource</SourceItemType77>
-      <SourceItemGuid78>e5823661-8ef5-4e82-b835-d611d820bf56</SourceItemGuid78>
+      <SourceItemGuid78>5be7c39b-b19d-48d2-9b24-b267d96b7430</SourceItemGuid78>
       <SourceItemType78>CSource</SourceItemType78>
-      <SourceItemGuid79>5be7c39b-b19d-48d2-9b24-b267d96b7430</SourceItemGuid79>
+      <SourceItemGuid79>5ecffcd2-f13e-4f36-9dac-4d4f1b87e15a</SourceItemGuid79>
       <SourceItemType79>CSource</SourceItemType79>
-      <SourceItemGuid80>5ecffcd2-f13e-4f36-9dac-4d4f1b87e15a</SourceItemGuid80>
+      <SourceItemGuid80>bc1175b1-bfcf-4003-9780-197909e383c4</SourceItemGuid80>
       <SourceItemType80>CSource</SourceItemType80>
-      <SourceItemGuid81>bc1175b1-bfcf-4003-9780-197909e383c4</SourceItemGuid81>
+      <SourceItemGuid81>5626b5d3-3919-416c-b7d8-d43cd5efbae2</SourceItemGuid81>
       <SourceItemType81>CSource</SourceItemType81>
-      <SourceItemGuid82>5626b5d3-3919-416c-b7d8-d43cd5efbae2</SourceItemGuid82>
+      <SourceItemGuid82>2f154b08-7d03-4f77-8032-c86fbcdb82d4</SourceItemGuid82>
       <SourceItemType82>CSource</SourceItemType82>
-      <SourceItemGuid83>2f154b08-7d03-4f77-8032-c86fbcdb82d4</SourceItemGuid83>
+      <SourceItemGuid83>a0422ab3-b4c2-4657-a848-5b3c76110bb3</SourceItemGuid83>
       <SourceItemType83>CSource</SourceItemType83>
-      <SourceItemGuid84>a0422ab3-b4c2-4657-a848-5b3c76110bb3</SourceItemGuid84>
+      <SourceItemGuid84>86f0015f-5a6b-4856-8a4a-f53280a50fa2</SourceItemGuid84>
       <SourceItemType84>CSource</SourceItemType84>
-      <SourceItemGuid85>86f0015f-5a6b-4856-8a4a-f53280a50fa2</SourceItemGuid85>
+      <SourceItemGuid85>5e9fbfd5-2a69-4c13-ade5-7f411a870816</SourceItemGuid85>
       <SourceItemType85>CSource</SourceItemType85>
-      <SourceItemGuid86>5e9fbfd5-2a69-4c13-ade5-7f411a870816</SourceItemGuid86>
+      <SourceItemGuid86>3076941a-4e90-46e6-9b23-15f2a3a93476</SourceItemGuid86>
       <SourceItemType86>CSource</SourceItemType86>
-      <SourceItemGuid87>3076941a-4e90-46e6-9b23-15f2a3a93476</SourceItemGuid87>
+      <SourceItemGuid87>44048681-3113-47dd-8cf1-b4a4f3d63d51</SourceItemGuid87>
       <SourceItemType87>CSource</SourceItemType87>
-      <SourceItemGuid88>44048681-3113-47dd-8cf1-b4a4f3d63d51</SourceItemGuid88>
+      <SourceItemGuid88>38cac1b6-eee4-4979-8cd9-339d6ead46b9</SourceItemGuid88>
       <SourceItemType88>CSource</SourceItemType88>
-      <SourceItemGuid89>38cac1b6-eee4-4979-8cd9-339d6ead46b9</SourceItemGuid89>
+      <SourceItemGuid89>efd69c3a-1279-4b37-b013-b4790244f07f</SourceItemGuid89>
       <SourceItemType89>CSource</SourceItemType89>
-      <SourceItemGuid90>efd69c3a-1279-4b37-b013-b4790244f07f</SourceItemGuid90>
+      <SourceItemGuid90>25a738af-4748-4802-95c1-f9932e5eaaf0</SourceItemGuid90>
       <SourceItemType90>CSource</SourceItemType90>
-      <SourceItemGuid91>25a738af-4748-4802-95c1-f9932e5eaaf0</SourceItemGuid91>
+      <SourceItemGuid91>4eae646f-5d6b-49f8-acfe-21a2465b564d</SourceItemGuid91>
       <SourceItemType91>CSource</SourceItemType91>
-      <SourceItemGuid92>4eae646f-5d6b-49f8-acfe-21a2465b564d</SourceItemGuid92>
+      <SourceItemGuid92>0f43c64e-7ad1-4cb7-b657-10bf39efbfb5</SourceItemGuid92>
       <SourceItemType92>CSource</SourceItemType92>
-      <SourceItemGuid93>0f43c64e-7ad1-4cb7-b657-10bf39efbfb5</SourceItemGuid93>
+      <SourceItemGuid93>232167a0-1d8a-4593-a6bf-8482a438927c</SourceItemGuid93>
       <SourceItemType93>CSource</SourceItemType93>
-      <SourceItemGuid94>232167a0-1d8a-4593-a6bf-8482a438927c</SourceItemGuid94>
+      <SourceItemGuid94>2af4bf16-6393-4ca4-9fa3-a917445a8136</SourceItemGuid94>
       <SourceItemType94>CSource</SourceItemType94>
-      <SourceItemGuid95>2af4bf16-6393-4ca4-9fa3-a917445a8136</SourceItemGuid95>
+      <SourceItemGuid95>fe42c226-05b0-4bfb-a028-28a8867affb6</SourceItemGuid95>
       <SourceItemType95>CSource</SourceItemType95>
       <SourceItemGuid96>15fd1365-71b6-4462-a2ca-eb04c2e1461c</SourceItemGuid96>
       <SourceItemType96>CSource</SourceItemType96>
@@ -5274,9 +5267,7 @@
       <SourceItemType211>CSource</SourceItemType211>
       <SourceItemGuid212>60ce3e82-e4ea-4a42-9eea-6061be7646fd</SourceItemGuid212>
       <SourceItemType212>CSource</SourceItemType212>
-      <SourceItemGuid213>fe42c226-05b0-4bfb-a028-28a8867affb6</SourceItemGuid213>
-      <SourceItemType213>CSource</SourceItemType213>
-      <SourceItemCount>214</SourceItemCount>
+      <SourceItemCount>213</SourceItemCount>
       <LastDeviceChangedCounter>0</LastDeviceChangedCounter>
     </Instance>
     <Instance Guid="9e208646-ccba-4100-a676-29b1efe6545f">
@@ -6842,8 +6833,6 @@ D_2=R_2
     </Instance>
     <Instance Guid="2048e7c3-fcfc-4765-b575-bba1b114f261">
       <LinkOrder-1>48</LinkOrder-1>
-      <ItemAddTime>636569983433838672</ItemAddTime>
-      <ItemAddTimeCount>0</ItemAddTimeCount>
     </Instance>
     <Instance Guid="c729e189-f437-45b9-91eb-d71a7d441201">
       <LinkOrder-1>49</LinkOrder-1>
@@ -9345,18 +9334,18 @@ D_2=R_2
       <TimeTagModified-SourceItem47--1>-8586802377407818272</TimeTagModified-SourceItem47--1>
       <SourceItem47-BuildingTarget-1>True</SourceItem47-BuildingTarget-1>
       <SourceItem47-IndividualCompileOption-1>False</SourceItem47-IndividualCompileOption-1>
-      <TimeTagModified-SourceItem48--0>-8586802377420937136</TimeTagModified-SourceItem48--0>
+      <TimeTagModified-SourceItem48--0>-8586802377420836992</TimeTagModified-SourceItem48--0>
       <SourceItem48-IsLockedByUser>False</SourceItem48-IsLockedByUser>
       <SourceItem48-BuildingTarget-0>True</SourceItem48-BuildingTarget-0>
       <SourceItem48-IndividualCompileOption-0>False</SourceItem48-IndividualCompileOption-0>
       <TimeTagModified-SourceItem48--1>-8586802377407818272</TimeTagModified-SourceItem48--1>
       <SourceItem48-BuildingTarget-1>True</SourceItem48-BuildingTarget-1>
       <SourceItem48-IndividualCompileOption-1>False</SourceItem48-IndividualCompileOption-1>
-      <TimeTagModified-SourceItem49--0>-8586802377420836992</TimeTagModified-SourceItem49--0>
+      <TimeTagModified-SourceItem49--0>-8586802372709438784</TimeTagModified-SourceItem49--0>
       <SourceItem49-IsLockedByUser>False</SourceItem49-IsLockedByUser>
       <SourceItem49-BuildingTarget-0>True</SourceItem49-BuildingTarget-0>
       <SourceItem49-IndividualCompileOption-0>False</SourceItem49-IndividualCompileOption-0>
-      <TimeTagModified-SourceItem49--1>-8586802377407818272</TimeTagModified-SourceItem49--1>
+      <TimeTagModified-SourceItem49--1>-8586802372709438784</TimeTagModified-SourceItem49--1>
       <SourceItem49-BuildingTarget-1>True</SourceItem49-BuildingTarget-1>
       <SourceItem49-IndividualCompileOption-1>False</SourceItem49-IndividualCompileOption-1>
       <TimeTagModified-SourceItem50--0>-8586802372709438784</TimeTagModified-SourceItem50--0>
@@ -9611,11 +9600,11 @@ D_2=R_2
       <TimeTagModified-SourceItem85--1>-8586802372709438784</TimeTagModified-SourceItem85--1>
       <SourceItem85-BuildingTarget-1>True</SourceItem85-BuildingTarget-1>
       <SourceItem85-IndividualCompileOption-1>False</SourceItem85-IndividualCompileOption-1>
-      <TimeTagModified-SourceItem86--0>-8586802372709438784</TimeTagModified-SourceItem86--0>
+      <TimeTagModified-SourceItem86--0>-8586802372709338640</TimeTagModified-SourceItem86--0>
       <SourceItem86-IsLockedByUser>False</SourceItem86-IsLockedByUser>
       <SourceItem86-BuildingTarget-0>True</SourceItem86-BuildingTarget-0>
       <SourceItem86-IndividualCompileOption-0>False</SourceItem86-IndividualCompileOption-0>
-      <TimeTagModified-SourceItem86--1>-8586802372709438784</TimeTagModified-SourceItem86--1>
+      <TimeTagModified-SourceItem86--1>-8586802372709338640</TimeTagModified-SourceItem86--1>
       <SourceItem86-BuildingTarget-1>True</SourceItem86-BuildingTarget-1>
       <SourceItem86-IndividualCompileOption-1>False</SourceItem86-IndividualCompileOption-1>
       <TimeTagModified-SourceItem87--0>-8586802372709338640</TimeTagModified-SourceItem87--0>
@@ -9674,11 +9663,11 @@ D_2=R_2
       <TimeTagModified-SourceItem94--1>-8586802372709338640</TimeTagModified-SourceItem94--1>
       <SourceItem94-BuildingTarget-1>True</SourceItem94-BuildingTarget-1>
       <SourceItem94-IndividualCompileOption-1>False</SourceItem94-IndividualCompileOption-1>
-      <TimeTagModified-SourceItem95--0>-8586802372709338640</TimeTagModified-SourceItem95--0>
+      <TimeTagModified-SourceItem95--0>-8586596127994538144</TimeTagModified-SourceItem95--0>
       <SourceItem95-IsLockedByUser>False</SourceItem95-IsLockedByUser>
       <SourceItem95-BuildingTarget-0>True</SourceItem95-BuildingTarget-0>
       <SourceItem95-IndividualCompileOption-0>False</SourceItem95-IndividualCompileOption-0>
-      <TimeTagModified-SourceItem95--1>-8586802372709338640</TimeTagModified-SourceItem95--1>
+      <TimeTagModified-SourceItem95--1>-8586596127994538144</TimeTagModified-SourceItem95--1>
       <SourceItem95-BuildingTarget-1>True</SourceItem95-BuildingTarget-1>
       <SourceItem95-IndividualCompileOption-1>False</SourceItem95-IndividualCompileOption-1>
       <TimeTagModified-SourceItem96--0>-8586802372709338640</TimeTagModified-SourceItem96--0>
@@ -10500,13 +10489,6 @@ D_2=R_2
       <TimeTagModified-SourceItem212--1>-8586680192054962128</TimeTagModified-SourceItem212--1>
       <SourceItem212-BuildingTarget-1>False</SourceItem212-BuildingTarget-1>
       <SourceItem212-IndividualCompileOption-1>False</SourceItem212-IndividualCompileOption-1>
-      <TimeTagModified-SourceItem213--0>-8586596127994538144</TimeTagModified-SourceItem213--0>
-      <SourceItem213-IsLockedByUser>False</SourceItem213-IsLockedByUser>
-      <SourceItem213-BuildingTarget-0>True</SourceItem213-BuildingTarget-0>
-      <SourceItem213-IndividualCompileOption-0>False</SourceItem213-IndividualCompileOption-0>
-      <TimeTagModified-SourceItem213--1>-8586596127994538144</TimeTagModified-SourceItem213--1>
-      <SourceItem213-BuildingTarget-1>True</SourceItem213-BuildingTarget-1>
-      <SourceItem213-IndividualCompileOption-1>False</SourceItem213-IndividualCompileOption-1>
     </Instance>
     <Instance Guid="c20a78d9-8038-46fe-9b87-bc2fa2aa9bdc">
       <TimeTagModified-SourceItem21--0>-8586802377425543760</TimeTagModified-SourceItem21--0>

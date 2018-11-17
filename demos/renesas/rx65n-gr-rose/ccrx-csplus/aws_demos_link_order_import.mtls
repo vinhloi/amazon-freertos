@@ -46,7 +46,6 @@ aws_shadow.obj
 aws_shadow_json.obj
 aws_tls.obj
 aws_system_init.obj
-aws_wifi.obj
 jsmn.obj
 aes.obj
 aesni.obj
