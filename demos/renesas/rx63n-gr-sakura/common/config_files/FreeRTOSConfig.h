@@ -47,8 +47,8 @@
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION    0
 #define configMAX_PRIORITIES                       ( 7 )
 #define configTICK_RATE_HZ                         ( 1000 )
-#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 180 )
-#define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 68U * 1024U ) )
+#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 512 )
+#define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 86U * 1024U ) )
 #define configMAX_TASK_NAME_LEN                    ( 12 )
 #define configUSE_TRACE_FACILITY                   1
 #define configUSE_16_BIT_TICKS                     0
@@ -265,7 +265,7 @@ uint32_t ulRand(void);
 #define configRAND32()    ulRand()
 
 /* The platform FreeRTOS is running on. */
-#define configPLATFORM_NAME    "RenesasRX63N"
+#define configPLATFORM_NAME    "RX63N GR-SAKURA"
 
 /* Header required for the tracealyzer recorder library. */
 //#include "trcRecorder.h"

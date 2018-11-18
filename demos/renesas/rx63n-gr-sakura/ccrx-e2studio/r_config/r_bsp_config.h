@@ -226,7 +226,7 @@ Configuration Options
  * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
  * below.
  */
-R_PRAGMA_ISTACK_SIZE                    (0x1000)
+R_PRAGMA_ISTACK_SIZE                    (0x400)
 #endif
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
