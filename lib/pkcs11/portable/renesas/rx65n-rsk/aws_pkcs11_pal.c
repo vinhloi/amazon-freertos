@@ -36,6 +36,18 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef struct _pkcs_data
+{
+	CK_ATTRIBUTE Label;
+	uint32_t local_storage_index;
+	uint32_t ulDataSize;
+}PKCS_DATA;
+
+static PKCS_DATA pkcs_data[100];
+static uint32_t pkcs_data_handle = 1;
+static uint8_t local_storage[10000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
+
+static uint32_t current_stored_size(void);
 
 /**
 * @brief Writes a file to local storage.
@@ -52,8 +64,28 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     uint8_t * pucData,
     uint32_t ulDataSize )
 {
-    /* FIX ME. */
-    CK_OBJECT_HANDLE xHandle = 0;
+	uint32_t size;
+
+	size = current_stored_size();
+	memcpy(&local_storage[size], pucData, ulDataSize);
+
+	pkcs_data[pkcs_data_handle - 1].Label.pValue = pxLabel->pValue;
+	pkcs_data[pkcs_data_handle - 1].Label.type = pxLabel->type;
+	pkcs_data[pkcs_data_handle - 1].Label.ulValueLen = pxLabel->ulValueLen;
+	pkcs_data[pkcs_data_handle - 1].ulDataSize = ulDataSize;
+	pkcs_data[pkcs_data_handle - 1].local_storage_index = size;
+
+    CK_OBJECT_HANDLE xHandle = pkcs_data_handle;
+
+	/* todo: need to confirm why device certificate type = 3?, length = 4?. type = 2, length = 12 are correct. (Renesas/Ishiguro) */
+	/* this code adjusts the correct data, this is very temporary. */
+	if(!strcmp(pxLabel->pValue, pkcs11configLABEL_DEVICE_CERTIFICATE_FOR_TLS))
+	{
+		pkcs_data[pkcs_data_handle - 1].Label.type = 2;
+		pkcs_data[pkcs_data_handle - 1].Label.ulValueLen = 12;
+	}
+
+	pkcs_data_handle++;
     return xHandle;
 }
 
@@ -73,8 +105,20 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
     uint8_t usLength )
 {
-    /* FIX ME. */
-    CK_OBJECT_HANDLE xHandle = 0;
+	CK_OBJECT_HANDLE xHandle = 0;
+	int i;
+
+	for(i = 0; i < pkcs_data_handle - 1; i++)
+	{
+		if(!memcmp(pkcs_data[i].Label.pValue, pLabel, usLength))
+		{
+			break;
+		}
+	}
+	if(i != pkcs_data_handle - 1)
+	{
+		xHandle = i + 1;
+	}
     return xHandle;
 }
 
@@ -106,7 +150,18 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
     uint32_t * pulDataSize,
     CK_BBOOL * pIsPrivate )
 {
-    /* FIX ME. */
+	*ppucData = &local_storage[pkcs_data[xHandle - 1].local_storage_index];
+	*pulDataSize = pkcs_data[xHandle - 1].ulDataSize;
+
+	if(pkcs_data[xHandle - 1].Label.type == CKO_PRIVATE_KEY || pkcs_data[xHandle - 1].Label.type == CKO_SECRET_KEY)
+	{
+		*pIsPrivate = CK_TRUE;
+	}
+	else
+	{
+		*pIsPrivate = CK_FALSE;
+	}
+
     CK_RV xReturn = CKR_OK;
     return xReturn;
 }
@@ -124,4 +179,15 @@ void PKCS11_PAL_GetObjectValueCleanup( uint8_t * pucData,
     uint32_t ulDataSize )
 {
     /* FIX ME. */
+}
+
+uint32_t current_stored_size(void)
+{
+	uint32_t size = 0;
+
+	for(int i = 0; i < pkcs_data_handle - 1; i++)
+	{
+		size += pkcs_data[i].ulDataSize;
+	}
+	return size;
 }
