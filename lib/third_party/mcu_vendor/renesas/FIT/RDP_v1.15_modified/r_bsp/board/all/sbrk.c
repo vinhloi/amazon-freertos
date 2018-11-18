@@ -66,8 +66,12 @@ Exported global variables (to be accessed by other files)
 /***********************************************************************************************************************
 Private global variables and functions
 ***********************************************************************************************************************/
-/* Memory allocation function prototype declaration */
+/* Memory allocation function prototype declaration (CC-RX and GNURX+NEWLIB) */
 int8_t  *sbrk(size_t size);
+#if defined(__GNUC__)
+/* Memory address function prototype declaration (GNURX+OPTLIB only) */
+int8_t  *_top_of_heap(void);
+#endif /* defined(__GNUC__) */
 
 //const size_t _sbrk_size=      /* Specifies the minimum unit of */
 /* the defined heap area */
@@ -80,12 +84,19 @@ union HEAP_TYPE
 };
 /* Declare memory heap area */
 static union HEAP_TYPE heap_area;
-/* End address allocated by sbrk    */
+/* End address allocated by sbrk (CC-RX and GNURX+NEWLIB) */
 static int8_t *brk=(int8_t *)&heap_area;
+
+#if defined(__GNUC__)
+/* Start address of allocated heap area (GNURX+OPTLIB only) */
+int8_t *_heap_of_memory=(int8_t *)&heap_area;
+/* End address of allocated heap area (GNURX+OPTLIB only) */
+int8_t *_last_heap_object=(int8_t *)&heap_area;
+#endif /* defined(__GNUC__) */
 
 /***********************************************************************************************************************
 * Function name: sbrk
-* Description  : This function configures MCU memory area allocation.
+* Description  : This function configures MCU memory area allocation. (CC-RX and GNURX+NEWLIB)
 * Arguments    : size - 
 *                    assigned area size
 * Return value : Start address of allocated area (pass)
@@ -112,6 +123,19 @@ int8_t  *sbrk(size_t size)
     /* Return result */
     return p;
 }
+
+#if defined(__GNUC__)
+/***********************************************************************************************************************
+* Function name: _top_of_heap
+* Description  : This function returns end address of reserved heap area.
+* Arguments    : none
+* Return value : End address of reserved heap area
+***********************************************************************************************************************/
+int8_t *_top_of_heap(void)
+{
+    return (int8_t *)(heap_area.heap + BSP_CFG_HEAP_BYTES);
+}
+#endif /* defined(__GNUC__) */
 
 #endif /* defined(__CCRX__), defined(__GNUC__) */
 
