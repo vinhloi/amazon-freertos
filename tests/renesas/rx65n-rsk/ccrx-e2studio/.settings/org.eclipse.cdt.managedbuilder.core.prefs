@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+environment/buildEnvironmentInclude/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/CPATH/delimiter=;
+environment/buildEnvironmentInclude/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/CPATH/operation=remove
+environment/buildEnvironmentInclude/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/C_INCLUDE_PATH/delimiter=;
+environment/buildEnvironmentInclude/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/C_INCLUDE_PATH/operation=remove
+environment/buildEnvironmentInclude/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/append=true
+environment/buildEnvironmentInclude/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/appendContributed=true
+environment/buildEnvironmentLibrary/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/LIBRARY_PATH/delimiter=;
+environment/buildEnvironmentLibrary/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/LIBRARY_PATH/operation=remove
+environment/buildEnvironmentLibrary/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/append=true
+environment/buildEnvironmentLibrary/com.renesas.cdt.managedbuild.renesas.ccrx.hardwaredebug.configuration.327171527/appendContributed=true
