@@ -23,26 +23,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  http://www.FreeRTOS.org
 */
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-//#include "FreeRTOS_IP.h"
-#include <stdio.h>
-#include <string.h>
+/* Application Framework include. */
+#include "StdAfx.h"
+
+/* Demo includes. */
+#include "aws_demo_runner.h"
 
 /* Renesas */
 #include "serial_term_uart.h"
-
-/* Demo includes */
-#include "aws_demo_runner.h"
-
-/* Aws Library Includes includes. */
-#include "aws_system_init.h"
-#include "aws_logging_task.h"
-#include "aws_wifi.h"
-#include "aws_clientcredential.h"
-#include "aws_application_version.h"
-#include "aws_dev_mode_key_provisioning.h"
 
 #define mainLOGGING_TASK_STACK_SIZE         ( configMINIMAL_STACK_SIZE * 6 )
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
