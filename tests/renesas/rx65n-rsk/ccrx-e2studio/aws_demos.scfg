@@ -806,7 +806,7 @@
 <gridItem id="ETHER_CFG_PHY_MII_WAIT" selectedIndex="8"/>
 <gridItem id="ETHER_CFG_PHY_DELAY_RESET" selectedIndex="0x00020000L"/>
 <gridItem id="ETHER_CFG_LINK_PRESENT" selectedIndex="0"/>
-<gridItem id="ETHER_CFG_USE_LINKSTA" selectedIndex="1"/>
+<gridItem id="ETHER_CFG_USE_LINKSTA" selectedIndex="0"/>
 <gridItem id="ETHER_CFG_USE_PHY_KSZ8041NL" selectedIndex="0"/>
 </component>
 <source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>

@@ -146,6 +146,6 @@
 <listEntry value="4"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
-<stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList context=&quot;reserved-for-future-use&quot;&gt;&#13;&#10;&#13;&#10;&lt;gdbmemoryBlockExpression address=&quot;0&quot; core_thread_id=&quot;1_i1&quot; label=&quot;0000&quot;/&gt;&#13;&#10;&lt;gdbmemoryBlockExpression address=&quot;187444&quot; core_thread_id=&quot;1_i1&quot; label=&quot;&amp;amp;(xSocket)&quot;/&gt;&#13;&#10;&lt;/memoryBlockExpressionList&gt;&#13;&#10;"/>
+<stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList context=&quot;reserved-for-future-use&quot;&gt;&#13;&#10;&#13;&#10;&lt;gdbmemoryBlockExpression address=&quot;0&quot; core_thread_id=&quot;1_i1&quot; label=&quot;0000&quot;/&gt;&#13;&#10;&lt;gdbmemoryBlockExpression address=&quot;187396&quot; core_thread_id=&quot;1_i1&quot; label=&quot;&amp;amp;(xSocket)&quot;/&gt;&#13;&#10;&lt;/memoryBlockExpressionList&gt;&#13;&#10;"/>
 <stringAttribute key="process_factory_id" value="org.eclipse.cdt.dsf.gdb.GdbProcessFactory"/>
 </launchConfiguration>

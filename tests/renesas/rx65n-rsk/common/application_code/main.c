@@ -36,6 +36,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #if 0
 /* Demo includes */
 #include "aws_demo_runner.h"
+#else
+#include "aws_test_runner.h"
 #endif
 
 /* Aws Library Includes includes. */
@@ -119,12 +121,12 @@ void vApplicationDaemonTaskStartupHook( void );
  */
 static void prvMiscInitialization( void );
 /*-----------------------------------------------------------*/
-#if 0
 /**
  * @brief Application runtime entry point.
  */
 void main( void )
 {
+	nop();
     /* Perform any hardware initialization that does not require the RTOS to be
      * running.  */
 
@@ -138,7 +140,6 @@ void main( void )
     	vTaskDelay(10000);
     }
 }
-#endif
 /*-----------------------------------------------------------*/
 
 static void prvMiscInitialization( void )
@@ -159,7 +160,6 @@ void vApplicationDaemonTaskStartupHook( void )
 
     if( SYSTEM_Init() == pdPASS )
     {
-#if(0)
         /* Initialise the RTOS's TCP/IP stack.  The tasks that use the network
         are created in the vApplicationIPNetworkEventHook() hook function
         below.  The hook function is called when the network connects. */
@@ -168,7 +168,6 @@ void vApplicationDaemonTaskStartupHook( void )
                          ucGatewayAddress,
                          ucDNSServerAddress,
                          ucMACAddress );
-#endif
 
     	/* Connect to the wifi before running the demos */
         //prvWifiConnect();
@@ -179,6 +178,9 @@ void vApplicationDaemonTaskStartupHook( void )
 #if(0)
         /* Run all demos. */
         DEMO_RUNNER_RunDemos();
+#else
+
+        vTaskDelay(10000);	// todo: this is renesas issue.
         /* Create the task to run tests. */
         xTaskCreate( TEST_RUNNER_RunTests_task,
                      "RunTests_task",

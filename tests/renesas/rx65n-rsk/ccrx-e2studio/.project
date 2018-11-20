@@ -27,12 +27,12 @@
 		<link>
 			<name>application_code</name>
 			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/common/application_code</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/tests/renesas/rx65n-rsk/common/application_code</locationURI>
 		</link>
 		<link>
 			<name>config_files</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common/config_files</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/tests/renesas/rx65n-rsk/common/config_files</locationURI>
 		</link>
 		<link>
 			<name>lib</name>
@@ -317,12 +317,22 @@
 		<link>
 			<name>lib/third_party/unity/extras</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/unity/extras</locationURI>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>lib/third_party/unity/src</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/unity/src</locationURI>
+		</link>
+		<link>
+			<name>lib/third_party/unity/extras/fixture</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>lib/third_party/unity/extras/fixture/src</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/unity/extras/fixture/src</locationURI>
 		</link>
 	</linkedResources>
 	<filteredResources>
