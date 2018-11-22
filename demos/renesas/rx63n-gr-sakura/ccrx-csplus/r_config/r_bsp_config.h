@@ -231,8 +231,6 @@ R_PRAGMA_ISTACK_SIZE                    (0x1000)
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 
-#endif /* defined(__CCRX__) || defined(__GNUC__) */
-
 /* Heap size in bytes.
    To disable the heap you must follow these steps:
    1) Set this macro (BSP_CFG_HEAP_BYTES) to 0.
@@ -243,6 +241,8 @@ R_PRAGMA_ISTACK_SIZE                    (0x1000)
       stdio.h. 
 */
 #define BSP_CFG_HEAP_BYTES              (0x100)
+
+#endif /* defined(__CCRX__) || defined(__GNUC__) */
 
 #if defined(__CCRX__)
 
