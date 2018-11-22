@@ -1,9 +1,21 @@
+/* stdafx.h : include file for standard system include files,
+ * or project specific include files that are used frequently, but
+ * are changed infrequently (this is true not only in case of PCH
+ * but also in general case of MAKE or build systems like MAKE)
+ */
+
+#ifndef _STDAFX_H_
+#define _STDAFX_H_
+
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
-#include "message_buffer.h"
 #include "task.h"
-#include "queue.h"
 #include "semphr.h"
+#include "queue.h"
+//#include "croutine.h" // Amazon FreeRTOS does not have this header
+#include "timers.h"
+#include "event_groups.h"
+#include "message_buffer.h"
 
 /* Version includes. */
 #include "aws_application_version.h"
@@ -58,3 +70,5 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdint.h>
+
+#endif /* _STDAFX_H_ */

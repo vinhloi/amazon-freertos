@@ -78,6 +78,7 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #include "croutine.h"
 #include "timers.h"
 #include "event_groups.h"
+#include "message_buffer.h"
 #include "freertos_start.h"
 #elif BSP_CFG_RTOS_USED == 2    // SEGGER embOS
 #elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
