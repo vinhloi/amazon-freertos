@@ -49,7 +49,7 @@
 #define configTICK_RATE_HZ                         ( 1000 )
 #define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 512 )
 #define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 128U * 1024U ) )
-#define configMAX_TASK_NAME_LEN                    ( 12 )
+#define configMAX_TASK_NAME_LEN                    ( 15 )
 #define configUSE_TRACE_FACILITY                   1
 #define configUSE_16_BIT_TICKS                     0
 #define configIDLE_SHOULD_YIELD                    1
@@ -65,8 +65,8 @@
 
 #define configUSE_DAEMON_TASK_STARTUP_HOOK 1
 
-#define configCPU_CLOCK_HZ				( 96000000UL )
-#define configPERIPHERAL_CLOCK_HZ		( 48000000UL )
+#define configCPU_CLOCK_HZ				( 120000000UL )
+#define configPERIPHERAL_CLOCK_HZ		( 60000000UL )
 #define configUSE_QUEUE_SETS			1
 
 /* Hook function related definitions. */
@@ -167,7 +167,7 @@ extern void vLoggingPrintf( const char * pcFormat, ... );
 
 /* Sets the length of the buffers into which logging messages are written - so
  * also defines the maximum length of each log message. */
-#define configLOGGING_MAX_MESSAGE_LENGTH            192
+#define configLOGGING_MAX_MESSAGE_LENGTH            240
 
 /* Set to 1 to prepend each log message with a message number, the task name,
  * and a time stamp. */
