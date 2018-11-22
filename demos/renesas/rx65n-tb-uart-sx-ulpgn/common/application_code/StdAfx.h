@@ -7,6 +7,10 @@
 #ifndef _STDAFX_H_
 #define _STDAFX_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -70,5 +74,9 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdint.h>
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _STDAFX_H_ */

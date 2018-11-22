@@ -40,6 +40,10 @@
 #define PLATFORM_DEFINED
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /***********************************************************************************************************************
 INCLUDE APPROPRIATE MCU AND BOARD FILES
 ***********************************************************************************************************************/
@@ -83,6 +87,10 @@ INCLUDE APPROPRIATE MCU AND BOARD FILES
 #elif BSP_CFG_RTOS_USED == 3    // Micrium MicroC/OS
 #elif BSP_CFG_RTOS_USED == 4    // Renesas RI600V4 & RI600PX
 #else
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif /* BSP_BOARD_ENVISIONRX65N */
