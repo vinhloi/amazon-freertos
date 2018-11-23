@@ -111,7 +111,7 @@ Configuration Options
 /* Enter the product part number for your MCU. This information will be used to obtain information about your MCU such 
    as package and memory size. 
    To help parse this information, the part number will be defined using multiple macros.
-   R 5 F 56 3N F D D FC
+   R 5 F 56 3N Y D D FC
    | | | |  |  | | | |  Macro Name              Description
    | | | |  |  | | | |__BSP_CFG_MCU_PART_PACKAGE      = Package type, number of pins, and pin pitch
    | | | |  |  | | |____not used                      = Products with wide temperature range
@@ -170,7 +170,7 @@ Configuration Options
    M            = 0x16            = 256KB/64KB/32KB
    0            = 0x0             = 0/128KB/0
 */
-#define BSP_CFG_MCU_PART_MEMORY_SIZE    (0xB)
+#define BSP_CFG_MCU_PART_MEMORY_SIZE    (0x22)
 
 /* Group name. 
    Character(s) = Value for macro = Description
@@ -226,7 +226,7 @@ Configuration Options
  * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
  * below.
  */
-R_PRAGMA_ISTACK_SIZE                    (0x400)
+R_PRAGMA_ISTACK_SIZE                    (0x1000)
 #endif
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */

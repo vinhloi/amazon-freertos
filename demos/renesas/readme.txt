@@ -638,7 +638,7 @@ Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (4)   (2)        /           x   x       x   -   -   -   -     
 (5)   (4)        /           x   x       x   -   -   -   -     
 (6)   (4)        /           x   x       x   -   -   -   -     
-(7)   (2)        /           x
+(7)   (2)        /           x           x   -   -   -   -     
 
   x: tested (MQTT echo demo)
   *: now trying(still junk)
@@ -781,12 +781,17 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　開発を進める。26日以降に受験対象の環境であるRX65N RSK (Ether)の環境で
 　テスト環境の最終整備を継続していく。
 　
-　まずはRX63Nの環境の再確認。
+　まずはRX63N GR-SAKURAの環境の再確認。
 　e2 studioのCC-RX環境から。
 　特に問題なくビルドは通るがRAMが128KBギリギリになっている。
 　NoMaY氏と相談し、256KBのRAM搭載のGR-SAKURA限定にすることで調整済み。
 　各種デバイス設定を「R5F563NYDDFP」に変更。これでRAMが厳しい状況が改善した。
 　合わせてFreeRTOSのヒープ量も86KBから128KBに変更。動作確認OK。
+　
+　CS+のCC-RX環境の動作確認。
+　各種デバイス設定を「R5F563NYDDFP」に変更。
+　セクション設定でROMの開始位置が0xffc00000から0xfff00000に変更。
+　特に問題なし。動作確認OK。
 　
 2018/09/24
 　NoMaY氏がBSPを共通化してくれている。
