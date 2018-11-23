@@ -33,7 +33,6 @@ extern "C" {
 
 /* Client credential includes. */
 #include "aws_clientcredential.h"
-#include "aws_default_root_certificates.h"
 
 /* mbedTLS includes. */
 #include "mbedtls/base64.h"
@@ -48,7 +47,6 @@ extern "C" {
 #include "aws_ggd_config.h"
 #include "aws_ggd_config_defaults.h"
 #include "aws_greengrass_discovery.h"
-#include "aws_greengrass_discovery_demo.h"
 
 /* Logging includes. */
 #include "aws_logging_task.h"
@@ -64,7 +62,10 @@ extern "C" {
 
 /* FreeRTOS+TCP includes. */
 #include "FreeRTOS_IP.h" // Comment out when unnecessary
-#include "FreeRTOS_Sockets.h" // Comment out when unnecessary
+////#include "FreeRTOS_Sockets.h"
+
+/* TCP/IP abstraction includes. */
+#include "aws_secure_sockets.h"
 
 /* WiFi interface includes. */
 //#include "aws_wifi.h" // Remove '//' when necessary

@@ -58,20 +58,30 @@
  * buffer.
  */
 
-/* Standard includes. */
-#include "string.h"
-#include "stdio.h"
+/* Trial use of StdAfx.h to check the availability of the header.
+ * This will be reverted later. */
+#if defined(__RX) || defined(__RX__)
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "message_buffer.h"
+#include "StdAfx.h"
 
-/* MQTT includes. */
-#include "aws_mqtt_agent.h"
+#else /* defined(__RX) || defined(__RX__) */
 
-/* Credentials includes. */
-#include "aws_clientcredential.h"
+///* Standard includes. */
+//#include "string.h"
+//#include "stdio.h"
+//
+///* FreeRTOS includes. */
+//#include "FreeRTOS.h"
+//#include "task.h"
+//#include "message_buffer.h"
+//
+///* MQTT includes. */
+//#include "aws_mqtt_agent.h"
+//
+///* Credentials includes. */
+//#include "aws_clientcredential.h"
+
+#endif /* defined(__RX) || defined(__RX__) */
 
 /* Demo includes. */
 #include "aws_demo_config.h"

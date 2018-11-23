@@ -35,24 +35,31 @@
  * expected topics, flagging an error if that is not the case.
  */
 
-/* Standard includes. */
-#include <stdio.h>
-#include <string.h>
+/* Trial use of StdAfx.h to check the availability of the header.
+ * This will be reverted later. */
+#if defined(__RX) || defined(__RX__)
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "event_groups.h"
+#include "StdAfx.h"
 
-/* MQTT include. */
-#include "aws_mqtt_agent.h"
+#else /* defined(__RX) || defined(__RX__) */
+
+///* Standard includes. */
+//#include <stdio.h>
+//#include <string.h>
+//
+///* FreeRTOS includes. */
+//#include "FreeRTOS.h"
+//#include "task.h"
+//#include "event_groups.h"
+//
+///* MQTT include. */
+//#include "aws_mqtt_agent.h"
+
+#endif /* defined(__RX) || defined(__RX__) */
 
 /* This demo's configuration */
 #include "aws_subscribe_publish_loop.h"
 #include "aws_demo_config.h"
-
-/* Required to get the broker address and port. */
-#include "aws_clientcredential.h"
 
 /* Strings are published to a topic that has the following path. */
 #define subpubSTRING_TOPIC_PATH           "/string/"

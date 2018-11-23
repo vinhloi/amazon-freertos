@@ -36,28 +36,39 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * the OTA agent. If not, it is simply ignored.
  */
 
-/* Standard includes. */
-#include <stdio.h>
-#include <string.h>
+/* Trial use of StdAfx.h to check the availability of the header.
+ * This will be reverted later. */
+#if defined(__RX) || defined(__RX__)
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
+#include "StdAfx.h"
 
-/* MQTT include. */
-#include "aws_mqtt_agent.h"
+#else /* defined(__RX) || defined(__RX__) */
 
-/* Required to get the broker address and port. */
-#include "aws_clientcredential.h"
+///* Standard includes. */
+//#include <stdio.h>
+//#include <string.h>
+//
+///* FreeRTOS includes. */
+//#include "FreeRTOS.h"
+//#include "task.h"
+//#include "semphr.h"
+//
+///* MQTT include. */
+//#include "aws_mqtt_agent.h"
+//
+///* Required to get the broker address and port. */
+//#include "aws_clientcredential.h"
+//
+///* Amazon FreeRTOS OTA agent includes. */
+//#include "aws_ota_agent.h"
 
-/* Amazon FreeRTOS OTA agent includes. */
-#include "aws_ota_agent.h"
+//#include "aws_application_version.h"
+
+#endif /* defined(__RX) || defined(__RX__) */
 
 /* Required for demo task stack and priority */
 #include "aws_ota_update_demo.h"
 #include "aws_demo_config.h"
-#include "aws_application_version.h"
 
 static void App_OTACompleteCallback(OTA_JobEvent_t eEvent );
 

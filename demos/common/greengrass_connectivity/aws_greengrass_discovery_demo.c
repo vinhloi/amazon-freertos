@@ -31,27 +31,37 @@
  * The JSON file is retrieved.
  */
 
+/* Trial use of StdAfx.h to check the availability of the header.
+ * This will be reverted later. */
+#if defined(__RX) || defined(__RX__)
 
-/* Standard includes. */
-#include <stdio.h>
-#include <string.h>
+#include "StdAfx.h"
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
+#else /* defined(__RX) || defined(__RX__) */
 
-/* Greengrass includes. */
-#include "aws_ggd_config.h"
-#include "aws_ggd_config_defaults.h"
-#include "aws_greengrass_discovery.h"
-#include "aws_greengrass_discovery_demo.h"
+///* Standard includes. */
+//#include <stdio.h>
+//#include <string.h>
+//
+///* FreeRTOS includes. */
+//#include "FreeRTOS.h"
+//#include "task.h"
+//#include "semphr.h"
+//
+///* Greengrass includes. */
+//#include "aws_ggd_config.h"
+//#include "aws_ggd_config_defaults.h"
+//#include "aws_greengrass_discovery.h"
+//#include "aws_greengrass_discovery_demo.h"
+//
+///* MQTT includes. */
+//#include "aws_mqtt_agent.h"
 
-/* MQTT includes. */
-#include "aws_mqtt_agent.h"
+#endif /* defined(__RX) || defined(__RX__) */
 
 /* Demo includes. */
 #include "aws_demo_config.h"
+#include "aws_greengrass_discovery_demo.h"
 
 #define ggdDEMO_MAX_MQTT_MESSAGES      3
 #define ggdDEMO_MAX_MQTT_MSG_SIZE      500

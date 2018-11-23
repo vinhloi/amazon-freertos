@@ -27,18 +27,28 @@
 /*
  */
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+/* Trial use of StdAfx.h to check the availability of the header.
+ * This will be reverted later. */
+#if defined(__RX) || defined(__RX__)
 
-/* Logging includes. */
-#include "aws_logging_task.h"
+#include "StdAfx.h"
 
-/* Standard includes. */
-#include <stdio.h>
-#include <stdarg.h>
-#include <string.h>
+#else /* defined(__RX) || defined(__RX__) */
+
+///* FreeRTOS includes. */
+//#include "FreeRTOS.h"
+//#include "task.h"
+//#include "queue.h"
+//
+///* Logging includes. */
+//#include "aws_logging_task.h"
+//
+///* Standard includes. */
+//#include <stdio.h>
+//#include <stdarg.h>
+//#include <string.h>
+
+#endif /* defined(__RX) || defined(__RX__) */
 
 /* Sanity check all the definitions required by this file are set. */
 #ifndef configPRINT_STRING

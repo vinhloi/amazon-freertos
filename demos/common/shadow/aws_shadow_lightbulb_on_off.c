@@ -31,27 +31,40 @@
  * things communicate with the Shadow service.
  */
 
-/* Standard includes. */
-#include <stdio.h>
-#include <string.h>
+/* Trial use of StdAfx.h to check the availability of the header.
+ * This will be reverted later. */
+#if defined(__RX) || defined(__RX__)
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "queue.h"
+#include "StdAfx.h"
 
-/* MQTT include. */
-#include "aws_mqtt_agent.h"
+#else /* defined(__RX) || defined(__RX__) */
+
+///* Standard includes. */
+//#include <stdio.h>
+//#include <string.h>
+//
+///* FreeRTOS includes. */
+//#include "FreeRTOS.h"
+//#include "task.h"
+//#include "semphr.h"
+//#include "queue.h"
+//
+///* MQTT include. */
+//#include "aws_mqtt_agent.h"
+//
+///* Demo configurations. */
+//#include "aws_demo_config.h"
+//
+///* Required to get the broker address and port. */
+//#include "aws_clientcredential.h"
+//
+///* Required for shadow APIs. */
+//#include "aws_shadow.h"
+
+#endif /* defined(__RX) || defined(__RX__) */
 
 /* Demo configurations. */
 #include "aws_demo_config.h"
-
-/* Required to get the broker address and port. */
-#include "aws_clientcredential.h"
-
-/* Required for shadow APIs. */
-#include "aws_shadow.h"
 
 /* Required for shadow demo. */
 #include "aws_shadow_lightbulb_on_off.h"
