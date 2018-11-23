@@ -265,7 +265,7 @@ uint32_t ulRand(void);
 #define configRAND32()    ulRand()
 
 /* The platform FreeRTOS is running on. */
-#define configPLATFORM_NAME    "RX63N GR-SAKURA"
+#define configPLATFORM_NAME    "RenesasRX63N"
 
 /* Header required for the tracealyzer recorder library. */
 //#include "trcRecorder.h"
