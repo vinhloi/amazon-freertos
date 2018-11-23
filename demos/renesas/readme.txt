@@ -638,7 +638,7 @@ Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (4)   (2)        /           x   x       x   -   -   -   -     
 (5)   (4)        /           x   x       x   -   -   -   -     
 (6)   (4)        /           x   x       x   -   -   -   -     
-(7)   (2)        /           x           x   -   -   -   -     
+(7)   (2)        /           x   x       x   -   -   -   -     
 
   x: tested (MQTT echo demo)
   *: now trying(still junk)
@@ -792,6 +792,15 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　各種デバイス設定を「R5F563NYDDFP」に変更。
 　セクション設定でROMの開始位置が0xffc00000から0xfff00000に変更。
 　特に問題なし。動作確認OK。
+　
+　続いてe2 studioのGCC環境。
+　各種デバイス設定を「R5F563NYDDFP」に変更。
+　特に問題なし。動作確認OK。
+　ただし1個課題発見。現状SCI経由UARTでPCにシステムログを送っているが、
+　printf()経由で仮想コンソール（E1_DBG_PORT.RX_DATA/E1_DBG_PORT.TX_DATA)と通信する場合に
+　パスが分からない。CC-RXの場合は、printf()->標準関数ライブラリ->charput() (r_bspのlowlvl.c)->E1_DBG_PORT.TX_DATAの
+　経路であるがGCCの場合はどうか。GCCのマニュアルを確認してBSPに実装する必要がある。
+　⇒BSPの開発者にインプット。
 　
 2018/09/24
 　NoMaY氏がBSPを共通化してくれている。

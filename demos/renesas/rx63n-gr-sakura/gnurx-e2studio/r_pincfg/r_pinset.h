@@ -19,7 +19,7 @@
 /***********************************************************************************************************************
 * File Name    : r_pinset.h
 * Version      : 1.2.5
-* Device(s)    : R5F563NBDxFP
+* Device(s)    : R5F563NYDxFP
 * Tool-Chain   : RXC
 * Description  : Setting of port and mpc registers
 * Creation Date: 25 9 2018
