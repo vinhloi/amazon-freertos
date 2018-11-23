@@ -351,7 +351,7 @@ Compiler: CC-RX V2.08 (you need non-expired evaluation license or product licens
     [en] https://www.renesas.com/us/en/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
     [ja] https://www.renesas.com/jp/ja/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
 
-IDE: e2 studio V7.0.0
+IDE: e2 studio V7.1.0
     [en] https://www.renesas.com/us/en/products/software-tools/tools/ide/e2studio.html
     [ja] https://www.renesas.com/jp/ja/products/software-tools/tools/ide/e2studio.html
     
@@ -449,6 +449,30 @@ Board: RX64M GR-KAEDE
          5(GND)        ----- CN10-1pin
          6(VCC)        ----- CN10-2pin
 
+Board: RX63N GR-SAKURA II
+    [en] http://gadget.renesas.com/en/product/sakura.html
+    [ja] http://gadget.renesas.com/ja/product/sakura.html
+
+         The log will be output from CN8 2pin=TxD0(P20) connector as UART.
+         Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
+         and "LF" only as return code for your console.
+         PMOD UART/USB convertor is provided by Digilent.
+         https://store.digilentinc.com/pmod-usbuart-usb-to-uart-interface/
+
+         Please contact as following.
+         PMOD UART/USB ----- RX63N GR-SAKURA CN8/CN10
+         1             -----
+         2(TxD)        ----- CN8-2pin
+         3             -----
+         4             -----
+         5(GND)        ----- CN10-1pin
+         6(VCC)        ----- CN10-2pin
+         
+         Notice:
+         GR-SAKURA has 2 types of RX63N, 128KB-RAM or 256KB-RAM.
+         Please confirm your GR-SAKURA has 256KB-RAM RX63N (R5F563NYDDFP).
+         Because Amazon FreeRTOS needs RAM size 128KB over.
+         
 Board: RX65N Target Board
     [en] https://www.renesas.com/us/en/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
     [ja] https://www.renesas.com/jp/ja/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
@@ -586,6 +610,7 @@ Borad number:
  (4)RX64M GR-KAEDE
  (5)Renesas Starter Kit+ for RX65N-2MB + Silex SX-ULPGN PMOD
  (6)RX65N Target Board + Silex SX-ULPGN PMOD
+ (7)RX63N GR-SAKURA II
 
 Connection pattern number:
  (1)pattern1: wifi module has TCP/IP and SSL/TLS, Amazon recommends this pattern as RAM<16KB.
@@ -613,6 +638,7 @@ Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
 (4)   (2)        /           x   x       x   -   -   -   -     
 (5)   (4)        /           x   x       x   -   -   -   -     
 (6)   (4)        /           x   x       x   -   -   -   -     
+(7)   (2)        /           x
 
   x: tested (MQTT echo demo)
   *: now trying(still junk)
@@ -745,6 +771,23 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/11/23
+　しばらくGitHub上の公式のアップデートを行っていなかったが開発自体は順調に推移。
+　主にボードの量産手配やテストの段取りを進めている。
+　テストはAmazon FreeRTOSのかなり前のバージョンを土台にして6エラーを残して通った状況。
+　最新版でPKCS周りの実装及びテストが変更になったため、GitHub上で関係者間でコード共有し
+　最新版でテスト環境の最終整備を行う方向で進める。
+　とはいえ11/23-25の3連休は休みであるためシェルティの私物のGR-SAKURAとE2 Liteで
+　開発を進める。26日以降に受験対象の環境であるRX65N RSK (Ether)の環境で
+　テスト環境の最終整備を継続していく。
+　
+　まずはRX63Nの環境の再確認。
+　e2 studioのCC-RX環境から。
+　特に問題なくビルドは通るがRAMが128KBギリギリになっている。
+　NoMaY氏と相談し、256KBのRAM搭載のGR-SAKURA限定にすることで調整済み。
+　各種デバイス設定を「R5F563NYDDFP」に変更。これでRAMが厳しい状況が改善した。
+　合わせてFreeRTOSのヒープ量も86KBから128KBに変更。動作確認OK。
+　
 2018/09/24
 　NoMaY氏がBSPを共通化してくれている。
 　この状態でひとまず全環境の動作を確認し、リリースビルドを作成する。
