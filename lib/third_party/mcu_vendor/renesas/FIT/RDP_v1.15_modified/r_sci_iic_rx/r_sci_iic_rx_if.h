@@ -39,6 +39,10 @@
 #ifndef SCI_IIC_IF_H
     #define SCI_IIC_IF_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
     R_PRAGMA_UNPACK
 
 /***********************************************************************************************************************
@@ -143,6 +147,10 @@ sci_iic_return_t R_SCI_IIC_Close (sci_iic_info_t * p_sci_iic_info);
 uint32_t R_SCI_IIC_GetVersion (void);
 
     R_PRAGMA_PACKOPTION
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SCI_IIC_IF_H */
 

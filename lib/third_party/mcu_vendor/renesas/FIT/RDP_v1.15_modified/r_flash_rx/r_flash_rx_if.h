@@ -134,6 +134,10 @@
 #ifndef FLASH_INTERFACE_HEADER_FILE
 #define FLASH_INTERFACE_HEADER_FILE
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "r_flash_rx_config.h"
 #include "r_flash_targets.h"
 
@@ -526,5 +530,9 @@ flash_err_t R_FLASH_BlankCheck(uint32_t address, uint32_t num_bytes, flash_res_t
 flash_err_t R_FLASH_Control(flash_cmd_t cmd, void *pcfg);
 uint32_t R_FLASH_GetVersion (void);
 void R_FlashCodeCopy(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* FLASH_INTERFACE_HEADER_FILE */

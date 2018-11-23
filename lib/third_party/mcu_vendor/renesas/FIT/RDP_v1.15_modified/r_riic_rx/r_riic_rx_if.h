@@ -54,6 +54,11 @@
 /* Guards against multiple inclusion */
 #ifndef RIIC_IF_H
     #define RIIC_IF_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /***********************************************************************************************************************
  Includes   <System Includes> , "Project Includes"
  **********************************************************************************************************************/
@@ -187,6 +192,10 @@ riic_return_t R_RIIC_Close (riic_info_t *);
 uint32_t R_RIIC_GetVersion (void);
 
     R_PRAGMA_PACKOPTION
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RIIC_IF_H */
 
