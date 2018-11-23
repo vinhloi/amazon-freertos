@@ -622,7 +622,7 @@ void r_sci_iic_io_open (uint8_t port_gr, uint8_t pin_num)
     /* dummy read */
     if (*podr1)
     {
-        nop();
+        R_NOP();
     }
 } /* End of function r_sci_iic_io_open() */
 
@@ -749,7 +749,7 @@ void r_sci_iic_int_disable (sci_iic_info_t * p_sci_iic_info)
     /* dummy read */
     if (*prom->pipr)
     {
-        nop();
+        R_NOP();
     }
 
     /* Disables GROUPBL0 interrupt request enable register. */
@@ -792,7 +792,7 @@ void r_sci_iic_int_enable (sci_iic_info_t * p_sci_iic_info)
     /* dummy read */
     if (*prom->pipr)
     {
-        nop();
+        R_NOP();
     }
 
     /* Enables GROUPBL0 interrupt request enable register. */
@@ -899,7 +899,7 @@ void r_sci_iic_mpc_setting (uint8_t port_gr, uint8_t pin_num, uint8_t set_value)
         /* dummy read */
         if (*ppmr)
         {
-            nop();
+            R_NOP();
         }
     }
 } /* End of function r_sci_iic_mpc_setting() */
@@ -934,7 +934,7 @@ static void sci_iic_clear_ir_flag (sci_iic_info_t * p_sci_iic_info)
         /* dummy read */
         if (*prom->pir_txi)
         {
-            nop();
+            R_NOP();
         }
 
         /* Re-initializes SCI_IIC register because cleared ICCR1.ICE bit. */

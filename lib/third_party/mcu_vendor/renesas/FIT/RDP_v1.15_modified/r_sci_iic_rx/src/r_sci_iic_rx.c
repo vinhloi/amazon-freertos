@@ -2111,7 +2111,7 @@ static void sci_iic_set_sending_data (sci_iic_info_t * p_sci_iic_info, uint8_t *
     /* dummy read */
     if (pregs->TDR)
     {
-        nop();
+        R_NOP();
     }
 } /* End of function sci_iic_set_sending_data() */
 
@@ -2160,7 +2160,7 @@ static void sci_iic_iic_disable (sci_iic_info_t * p_sci_iic_info)
     /* dummy read */
     if (pregs->SCMR.BYTE)
     {
-        nop();
+        R_NOP();
     }
 } /* End of function sci_iic_iic_disable() */
 
