@@ -50,15 +50,21 @@
 /***********************************************************************************************************************
 Includes   <System Includes> , "Project Includes"
 ***********************************************************************************************************************/
-/* If C99 is supported by your toolchain then use the included fixed-width integer, bool, etc support. If not, then
- * use the included r_typedefs.h file.
- */
-#if __STDC_VERSION__ >= 199901L
+/* C99 (or later) is necessary because r_compiler.h uses Pragma operator and variadic macros.
+ * This means that r_typedefs.h is not used in any case. */
+#if !defined(__cplusplus)
+/* All implementation is C99 (or later) */
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #include    <stdint.h>
 #include    <stdbool.h>
 #include    <stddef.h>
 #else
-#include    "r_typedefs.h"
+#error "This version of FIT needs C99 (or later)."
+#endif
+#else
+/* Interface might be referred from C++ */
+#include    <stdint.h>
+#include    <stddef.h>
 #endif
 
 #if defined(__CCRX__) || defined(__ICCRX__)
