@@ -72,15 +72,12 @@ Includes   <System Includes> , "Project Includes"
  Private global variables and functions
  **********************************************************************************************************************/
 static TaskHandle_t ether_receive_check_task_handle = 0;
+static TaskHandle_t ether_link_check_task_handle = 0;
 static TaskHandle_t xTaskToNotify = NULL;
-static TimerHandle_t timer_handle;
-static uint32_t timer_id;
-
-static uint32_t tcpudp_time_cnt;
 
 static int16_t SendData( uint8_t *pucBuffer, size_t length );
 static int InitializeNetwork(void);
-static void check_ether_link(TimerHandle_t xTimer );
+static void check_ether_link(void);
 static void prvEMACDeferredInterruptHandlerTask( void *pvParameters );
 static void clear_all_ether_rx_discriptors(uint32_t event);
 
@@ -352,8 +349,6 @@ static int InitializeNetwork(void)
 		eth_ret = R_ETHER_CheckLink_ZC(0);
 	} while(ETHER_SUCCESS != eth_ret);
 
-	vTaskDelay(3000);
-
 	return_code = xTaskCreate(prvEMACDeferredInterruptHandlerTask,
                               "ETHER_RECEIVE_CHECK_TASK",
 							  100,
@@ -366,13 +361,16 @@ static int InitializeNetwork(void)
         return pdFALSE;
     }
 
-	timer_id = 1;
-	timer_handle = xTimerCreate("CHECK_ETHER_LINK_TIMER",
-                                250,
-								pdTRUE,
-								&timer_id,
-								&check_ether_link);
-	xTimerStart(timer_handle, 0);
+	return_code = xTaskCreate(check_ether_link,
+                              "CHECK_ETHER_LINK_TIMER",
+							  100,
+							  0,
+							  configMAX_PRIORITIES,
+							  &ether_link_check_task_handle);
+    if (pdFALSE == return_code)
+    {
+        return pdFALSE;
+    }
 
     return pdTRUE;
 } /* End of function InitializeNetwork() */
@@ -455,13 +453,13 @@ void EINT_Trig_isr(void *ectrl)
  * Arguments    : none
  * Return Value : none
  **********************************************************************************************************************/
-static void check_ether_link(TimerHandle_t xTimer )
+static void check_ether_link(void)
 {
-	/* Avoid compiler warning about unreferenced parameter. */
-	(void)xTimer;
-
-	R_ETHER_LinkProcess(0);
-	tcpudp_time_cnt++;
+	while(1)
+	{
+    	vTaskDelay(1000);
+		R_ETHER_LinkProcess(0);
+	}
 } /* End of function check_ether_link() */
 
 static void clear_all_ether_rx_discriptors(uint32_t event)
