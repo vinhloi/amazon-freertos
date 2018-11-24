@@ -776,6 +776,89 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　ひとまずビルドが通って何かしらテストログが出力されることを確認。
 　ただし、DHCPが完了する前にテストが走り始めてしまい、うまくいかない。
 　ネットワーク初期化周りを調整する必要がありそうだ。
+　
+　NetworkInterface.c で リンク状態をチェックするためにソフトウェアタイマを立ち上げているが
+　起動後しばらくしないと動かないようだ。受信タスクは動いているので受信タスクと同じよう
+　タスクでリンク状態を確認するよう変更。
+　共通コードなので他の環境に影響していないか要確認。（多分大丈夫なはず）
+　
+　テストが動き出した。以下でFailになっている。
+　TEST(Full_TCP, AFQP_SOCKETS_Socket_InvalidTooManySockets)
+　FAIL: Expected 1 Was 0. Max num sockets test failed
+　
+　aws_test_tcp.c でテストOKになっているテストケースは#if 0で省略しておく。（コミットはしない）
+　
+　デバッガで中身を見てみると、2個目のソケットの生成でエラーを吐いている様子。
+　→prvSOCKETS_Socket_InvalidTooManySockets()の1772行目
+　　xSocket = SOCKETS_Socket( SOCKETS_AF_INET, SOCKETS_SOCK_STREAM, SOCKETS_IPPROTO_TCP );
+
+　1746行目に次のようなコメントがあり、ifdef 対象環境ではテストが無効化されている。
+　/* Socket can be created as much as there is memory */
+
+　このテストはTCP/IPを無線LANモジュール側にオフロードしている場合に、無線LANモジュール側が
+　生成できるソケットの限界値を確かめるためのテストだ。
+　RXマイコンもメモリがあるだけソケットを作れるのでテストを無効化して良いはず。
+　ただし、同じRXマイコンでも環境によってはTCP/IPを無線LANモジュール側にオフロードするので
+　さらに分岐が必要。要検討。とりあえず __RX のときはテスト無効化とする。
+　AFQP_SOCKETS_Socket_InvalidTooManySocketsのテストがOKとなった。
+　
+　次のエラーはAFQP_SOCKETS_Socket_InvalidInputParamsだがよく分からない。保留。
+　ここまででTCPのパラメータ入出力関係のテストがOKになるようだ。
+　
+　次のテストは暗号化されたエコーサーバとの通信テスト。
+　AWSのクレデンシャルを設定してそれを使ってテストするようだ。
+　以下のようにaws_test_tcp.hにコメントがある。
+　
+　/* Encrypted Echo Server.
+　* If tcptestSECURE_SERVER is set to 1, the following must be updated:
+　* 1. aws_clientcredential.h to use a valid AWS endpoint.
+　* 2. aws_clientcredential_keys.h with corresponding AWS keys.
+　* 3. tcptestECHO_SERVER_TLS_ADDR0-3 with the IP address of an
+　* echo server using TLS.
+　* 4. tcptestECHO_PORT_TLS, with the port number of the echo server
+　* using TLS.
+　* 5. tcptestECHO_HOST_ROOT_CA with the trusted root certificate of the
+　* echo server using TLS. */
+　
+　1と2は実験用のクレデンシャルデータを使えばOK。
+　tcptestECHO_SERVER_TLS_ADDR0-3はなんぞ？
+　デフォルトで入っている 34.218.25.197 は何だろう。
+
+　whoisで調べたら以下がでてきた。
+　ec2-34-218-25-197.us-west-2.compute.amazonaws.com
+　
+　よく分からないのでマニュアルを見てみよう。
+　https://github.com/renesas-rx/amazon-freertos/tree/master/tests
+　　→Amazon FreeRTOS Qualification Program Developer Guide.pdf
+　　
+　tcptestECHO_SERVER_TLS_ADDR0で検索したら出てきた。
+　Appendix L: TLS Server Setup
+　
+　ローカルでTLSサーバを立ててそれを対向にしてテストを実行するようだ。
+　OpenSSL の go を使うようだ。cygwinで動かしてみよう。
+　go をWindowsにインストールしたら cygwin で動いた。
+　https://golang.org/dl/
+　
+　RXマイコン側に設定を施す。ローカルのTLSサーバのIPアドレスを
+　tcptestECHO_SERVER_TLS_ADDR0-3に入れて、tcptestECHO_PORT_TLSのポート番号をセット。
+　TLSサーバ側のポート番号は9000番になった。
+　tcptestECHO_HOST_ROOT_CAは、適当に作ったオレオレ証明書を貼れば良いようだ。
+
+　確かAmazon FreeRTOSのぱっけー所の中のtoolsフォルダに
+　PEMをC言語に変換する便利ツールが入っていたはず。気が利いてますな。
+　https://github.com/renesas-rx/amazon-freertos/blob/master/tools/certificate_configuration/PEMfileToCString.html
+　
+　ここまでで以下テストがパスするようになった。
+　TEST(Full_TCP, AFQP_SECURE_SOCKETS_CloseInvalidParams) PASS
+　TEST(Full_TCP, AFQP_SECURE_SOCKETS_CloseWithoutReceiving) PASS
+　TEST(Full_TCP, AFQP_SECURE_SOCKETS_ShutdownInvalidParams) PAS
+　TEST(Full_TCP, AFQP_SECURE_SOCKETS_ShutdownWithoutReceiving) PASS
+　TEST(Full_TCP, AFQP_SECURE_SOCKETS_Recv_On_Unconnected_Socket) PASS
+　
+　NGが出ているのは以下。
+　TEST(Full_TCP, AFQP_SECURE_SOCKETS_Threadsafe_SameSocketDifferentTasks)
+　
+　ひとまずここまでコミットしてみる。
 
 2018/11/23
 　しばらくGitHub上の公式のアップデートを行っていなかったが開発自体は順調に推移。
