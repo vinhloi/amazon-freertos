@@ -96,7 +96,12 @@ Exported global functions (to be accessed by other files)
 
 
 /* ========== Keywords ========== */
+#if !(defined(__CCRX__) && defined(__cplusplus))
 #define R_PRAGMA(...)    _Pragma(#__VA_ARGS__)
+#else
+/* CC-RX' C++ mode does not support Pragma operator and variadic macros */
+#define R_PRAGMA(x)
+#endif
 
 #if defined(__CCRX__)
 
@@ -279,7 +284,11 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 #define _R_ATTRIB_SECTION_CHANGE_B4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B, B##section_tag) /* The CC-RX does not add postfix '_4' */
 #define _R_ATTRIB_SECTION_CHANGE_P(section_tag)            __R_ATTRIB_SECTION_CHANGE_F(P, P##section_tag)
 
+#if !defined(__cplusplus)
 #define R_ATTRIB_SECTION_CHANGE(type, section_tag, ...)    _R_ATTRIB_SECTION_CHANGE_##type##__VA_ARGS__(section_tag)
+#else
+/* CC-RX' C++ mode does not support variadic macros */
+#endif
 #define R_ATTRIB_SECTION_CHANGE_END                        R_PRAGMA(section)
 
 #elif defined(__GNUC__)
@@ -446,7 +455,11 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 
 #if defined(__CCRX__)
 
+#if !defined(__cplusplus)
 #define R_ASM(...)        __VA_ARGS__
+#else
+/* CC-RX' C++ mode does not support variadic macros */
+#endif
 #define R_LAB_NEXT(n)     ?+
 #define R_LAB_PREV(n)     ?-
 #define R_LAB(n_colon)    R_ASM(?:)
