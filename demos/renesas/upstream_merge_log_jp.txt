@@ -7,6 +7,16 @@ upstream merge log (only Japanese language)
 --------------------------------------------------------------------------
 2018/11/25
 
+Follow the upstream v1.4.4 + patches Step 2/2 by NoMaY
+
+commit message:
+"Follow upstream v1.4.4+patches Step 2/2 : Update files which may cause changes of the MOT files of the Renesas Projects (to be precise, NO CHANGE in this time). i.e. common files which are used in the Renesas Projects (some of them are not actually used but only linked), and Renesas specific files (to be precise, NOTHING in this time) which need to follow changes of vendor specific files."
+
+特記事項無し
+
+--------------------------------------------------------------------------
+2018/11/25
+
 Follow the upstream v1.4.4 + patches Step 1/2 by NoMaY
 
 commit message:
