@@ -771,6 +771,48 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/11/25
+　3連休のまとめ。他の仕事があるので3日目はAmazon関連はこれにて終了。
+　テスト環境はだいたい整った。
+　　https://github.com/renesas-rx/amazon-freertos/tree/master/tests
+　　→Amazon FreeRTOS Qualification Program Developer Guide.pdf
+　　
+　マニュアルが良くできている。これを見ればだいたい分かる。
+　テストは最低限以下が必要。
+　　testrunnerFULL_TCP_ENABLED
+　　testrunnerFULL_MQTT_ENABLED
+　　testrunnerFULL_PKCS11_ENABLED
+　　testrunnerFULL_TLS_ENABLED
+　　testrunnerFULL_WIFI_ENABLED
+　　
+　現時点でRX63N GR-SAKURAにてtestrunnerFULL_TCP_ENABLEDが概ね動いているところ。
+　動いてないテストは以下2点。（AFQP_SECURE_SOCKETS_Threadsafe_SameSocketDifferentTasksの
+　後にまだ動いてないテストがある可能性有り）
+　　TEST(Full_TCP, AFQP_SOCKETS_Socket_InvalidInputParams)
+　　TEST(Full_TCP, AFQP_SECURE_SOCKETS_Threadsafe_SameSocketDifferentTasks)
+　
+　AFQP_SECURE_SOCKETS_Threadsafe_SameSocketDifferentTasksのあとにヒープ不足になって
+　システムが停止する状態。
+　
+　Full_TCPテストの通信相手は以下2種類。
+　　TCPのエコーサーバ
+　　TLSのエコーサーバ
+　　
+　これらはgo言語で書かれたプログラムで動作する。必要に応じてgo言語をPC環境にインストールが必要。
+　サーバプログラムは以下に格納されている。
+　　https://github.com/renesas-rx/amazon-freertos/tree/master/tools/echo_server
+　
+　これらを動かしておいて、マイコン上のソフトは以下コードにサーバ情報を設定しておけば良い。
+　　https://github.com/renesas-rx/amazon-freertos/blob/master/tests/common/include/aws_test_tcp.h
+　
+　サーバ証明書をセットする必要があるが、PEMからC言語に変換するツールが準備されている。
+　　https://github.com/renesas-rx/amazon-freertos/blob/master/tools/certificate_configuration/PEMfileToCString.html
+　
+　マニュアルを見てみるとあとややこしい感じがするのは、Appendix G: TLSくらいか。
+　改ざんされた証明書データを準備する必要などがあるようだが、まあマニュアル通りに進めていけば大丈夫そう。
+　
+　ひとまず以上。
+
 2018/11/24
 　GR-SAKURAでテスト環境を構築。
 　ひとまずビルドが通って何かしらテストログが出力されることを確認。
@@ -844,7 +886,7 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　TLSサーバ側のポート番号は9000番になった。
 　tcptestECHO_HOST_ROOT_CAは、適当に作ったオレオレ証明書を貼れば良いようだ。
 
-　確かAmazon FreeRTOSのぱっけー所の中のtoolsフォルダに
+　確かAmazon FreeRTOSのパッケージの中のtoolsフォルダに
 　PEMをC言語に変換する便利ツールが入っていたはず。気が利いてますな。
 　https://github.com/renesas-rx/amazon-freertos/blob/master/tools/certificate_configuration/PEMfileToCString.html
 　
