@@ -28,6 +28,8 @@
 #  define __STDC_LIMIT_MACROS 1
 #endif
 
+#if !defined(__STDC_HOSTED__) || (__STDC_HOSTED__-0 == 1 && !defined(__RX) && !defined(__RX__))
+
 #include "cbor.h"
 #include "compilersupport_p.h"
 #include "math_support_p.h"
@@ -467,5 +469,7 @@ CborError cbor_value_to_pretty_advance(FILE *out, CborValue *value)
 {
     return value_to_pretty(out, value);
 }
+
+#endif /* __STDC_HOSTED__ check */
 
 /** @} */

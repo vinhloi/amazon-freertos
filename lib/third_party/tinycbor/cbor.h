@@ -466,7 +466,7 @@ CBOR_INLINE_API CborError cbor_value_get_double(const CborValue *value, double *
 }
 
 /* The following API requires a hosted C implementation (uses FILE*) */
-#if !defined(__STDC_HOSTED__) || __STDC_HOSTED__-0 == 1
+#if !defined(__STDC_HOSTED__) || (__STDC_HOSTED__-0 == 1 && !defined(__RX) && !defined(__RX__))
 
 /* Human-readable (dump) API */
 CBOR_API CborError cbor_value_to_pretty_advance(FILE *out, CborValue *value);
