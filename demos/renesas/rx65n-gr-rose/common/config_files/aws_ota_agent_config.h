@@ -32,6 +32,13 @@
 #define _AWS_OTA_AGENT_CONFIG_H_
 
 /**
+ * @brief Special OTA Agent printing definition.
+ *
+ * I(NoMaY) guess that it is better for you to set OTA_DEBUG_LOG_LEVEL to 0 for mass production.
+ */
+#define OTA_DEBUG_LOG_LEVEL                     1
+
+/**
  * @brief The number of words allocated to the stack for the OTA agent.
  */
 #define otaconfigSTACK_SIZE                     3584U

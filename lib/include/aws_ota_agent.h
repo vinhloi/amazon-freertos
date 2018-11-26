@@ -31,6 +31,8 @@
 #ifndef _AWS_OTA_AGENT_H_
 #define _AWS_OTA_AGENT_H_
 
+#include "aws_ota_agent_config.h"
+
 /* Type definitions for OTA Agent */
 #include "aws_ota_types.h"
 
@@ -51,8 +53,12 @@ extern const char pcOTA_JSON_FileSignatureKey[ OTA_FILE_SIG_KEY_STR_MAX_LENGTH ]
 /**
  * @brief Special OTA Agent printing definition.
  */
+#if !(defined(__RX) || defined(__RX__))
 #define OTA_DEBUG_LOG_LEVEL 1
-#if OTA_DEBUG_LOG_LEVEL >= 1
+#else
+/* OTA_DEBUG_LOG_LEVEL is defined in demos/renesas/XXXX/common/config_files/aws_ota_agent_config.h */
+#endif
+#if defined(OTA_DEBUG_LOG_LEVEL) && OTA_DEBUG_LOG_LEVEL >= 1
 #define DEFINE_OTA_METHOD_NAME(name) static const char OTA_METHOD_NAME[] = name;
 #define OTA_LOG_L1 vLoggingPrintf
 #else
@@ -63,7 +69,7 @@ extern const char pcOTA_JSON_FileSignatureKey[ OTA_FILE_SIG_KEY_STR_MAX_LENGTH ]
 /* CC-RX' C++ mode does not support variadic macros */
 #endif
 #endif
-#if OTA_DEBUG_LOG_LEVEL >= 2
+#if defined(OTA_DEBUG_LOG_LEVEL) && OTA_DEBUG_LOG_LEVEL >= 2
 #define DEFINE_OTA_METHOD_NAME_L2(name) static const char OTA_METHOD_NAME[] = name;
 #define OTA_LOG_L2 vLoggingPrintf
 #else
@@ -74,7 +80,7 @@ extern const char pcOTA_JSON_FileSignatureKey[ OTA_FILE_SIG_KEY_STR_MAX_LENGTH ]
 /* CC-RX' C++ mode does not support variadic macros */
 #endif
 #endif
-#if OTA_DEBUG_LOG_LEVEL >= 3
+#if defined(OTA_DEBUG_LOG_LEVEL) && OTA_DEBUG_LOG_LEVEL >= 3
 #define DEFINE_OTA_METHOD_NAME_L3(name) static const char OTA_METHOD_NAME[] = name;
 #define OTA_LOG_L3 vLoggingPrintf
 #else
