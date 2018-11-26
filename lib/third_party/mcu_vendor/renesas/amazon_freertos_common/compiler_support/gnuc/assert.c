@@ -1,3 +1,6 @@
+#if 0 /* This file will be removed later because assert() macro in the tinycbor
+was replaced by modifying assert_p.h and cbor.h to call vAssertCalled() when
+GNURX's __RX__ is defined. */
 #include <assert.h>
 #include "FreeRTOS.h"
 
@@ -26,3 +29,4 @@ void __assert(const char *file, int line, const char *failedexpr)
 
     for(;;){}
 }
+#endif

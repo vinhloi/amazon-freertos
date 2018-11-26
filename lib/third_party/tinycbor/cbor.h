@@ -32,7 +32,7 @@
 #include <string.h>
 #include <stdio.h>
 
-
+#include "assert_p.h"       /* Always include last */
 
 #ifdef __cplusplus
 extern "C" {
