@@ -32,7 +32,7 @@
 #define _AWS_OTA_AGENT_CONFIG_H_
 
 /**
- * @brief Special OTA Agent printing definition.
+ * @brief Special OTA Agent printing definition (moved from lib/include/aws_ota_agent.h).
  *
  * I(NoMaY) guess that it is better for you to set OTA_DEBUG_LOG_LEVEL to 0 for mass production.
  */
