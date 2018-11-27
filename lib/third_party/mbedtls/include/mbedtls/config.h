@@ -1096,7 +1096,9 @@
  *
  * Enable the checkup functions (*_self_test).
  */
-//#define MBEDTLS_SELF_TEST
+#if !(defined(__RX) || defined(__RX__))
+#define MBEDTLS_SELF_TEST
+#endif
 
 /**
  * \def MBEDTLS_SHA256_SMALLER
