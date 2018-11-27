@@ -23,11 +23,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  http://www.FreeRTOS.org
 */
 
-#if !defined(CPPAPP) || CPPAPP == 0
+#if defined(CPPAPP) && CPPAPP != 0
 
 /* Application Framework include. */
 #include "StdAfx.h"
 #include "RenesasRX.h" // unnecessary but for checking compile warnings and errors
+
+extern "C" { // FIXME: Make 'extern C' unnecessary
 
 /* Demo includes. */
 #include "aws_demo_runner.h"
@@ -35,15 +37,29 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 /* Renesas */
 #include "serial_term_uart.h"
 
+extern void vApplicationDaemonTaskStartupHook( void );
+extern const char * pcApplicationHostnameHook( void );
+extern const AppVersion32_t xAppFirmwareVersion;
+
+} /* extern "C" { */
+
 #define mainLOGGING_TASK_STACK_SIZE         ( configMINIMAL_STACK_SIZE * 6 )
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
 #define mainTEST_RUNNER_TASK_STACK_SIZE    ( configMINIMAL_STACK_SIZE * 8 )
 
 /* Declare the firmware version structure for all to see. */
 const AppVersion32_t xAppFirmwareVersion = {
-   .u.x.ucMajor = APP_VERSION_MAJOR,
-   .u.x.ucMinor = APP_VERSION_MINOR,
-   .u.x.usBuild = APP_VERSION_BUILD,
+#if defined(__LIT)
+   APP_VERSION_BUILD,
+   APP_VERSION_MINOR,
+   APP_VERSION_MAJOR,
+#elif defined(__BIG)
+   APP_VERSION_MAJOR,
+   APP_VERSION_MINOR,
+   APP_VERSION_BUILD,
+#else
+   #error "Unable to determine byte order!"
+#endif
 };
 
 /* The MAC address array is not declared const as the MAC address will
@@ -112,7 +128,7 @@ static void prvMiscInitialization( void );
 /**
  * @brief Application runtime entry point.
  */
-void main( void )
+int main( void )
 {
     /* Perform any hardware initialization that does not require the RTOS to be
      * running.  */
@@ -235,4 +251,4 @@ const char * pcApplicationHostnameHook( void )
 
 #endif
 
-#endif /* !defined(CPPAPP) || CPPAPP == 0 */
+#endif /* defined(CPPAPP) && CPPAPP != 0 */
