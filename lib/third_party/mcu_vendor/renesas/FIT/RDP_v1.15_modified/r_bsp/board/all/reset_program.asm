@@ -69,12 +69,13 @@ __INITSCT:
     mov    #00h,r2          ;;load R2 reg with zero
     mov    #_ebss, r3       ;;store the end address of bss in R3
     mov    #_bss, r1        ;;store the start address of bss in R1
-    sub    r1,r3            ;;ize of bss section in R3 (R3=R3-R1)
+    sub    r1,r3            ;;size of bss section in R3 (R3=R3-R1)
     sstr.b
     popm    r1-r3
     rts
 
-#ifdef CPPAPP
+    .ifdef CPPAPP
+    .if CPPAPP
 ;;init global class object
     .global __CALL_INIT
     .type   __CALL_INIT,@function
@@ -161,7 +162,8 @@ __rx_init_end:
     .global __rx_fini_end
 __rx_fini_end:
 
-#endif
+    .endif
+    .endif
 
 ;;call to exit
 _exit:

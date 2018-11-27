@@ -100,7 +100,7 @@ External function Prototypes
 /* Initialize C runtime environment */
 extern void _INITSCT(void);
 
-#if defined(CPPAPP)
+#if defined(CPPAPP) && CPPAPP != 0
 /* Initialize C++ global class object */
 extern void _CALL_INIT(void);
 #endif
@@ -224,7 +224,7 @@ int __low_level_init ( void )
     /* Initialize C runtime environment */
     _INITSCT();
 
-#if defined(CPPAPP)
+#if defined(CPPAPP) && CPPAPP != 0
     /* Initialize C++ global class object */
     _CALL_INIT();
 #endif
