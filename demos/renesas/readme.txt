@@ -469,8 +469,8 @@ Board: RX63N GR-SAKURA II
          6(VCC)        ----- CN10-2pin
          
          Notice:
-         GR-SAKURA has 2 types of RX63N, 128KB-RAM or 256KB-RAM.
-         Please confirm your GR-SAKURA has 256KB-RAM RX63N (R5F563NYDDFP).
+         GR-SAKURA has 2 types. GR-SAKURA has 128KB-RAM, GR-SAKURA II has 256KB-RAM.
+         Please confirm your GR-SAKURA is GR-SAKURA II that has 256KB-RAM RX63N (R5F563NYDDFP).
          Because Amazon FreeRTOS needs RAM size 128KB over.
          
 Board: RX65N Target Board
