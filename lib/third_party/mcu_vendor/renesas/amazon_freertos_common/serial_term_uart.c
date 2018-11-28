@@ -34,7 +34,7 @@
 /*****************************************************************************
 Includes   <System Includes> , "Project Includes"
 ******************************************************************************/
-#include <stdio.h>              // For sprintf
+#include <string.h>              // For strlen
 #include "FreeRTOS.h"
 #include "serial_term_uart.h"   // Serial Transfer Demo interface file.
 #include "platform.h"           // Located in the FIT BSP module
@@ -177,25 +177,20 @@ static void my_sci_callback(void *pArgs)
 } /* End of function my_sci_callback() */
 
 
-void uart_string_printf(char * pString)
-{
-	uint8_t out_str[configLOGGING_MAX_MESSAGE_LENGTH];
-	//uint8_t out_str[120];
+void uart_string_printf(char *pString) {
 	int32_t length = 0;
 	sci_err_t sci_err;
 	uint32_t retry = 0xFFFF;
 
-	length = sprintf((char *)out_str, pString);
-	if (length > 0)
-	{
-		do
-		{
-			sci_err = R_SCI_Send(my_sci_handle, out_str, (uint16_t)length);
+	length = strlen(pString);
+
+	if (length > 0) {
+		do {
+			sci_err = R_SCI_Send(my_sci_handle, pString, (uint16_t) length);
 			retry--;
 		} while ((SCI_ERR_XCVR_BUSY == sci_err) && (retry > 0)); // retry if previous transmission still in progress.
 
-		if (SCI_SUCCESS != sci_err)
-		{
+		if (SCI_SUCCESS != sci_err) {
 			R_NOP(); //TODO error handling code
 		}
 	}
