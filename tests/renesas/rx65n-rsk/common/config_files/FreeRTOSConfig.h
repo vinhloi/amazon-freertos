@@ -163,7 +163,7 @@ extern void vLoggingPrintf( const char * pcFormat, ... );
 
 
 /* Map the logging task's printf to the board specific output function. */
-#define configPRINT_STRING( x )    uart_string_printf( x );
+#define configPRINT_STRING( x )    uart_string_printf( x )
 
 /* Sets the length of the buffers into which logging messages are written - so
  * also defines the maximum length of each log message. */
