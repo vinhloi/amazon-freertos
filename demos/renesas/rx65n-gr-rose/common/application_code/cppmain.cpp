@@ -29,20 +29,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include "StdAfx.h"
 #include "RenesasRX.h" // unnecessary but for checking compile warnings and errors
 
-extern "C" { // FIXME: Make 'extern C' unnecessary
-
-/* Demo includes. */
-#include "aws_demo_runner.h"
-
-/* Renesas */
-#include "serial_term_uart.h"
-
-extern void vApplicationDaemonTaskStartupHook( void );
-extern const char * pcApplicationHostnameHook( void );
-extern const AppVersion32_t xAppFirmwareVersion;
-
-} /* extern "C" { */
-
 #define mainLOGGING_TASK_STACK_SIZE         ( configMINIMAL_STACK_SIZE * 6 )
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
 #define mainTEST_RUNNER_TASK_STACK_SIZE    ( configMINIMAL_STACK_SIZE * 8 )
@@ -239,8 +225,6 @@ void prvWifiConnect( void )
 #endif
 /*-----------------------------------------------------------*/
 
-#if ( ipconfigUSE_LLMNR != 0 ) || ( ipconfigUSE_NBNS != 0 ) || ( ipconfigDHCP_REGISTER_HOSTNAME == 1 )
-
 const char * pcApplicationHostnameHook( void )
 {
     /* Assign the name "FreeRTOS" to this network node.  This function will
@@ -248,7 +232,6 @@ const char * pcApplicationHostnameHook( void )
      * address plus this name. */
     return "RX65N_FREERTOS_TCP_TEST";
 }
-
-#endif
+/*-----------------------------------------------------------*/
 
 #endif /* defined(CPPAPP) && CPPAPP != 0 */

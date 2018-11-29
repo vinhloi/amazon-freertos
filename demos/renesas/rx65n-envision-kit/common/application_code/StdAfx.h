@@ -7,10 +7,6 @@
 #ifndef _STDAFX_H_
 #define _STDAFX_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -20,6 +16,15 @@ extern "C" {
 #include "timers.h"
 #include "event_groups.h"
 #include "message_buffer.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* FreeRTOS headers seem to lack following declaration */
+#if( configUSE_DAEMON_TASK_STARTUP_HOOK == 1 )
+extern void vApplicationDaemonTaskStartupHook( void );
+#endif /* configUSE_DAEMON_TASK_STARTUP_HOOK */
 
 /* Version includes. */
 #include "aws_application_version.h"
@@ -62,7 +67,7 @@ extern "C" {
 
 /* FreeRTOS+TCP includes. */
 #include "FreeRTOS_IP.h" // Comment out when unnecessary
-////#include "FreeRTOS_Sockets.h"
+////#include "FreeRTOS_Sockets.h" // Using aws_secure_sockets.h is better
 
 /* TCP/IP abstraction includes. */
 #include "aws_secure_sockets.h"
@@ -75,6 +80,9 @@ extern "C" {
 #include <string.h>
 #include <stdarg.h>
 #include <stdint.h>
+
+/* Project specific includes. (You can replace headers for your needs.) */
+#include "aws_demo_runner.h"
 
 #ifdef __cplusplus
 }

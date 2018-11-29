@@ -25,12 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /* Application Framework include. */
 #include "StdAfx.h"
-
-/* Demo includes. */
-#include "aws_demo_runner.h"
-
-/* Renesas */
-#include "serial_term_uart.h"
+#include "RenesasRX.h" // unnecessary but for checking compile warnings and errors
 
 #define mainLOGGING_TASK_STACK_SIZE         ( configMINIMAL_STACK_SIZE * 6 )
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
@@ -220,8 +215,6 @@ void prvWifiConnect( void )
 #endif
 /*-----------------------------------------------------------*/
 
-#if ( ipconfigUSE_LLMNR != 0 ) || ( ipconfigUSE_NBNS != 0 ) || ( ipconfigDHCP_REGISTER_HOSTNAME == 1 )
-
 const char * pcApplicationHostnameHook( void )
 {
     /* Assign the name "FreeRTOS" to this network node.  This function will
@@ -229,5 +222,4 @@ const char * pcApplicationHostnameHook( void )
      * address plus this name. */
     return "RX65N_FREERTOS_TCP_TEST";
 }
-
-#endif
+/*-----------------------------------------------------------*/
