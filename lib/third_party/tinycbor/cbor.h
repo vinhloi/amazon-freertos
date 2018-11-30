@@ -371,8 +371,11 @@ CBOR_INLINE_API CborError cbor_value_get_string_length(const CborValue *value, s
 
 CBOR_PRIVATE_API CborError _cbor_value_copy_string(const CborValue *value, void *buffer,
                                                    size_t *buflen, CborValue *next);
+#if !defined(__RX) && !defined(__RX__)
+
 CBOR_PRIVATE_API CborError _cbor_value_dup_string(const CborValue *value, void **buffer,
                                                   size_t *buflen, CborValue *next);
+#endif /* __RX and __RX__ check */
 
 CBOR_API CborError cbor_value_calculate_string_length(const CborValue *value, size_t *length);
 
@@ -389,6 +392,8 @@ CBOR_INLINE_API CborError cbor_value_copy_byte_string(const CborValue *value, ui
     return _cbor_value_copy_string(value, buffer, buflen, next);
 }
 
+#if !defined(__RX) && !defined(__RX__)
+
 CBOR_INLINE_API CborError cbor_value_dup_text_string(const CborValue *value, char **buffer,
                                                      size_t *buflen, CborValue *next)
 {
@@ -401,6 +406,8 @@ CBOR_INLINE_API CborError cbor_value_dup_byte_string(const CborValue *value, uin
     assert(cbor_value_is_byte_string(value));
     return _cbor_value_dup_string(value, (void **)buffer, buflen, next);
 }
+
+#endif /* __RX and __RX__ check */
 
 /* ### TBD: partial reading API */
 
