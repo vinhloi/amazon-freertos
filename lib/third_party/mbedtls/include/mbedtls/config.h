@@ -1096,9 +1096,7 @@
  *
  * Enable the checkup functions (*_self_test).
  */
-#if !(defined(__RX) || defined(__RX__))
 #define MBEDTLS_SELF_TEST
-#endif
 
 /**
  * \def MBEDTLS_SHA256_SMALLER
@@ -2874,6 +2872,9 @@
 #include YOTTA_CFG_MBEDTLS_USER_CONFIG_FILE
 #elif defined(MBEDTLS_USER_CONFIG_FILE)
 #include MBEDTLS_USER_CONFIG_FILE
+#elif defined(__RX) || defined(__RX__)
+//FIXME: Is a command line option better?
+#include "mbedtls_user_config.h"
 #endif
 
 #include "check_config.h"
