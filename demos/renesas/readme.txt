@@ -845,7 +845,64 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　ここまでで一旦コードを登録。
 　
+　次にMQTTのエラーを見てみる。
+　以下2個がエラーを出力している。
+　AFQP_MQTT_Init_NULLParams
+　AFQP_MQTT_Connect_NULLParams
 　
+　mqttconfigASSERT()がabortできていないことが原因のようだ。
+　aws_mqtt_config.h のmqttconfigASSERT()の実装を修正し全件OKとなった。
+　
+　次にPKCSのエラーを見てみる。
+　以下7個がエラーを出力している。
+　AFQP_Verify_HappyPath
+　AFQP_Verify_InvalidParams
+　AFQP_TestRSAExport
+　AFQP_TestECDSAExport
+　AFQP_SignVerifyRoundTripWithCorrectRSAPublicKey
+　AFQP_SignVerifyRoundTripWithCorrectECPublicKey
+　AFQP_KeyGenerationEcdsaHappyPath
+　
+　AFQP_Verify_HappyPathを追いかけてみる。
+　どうやらPKCS11関連の証明書、秘密鍵をストレージに保存する際に属性情報がうまく保持できていないようだ。
+　public keyなのにprivate keyと判定されて属性エラーになって落ちている様子。
+　
+　PKCSの実装体(aws_pkcs11_pal.c)を見直す。
+　pkcs_data[xHandle - 1].Label.type の値で判断していたが、他社の実装を参考に
+　pkcs_data[xHandle - 1].Label.value の値がpkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLSなどと
+　一致しているかどうかで判断するように変更。
+　
+　これでエラーは残り以下2点になった。
+　
+　AFQP_SignVerifyRoundTripWithCorrectECPublicKey
+　AFQP_KeyGenerationEcdsaHappyPath
+　
+　local_storage[]の容量が足りないようなので増やしておく。
+　PKCS11_PAL_SaveObject()ですでに登録済みのラベルと同じラベルが来た時に、
+　すでに登録済みのラベルはPKCS_DATA_STATUS_DELETED状態にしているが、
+　すでにPKCS_DATA_STATUS_DELETED状態のラベルが居る場合の実装が抜けていた。
+　すでにPKCS_DATA_STATUS_DELETED状態のラベルは無視してサーチするように変更。
+　
+　これでエラーは残り以下1点になった。
+　
+　AFQP_KeyGenerationEcdsaHappyPath
+　
+　以下aws_pkcs11_mbedtls.c の1482行目あたりのコードが影響して署名検証に失敗している様子。
+　意図が分からないのでAmazon側に確認。
+　ひとまず保留。
+　
+        *pxPrivateKey = PKCS11_PAL_SaveObject( &pxPrivateTemplate->xLabel, pucDerFile + pkcs11KEY_GEN_MAX_DER_SIZE - xResult, xResult );
+        /* FIXME: This is a hack.*/
+        *pxPublicKey = *pxPrivateKey + 1;
+        xResult = CKR_OK;
+
+　ここまでで、全テストを通しで走らせてみる。エラーは残り2件。もう少しだ。
+
+　AFQP_KeyGenerationEcdsaHappyPath
+　AFQP_TLS_ConnectEC
+　
+　ここまでで一旦コードを登録。
+
 2018/11/25
 　3連休のまとめ。他の仕事があるので3日目はAmazon関連はこれにて終了。
 　テスト環境はだいたい整った。

@@ -36,6 +36,9 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Renesas platform includes */
+#include "platform.h"
+
 typedef struct _pkcs_data
 {
 	CK_ATTRIBUTE Label;
@@ -50,7 +53,10 @@ typedef struct _pkcs_data
 
 static PKCS_DATA pkcs_data[100];
 static uint32_t pkcs_data_handle = 1;
-static uint8_t local_storage[30000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
+
+R_ATTRIB_SECTION_CHANGE(B, _PKCS11_STORAGE, 1)
+static uint8_t local_storage[60000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
+R_ATTRIB_SECTION_CHANGE_END
 
 static uint32_t current_stored_size(void);
 
@@ -76,8 +82,11 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 	{
 		if(!strcmp(pkcs_data[i].Label.pValue, pxLabel->pValue))
 		{
-			pkcs_data[i].status = PKCS_DATA_STATUS_DELETED;
-			break;
+			if(pkcs_data[i].status != PKCS_DATA_STATUS_DELETED)
+			{
+				pkcs_data[i].status = PKCS_DATA_STATUS_DELETED;
+				break;
+			}
 		}
 	}
 
@@ -92,15 +101,6 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 	pkcs_data[pkcs_data_handle - 1].status = PKCS_DATA_STATUS_REGISTERD;
 
     CK_OBJECT_HANDLE xHandle = pkcs_data_handle;
-
-	/* todo: need to confirm why device certificate type = 3?, length = 4?. type = 2, length = 12 are correct. (Renesas/Ishiguro) */
-	/* this code adjusts the correct data, this is very temporary. */
-	if(!strcmp(pxLabel->pValue, pkcs11configLABEL_DEVICE_CERTIFICATE_FOR_TLS))
-	{
-		pkcs_data[pkcs_data_handle - 1].Label.type = 2;
-		pkcs_data[pkcs_data_handle - 1].Label.ulValueLen = 12;
-	}
-
 	pkcs_data_handle++;
     return xHandle;
 }
@@ -126,7 +126,7 @@ CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
 
 	for(i = 0; i < pkcs_data_handle - 1; i++)
 	{
-		if(!strcmp(pkcs_data[i].Label.pValue, pLabel))
+		if(!strcmp(pkcs_data[i].Label.pValue, (char *)pLabel))
 		{
 			if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERD)
 			{
@@ -172,7 +172,8 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
 	*ppucData = &local_storage[pkcs_data[xHandle - 1].local_storage_index];
 	*pulDataSize = pkcs_data[xHandle - 1].ulDataSize;
 
-	if(pkcs_data[xHandle - 1].Label.type == CKO_PRIVATE_KEY || pkcs_data[xHandle - 1].Label.type == CKO_SECRET_KEY)
+
+	if(!strcmp(pkcs_data[xHandle - 1].Label.pValue, (char *)&pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS))
 	{
 		*pIsPrivate = CK_TRUE;
 	}
