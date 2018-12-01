@@ -775,6 +775,77 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/12/01
+　引き続きテスト環境の調整。
+　平日に別メンバーが進めた進捗を確認。
+　エラー件数は98個のテスト項目に対して全体で14件(TCP:3, MQTT:2,TLS:2,PKCS:7)。
+　
+　TCPのエラーを見てみる。
+　-AFQP_SECURE_SOCKETS_Threadsafe_SameSocketDifferentTasks 
+　-AFQP_SECURE_SOCKETS_Threadsafe_DifferentSocketsDifferentTasks
+　-AFQP_SOCKETS_Socket_InvalidInputParams
+　
+　AFQP_SECURE_SOCKETS_Threadsafe_SameSocketDifferentTasksを動かしてみると、
+　通信時にTCPウィンドウが足りずに再送等が発生しテストがスムーズに動いていないようだ。
+　過去性能評価したときに調整した設定パラメータに変更することでテストOKになった。
+
+　-----引用-----
+　　まず、\demos\renesas\rx65n-rsk\common\config_files\FreeRTOSIPConfig.h
+　デフォルトOFFになっているが、以下TCPウィンドウウィングメカニズムをONに
+　することでハードウェアの性能を最大限に引き出すことができる。
+　/* USE_WIN: Let TCP use windowing mechanism. */
+　#define ipconfigUSE_TCP_WIN                            ( 0 )
+　
+　また、性能を出すためにはTCPウィンドウウィングのために多くのRAMが
+　必要となる。以下設定変更を施すことでハードウェア性能が引き出せる。
+　/* Define the size of Tx buffer for TCP sockets. */
+　#define ipconfigTCP_TX_BUFFER_LENGTH                   ( 1460*8 )
+
+　さらにEtherドライバの受信ディスクリプタも複数用意する必要がある。
+　\demos\renesas\rx65n-rsk\ccrx-e2studio\src\smc_gen\r_config\r_ether_rx_config.h
+　/* The number of Rx descriptors. */
+　#define ETHER_CFG_EMAC_RX_DESCRIPTORS               (12)
+　/* The number of Tx descriptors. */
+　#define ETHER_CFG_EMAC_TX_DESCRIPTORS               (4)
+　-----引用終わり-----
+　
+　AFQP_SECURE_SOCKETS_Threadsafe_DifferentSocketsDifferentTasksは、
+　SSL/TLS接続を別ソケット別タスクで並行して10回行うテスト。
+　Amazon FreeRTOSが想定する完了時間がタイムアウト時間として設定されているようで、
+　RX65Nでは正しく動いてはいるが時間切れになっているようだ。
+　最適化がOFFになっていたので、ONにして試してみる。
+　ギリギリセーフ？　OKになった。
+　
+　AFQP_SOCKETS_Socket_InvalidInputParamsは異常なソケット値を入れて
+　正しく検出するかのテスト。
+　正しく検出してvAssertCalled()を呼び出されてはいるが、ここでTEST_ABORT()してないので
+　そのまま次の処理に進んでいるようだ？
+　FreeRTOSConfig.hのconfigASSERT()の実装周りが期待値に達していないようだ。
+　configASSERT()からTEST_ABORT()が呼ばれている。unityのインクルードファイルを呼ばないと
+　TEST_ABORT()のシンボルが見つからないので、#include "unity_internals.h" を追加。
+　これでOKになった。
+　
+　次にTLSのエラーを見てみる。
+　-AFQP_TLS_ConnectMalformedCert(落ちるべきテストが通る)
+　-AFQP_TLS_ConnectUntrustedCert(落ちるべきテストが通る)
+　
+　TLSテスト側がテスト用の証明書と秘密鍵を登録しようとするが、PKCSの実装体(aws_pkcs11_pal.c)において
+　PKCS11_PAL_SaveObject()で同じラベル名が指定されても、リストに追加する実装になっていた。
+　同じラベル名が指定されたら、リスト中の同名のラベル名の登録を解除しなければならない。
+　このテストでは、システムで使用するラベル①と、テスト用のラベル②があり、ラベル①はシステム初期化時に、
+　ラベル②はTLSテスト初期化時にPKCS11_PAL_SaveObject()で渡される。
+　TLSテストは後にPKCS11_PAL_FindObject()を使用してラベル②に紐づくハンドルが出力されることを期待するが、
+　ラベル①に紐づくハンドルが出てきてしまう。ラベル①に紐づくハンドルに紐づく証明書、秘密鍵は正常なので
+　落ちるべきテストが通ってしまう。
+　PKCS11_PAL_SaveObject()とPKCS11_PAL_FindObject()の実装を修正してテストOKになった。
+　逆に、以下3個がエラーになった。テスト用の証明書データと秘密鍵がうまく作れていないようだ。これは後で確認する。
+　AFQP_TLS_ConnectEC
+　AFQP_TLS_ConnectRSA
+　AFQP_TLS_ConnectBYOCCredentials
+　
+　ここまでで一旦コードを登録。
+　
+　
 2018/11/25
 　3連休のまとめ。他の仕事があるので3日目はAmazon関連はこれにて終了。
 　テスト環境はだいたい整った。

@@ -41,11 +41,16 @@ typedef struct _pkcs_data
 	CK_ATTRIBUTE Label;
 	uint32_t local_storage_index;
 	uint32_t ulDataSize;
+	uint32_t status;
 }PKCS_DATA;
+
+#define PKCS_DATA_STATUS_EMPTY 0
+#define PKCS_DATA_STATUS_REGISTERD 1
+#define PKCS_DATA_STATUS_DELETED 2
 
 static PKCS_DATA pkcs_data[100];
 static uint32_t pkcs_data_handle = 1;
-static uint8_t local_storage[10000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
+static uint8_t local_storage[30000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
 
 static uint32_t current_stored_size(void);
 
@@ -65,6 +70,16 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     uint32_t ulDataSize )
 {
 	uint32_t size;
+	int i;
+
+	for(i = 0; i < pkcs_data_handle - 1; i++)
+	{
+		if(!strcmp(pkcs_data[i].Label.pValue, pxLabel->pValue))
+		{
+			pkcs_data[i].status = PKCS_DATA_STATUS_DELETED;
+			break;
+		}
+	}
 
 	size = current_stored_size();
 	memcpy(&local_storage[size], pucData, ulDataSize);
@@ -74,6 +89,7 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 	pkcs_data[pkcs_data_handle - 1].Label.ulValueLen = pxLabel->ulValueLen;
 	pkcs_data[pkcs_data_handle - 1].ulDataSize = ulDataSize;
 	pkcs_data[pkcs_data_handle - 1].local_storage_index = size;
+	pkcs_data[pkcs_data_handle - 1].status = PKCS_DATA_STATUS_REGISTERD;
 
     CK_OBJECT_HANDLE xHandle = pkcs_data_handle;
 
@@ -110,9 +126,12 @@ CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
 
 	for(i = 0; i < pkcs_data_handle - 1; i++)
 	{
-		if(!memcmp(pkcs_data[i].Label.pValue, pLabel, usLength))
+		if(!strcmp(pkcs_data[i].Label.pValue, pLabel))
 		{
-			break;
+			if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERD)
+			{
+				break;
+			}
 		}
 	}
 	if(i != pkcs_data_handle - 1)
