@@ -37,6 +37,9 @@ Includes   <System Includes> , "Project Includes"
 #include "platform.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#if defined(ENABLE_UNIT_TESTS) || defined(AMAZON_FREERTOS_ENABLE_UNIT_TESTS)
+#include "unity.h"
+#endif
 
 
 #if (BSP_CFG_RTOS_USED == 1)
@@ -268,22 +271,27 @@ void vApplicationSetupTimerInterrupt(void)
 ******************************************************************************/
 void vAssertCalled(void)
 {
-#if(0)
-	TEST_ABORT(); // XXX unity testing
+#if (0)
+    /* debugging with E1/E2/E2L emulator */
     volatile unsigned long ul = 0;
 
     taskENTER_CRITICAL();
     {
-        /* Use the debugger to set ul to a non-zero value in order to step out
+        /* Program may stop here when you stop it by debugger. In the case,
+        use the debugger to set ul to a non-zero value in order to step out
         of this function to determine why it was called. */
         while( 0 == ul )
         {
-            portNOP();
+            R_NOP();
         }
     }
     taskEXIT_CRITICAL();
+#elif defined(ENABLE_UNIT_TESTS) || defined(AMAZON_FREERTOS_ENABLE_UNIT_TESTS)
+    /* unity testing */
+    /* TEST_ABORT() of unity_internal.h (and also TEST_PASS() of unity.h)
+    jumps to the place where TEST_PROTECT() was executed. */
+    TEST_ABORT();
 #endif
-
 } /* End of function vAssertCalled() */
 
 /******************************************************************************
