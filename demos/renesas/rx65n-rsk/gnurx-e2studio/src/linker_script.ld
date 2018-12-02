@@ -1,6 +1,7 @@
 MEMORY
 {
-	RAM : ORIGIN = 0x0, LENGTH = 655360
+	RAM : ORIGIN = 0x0, LENGTH = 262144
+	RAMHI : ORIGIN = 0x800000, LENGTH = 393216
 	ROM : ORIGIN = 0xFFF00000, LENGTH = 1048576
 	OFS : ORIGIN = 0xFE7F5D00, LENGTH = 256
 }
@@ -125,7 +126,13 @@ SECTIONS
 	{
 		*(.gcc_exc)
 	} >RAM
-	.bss :
+	B_PKCS11_STORAGE_1 :
+	{
+		_B_PKCS11_STORAGE_1_start = .;
+		*(B_PKCS11_STORAGE_1)
+		_B_PKCS11_STORAGE_1_end = .;
+	} >RAM
+	.bss 0x800000 : AT(0x800000)
 	{
 		_bss = .;
 		*(.bss)
@@ -136,25 +143,25 @@ SECTIONS
 		*(B_2)
 		_ebss = .;
 		_end = .;
-	} >RAM
+	} >RAMHI
 	B_ETHERNET_BUFFERS_1 BLOCK(16) :
 	{
 		_B_ETHERNET_BUFFERS_1_start = .;
 		*(B_ETHERNET_BUFFERS_1)
 		_B_ETHERNET_BUFFERS_1_end = .;
-	} >RAM
+	} >RAMHI
 	B_RX_DESC_1 :
 	{
 		_B_RX_DESC_1_start = .;
 		*(B_RX_DESC_1)
 		_B_RX_DESC_1_end = .;
-	} >RAM
+	} >RAMHI
 	B_TX_DESC_1 :
 	{
 		_B_TX_DESC_1_start = .;
 		*(B_TX_DESC_1)
 		_B_TX_DESC_1_end = .;
-	} >RAM
+	} >RAMHI
 	.ofs1 0xFE7F5D40 : AT(0xFE7F5D00)
 	{
 		KEEP(*(.ofs1))
