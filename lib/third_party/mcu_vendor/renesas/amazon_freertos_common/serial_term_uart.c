@@ -38,7 +38,7 @@ Includes   <System Includes> , "Project Includes"
 #include "FreeRTOS.h"
 #include "serial_term_uart.h"   // Serial Transfer Demo interface file.
 #include "platform.h"           // Located in the FIT BSP module
-#include "r_sci_rx_platform.h"  // The SCI module API interface file.
+#include "r_sci_rx_if.h"        // The SCI module API interface file.
 #include "r_byteq_if.h"         // The BYTEQ module API interface file.
 #include "r_bsp_config.h"       // User configurable options for the BSP module
 #include "r_pinset.h"
@@ -186,7 +186,7 @@ void uart_string_printf(char *pString) {
 
 	while ((retry > 0) && (str_length > 0)) {
 
-		R_BYTEQ_Unused(my_sci_handle->u_tx_data.que, &transmit_length);
+		R_SCI_Control(my_sci_handle,SCI_CMD_TX_Q_BYTES_FREE, &transmit_length);
 
 		if(transmit_length>str_length){
 			transmit_length = str_length;
