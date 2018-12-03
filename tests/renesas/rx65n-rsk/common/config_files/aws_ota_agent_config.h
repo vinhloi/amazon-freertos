@@ -32,6 +32,11 @@
 #define _AWS_OTA_AGENT_CONFIG_H_
 
 /**
+ * @brief Special OTA Agent printing definition (in stead of definition in lib/include/aws_ota_agent.h).
+ */
+#define OTA_DEBUG_LOG_LEVEL                     1
+
+/**
  * @brief The number of words allocated to the stack for the OTA agent.
  */
 #define otaconfigSTACK_SIZE                     3584U
@@ -70,4 +75,45 @@
  * Thing name used in all OTA base topics. Namely $aws/things/<thingName>
  */
 #define otaconfigMAX_THINGNAME_LEN              64U
+
+/**
+ * @brief Special OTA Agent printing macros (in stead of definitions in lib/include/aws_ota_agent.h).
+ */
+#if OTA_DEBUG_LOG_LEVEL >= 1
+#define DEFINE_OTA_METHOD_NAME(name) static const char OTA_METHOD_NAME[] = name;
+#define OTA_LOG_L1 vLoggingPrintf
+#else
+#define DEFINE_OTA_METHOD_NAME(name)
+#if !(defined(__CCRX__) && defined(__cplusplus))
+#define OTA_LOG_L1(...)
+#else
+/* CC-RX' C++ mode does not support variadic macros */
+#define OTA_LOG_L1(x)   /* More than two arguments are not available. */
+#endif
+#endif
+#if OTA_DEBUG_LOG_LEVEL >= 2
+#define DEFINE_OTA_METHOD_NAME_L2(name) static const char OTA_METHOD_NAME[] = name;
+#define OTA_LOG_L2 vLoggingPrintf
+#else
+#define DEFINE_OTA_METHOD_NAME_L2(name)
+#if !(defined(__CCRX__) && defined(__cplusplus))
+#define OTA_LOG_L2(...)
+#else
+/* CC-RX' C++ mode does not support variadic macros */
+#define OTA_LOG_L2(x)   /* More than two arguments are not available. */
+#endif
+#endif
+#if OTA_DEBUG_LOG_LEVEL >= 3
+#define DEFINE_OTA_METHOD_NAME_L3(name) static const char OTA_METHOD_NAME[] = name;
+#define OTA_LOG_L3 vLoggingPrintf
+#else
+#define DEFINE_OTA_METHOD_NAME_L3(name)
+#if !(defined(__CCRX__) && defined(__cplusplus))
+#define OTA_LOG_L3(...)
+#else
+/* CC-RX' C++ mode does not support variadic macros */
+#define OTA_LOG_L3(x)   /* More than two arguments are not available. */
+#endif
+#endif
+
 #endif /* _AWS_OTA_AGENT_CONFIG_H_ */
