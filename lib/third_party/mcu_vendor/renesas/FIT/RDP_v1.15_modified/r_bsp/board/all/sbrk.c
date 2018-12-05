@@ -127,7 +127,7 @@ int8_t  *sbrk(size_t size)
 #if defined(__GNUC__)
 /***********************************************************************************************************************
 * Function name: _top_of_heap
-* Description  : This function returns end address of reserved heap area.
+* Description  : This function returns end address of reserved heap area. (GNURX+OPTLIB only)
 * Arguments    : none
 * Return value : End address of reserved heap area
 ***********************************************************************************************************************/
