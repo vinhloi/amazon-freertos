@@ -125,7 +125,7 @@ static void prvMiscInitialization( void )
 {
     /* FIX ME. */
 	uart_config();
-	//configPRINT_STRING(("Hello World.\r\n"));
+	configPRINT_STRING(("Hello World.\r\n"));
     /* Start logging task. */
     xLoggingTaskInitialize( mainLOGGING_TASK_STACK_SIZE,
                             tskIDLE_PRIORITY,
