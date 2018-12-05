@@ -179,7 +179,7 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
       choose 'Contents' in E2Studio. This will present a list of modules that can be included. Uncheck the box for
       stdio.h. 
 */
-#define BSP_CFG_HEAP_BYTES              (0x2000)
+#define BSP_CFG_HEAP_BYTES              (0)
 
 #if defined(__CCRX__)
 
