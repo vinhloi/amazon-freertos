@@ -3,7 +3,7 @@
 
 #include "platform.h"
 #include "r_sci_rx_if.h"
-#include "r_sci_rx_pinset.h"
+#include "r_pinset.h"
 #include "sx_ulpgn_driver.h"
 
 
@@ -67,16 +67,75 @@ volatile uint32_t g_sx_ulpgn_uart_teiflag;
 
 
 
-#if BSP_CFG_BOARD_REVISION == 1
-#define SCI_TX_BUSIZ SCI_CFG_CH6_TX_BUFSIZ
-#elif BSP_CFG_BOARD_REVISION == 5
-#define SCI_TX_BUSIZ SCI_CFG_CH10_TX_BUFSIZ
-#endif
-
-#if BSP_CFG_BOARD_REVISION == 1
-#define SCI_RX_BUSIZ SCI_CFG_CH6_RX_BUFSIZ
-#elif BSP_CFG_BOARD_REVISION == 5
-#define SCI_RX_BUSIZ SCI_CFG_CH10_RX_BUFSIZ
+#if !defined(MY_BSP_CFG_UART_WIFI_SCI)
+    #error "Error! Need to define MY_BSP_CFG_UART_WIFI_SCI in r_bsp_config.h"
+#elif MY_BSP_CFG_UART_WIFI_SCI == (0)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI0()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH0
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH0_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH0_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (1)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI1()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH1
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH1_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH1_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (2)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI2()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH2
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH2_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH2_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (3)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI3()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH3
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH3_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH3_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (4)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI4()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH4
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH4_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH4_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (5)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI5()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH5
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH5_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH5_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (6)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI6()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH6
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH6_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH6_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (7)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI7()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH7
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH7_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH7_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (8)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI8()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH8
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH8_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH8_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (9)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI9()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH9
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH9_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH9_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (10)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI10()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH10
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH10_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH10_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (11)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI11()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH11
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH11_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH11_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (12)
+    #define R_SCI_PinSet_sx_ulpgn_serial()  R_SCI_PinSet_SCI12()
+    #define SCI_CH_sx_ulpgn_serial          SCI_CH12
+    #define SCI_TX_BUSIZ                    SCI_CFG_CH12_TX_BUFSIZ
+    #define SCI_RX_BUSIZ                    SCI_CFG_CH12_RX_BUFSIZ
+#else
+    #error "Error! Invalid setting for MY_BSP_CFG_UART_WIFI_SCI in r_bsp_config.h"
 #endif
 
 
@@ -623,11 +682,7 @@ static int32_t sx_ulpgn_serial_open(void)
 {
 	sci_err_t   my_sci_err;
 
-#if (BSP_CFG_BOARD_REVISION == 1)
-	R_SCI_PinSet_SCI6();
-#elif (BSP_CFG_BOARD_REVISION == 5)
-	R_SCI_PinSet_SCI10();
-#endif
+	R_SCI_PinSet_sx_ulpgn_serial();
 
 	g_sx_ulpgn_sci_config.async.baud_rate    = 115200;
 	g_sx_ulpgn_sci_config.async.clk_src      = SCI_CLK_INT;
@@ -637,11 +692,7 @@ static int32_t sx_ulpgn_serial_open(void)
 	g_sx_ulpgn_sci_config.async.stop_bits    = SCI_STOPBITS_1;
 	g_sx_ulpgn_sci_config.async.int_priority = 3;    // 1=lowest, 15=highest
 
-#if (BSP_CFG_BOARD_REVISION == 1)
-    my_sci_err = R_SCI_Open(SCI_CH6, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config, sx_ulpgn_uart_callback, &sx_ulpgn_uart_sci_handle);
-#elif  (BSP_CFG_BOARD_REVISION == 5)
-    my_sci_err = R_SCI_Open(SCI_CH10, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config, sx_ulpgn_uart_callback, &sx_ulpgn_uart_sci_handle);
-#endif
+    my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config, sx_ulpgn_uart_callback, &sx_ulpgn_uart_sci_handle);
 
     if(SCI_SUCCESS != my_sci_err)
     {

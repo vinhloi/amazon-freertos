@@ -517,15 +517,9 @@ R_PRAGMA_ISTACK_SIZE                    (0x1000)
 */
 #define BSP_CFG_FIT_IPL_MAX                         (0xF)
 
-/* Board definition of Renesas aws_demos projects (FIXME: is this here? is there any better way?)
-   1 = RX65N RSK rev. 1.00 Board (RTK50565N2C00000BE)
-   2 = RX65N Envision Kit
-   3 = RX65N GR-ROSE Proto1
-   4 = RX64M GR-KAEDE
-   5 = RX65N TB
-   6 = GR-SAKURA
-*/
-#define BSP_CFG_BOARD_REVISION                      (6)
+/* This macro is used to select which SCI channel used for debug serial terminal.
+ */
+#define MY_BSP_CFG_SERIAL_TERM_SCI                  (0)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

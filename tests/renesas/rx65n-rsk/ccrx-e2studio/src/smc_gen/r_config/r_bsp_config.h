@@ -168,8 +168,6 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 
-#endif /* defined(__CCRX__) || defined(__GNUC__) */
-
 /* Heap size in bytes.
    To disable the heap you must follow these steps:
    1) Set this macro (BSP_CFG_HEAP_BYTES) to 0.
@@ -180,6 +178,8 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
       stdio.h. 
 */
 #define BSP_CFG_HEAP_BYTES              (0)
+
+#endif /* defined(__CCRX__) || defined(__GNUC__) */
 
 #if defined(__CCRX__)
 
@@ -205,10 +205,10 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
 */
 #define BSP_CFG_RUN_IN_USER_MODE        (0)
 
-/* Set your desired ID code. NOTE, leave at the default (all 0xFF's) if you do not wish to use an ID code. If you set
-   this value and program it into the MCU then you will need to remember the ID code because the debugger will ask for
+/* Set your desired ID code. NOTE, leave at the default (all 0xFF's) if you do not wish to use an ID code. If you set 
+   this value and program it into the MCU then you will need to remember the ID code because the debugger will ask for 
    it when trying to connect. Note that the E1/E20 will ignore the ID code when programming the MCU during debugging.
-   If you set this value and then forget it then you can clear the ID code by connecting up in serial boot mode using
+   If you set this value and then forget it then you can clear the ID code by connecting up in serial boot mode using 
    FDT. The ID Code is 16 bytes long. The macro below define the ID Code in 4-byte sections. */
 /* Lowest 4-byte section, address 0xFE7F5D50. From MSB to LSB: ID code 4, ID code 3, ID code 2, ID code 1/Control Code.
  */
@@ -613,8 +613,8 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
 */
 #define BSP_CFG_CONFIGURATOR_SELECT                 (1) // <-- Updated by GUI. Do not edit this value manually
 
-/* For some BSP functions, it is necessary to ensure that, while these functions are executing, interrupts from other
-   FIT modules do not occur. By controlling the IPL, these functions disable interrupts that are at or below the
+/* For some BSP functions, it is necessary to ensure that, while these functions are executing, interrupts from other 
+   FIT modules do not occur. By controlling the IPL, these functions disable interrupts that are at or below the 
    specified interrupt priority level.
    This macro sets the IPL. Range is 0x0 - 0xF.
    Please set this macro more than IPR for other FIT module interrupts.
@@ -623,13 +623,9 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
 */
 #define BSP_CFG_FIT_IPL_MAX                         (0xF)
 
-/* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
-   0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
-   1 = rev. 1.00 Board (RTK50565N2C00000BE)
-   2 = RX65N Envision Kit
-   3 = RX65N GR-ROSE
-*/
-#define BSP_CFG_BOARD_REVISION                      (1)
+/* This macro is used to select which SCI channel used for debug serial terminal.
+ */
+#define MY_BSP_CFG_SERIAL_TERM_SCI                  (8)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

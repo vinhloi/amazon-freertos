@@ -68,6 +68,20 @@ Includes   <System Includes> , "Project Includes"
  **********************************************************************************************************************/
 #define ETHER_BUFSIZE_MIN 60
 
+#if defined(BSP_MCU_RX65N) || defined(BSP_MCU_RX64M) || defined(BSP_MCU_RX71M)
+    #if ETHER_CFG_MODE_SEL == 0
+        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC0_MII()
+    #elif ETHER_CFG_MODE_SEL == 1
+        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC0_RMII()
+    #endif
+#elif defined(BSP_MCU_RX63N)
+    #if ETHER_CFG_MODE_SEL == 0
+        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC_MII()
+    #elif ETHER_CFG_MODE_SEL == 1
+        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC_RMII()
+    #endif
+#endif
+
 /***********************************************************************************************************************
  Private global variables and functions
  **********************************************************************************************************************/
@@ -315,17 +329,7 @@ static int InitializeNetwork(void)
 	    configMAC_ADDR5
 	}; //XXX Fix me
 
-#if (BSP_CFG_BOARD_REVISION == 0) || (BSP_CFG_BOARD_REVISION == 1)	/* RX65N RSK */
-	R_ETHER_PinSet_ETHERC0_MII();
-#elif (BSP_CFG_BOARD_REVISION == 2) 	/* RX65N Envision Kit */
-	R_ETHER_PinSet_ETHERC0_RMII();
-#elif (BSP_CFG_BOARD_REVISION == 3) 	/* RX65N GR-ROSE proto1 */
-	R_ETHER_PinSet_ETHERC0_RMII();
-#elif (BSP_CFG_BOARD_REVISION == 4)		/* RX64M GR-KAEDE */
-	R_ETHER_PinSet_ETHERC0_RMII();
-#elif (BSP_CFG_BOARD_REVISION == 6)		/* RX63N GR-SAKURA */
-	R_ETHER_PinSet_ETHERC_RMII();
-#endif
+	R_ETHER_PinSet_CHANNEL_0();
 	R_ETHER_Initial();
 	callback_ether_regist();
 

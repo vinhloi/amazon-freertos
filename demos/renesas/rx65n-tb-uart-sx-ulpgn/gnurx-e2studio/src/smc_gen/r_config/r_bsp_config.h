@@ -623,15 +623,13 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
 */
 #define BSP_CFG_FIT_IPL_MAX                         (0xF)
 
-/* There are multiple versions of the RSKRX65N-2MB. Choose which board is currently being used below.
-   0 = 1st Prototype Board (RTK50565N2CxxxxxBR)
-   1 = rev. 1.00 Board (RTK50565N2C00000BE)
-   2 = RX65N Envision Kit
-   3 = RX65N GR-ROSE
-  (4 = RX64M GR-KAEDE // FIXME: find a better way)
-   5 = RX65N TB
-*/
-#define BSP_CFG_BOARD_REVISION                      (5)
+/* This macro is used to select which SCI channel used for debug serial terminal.
+ */
+#define MY_BSP_CFG_SERIAL_TERM_SCI                  (5)
+
+/* This macro is used to select which SCI channel used for UART WiFi module.
+ */
+#define MY_BSP_CFG_UART_WIFI_SCI                    (10)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

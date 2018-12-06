@@ -34,19 +34,60 @@
 /*****************************************************************************
 Includes   <System Includes> , "Project Includes"
 ******************************************************************************/
-#include <string.h>              // For strlen
-#include "FreeRTOS.h"
+#include <string.h>             // For strlen
 #include "serial_term_uart.h"   // Serial Transfer Demo interface file.
 #include "platform.h"           // Located in the FIT BSP module
 #include "r_sci_rx_if.h"        // The SCI module API interface file.
-#include "r_byteq_if.h"         // The BYTEQ module API interface file.
-#include "r_bsp_config.h"       // User configurable options for the BSP module
 #include "r_pinset.h"
 
 
 /*******************************************************************************
  Macro definitions
  *******************************************************************************/
+#if !defined(MY_BSP_CFG_SERIAL_TERM_SCI)
+    #error "Error! Need to define MY_BSP_CFG_SERIAL_TERM_SCI in r_bsp_config.h"
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (0)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI0()
+    #define SCI_CH_serial_term          SCI_CH0
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (1)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI1()
+    #define SCI_CH_serial_term          SCI_CH1
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (2)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI2()
+    #define SCI_CH_serial_term          SCI_CH2
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (3)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI3()
+    #define SCI_CH_serial_term          SCI_CH3
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (4)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI4()
+    #define SCI_CH_serial_term          SCI_CH4
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (5)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI5()
+    #define SCI_CH_serial_term          SCI_CH5
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (6)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI6()
+    #define SCI_CH_serial_term          SCI_CH6
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (7)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI7()
+    #define SCI_CH_serial_term          SCI_CH7
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (8)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI8()
+    #define SCI_CH_serial_term          SCI_CH8
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (9)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI9()
+    #define SCI_CH_serial_term          SCI_CH9
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (10)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI10()
+    #define SCI_CH_serial_term          SCI_CH10
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (11)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI11()
+    #define SCI_CH_serial_term          SCI_CH11
+#elif MY_BSP_CFG_SERIAL_TERM_SCI == (12)
+    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI12()
+    #define SCI_CH_serial_term          SCI_CH12
+#else
+    #error "Error! Invalid setting for MY_BSP_CFG_SERIAL_TERM_SCI in r_bsp_config.h"
+#endif
 
 /*******************************************************************************
  Exported global variables and functions (to be accessed by other files)
@@ -78,19 +119,8 @@ void uart_config(void)
     /* Initialize the I/O port pins for communication on this SCI channel.
     * This is specific to the MCU and ports chosen. For the RSKRX65-2M we will use the
     * SCI channel connected to the USB serial port emulation. */
-#if (BSP_CFG_BOARD_REVISION == 0) || (BSP_CFG_BOARD_REVISION == 2)
-    R_SCI_PinSet_SCI2();
-#elif (BSP_CFG_BOARD_REVISION == 1)
-    R_SCI_PinSet_SCI8();
-#elif (BSP_CFG_BOARD_REVISION == 3)
-    R_SCI_PinSet_SCI12();
-#elif (BSP_CFG_BOARD_REVISION == 4)
-    R_SCI_PinSet_SCI7();
-#elif (BSP_CFG_BOARD_REVISION == 5)
-    R_SCI_PinSet_SCI5();
-#elif (BSP_CFG_BOARD_REVISION == 6)
-    R_SCI_PinSet_SCI0();
-#endif
+    R_SCI_PinSet_serial_term();
+
     /* Set up the configuration data structure for asynchronous (UART) operation. */
     my_sci_config.async.baud_rate    = 115200;
     my_sci_config.async.clk_src      = SCI_CLK_INT;
@@ -104,19 +134,7 @@ void uart_config(void)
     *  Provide address of the configure structure,
     *  the callback function to be assigned,
     *  and the location for the handle to be stored.*/
-#if (BSP_CFG_BOARD_REVISION == 0) || (BSP_CFG_BOARD_REVISION == 2)
-    my_sci_err = R_SCI_Open(SCI_CH2, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
-#elif (BSP_CFG_BOARD_REVISION == 1)
-    my_sci_err = R_SCI_Open(SCI_CH8, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
-#elif (BSP_CFG_BOARD_REVISION == 3)
-    my_sci_err = R_SCI_Open(SCI_CH12, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
-#elif (BSP_CFG_BOARD_REVISION == 4)
-    my_sci_err = R_SCI_Open(SCI_CH7, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
-#elif (BSP_CFG_BOARD_REVISION == 5)
-    my_sci_err = R_SCI_Open(SCI_CH5, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
-#elif (BSP_CFG_BOARD_REVISION == 6)
-    my_sci_err = R_SCI_Open(SCI_CH0, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
-#endif
+    my_sci_err = R_SCI_Open(SCI_CH_serial_term, SCI_MODE_ASYNC, &my_sci_config, my_sci_callback, &my_sci_handle);
 
     /* If there were an error this would demonstrate error detection of API calls. */
     if (SCI_SUCCESS != my_sci_err)

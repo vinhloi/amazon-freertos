@@ -561,11 +561,9 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
 */
 #define BSP_CFG_FIT_IPL_MAX                         (0xF)
 
-/* There are multiple versions of the RSKRX64M. Choose which board is currently being used below.
-   0 = 1st Prototype Board (R0K50564MC000BR, R0K50564MC010BR)
-   4 = GR-KAEDE
-*/
-#define BSP_CFG_BOARD_REVISION                      (4)
+/* This macro is used to select which SCI channel used for debug serial terminal.
+ */
+#define MY_BSP_CFG_SERIAL_TERM_SCI                  (7)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 
