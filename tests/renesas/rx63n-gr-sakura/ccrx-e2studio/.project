@@ -515,7 +515,7 @@
 			<type>6</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-true-reset_program\.asm|iar_call_inits\.s</arguments>
+				<arguments>1.0-name-matches-false-true-reset_program\.S|iar_call_inits\.s</arguments>
 			</matcher>
 		</filter>
 		<filter>

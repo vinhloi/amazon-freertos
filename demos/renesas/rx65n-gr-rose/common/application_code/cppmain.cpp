@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  http://www.FreeRTOS.org
 */
 
-#if defined(CPPAPP) && CPPAPP != 0
+#if defined(CPPAPP)
 
 /* Application Framework include. */
 #include "StdAfx.h"
@@ -135,7 +135,7 @@ static void prvMiscInitialization( void )
 {
     /* FIX ME. */
 	uart_config();
-	//configPRINT_STRING(("Hello World.\r\n"));
+	configPRINT_STRING(("Hello World.\r\n"));
     /* Start logging task. */
     xLoggingTaskInitialize( mainLOGGING_TASK_STACK_SIZE,
                             tskIDLE_PRIORITY,
@@ -234,4 +234,4 @@ const char * pcApplicationHostnameHook( void )
 }
 /*-----------------------------------------------------------*/
 
-#endif /* defined(CPPAPP) && CPPAPP != 0 */
+#endif /* defined(CPPAPP) */

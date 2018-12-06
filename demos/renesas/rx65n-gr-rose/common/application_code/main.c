@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  http://www.FreeRTOS.org
 */
 
-#if !defined(CPPAPP) || CPPAPP == 0
+#if !defined(CPPAPP)
 
 /* Application Framework include. */
 #include "StdAfx.h"
@@ -226,4 +226,4 @@ const char * pcApplicationHostnameHook( void )
 }
 /*-----------------------------------------------------------*/
 
-#endif /* !defined(CPPAPP) || CPPAPP == 0 */
+#endif /* !defined(CPPAPP) */
