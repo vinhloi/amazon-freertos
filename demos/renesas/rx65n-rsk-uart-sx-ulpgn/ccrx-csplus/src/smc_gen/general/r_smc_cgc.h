@@ -22,7 +22,7 @@
 * Version      : 1.1.2
 * Device(s)    : R5F565NEDxFC
 * Description  : This file implements cgc setting.
-* Creation Date: 2018-08-28
+* Creation Date: 2018-12-07
 ***********************************************************************************************************************/
 
 #ifndef SMC_CGC_H
@@ -213,5 +213,5 @@ Typedef definitions
 Global functions
 ***********************************************************************************************************************/
 void R_CGC_Create(void);
-void R_CGC_Create_UserInit(void);
+void R_CGC_Create_UserInit();
 #endif

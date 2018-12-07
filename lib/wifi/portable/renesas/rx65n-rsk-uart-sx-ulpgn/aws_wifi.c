@@ -108,7 +108,7 @@ WIFIReturnCode_t WIFI_On( void )
         xWIFIInitDone = pdTRUE;
     }
 
-    if(0 == sx_ulpgn_init())
+    if(0 == sx_ulpgn_wifi_init())
     {
     	xRetVal = eWiFiSuccess;
     }

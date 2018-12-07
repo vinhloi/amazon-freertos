@@ -29,20 +29,19 @@
  */
 
 /* FreeRTOS includes. */
+#include <string.h>
 #include "FreeRTOS.h"
 #include "FreeRTOSIPConfig.h"
 #include "list.h"
 //#include "FreeRTOS_IP.h"
-//#include "FreeRTOS_Sockets.h"
 #include "aws_secure_sockets.h"
+//#include "FreeRTOS_Sockets.h"
 #include "aws_tls.h"
 #include "task.h"
 #include "aws_pkcs11.h"
 #include "aws_crypto.h"
-
 #include "sx_ulpgn_driver.h"
 #include "machine.h"
-#include <string.h>
 
 /* Internal context structure. */
 typedef struct SSOCKETContext
@@ -64,7 +63,7 @@ typedef struct SSOCKETContext
  *
  * 16 total sockets
  */
-#define MAX_NUM_SSOCKETS    (1)
+#define MAX_NUM_SSOCKETS    (4)
 
 /**
  * @brief Number of secure sockets allocated.
@@ -74,7 +73,7 @@ typedef struct SSOCKETContext
 static uint8_t ssockets_num_allocated = 0;
 
 /* Generate a randomized TCP Initial Sequence Number per RFC. */
-uint32_t ulApplicationGetNextSequenceNumber( 
+uint32_t ulApplicationGetNextSequenceNumber(
     uint32_t ulSourceAddress,
     uint16_t usSourcePort,
     uint32_t ulDestinationAddress,
@@ -89,9 +88,7 @@ static BaseType_t prvNetworkSend( void * pvContext,
 {
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) pvContext; /*lint !e9087 cast used for portability. */
 
-    return sx_ulpgn_tcp_send(pucData, xDataLength, pxContext->ulSendTimeout);
-
-//    return FreeRTOS_send( pxContext->xSocket, pucData, xDataLength, pxContext->xSendFlags );
+    return sx_ulpgn_tcp_send(pxContext->xSocket, pucData, xDataLength, pxContext->ulSendTimeout);
 }
 /*-----------------------------------------------------------*/
 
@@ -105,16 +102,13 @@ static BaseType_t prvNetworkRecv( void * pvContext,
 	BaseType_t receive_byte;
    SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) pvContext; /*lint !e9087 cast used for portability. */
 
-
-   receive_byte = sx_ulpgn_tcp_recv(pucReceiveBuffer, xReceiveLength, pxContext->ulRecvTimeout);
+   receive_byte = sx_ulpgn_tcp_recv(pxContext->xSocket, pucReceiveBuffer, xReceiveLength, pxContext->ulRecvTimeout);
 
    if(xReceiveLength == 64)
    {
    	nop();
    }
    return receive_byte;
-
-//   return FreeRTOS_recv( pxContext->xSocket, pucReceiveBuffer, xReceiveLength, pxContext->xRecvFlags );
 }
 
 /*-----------------------------------------------------------*/
@@ -143,14 +137,17 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
 {
     int32_t lStatus = SOCKETS_ERROR_NONE;
     int32_t ret;
+    uint8_t socketId;
     SSOCKETContextPtr_t pxContext = NULL;
+
+    socketId = sx_ulpgn_get_avail_socket();
 
     /* Ensure that only supported values are supplied. */
     configASSERT( lDomain == SOCKETS_AF_INET );
     configASSERT( lType == SOCKETS_SOCK_STREAM );
     configASSERT( lProtocol == SOCKETS_IPPROTO_TCP );
 
-	if(ssockets_num_allocated >= MAX_NUM_SSOCKETS)
+	if(ssockets_num_allocated >= MAX_NUM_SSOCKETS || socketId == 255)
 	{
         lStatus = SOCKETS_SOCKET_ERROR;
 	}
@@ -167,10 +164,10 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
     if( SOCKETS_ERROR_NONE == lStatus )
     {
         memset( pxContext, 0, sizeof( SSOCKETContext_t ) );
-        pxContext->xSocket = 0;
+        pxContext->xSocket = socketId;
 
         /* Create the wrapped socket. */
-        ret = sx_ulpgn_socket_create(0,4);
+        ret = sx_ulpgn_socket_create(socketId, 0, 4);
         if(-1 == ret)
         {
             lStatus = SOCKETS_SOCKET_ERROR;
@@ -230,7 +227,7 @@ int32_t SOCKETS_Connect( Socket_t xSocket,
 
     if( ( pxContext != SOCKETS_INVALID_SOCKET ) && ( pxAddress != NULL ) )
     {
-        ret = sx_ulpgn_tcp_connect(SOCKETS_ntohl(pxAddress->ulAddress), SOCKETS_ntohs(pxAddress->usPort));
+        ret = sx_ulpgn_tcp_connect(pxContext->xSocket, SOCKETS_ntohl(pxAddress->ulAddress), SOCKETS_ntohs(pxAddress->usPort));
         if( 0 != ret )
         {
         	lStatus = SOCKETS_SOCKET_ERROR;
@@ -372,10 +369,9 @@ int32_t SOCKETS_Send( Socket_t xSocket,
 int32_t SOCKETS_Shutdown( Socket_t xSocket,
                           uint32_t ulHow )
 {
-//    SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
+    SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
 
-	return sx_ulpgn_tcp_disconnect();
-//    return FreeRTOS_shutdown( pxContext->xSocket, ( BaseType_t ) ulHow );
+	return sx_ulpgn_tcp_disconnect(pxContext->xSocket);
 }
 /*-----------------------------------------------------------*/
 
@@ -409,8 +405,7 @@ int32_t SOCKETS_Close( Socket_t xSocket )
             TLS_Cleanup( pxContext->pvTLSContext );
         }
 
-        sx_ulpgn_tcp_disconnect();
-//        ( void ) FreeRTOS_closesocket( pxContext->xSocket );
+        sx_ulpgn_tcp_disconnect(pxContext->xSocket);
         vPortFree( pxContext );
     }
 

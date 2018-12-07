@@ -53,7 +53,7 @@ Configuration Options
 
 /* SPECIFY NUMBER OF STATIC QUEUE CONTROL BLOCKS TO SUPPORT */
 /* valid only when BYTEQ_USE_HEAP_FOR_CTRL_BLKS is set to 0 */
-#define BYTEQ_CFG_MAX_CTRL_BLKS             (4)
+#define BYTEQ_CFG_MAX_CTRL_BLKS             (6 + 4)
 
 
 #endif /* BYTEQ_CONFIG_H */

@@ -234,6 +234,8 @@
 <pinItem allocation="58" direction="None" id="TXD8" locked="false" status="0"/>
 <pinItem allocation="7" direction="None" id="RXD6" locked="false" status="1024"/>
 <pinItem allocation="8" direction="None" id="TXD6" locked="false" status="1024"/>
+<pinItem allocation="63" direction="None" id="RXD7" locked="false" status="0"/>
+<pinItem allocation="65" direction="None" id="TXD7" locked="false" status="0"/>
 <pinnumItem comment="ET-ET0ERXD1_RMII0RXD1" id="88"/>
 <pinnumItem comment="ET-ET0ERXD2" id="89"/>
 <pinnumItem comment="OnTFT-G2" id="110"/>
@@ -660,10 +662,10 @@
 <gridItem id="CTS6#/RTS6#/SS6#" selectedIndex="0"/>
 <gridItem id="SCI6" selectedIndex="1"/>
 <gridItem id="SCK7" selectedIndex="0"/>
-<gridItem id="RXD7/SMISO7" selectedIndex="0"/>
-<gridItem id="TXD7/SMOSI7" selectedIndex="0"/>
+<gridItem id="RXD7/SMISO7" selectedIndex="1"/>
+<gridItem id="TXD7/SMOSI7" selectedIndex="1"/>
 <gridItem id="CTS7#/RTS7#/SS7#" selectedIndex="0"/>
-<gridItem id="SCI7" selectedIndex="0"/>
+<gridItem id="SCI7" selectedIndex="1"/>
 <gridItem id="SCK8" selectedIndex="0"/>
 <gridItem id="RXD8/SMISO8/SSCL8" selectedIndex="1"/>
 <gridItem id="TXD8/SMOSI8/SSDA8" selectedIndex="1"/>

@@ -629,7 +629,8 @@ R_PRAGMA_ISTACK_SIZE                    (0x3000)
 
 /* This macro is used to select which SCI channel used for UART WiFi module.
  */
-#define MY_BSP_CFG_UART_WIFI_SCI                    (6)
+#define MY_BSP_CFG_UART_WIFI_COMMAND_SCI            (6)
+#define MY_BSP_CFG_UART_WIFI_DATA_SCI               (7)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

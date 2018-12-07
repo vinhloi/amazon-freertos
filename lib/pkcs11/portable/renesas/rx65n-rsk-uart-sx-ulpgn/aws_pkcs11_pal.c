@@ -36,6 +36,29 @@
 #include <stdio.h>
 #include <string.h>
 
+/* Renesas platform includes */
+#include "platform.h"
+
+typedef struct _pkcs_data
+{
+	CK_ATTRIBUTE Label;
+	uint32_t local_storage_index;
+	uint32_t ulDataSize;
+	uint32_t status;
+}PKCS_DATA;
+
+#define PKCS_DATA_STATUS_EMPTY 0
+#define PKCS_DATA_STATUS_REGISTERD 1
+#define PKCS_DATA_STATUS_DELETED 2
+
+static PKCS_DATA pkcs_data[100];
+static uint32_t pkcs_data_handle = 1;
+
+R_ATTRIB_SECTION_CHANGE(B, _PKCS11_STORAGE, 1)
+static uint8_t local_storage[60000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
+R_ATTRIB_SECTION_CHANGE_END
+
+static uint32_t current_stored_size(void);
 
 /**
 * @brief Writes a file to local storage.
@@ -52,8 +75,33 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     uint8_t * pucData,
     uint32_t ulDataSize )
 {
-    /* FIX ME. */
-    CK_OBJECT_HANDLE xHandle = 0;
+	uint32_t size;
+	int i;
+
+	for(i = 0; i < pkcs_data_handle - 1; i++)
+	{
+		if(!strcmp(pkcs_data[i].Label.pValue, pxLabel->pValue))
+		{
+			if(pkcs_data[i].status != PKCS_DATA_STATUS_DELETED)
+			{
+				pkcs_data[i].status = PKCS_DATA_STATUS_DELETED;
+				break;
+			}
+		}
+	}
+
+	size = current_stored_size();
+	memcpy(&local_storage[size], pucData, ulDataSize);
+
+	pkcs_data[pkcs_data_handle - 1].Label.pValue = pxLabel->pValue;
+	pkcs_data[pkcs_data_handle - 1].Label.type = pxLabel->type;
+	pkcs_data[pkcs_data_handle - 1].Label.ulValueLen = pxLabel->ulValueLen;
+	pkcs_data[pkcs_data_handle - 1].ulDataSize = ulDataSize;
+	pkcs_data[pkcs_data_handle - 1].local_storage_index = size;
+	pkcs_data[pkcs_data_handle - 1].status = PKCS_DATA_STATUS_REGISTERD;
+
+    CK_OBJECT_HANDLE xHandle = pkcs_data_handle;
+	pkcs_data_handle++;
     return xHandle;
 }
 
@@ -73,8 +121,23 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
     uint8_t usLength )
 {
-    /* FIX ME. */
-    CK_OBJECT_HANDLE xHandle = 0;
+	CK_OBJECT_HANDLE xHandle = 0;
+	int i;
+
+	for(i = 0; i < pkcs_data_handle - 1; i++)
+	{
+		if(!strcmp(pkcs_data[i].Label.pValue, (char *)pLabel))
+		{
+			if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERD)
+			{
+				break;
+			}
+		}
+	}
+	if(i != pkcs_data_handle - 1)
+	{
+		xHandle = i + 1;
+	}
     return xHandle;
 }
 
@@ -106,7 +169,19 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
     uint32_t * pulDataSize,
     CK_BBOOL * pIsPrivate )
 {
-    /* FIX ME. */
+	*ppucData = &local_storage[pkcs_data[xHandle - 1].local_storage_index];
+	*pulDataSize = pkcs_data[xHandle - 1].ulDataSize;
+
+
+	if(!strcmp(pkcs_data[xHandle - 1].Label.pValue, (char *)&pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS))
+	{
+		*pIsPrivate = CK_TRUE;
+	}
+	else
+	{
+		*pIsPrivate = CK_FALSE;
+	}
+
     CK_RV xReturn = CKR_OK;
     return xReturn;
 }
@@ -124,4 +199,15 @@ void PKCS11_PAL_GetObjectValueCleanup( uint8_t * pucData,
     uint32_t ulDataSize )
 {
     /* FIX ME. */
+}
+
+uint32_t current_stored_size(void)
+{
+	uint32_t size = 0;
+
+	for(int i = 0; i < pkcs_data_handle - 1; i++)
+	{
+		size += pkcs_data[i].ulDataSize;
+	}
+	return size;
 }
