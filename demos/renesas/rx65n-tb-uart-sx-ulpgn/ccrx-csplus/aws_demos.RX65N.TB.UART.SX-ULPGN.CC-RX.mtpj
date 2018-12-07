@@ -2069,7 +2069,7 @@
       <ParentItem>3c16d35b-ac65-4c60-b0c6-3f21cb493937</ParentItem>
     </Instance>
     <Instance Guid="bffad7b8-73c4-4361-83e8-a65937225745">
-      <Name>uart_sx_ulpgn</Name>
+      <Name>uart_sx_ulpgn_1</Name>
       <Type>Category</Type>
       <ParentItem>532ff88d-aed0-4974-b15c-82f88479427c</ParentItem>
       <Property>eecdfb1c-d2a8-4f42-87c6-e7d30bce7619</Property>
@@ -2077,14 +2077,14 @@
     <Instance Guid="51f452fe-41e9-4ead-ac11-262b318f893c">
       <Name>sx_ulpgn_driver.c</Name>
       <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn\sx_ulpgn_driver.c</RelativePath>
+      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn_1\sx_ulpgn_driver.c</RelativePath>
       <TreeImageGuid>941832c1-fc3b-4e1b-94e8-01ea17128b42</TreeImageGuid>
       <ParentItem>bffad7b8-73c4-4361-83e8-a65937225745</ParentItem>
     </Instance>
     <Instance Guid="56573a73-52de-4e4e-9945-957a9721a552">
       <Name>sx_ulpgn_driver.h</Name>
       <Type>File</Type>
-      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn\sx_ulpgn_driver.h</RelativePath>
+      <RelativePath>..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn_1\sx_ulpgn_driver.h</RelativePath>
       <TreeImageGuid>03cad1e8-2eb3-4cde-a8a3-982423631122</TreeImageGuid>
       <ParentItem>bffad7b8-73c4-4361-83e8-a65937225745</ParentItem>
     </Instance>
@@ -5046,7 +5046,7 @@ src\smc_gen\r_bsp
 src\smc_gen\general
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\compiler_support\ccrx
-..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn
+..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn_1
 ..\common\application_code
 ..\..\..\..\lib\include\private
 ..\common\config_files
@@ -5188,7 +5188,7 @@ src\smc_gen\general
 src
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\compiler_support\ccrx
-..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn
+..\..\..\..\lib\third_party\mcu_vendor\renesas\amazon_freertos_common\network_support\uart_sx_ulpgn_1
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_bsp\board\generic_rx65n
 ..\..\..\..\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_flash_rx
