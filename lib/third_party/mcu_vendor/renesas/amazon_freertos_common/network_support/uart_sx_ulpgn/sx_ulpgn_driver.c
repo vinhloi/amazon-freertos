@@ -942,7 +942,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 						printf("recv timeout\r\n");
 						R_BSP_CpuInterruptLevelWrite (0);
 		#endif
-						nop();
+						R_NOP();
 						break;
 					}
 				}

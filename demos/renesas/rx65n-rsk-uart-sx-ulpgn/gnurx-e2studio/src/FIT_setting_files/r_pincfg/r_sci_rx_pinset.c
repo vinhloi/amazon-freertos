@@ -22,7 +22,7 @@
 * Device(s)    : R5F565NEDxFC
 * Tool-Chain   : RXC toolchain
 * Description  : Setting of port and mpc registers
-* Creation Date: 2018-08-28
+* Creation Date: 2018-12-07
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -41,7 +41,7 @@ Global variables and functions
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_SCI_PinSet_SCI2(void)
+void R_SCI_PinSet_SCI2()
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 
@@ -62,7 +62,7 @@ void R_SCI_PinSet_SCI2(void)
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_SCI_PinSet_SCI6(void)
+void R_SCI_PinSet_SCI6()
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 
@@ -73,6 +73,27 @@ void R_SCI_PinSet_SCI6(void)
     /* Set TXD6/SMOSI6 pin */
     MPC.P00PFS.BYTE = 0x0AU;
     PORT0.PMR.BIT.B0 = 1U;
+
+    R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
+}
+
+/***********************************************************************************************************************
+* Function Name: R_SCI_PinSet_SCI7
+* Description  : This function initializes pins for r_sci_rx module
+* Arguments    : none
+* Return Value : none
+***********************************************************************************************************************/
+void R_SCI_PinSet_SCI7()
+{
+    R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
+
+    /* Set RXD7/SMISO7 pin */
+    MPC.P57PFS.BYTE = 0x0AU;
+    PORT5.PMR.BIT.B7 = 1U;
+
+    /* Set TXD7/SMOSI7 pin */
+    MPC.P55PFS.BYTE = 0x0AU;
+    PORT5.PMR.BIT.B5 = 1U;
 
     R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
 }

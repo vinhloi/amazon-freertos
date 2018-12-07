@@ -8,7 +8,9 @@
 <Setting id="7" value="RXD6"/>
 <Setting id="8" value="TXD6"/>
 <Setting id="70" value="RXD2"/>
-<Setting id="52" value="TXD2"/>
+<Setting id="72" value="TXD2"/>
+<Setting id="63" value="RXD7"/>
+<Setting id="65" value="TXD7"/>
 </Segment>
 <Segment id="Device">
 <Setting id="Series" value="RX600"/>

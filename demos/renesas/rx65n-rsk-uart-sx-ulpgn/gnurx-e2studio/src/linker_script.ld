@@ -126,7 +126,13 @@ SECTIONS
 	{
 		*(.gcc_exc)
 	} >RAM
-	.bss :
+	B_PKCS11_STORAGE_1 :
+	{
+		_B_PKCS11_STORAGE_1_start = .;
+		*(B_PKCS11_STORAGE_1)
+		_B_PKCS11_STORAGE_1_end = .;
+	} >RAM
+	.bss 0x800000 : AT(0x800000)
 	{
 		_bss = .;
 		*(.bss)
@@ -137,7 +143,7 @@ SECTIONS
 		*(B_2)
 		_ebss = .;
 		_end = .;
-	} >RAM
+	} >RAMHI
 	.ofs1 0xFE7F5D40 : AT(0xFE7F5D00)
 	{
 		KEEP(*(.ofs1))
