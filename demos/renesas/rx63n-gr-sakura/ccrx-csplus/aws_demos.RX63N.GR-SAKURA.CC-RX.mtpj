@@ -3657,7 +3657,7 @@
   </Class>
   <Class Guid="873c9a58-9bc5-439a-b476-78629a4553ed">
     <Instance Guid="873c9a58-9bc5-439a-b476-78629a4553ed">
-      <ProjectDeviceChangedCounter>2</ProjectDeviceChangedCounter>
+      <ProjectDeviceChangedCounter>0</ProjectDeviceChangedCounter>
       <ProjectInitialDeviceName>R5F563NBDxFP</ProjectInitialDeviceName>
     </Instance>
   </Class>
@@ -4016,7 +4016,7 @@
       <SourceItemGuid169>3574ae48-cd55-4cb5-bba7-8a0f745ade47</SourceItemGuid169>
       <SourceItemType169>CSource</SourceItemType169>
       <SourceItemCount>170</SourceItemCount>
-      <LastDeviceChangedCounter>2</LastDeviceChangedCounter>
+      <LastDeviceChangedCounter>0</LastDeviceChangedCounter>
     </Instance>
     <Instance Guid="9e208646-ccba-4100-a676-29b1efe6545f">
       <AsmOptionInclude-DefaultValue />
@@ -4504,7 +4504,7 @@ src
       <COptionSectionB-1>B</COptionSectionB-1>
       <COptionUndefine-1 />
       <COptionFileInline-1 />
-      <COptionMessage-1>True</COptionMessage-1>
+      <COptionMessage-1>False</COptionMessage-1>
       <COptionMisra2012-1>None</COptionMisra2012-1>
       <COptionSectionL-1>L</COptionSectionL-1>
       <COptionCase-1>Auto</COptionCase-1>
@@ -4704,16 +4704,7 @@ src
       <LinkOptionS9-DefaultValue>False</LinkOptionS9-DefaultValue>
       <LinkOptionCFIIgnoreModule-DefaultValue />
       <LinkOptionOtherAdditionalOptionsForConvertFile-DefaultValue />
-      <LinkOptionCommandLine-DefaultValue>-noprelink
--output=%BuildModeName%\aws_demos.abs
--vect=_undefined_interrupt_source_isr
--list=%BuildModeName%\%ProjectName%.map
--nooptimize
--start=B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,B_1,R_1,B_2,R_2,B,R,SI/00000100,C_1,C_2,C,C$*,D*,W*,L,P*/FFF00000,FIXEDVECT/FFFFFF80
--rom=D=R,D_1=R_1,D_2=R_2
--nologo
--exit
-</LinkOptionCommandLine-DefaultValue>
+      <LinkOptionCommandLine-DefaultValue />
       <LinkOptionSplitVect-DefaultValue>False</LinkOptionSplitVect-DefaultValue>
       <IsLockedByUser>False</IsLockedByUser>
       <TimeTagModified--0>-8586637935419434096</TimeTagModified--0>
@@ -4798,18 +4789,9 @@ src
       <LinkOptionS9-0>False</LinkOptionS9-0>
       <LinkOptionCFIIgnoreModule-0 />
       <LinkOptionOtherAdditionalOptionsForConvertFile-0 />
-      <LinkOptionCommandLine-0>-noprelink
--output=%BuildModeName%\aws_demos.abs
--vect=_undefined_interrupt_source_isr
--list=%BuildModeName%\%ProjectName%.map
--nooptimize
--start=B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,B_1,R_1,B_2,R_2,B,R,SI/00000100,C_1,C_2,C,C$*,D*,W*,L,P*/FFF00000,FIXEDVECT/FFFFFF80
--rom=D=R,D_1=R_1,D_2=R_2
--nologo
--exit
-</LinkOptionCommandLine-0>
+      <LinkOptionCommandLine-0 />
       <LinkOptionSplitVect-0>False</LinkOptionSplitVect-0>
-      <TimeTagModified--1>-8586586536084784654</TimeTagModified--1>
+      <TimeTagModified--1>-8586573619431231104</TimeTagModified--1>
       <LinkOptionCpu-1>False</LinkOptionCpu-1>
       <LinkOptionForm-1>Absolute</LinkOptionForm-1>
       <LinkOptionFormConvert-1>Stype</LinkOptionFormConvert-1>
@@ -4894,16 +4876,7 @@ D_2=R_2
       <LinkOptionS9-1>False</LinkOptionS9-1>
       <LinkOptionCFIIgnoreModule-1 />
       <LinkOptionOtherAdditionalOptionsForConvertFile-1 />
-      <LinkOptionCommandLine-1>-noprelink
--output=%BuildModeName%\aws_demos.abs
--vect=_undefined_interrupt_source_isr
--list=%BuildModeName%\%ProjectName%.map
--nooptimize
--start=B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,B_1,R_1,B_2,R_2,B,R,SI/00000100,C_1,C_2,C,C$*,D*,W*,L,P*/FFF00000,FIXEDVECT/FFFFFF80
--rom=D=R,D_1=R_1,D_2=R_2
--nologo
--exit
-</LinkOptionCommandLine-1>
+      <LinkOptionCommandLine-1 />
       <LinkOptionSplitVect-1>False</LinkOptionSplitVect-1>
     </Instance>
     <Instance Guid="df74c69e-635e-42d9-845e-14128ba4d48a">
@@ -8430,6 +8403,143 @@ D_2=R_2
       <DeviceNameOnCreateStartup>R5F565NEDxFB_DUAL</DeviceNameOnCreateStartup>
     </Instance>
   </Class>
+  <Class Guid="100f3761-3d7e-4559-b1d8-375a0c7bf682">
+    <Instance Guid="100f3761-3d7e-4559-b1d8-375a0c7bf682">
+      <ProgramAnalyzeToolManager>7d577131-4ec1-4e88-968d-89381f6c178a</ProgramAnalyzeToolManager>
+    </Instance>
+  </Class>
+  <Class Guid="7d577131-4ec1-4e88-968d-89381f6c178a">
+    <Instance Guid="7d577131-4ec1-4e88-968d-89381f6c178a">
+      <FormatVersion>1.1</FormatVersion>
+    </Instance>
+    <Instance Guid="ccb786f6-b5fc-409c-93bf-105835d48f8f">
+      <AccumulateResultOfAnalysis>False</AccumulateResultOfAnalysis>
+      <CompulsorilyOutputCrossReferenceFile>False</CompulsorilyOutputCrossReferenceFile>
+      <CompulsorilyEnableDebugToolFunctions>False</CompulsorilyEnableDebugToolFunctions>
+      <IncludePrototypeDeclaration>True</IncludePrototypeDeclaration>
+      <RefreshAtProgramStop>Yes</RefreshAtProgramStop>
+      <UnitOfTime>Nanosecond</UnitOfTime>
+      <DelimitsArgumentsByNewLine>False</DelimitsArgumentsByNewLine>
+      <DisplayRegisterForVariableList>False</DisplayRegisterForVariableList>
+      <DisplayFunctionWithoutDefinition>False</DisplayFunctionWithoutDefinition>
+      <ForceOutputFunctionInformation>False</ForceOutputFunctionInformation>
+      <FreeMemoryWhenAllPanelClose>False</FreeMemoryWhenAllPanelClose>
+      <AskWhetherCancelTheResultByOutOfMemory>True</AskWhetherCancelTheResultByOutOfMemory>
+      <AnalyzeFilesSelectionType>FilesNotToAnalyze</AnalyzeFilesSelectionType>
+      <AnalyzeNotTargetFilesCount>0</AnalyzeNotTargetFilesCount>
+      <TraceAnalysisTargetPE>All</TraceAnalysisTargetPE>
+      <ImportFilesCount>0</ImportFilesCount>
+      <IsExportAutomatically>False</IsExportAutomatically>
+      <ExportFunctionFileName>%ProjectName%.mtfl</ExportFunctionFileName>
+      <ExportVariableFileName>%ProjectName%.mtvl</ExportVariableFileName>
+      <NumberOfFunctionDisplayingInExecutionTimeChart>10</NumberOfFunctionDisplayingInExecutionTimeChart>
+    </Instance>
+    <Instance Guid="4c245ffc-f465-4fbf-8655-108a8a1468e0">
+      <AnalysisMethod>RealtimeSampling</AnalysisMethod>
+      <AnalysisChartDataFileName />
+      <StartStopRealTimeSampling>Synchronized</StartStopRealTimeSampling>
+      <AutoAdjustForValueAndTime>AtProgramStop</AutoAdjustForValueAndTime>
+      <AutoAdjustNumberOfPoints>20</AutoAdjustNumberOfPoints>
+      <TimePerGrid>1000000</TimePerGrid>
+      <ChartType>LineChart</ChartType>
+      <SpecifyForegroundColorAndBackgroundColor>False</SpecifyForegroundColorAndBackgroundColor>
+      <CursorAColor>PaleGreen</CursorAColor>
+      <CursorBColor>PaleTurquoise</CursorBColor>
+      <Zoom1Color>40ff0a4f</Zoom1Color>
+      <Zoom2Color>405be416</Zoom2Color>
+      <Zoom3Color>40056def</Zoom3Color>
+      <Zoom4Color>40ff541c</Zoom4Color>
+      <UseTriggerFunction>False</UseTriggerFunction>
+      <TriggerMode>Auto</TriggerMode>
+      <TriggerSource>Channel01</TriggerSource>
+      <TriggerLevel>0</TriggerLevel>
+      <TriggerEdgeDirection>Rising</TriggerEdgeDirection>
+      <TriggerPosition>0</TriggerPosition>
+      <TriggerMarkColor>Orange</TriggerMarkColor>
+      <SamplingInterval>10</SamplingInterval>
+      <DataCollectionChannel>None</DataCollectionChannel>
+      <ChannelVariableName1 />
+      <ChannelVariableName2 />
+      <ChannelVariableName3 />
+      <ChannelVariableName4 />
+      <ChannelVariableName5 />
+      <ChannelVariableName6 />
+      <ChannelVariableName7 />
+      <ChannelVariableName8 />
+      <ChannelVariableName9 />
+      <ChannelVariableName10 />
+      <ChannelVariableName11 />
+      <ChannelVariableName12 />
+      <ChannelVariableName13 />
+      <ChannelVariableName14 />
+      <ChannelVariableName15 />
+      <ChannelVariableName16 />
+      <ChannelVariableType1>Auto</ChannelVariableType1>
+      <ChannelVariableType2>Auto</ChannelVariableType2>
+      <ChannelVariableType3>Auto</ChannelVariableType3>
+      <ChannelVariableType4>Auto</ChannelVariableType4>
+      <ChannelVariableType5>Auto</ChannelVariableType5>
+      <ChannelVariableType6>Auto</ChannelVariableType6>
+      <ChannelVariableType7>Auto</ChannelVariableType7>
+      <ChannelVariableType8>Auto</ChannelVariableType8>
+      <ChannelVariableType9>Auto</ChannelVariableType9>
+      <ChannelVariableType10>Auto</ChannelVariableType10>
+      <ChannelVariableType11>Auto</ChannelVariableType11>
+      <ChannelVariableType12>Auto</ChannelVariableType12>
+      <ChannelVariableType13>Auto</ChannelVariableType13>
+      <ChannelVariableType14>Auto</ChannelVariableType14>
+      <ChannelVariableType15>Auto</ChannelVariableType15>
+      <ChannelVariableType16>Auto</ChannelVariableType16>
+      <ChannelValuePerGrid1>25.5</ChannelValuePerGrid1>
+      <ChannelValuePerGrid2>25.5</ChannelValuePerGrid2>
+      <ChannelValuePerGrid3>25.5</ChannelValuePerGrid3>
+      <ChannelValuePerGrid4>25.5</ChannelValuePerGrid4>
+      <ChannelValuePerGrid5>25.5</ChannelValuePerGrid5>
+      <ChannelValuePerGrid6>25.5</ChannelValuePerGrid6>
+      <ChannelValuePerGrid7>25.5</ChannelValuePerGrid7>
+      <ChannelValuePerGrid8>25.5</ChannelValuePerGrid8>
+      <ChannelValuePerGrid9>25.5</ChannelValuePerGrid9>
+      <ChannelValuePerGrid10>25.5</ChannelValuePerGrid10>
+      <ChannelValuePerGrid11>25.5</ChannelValuePerGrid11>
+      <ChannelValuePerGrid12>25.5</ChannelValuePerGrid12>
+      <ChannelValuePerGrid13>25.5</ChannelValuePerGrid13>
+      <ChannelValuePerGrid14>25.5</ChannelValuePerGrid14>
+      <ChannelValuePerGrid15>25.5</ChannelValuePerGrid15>
+      <ChannelValuePerGrid16>25.5</ChannelValuePerGrid16>
+      <ChannelValueOffset1>0</ChannelValueOffset1>
+      <ChannelValueOffset2>0</ChannelValueOffset2>
+      <ChannelValueOffset3>0</ChannelValueOffset3>
+      <ChannelValueOffset4>0</ChannelValueOffset4>
+      <ChannelValueOffset5>0</ChannelValueOffset5>
+      <ChannelValueOffset6>0</ChannelValueOffset6>
+      <ChannelValueOffset7>0</ChannelValueOffset7>
+      <ChannelValueOffset8>0</ChannelValueOffset8>
+      <ChannelValueOffset9>0</ChannelValueOffset9>
+      <ChannelValueOffset10>0</ChannelValueOffset10>
+      <ChannelValueOffset11>0</ChannelValueOffset11>
+      <ChannelValueOffset12>0</ChannelValueOffset12>
+      <ChannelValueOffset13>0</ChannelValueOffset13>
+      <ChannelValueOffset14>0</ChannelValueOffset14>
+      <ChannelValueOffset15>0</ChannelValueOffset15>
+      <ChannelValueOffset16>0</ChannelValueOffset16>
+      <ChannelColor1>c0ff0a4f</ChannelColor1>
+      <ChannelColor2>c05be416</ChannelColor2>
+      <ChannelColor3>c0056dff</ChannelColor3>
+      <ChannelColor4>c0ff541c</ChannelColor4>
+      <ChannelColor5>c04fc1ff</ChannelColor5>
+      <ChannelColor6>c0a932ff</ChannelColor6>
+      <ChannelColor7>c0ffd91c</ChannelColor7>
+      <ChannelColor8>c0ff30a5</ChannelColor8>
+      <ChannelColor9>c0bee02f</ChannelColor9>
+      <ChannelColor10>c05510ff</ChannelColor10>
+      <ChannelColor11>c0ff97e4</ChannelColor11>
+      <ChannelColor12>c0913a37</ChannelColor12>
+      <ChannelColor13>c0c68e15</ChannelColor13>
+      <ChannelColor14>c0317f0c</ChannelColor14>
+      <ChannelColor15>c060493e</ChannelColor15>
+      <ChannelColor16>c072808e</ChannelColor16>
+    </Instance>
+  </Class>
   <Class Guid="606767c3-4bf3-4e65-90c1-19075517355d">
     <Instance Guid="606767c3-4bf3-4e65-90c1-19075517355d">
       <CurrentToolKey>6b3ab0e8-8ba1-402c-ac51-963031a63a4a</CurrentToolKey>
@@ -9339,7 +9449,7 @@ D_2=R_2
       <DebuggerProperty-DownloadProperty-DebugInformation-DownloadFiles-DownloadItem0-GenerateInformationForInputCompletion>True</DebuggerProperty-DownloadProperty-DebugInformation-DownloadFiles-DownloadItem0-GenerateInformationForInputCompletion>
     </Instance>
     <Instance Guid="72b41815-17e5-41b2-ab97-2a2bb023d612">
-      <DeviceChangedCounter>2</DeviceChangedCounter>
+      <DeviceChangedCounter>0</DeviceChangedCounter>
       <DeviceName>R5F563NYDxFP</DeviceName>
       <DebuggerProperty-EssentialProperty-Clock-MainClock>Extal</DebuggerProperty-EssentialProperty-Clock-MainClock>
       <DebuggerProperty-EssentialProperty-Clock-MainClockFrequency>120000</DebuggerProperty-EssentialProperty-Clock-MainClockFrequency>
@@ -9680,143 +9790,6 @@ D_2=R_2
       <DebuggerProperty-HookProperty-HookTransaction-Connected-Length>0</DebuggerProperty-HookProperty-HookTransaction-Connected-Length>
       <DebuggerProperty-HookProperty-HookTransaction-Disconnecting-Length>0</DebuggerProperty-HookProperty-HookTransaction-Disconnecting-Length>
       <DebuggerProperty-EssentialProperty-EmulatorConnect-SerialNumber />
-    </Instance>
-  </Class>
-  <Class Guid="100f3761-3d7e-4559-b1d8-375a0c7bf682">
-    <Instance Guid="100f3761-3d7e-4559-b1d8-375a0c7bf682">
-      <ProgramAnalyzeToolManager>7d577131-4ec1-4e88-968d-89381f6c178a</ProgramAnalyzeToolManager>
-    </Instance>
-  </Class>
-  <Class Guid="7d577131-4ec1-4e88-968d-89381f6c178a">
-    <Instance Guid="7d577131-4ec1-4e88-968d-89381f6c178a">
-      <FormatVersion>1.1</FormatVersion>
-    </Instance>
-    <Instance Guid="ccb786f6-b5fc-409c-93bf-105835d48f8f">
-      <AccumulateResultOfAnalysis>False</AccumulateResultOfAnalysis>
-      <CompulsorilyOutputCrossReferenceFile>False</CompulsorilyOutputCrossReferenceFile>
-      <CompulsorilyEnableDebugToolFunctions>False</CompulsorilyEnableDebugToolFunctions>
-      <IncludePrototypeDeclaration>True</IncludePrototypeDeclaration>
-      <RefreshAtProgramStop>Yes</RefreshAtProgramStop>
-      <UnitOfTime>Nanosecond</UnitOfTime>
-      <DelimitsArgumentsByNewLine>False</DelimitsArgumentsByNewLine>
-      <DisplayRegisterForVariableList>False</DisplayRegisterForVariableList>
-      <DisplayFunctionWithoutDefinition>False</DisplayFunctionWithoutDefinition>
-      <ForceOutputFunctionInformation>False</ForceOutputFunctionInformation>
-      <FreeMemoryWhenAllPanelClose>False</FreeMemoryWhenAllPanelClose>
-      <AskWhetherCancelTheResultByOutOfMemory>True</AskWhetherCancelTheResultByOutOfMemory>
-      <AnalyzeFilesSelectionType>FilesNotToAnalyze</AnalyzeFilesSelectionType>
-      <AnalyzeNotTargetFilesCount>0</AnalyzeNotTargetFilesCount>
-      <TraceAnalysisTargetPE>All</TraceAnalysisTargetPE>
-      <ImportFilesCount>0</ImportFilesCount>
-      <IsExportAutomatically>False</IsExportAutomatically>
-      <ExportFunctionFileName>%ProjectName%.mtfl</ExportFunctionFileName>
-      <ExportVariableFileName>%ProjectName%.mtvl</ExportVariableFileName>
-      <NumberOfFunctionDisplayingInExecutionTimeChart>10</NumberOfFunctionDisplayingInExecutionTimeChart>
-    </Instance>
-    <Instance Guid="4c245ffc-f465-4fbf-8655-108a8a1468e0">
-      <AnalysisMethod>RealtimeSampling</AnalysisMethod>
-      <AnalysisChartDataFileName />
-      <StartStopRealTimeSampling>Synchronized</StartStopRealTimeSampling>
-      <AutoAdjustForValueAndTime>AtProgramStop</AutoAdjustForValueAndTime>
-      <AutoAdjustNumberOfPoints>20</AutoAdjustNumberOfPoints>
-      <TimePerGrid>1000000</TimePerGrid>
-      <ChartType>LineChart</ChartType>
-      <SpecifyForegroundColorAndBackgroundColor>False</SpecifyForegroundColorAndBackgroundColor>
-      <CursorAColor>PaleGreen</CursorAColor>
-      <CursorBColor>PaleTurquoise</CursorBColor>
-      <Zoom1Color>40ff0a4f</Zoom1Color>
-      <Zoom2Color>405be416</Zoom2Color>
-      <Zoom3Color>40056def</Zoom3Color>
-      <Zoom4Color>40ff541c</Zoom4Color>
-      <UseTriggerFunction>False</UseTriggerFunction>
-      <TriggerMode>Auto</TriggerMode>
-      <TriggerSource>Channel01</TriggerSource>
-      <TriggerLevel>0</TriggerLevel>
-      <TriggerEdgeDirection>Rising</TriggerEdgeDirection>
-      <TriggerPosition>0</TriggerPosition>
-      <TriggerMarkColor>Orange</TriggerMarkColor>
-      <SamplingInterval>10</SamplingInterval>
-      <DataCollectionChannel>None</DataCollectionChannel>
-      <ChannelVariableName1 />
-      <ChannelVariableName2 />
-      <ChannelVariableName3 />
-      <ChannelVariableName4 />
-      <ChannelVariableName5 />
-      <ChannelVariableName6 />
-      <ChannelVariableName7 />
-      <ChannelVariableName8 />
-      <ChannelVariableName9 />
-      <ChannelVariableName10 />
-      <ChannelVariableName11 />
-      <ChannelVariableName12 />
-      <ChannelVariableName13 />
-      <ChannelVariableName14 />
-      <ChannelVariableName15 />
-      <ChannelVariableName16 />
-      <ChannelVariableType1>Auto</ChannelVariableType1>
-      <ChannelVariableType2>Auto</ChannelVariableType2>
-      <ChannelVariableType3>Auto</ChannelVariableType3>
-      <ChannelVariableType4>Auto</ChannelVariableType4>
-      <ChannelVariableType5>Auto</ChannelVariableType5>
-      <ChannelVariableType6>Auto</ChannelVariableType6>
-      <ChannelVariableType7>Auto</ChannelVariableType7>
-      <ChannelVariableType8>Auto</ChannelVariableType8>
-      <ChannelVariableType9>Auto</ChannelVariableType9>
-      <ChannelVariableType10>Auto</ChannelVariableType10>
-      <ChannelVariableType11>Auto</ChannelVariableType11>
-      <ChannelVariableType12>Auto</ChannelVariableType12>
-      <ChannelVariableType13>Auto</ChannelVariableType13>
-      <ChannelVariableType14>Auto</ChannelVariableType14>
-      <ChannelVariableType15>Auto</ChannelVariableType15>
-      <ChannelVariableType16>Auto</ChannelVariableType16>
-      <ChannelValuePerGrid1>25.5</ChannelValuePerGrid1>
-      <ChannelValuePerGrid2>25.5</ChannelValuePerGrid2>
-      <ChannelValuePerGrid3>25.5</ChannelValuePerGrid3>
-      <ChannelValuePerGrid4>25.5</ChannelValuePerGrid4>
-      <ChannelValuePerGrid5>25.5</ChannelValuePerGrid5>
-      <ChannelValuePerGrid6>25.5</ChannelValuePerGrid6>
-      <ChannelValuePerGrid7>25.5</ChannelValuePerGrid7>
-      <ChannelValuePerGrid8>25.5</ChannelValuePerGrid8>
-      <ChannelValuePerGrid9>25.5</ChannelValuePerGrid9>
-      <ChannelValuePerGrid10>25.5</ChannelValuePerGrid10>
-      <ChannelValuePerGrid11>25.5</ChannelValuePerGrid11>
-      <ChannelValuePerGrid12>25.5</ChannelValuePerGrid12>
-      <ChannelValuePerGrid13>25.5</ChannelValuePerGrid13>
-      <ChannelValuePerGrid14>25.5</ChannelValuePerGrid14>
-      <ChannelValuePerGrid15>25.5</ChannelValuePerGrid15>
-      <ChannelValuePerGrid16>25.5</ChannelValuePerGrid16>
-      <ChannelValueOffset1>0</ChannelValueOffset1>
-      <ChannelValueOffset2>0</ChannelValueOffset2>
-      <ChannelValueOffset3>0</ChannelValueOffset3>
-      <ChannelValueOffset4>0</ChannelValueOffset4>
-      <ChannelValueOffset5>0</ChannelValueOffset5>
-      <ChannelValueOffset6>0</ChannelValueOffset6>
-      <ChannelValueOffset7>0</ChannelValueOffset7>
-      <ChannelValueOffset8>0</ChannelValueOffset8>
-      <ChannelValueOffset9>0</ChannelValueOffset9>
-      <ChannelValueOffset10>0</ChannelValueOffset10>
-      <ChannelValueOffset11>0</ChannelValueOffset11>
-      <ChannelValueOffset12>0</ChannelValueOffset12>
-      <ChannelValueOffset13>0</ChannelValueOffset13>
-      <ChannelValueOffset14>0</ChannelValueOffset14>
-      <ChannelValueOffset15>0</ChannelValueOffset15>
-      <ChannelValueOffset16>0</ChannelValueOffset16>
-      <ChannelColor1>c0ff0a4f</ChannelColor1>
-      <ChannelColor2>c05be416</ChannelColor2>
-      <ChannelColor3>c0056dff</ChannelColor3>
-      <ChannelColor4>c0ff541c</ChannelColor4>
-      <ChannelColor5>c04fc1ff</ChannelColor5>
-      <ChannelColor6>c0a932ff</ChannelColor6>
-      <ChannelColor7>c0ffd91c</ChannelColor7>
-      <ChannelColor8>c0ff30a5</ChannelColor8>
-      <ChannelColor9>c0bee02f</ChannelColor9>
-      <ChannelColor10>c05510ff</ChannelColor10>
-      <ChannelColor11>c0ff97e4</ChannelColor11>
-      <ChannelColor12>c0913a37</ChannelColor12>
-      <ChannelColor13>c0c68e15</ChannelColor13>
-      <ChannelColor14>c0317f0c</ChannelColor14>
-      <ChannelColor15>c060493e</ChannelColor15>
-      <ChannelColor16>c072808e</ChannelColor16>
     </Instance>
   </Class>
   <Class Guid="2a2c2a43-ecdb-4e88-80bd-e75f3e33db90">

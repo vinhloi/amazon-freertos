@@ -231,18 +231,22 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 /* ---------- Stack Size ---------- */
 #if defined(__CCRX__)
 
-#define R_PRAGMA_ISTACK_SIZE(size)    R_PRAGMA(stacksize si=size)
-#define R_PRAGMA_USTACK_SIZE(size)    R_PRAGMA(stacksize su=size)
+#define R_PRAGMA_STACKSIZE_SI(_size)     _R_PRAGMA_STACKSIZE_SI(_size) /* _size means '(size)' */
+#define _R_PRAGMA_STACKSIZE_SI(_size)    __R_PRAGMA_STACKSIZE_SI##_size
+#define __R_PRAGMA_STACKSIZE_SI(size)     R_PRAGMA(stacksize si=size)
+#define R_PRAGMA_STACKSIZE_SU(_size)     _R_PRAGMA_STACKSIZE_SU(_size) /* _size means '(size)' */
+#define _R_PRAGMA_STACKSIZE_SU(_size)    __R_PRAGMA_STACKSIZE_SU##_size
+#define __R_PRAGMA_STACKSIZE_SU(size)    R_PRAGMA(stacksize su=size)
 
 #elif defined(__GNUC__)
 
-#define R_PRAGMA_ISTACK_SIZE(size)    static uint8_t istack_area[size] __attribute__((section(".r_bsp_istack"), used));
-#define R_PRAGMA_USTACK_SIZE(size)    static uint8_t ustack_area[size] __attribute__((section(".r_bsp_ustack"), used));
+#define R_PRAGMA_STACKSIZE_SI(size)      static uint8_t istack_area[size] __attribute__((section(".r_bsp_istack"), used));
+#define R_PRAGMA_STACKSIZE_SU(size)      static uint8_t ustack_area[size] __attribute__((section(".r_bsp_ustack"), used));
 
 #elif defined(__ICCRX__)
 
-//#define R_PRAGMA_ISTACK_SIZE(size)    FIXME: Is there any way? If so, what to do?
-//#define R_PRAGMA_USTACK_SIZE(size)    FIXME: Is there any way? If so, what to do?
+//#define R_PRAGMA_STACKSIZE_SI(size)    FIXME: Is there any way? If so, what to do?
+//#define R_PRAGMA_STACKSIZE_SU(size)    FIXME: Is there any way? If so, what to do?
 
 #endif
 

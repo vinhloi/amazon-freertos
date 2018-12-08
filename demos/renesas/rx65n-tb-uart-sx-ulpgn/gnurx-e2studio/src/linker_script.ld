@@ -100,14 +100,16 @@ SECTIONS
 	{
 		KEEP(*(.r_bsp_ustack))
 	} >RAM
-	.ustack :
-	{
-		_ustack = .;
-	} >RAM
-	.r_bsp_istack BLOCK(4) :
-	{
-		KEEP(*(.r_bsp_istack))
-	} >RAM
+/*
+ *	.r_bsp_ustack BLOCK(4) :
+ *	{
+ *		KEEP(*(.r_bsp_ustack))
+ *	} > RAM
+ *	.ustack :
+ *	{
+ *		_ustack = .;
+ *	} > RAM
+ */
 	.istack :
 	{
 		_istack = .;

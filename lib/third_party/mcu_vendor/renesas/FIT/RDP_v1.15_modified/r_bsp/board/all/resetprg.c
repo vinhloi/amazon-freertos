@@ -68,12 +68,19 @@ Includes   <System Includes> , "Project Includes"
 #endif /* defined(__CCRX__) */
 
 /* This macro is here so that the stack will be declared here. This is used to prevent multiplication of stack size. */
+/* No more necessary but declared for a while. */
 #define     BSP_DECLARE_STACK
 /* Define the target platform */
 #include    "platform.h"
 
 /* When using the user startup program, disable the following code. */
 #if (BSP_CFG_STARTUP_DISABLE == 0)
+
+/* Declaration of stack size. */
+#if (BSP_CFG_USER_STACK_ENABLE == 1)
+R_PRAGMA_STACKSIZE_SU(BSP_CFG_USTACK_BYTES)
+#endif
+R_PRAGMA_STACKSIZE_SI(BSP_CFG_ISTACK_BYTES)
 
 /***********************************************************************************************************************
 Macro definitions

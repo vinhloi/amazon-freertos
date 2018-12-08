@@ -5810,7 +5810,7 @@ src
       <COptionSectionB-1>B</COptionSectionB-1>
       <COptionUndefine-1 />
       <COptionFileInline-1 />
-      <COptionMessage-1>False</COptionMessage-1>
+      <COptionMessage-1>True</COptionMessage-1>
       <COptionMisra2012-1>None</COptionMisra2012-1>
       <COptionSectionL-1>L</COptionSectionL-1>
       <COptionCase-1>Auto</COptionCase-1>
@@ -6097,7 +6097,7 @@ src
       <LinkOptionOtherAdditionalOptionsForConvertFile-0 />
       <LinkOptionCommandLine-0 />
       <LinkOptionSplitVect-0>False</LinkOptionSplitVect-0>
-      <TimeTagModified--1>-8586633032971394768</TimeTagModified--1>
+      <TimeTagModified--1>-8586573616820677312</TimeTagModified--1>
       <LinkOptionCpu-1>False</LinkOptionCpu-1>
       <LinkOptionForm-1>Absolute</LinkOptionForm-1>
       <LinkOptionFormConvert-1>Stype</LinkOptionFormConvert-1>
@@ -6105,7 +6105,7 @@ src
       <LinkOptionListShow-1>List</LinkOptionListShow-1>
       <LinkOptionOptimize-1>None</LinkOptionOptimize-1>
       <LinkOptionStack-1>False</LinkOptionStack-1>
-      <LinkOptionStart-1>B_1,R_1,B_2,R_2,B,R/00800000,B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,SU,SI/00840000,C_1,C_2,C,C$*,D*,W*,L,P*/FFE00000,EXCEPTVECT/FFFFFF80,RESETVECT/FFFFFFFC</LinkOptionStart-1>
+      <LinkOptionStart-1>B_1,R_1,B_2,R_2,B,R/00800000,B_ETHERNET_BUFFERS_1,B_TX_DESC_1,B_RX_DESC_1,SI/00840000,C_1,C_2,C,C$*,D*,W*,L,P*/FFE00000,EXCEPTVECT/FFFFFF80,RESETVECT/FFFFFFFC</LinkOptionStart-1>
       <LinkOptionCompress-1>False</LinkOptionCompress-1>
       <LinkOptionCpuInformation-1 />
       <LinkOptionDebug-1>Debug</LinkOptionDebug-1>
