@@ -17,8 +17,8 @@
   </Class>
   <Class Guid="9033e9fb-2b12-4437-a25e-27b28d42582b">
     <Instance Guid="5487a8ce-58d2-4046-9204-56e0140125a1">
-      <Name>aws_demos.RX63N.GR-SAKURA.CC-RX</Name>
-      <RelativePath>..\rx63n-gr-sakura\ccrx-csplus\aws_demos.RX63N.GR-SAKURA.CC-RX.mtsp</RelativePath>
+      <Name>aws_demos.RX63N.GR-SAKURA-II.CC-RX</Name>
+      <RelativePath>..\rx63n-gr-sakura2\ccrx-csplus\aws_demos.RX63N.GR-SAKURA-II.CC-RX.mtsp</RelativePath>
     </Instance>
     <Instance Guid="b93fff9e-8c05-453d-bad0-1926ebd8f159">
       <Name>aws_demos.RX64M.GR-KAEDE.CC-RX</Name>
