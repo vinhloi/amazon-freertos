@@ -13,6 +13,7 @@ src/FIT_modified_code/r_flash_rx
 src/FIT_modified_code/r_riic_rx
 src/FIT_modified_code/r_sci_iic_rx
 src/FIT_modified_code/r_sci_rx
+src/amazon_freertos_common
 
 ----------------------------------------------------------
 Folders on the File System of the WINDOWS Operating System
@@ -26,5 +27,6 @@ amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flas
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx
 amazon-freertos/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_rx
+amazon-freertos/lib/third_party/mcu_vendor/renesas/amazon_freertos_common
 
 [EOF]

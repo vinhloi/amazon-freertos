@@ -75,8 +75,9 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FIT_modefied_code/r_sci_iic_rx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FIT_modefied_code/r_sci_rx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FIT_modefied_code/r_sci_rx/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib/third_party/mcu_vendor/renesas/amazon_freertos_common}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib/third_party/mcu_vendor/renesas/amazon_freertos_common/compiler_support/ccrx}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/amazon_freertos_common}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/amazon_freertos_common/compiler_support/ccrx}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/amazon_freertos_common/network_support/onchip_rx_ether}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib/third_party/mbed_tls/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/application_code/common_test/ota}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_config}&quot;"/>
@@ -465,7 +466,7 @@
 						<entry excluding="trash|application_code|config_files|src|lib|src/FIT_modefied_code/r_riic_rx|src/FIT_modefied_code/r_sci_iic_rx|src/FIT_modefied_code/r_cmt_rx|src/smc_gen/UNUSED_generated_code|lib/third_party/mcu_vendor/renesas/FIT|application_code/vendor_code/entropy_hardware_poll.c|lib/aws/pkcs11/pkcs11.c|lib/aws/FreeRTOS-Plus-TCP/source/portable/BufferManagement/BufferAllocation_1.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 						<entry excluding="common_test/wifi|common_test/ota|common_test/posix" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application_code"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="config_files"/>
-						<entry excluding="aws/pkcs11/mbedtls|third_party/mcu_vendor/renesas/FIT" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lib"/>
+						<entry excluding="aws/pkcs11/mbedtls|third_party/mcu_vendor/renesas/amazon_freertos_common|third_party/mcu_vendor/renesas/FIT" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lib"/>
 						<entry excluding="smc_gen/UNUSED_generated_code|FIT_modefied_code/r_riic_rx|FIT_modefied_code/r_cmt_rx|FIT_modefied_code/r_sci_iic_rx" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>

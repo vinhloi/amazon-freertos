@@ -119,11 +119,6 @@ x509_csr.obj
 x509write_crt.obj
 x509write_csr.obj
 xtea.obj
-exit.obj
-entropy_hardware_poll.obj
-freertos_start.obj
-freertos_ip_hook.obj
-serial_term_uart.obj
 cborencoder.obj
 cborencoder_close_container_checked.obj
 cborerrorstrings.obj
@@ -165,3 +160,8 @@ r_flash_rx.obj
 r_sci_rx.obj
 r_sci_rx63n.obj
 r_sci_rx63n_data.obj
+exit.obj
+entropy_hardware_poll.obj
+freertos_start.obj
+freertos_ip_hook.obj
+serial_term_uart.obj

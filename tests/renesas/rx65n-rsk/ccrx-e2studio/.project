@@ -65,6 +65,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>src/amazon_freertos_common</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/amazon_freertos_common</locationURI>
+		</link>
+		<link>
 			<name>application_code/common_test/crypto</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/tests/common/crypto</locationURI>
@@ -545,7 +550,7 @@
 		</filter>
 		<filter>
 			<id>1542878700761</id>
-			<name>lib/third_party/mcu_vendor/renesas/amazon_freertos_common/compiler_support</name>
+			<name>src/amazon_freertos_common/compiler_support</name>
 			<type>30</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
@@ -554,7 +559,7 @@
 		</filter>
 		<filter>
 			<id>1542444634331</id>
-			<name>lib/third_party/mcu_vendor/renesas/amazon_freertos_common/network_support</name>
+			<name>src/amazon_freertos_common/network_support</name>
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
