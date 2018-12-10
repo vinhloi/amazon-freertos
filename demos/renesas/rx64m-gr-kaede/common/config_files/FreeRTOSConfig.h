@@ -158,9 +158,11 @@ extern void vAssertCalled( void );
 /* The function that implements FreeRTOS printf style output, and the macro
  * that maps the configPRINTF() macros to that function. */
 extern void vLoggingPrintf( const char * pcFormat, ... );
-
 #define configPRINTF( X )    vLoggingPrintf X
 
+/* Non-format version thread-safe print */
+extern void vLoggingPrint( const char * pcMessage );
+#define configPRINT( X )     vLoggingPrint( X )
 
 /* Map the logging task's printf to the board specific output function. */
 #define configPRINT_STRING( x )    uart_string_printf( x );
