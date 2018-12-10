@@ -143,21 +143,17 @@ Configuration Options
 /* When using the user startup program, disable the following code. */
 #if (BSP_CFG_STARTUP_DISABLE == 0)
 
-/* The 'BSP_DECLARE_STACK' macro is checked so that the stack is only declared in one place (resetprg.c). Every time a 
-   '#pragma stacksize' is encountered, the stack size is increased. This prevents multiplication of stack size. */
-#if defined(BSP_DECLARE_STACK)
-    /* If only 1 stack is chosen using BSP_CFG_USER_STACK_ENABLE then no RAM will be allocated for the user stack. */
-    #if (BSP_CFG_USER_STACK_ENABLE == 1)
-    /* User Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive. */
-    R_PRAGMA_USTACK_SIZE                (0x1000)
-    #endif
+/* If only 1 stack is chosen using BSP_CFG_USER_STACK_ENABLE then no RAM will be allocated for the user stack. */
+#if (BSP_CFG_USER_STACK_ENABLE == 1)
+/* User Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive. */
+#define BSP_CFG_USTACK_BYTES            (0x10000)
+#endif
 
 /* Interrupt Stack size in bytes. The Renesas RX toolchain sets the stack size using the #pragma stacksize directive.
  * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
  * below.
  */
-R_PRAGMA_ISTACK_SIZE                    (0x400)
-#endif
+#define BSP_CFG_ISTACK_BYTES            (0x400)
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 
