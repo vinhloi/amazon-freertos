@@ -51,8 +51,30 @@ typedef struct _pkcs_data
 #define PKCS_DATA_STATUS_REGISTERD 1
 #define PKCS_DATA_STATUS_DELETED 2
 
-static PKCS_DATA pkcs_data[100];
-static uint32_t pkcs_data_handle = 1;
+#define PKCS_HANDLES_LABEL_MAX_LENGTH 40
+#define PKCS_OBJECT_HANDLES_NUM 5
+
+enum eObjectHandles
+{
+    eInvalidHandle = 0, /* According to PKCS #11 spec, 0 is never a valid object handle. */
+    eAwsDevicePrivateKey = 1,
+    eAwsDevicePublicKey,
+    eAwsDeviceCertificate,
+    eAwsCodeSigningKey,
+    //eAwsRootCertificate
+};
+
+uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX_LENGTH] = {
+        "",
+        pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS,
+        pkcs11configLABEL_DEVICE_PUBLIC_KEY_FOR_TLS,
+        pkcs11configLABEL_DEVICE_CERTIFICATE_FOR_TLS,
+        pkcs11configLABEL_CODE_VERIFICATION_KEY,
+        //pkcs11configLABEL_ROOT_CERTIFICATE,
+};
+
+static PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM];
+static uint32_t stored_data_size = 0;
 
 R_ATTRIB_SECTION_CHANGE(B, _PKCS11_STORAGE, 1)
 static uint8_t local_storage[60000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
@@ -75,34 +97,36 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     uint8_t * pucData,
     uint32_t ulDataSize )
 {
-	uint32_t size;
-	int i;
+    CK_OBJECT_HANDLE xHandle = eInvalidHandle;
+    uint32_t size;
+    int i;
 
-	for(i = 0; i < pkcs_data_handle - 1; i++)
-	{
-		if(!strcmp(pkcs_data[i].Label.pValue, pxLabel->pValue))
-		{
-			if(pkcs_data[i].status != PKCS_DATA_STATUS_DELETED)
-			{
-				pkcs_data[i].status = PKCS_DATA_STATUS_DELETED;
-				break;
-			}
-		}
-	}
+    for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++) {
+        if (!strcmp((char * )&object_handle_dictionary[i],
+                pxLabel->pValue)) {
+            xHandle = i;
+        }
+    }
 
-	size = current_stored_size();
-	memcpy(&local_storage[size], pucData, ulDataSize);
+    if (xHandle != eInvalidHandle) {
 
-	pkcs_data[pkcs_data_handle - 1].Label.pValue = pxLabel->pValue;
-	pkcs_data[pkcs_data_handle - 1].Label.type = pxLabel->type;
-	pkcs_data[pkcs_data_handle - 1].Label.ulValueLen = pxLabel->ulValueLen;
-	pkcs_data[pkcs_data_handle - 1].ulDataSize = ulDataSize;
-	pkcs_data[pkcs_data_handle - 1].local_storage_index = size;
-	pkcs_data[pkcs_data_handle - 1].status = PKCS_DATA_STATUS_REGISTERD;
+        size = current_stored_size();
 
-    CK_OBJECT_HANDLE xHandle = pkcs_data_handle;
-	pkcs_data_handle++;
+        memcpy(&local_storage[size], pucData, ulDataSize);
+
+        pkcs_data[xHandle].Label.pValue = pxLabel->pValue;
+        pkcs_data[xHandle].Label.type = pxLabel->type;
+        pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
+        pkcs_data[xHandle].ulDataSize = ulDataSize;
+        pkcs_data[xHandle].local_storage_index = size;
+        pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERD;
+
+        stored_data_size += ulDataSize;
+
+    }
+
     return xHandle;
+
 }
 
 /**
@@ -121,23 +145,17 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
     uint8_t usLength )
 {
-	CK_OBJECT_HANDLE xHandle = 0;
+	CK_OBJECT_HANDLE xHandle = eInvalidHandle;
 	int i;
 
-	for(i = 0; i < pkcs_data_handle - 1; i++)
+	for(i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
 	{
-		if(!strcmp(pkcs_data[i].Label.pValue, (char *)pLabel))
+		if(!strcmp((char *)&object_handle_dictionary[i], (char *)pLabel))
 		{
-			if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERD)
-			{
-				break;
-			}
+            xHandle = i;
 		}
 	}
-	if(i != pkcs_data_handle - 1)
-	{
-		xHandle = i + 1;
-	}
+
     return xHandle;
 }
 
@@ -169,20 +187,31 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
     uint32_t * pulDataSize,
     CK_BBOOL * pIsPrivate )
 {
-	*ppucData = &local_storage[pkcs_data[xHandle - 1].local_storage_index];
-	*pulDataSize = pkcs_data[xHandle - 1].ulDataSize;
+    CK_RV xReturn = CKR_FUNCTION_FAILED;
 
+    CK_OBJECT_HANDLE xHandleStorage = xHandle;
 
-	if(!strcmp(pkcs_data[xHandle - 1].Label.pValue, (char *)&pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS))
-	{
-		*pIsPrivate = CK_TRUE;
-	}
-	else
-	{
-		*pIsPrivate = CK_FALSE;
-	}
+    if (xHandleStorage == eAwsDevicePublicKey) {
 
-    CK_RV xReturn = CKR_OK;
+        xHandleStorage = eAwsDevicePrivateKey;
+
+    }
+
+    if (xHandle != eInvalidHandle) {
+        *ppucData = &local_storage[pkcs_data[xHandleStorage].local_storage_index];
+        *pulDataSize = pkcs_data[xHandleStorage].ulDataSize;
+
+        if (!strcmp((char * )&object_handle_dictionary[xHandle],
+                pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS)) {
+            *pIsPrivate = CK_TRUE;
+        } else {
+            *pIsPrivate = CK_FALSE;
+        }
+
+        xReturn = CKR_OK;
+
+    }
+
     return xReturn;
 }
 
@@ -203,11 +232,5 @@ void PKCS11_PAL_GetObjectValueCleanup( uint8_t * pucData,
 
 uint32_t current_stored_size(void)
 {
-	uint32_t size = 0;
-
-	for(int i = 0; i < pkcs_data_handle - 1; i++)
-	{
-		size += pkcs_data[i].ulDataSize;
-	}
-	return size;
+	return stored_data_size;
 }
