@@ -5806,7 +5806,8 @@ src
       <COptionLoopValue-1>2</COptionLoopValue-1>
       <COptionMisra2004RuleNumberIgnore-1 />
       <COptionOtherAdditionalOptions-1 />
-      <COptionPreinclude-1 />
+      <COptionPreinclude-1>implicitlyinclude.h
+</COptionPreinclude-1>
       <COptionSectionC-1>C</COptionSectionC-1>
       <COptionShowExpansions-1>False</COptionShowExpansions-1>
       <COptionCommandLine-1 />
