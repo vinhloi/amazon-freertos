@@ -60,37 +60,49 @@ Exported global functions (to be accessed by other files)
 #if defined(__CCRX__)
 
 /* #define __RX 1 */ /* This is already defined by CCRX. */
-/* #define __LIT 1 */ /* This is already defined by CCRX. */
-/* #define __BIG 1 */ /* This is already defined by CCRX. */
+/* #define __LIT 1 */ /* This is automatically defined by CCRX. */
+/* #define __BIG 1 */ /* This is automatically defined by CCRX. */
+/* #define __FPU 1 */ /* This is automatically defined by ICCRX. */
+/* #define __RXV2 1 */ /* This is automatically defined by ICCRX. */
 
 #elif defined(__GNUC__)
 
+#if !defined(__RX)
 #define __RX 1
+#endif
 
 #if defined(__RX_LITTLE_ENDIAN__)
+#if !defined(__LIT)
 #define __LIT 1
-#else
+#endif
+#elif defined(__RX_BIG_ENDIAN__)
+#if !defined(__BIG)
 #define __BIG 1
+#endif
 #endif
 
 #if defined(__RX_FPU_INSNS__)
+#if !defined(__FPU)
 #define __FPU 1
+#endif
 #endif
 
 #if defined(__RXv2__)
+#if !defined(__RXV2)
 #define __RXV2 1
+#endif
 #endif
 
 #elif defined(__ICCRX__)
 
+#if !defined(__RX)
 #define __RX 1
+#endif
 
-/* #define __LIT 1 */ /* This is already defined by ICCRX. */
-/* #define __BIG 1 */ /* This is already defined by ICCRX. */
-
-/* #define __FPU 1 */ /* This is already defined by ICCRX. */
-
-/* #define __RXV2 1 */ /* This is already defined by ICCRX. */
+/* #define __LIT 1 */ /* This is automatically defined by ICCRX. */
+/* #define __BIG 1 */ /* This is automatically defined by ICCRX. */
+/* #define __FPU 1 */ /* This is automatically defined by ICCRX. */
+/* #define __RXV2 1 */ /* This is automatically defined by ICCRX. */
 
 #endif
 
