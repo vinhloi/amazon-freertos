@@ -27,28 +27,18 @@
 /*
  */
 
-/* Trial use of StdAfx.h to check the availability of the header.
- * This will be reverted later. */
-#if defined(__RX) || defined(__RX__)
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 
-#include "StdAfx.h"
+/* Logging includes. */
+#include "aws_logging_task.h"
 
-#else /* defined(__RX) || defined(__RX__) */
-
-///* FreeRTOS includes. */
-//#include "FreeRTOS.h"
-//#include "task.h"
-//#include "queue.h"
-//
-///* Logging includes. */
-//#include "aws_logging_task.h"
-//
-///* Standard includes. */
-//#include <stdio.h>
-//#include <stdarg.h>
-//#include <string.h>
-
-#endif /* defined(__RX) || defined(__RX__) */
+/* Standard includes. */
+#include <stdio.h>
+#include <stdarg.h>
+#include <string.h>
 
 /* Sanity check all the definitions required by this file are set. */
 #ifndef configPRINT_STRING
@@ -149,11 +139,7 @@ void vLoggingPrintf( const char *pcFormat, ... )
 {
     size_t xLength = 0;
     int32_t xLength2 = 0;
-#if defined(__RX) && defined(__CCRX__)
-    va_list args = NULL; /* Avoid CC-RX's compiler warning caused by CC-RX's va_start() implementation */
-#else
     va_list args;
-#endif
     char *pcPrintString = NULL;
 
     /* The queue is created by xLoggingTaskInitialize().  Check

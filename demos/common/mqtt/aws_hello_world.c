@@ -58,30 +58,20 @@
  * buffer.
  */
 
-/* Trial use of StdAfx.h to check the availability of the header.
- * This will be reverted later. */
-#if defined(__RX) || defined(__RX__)
+/* Standard includes. */
+#include "string.h"
+#include "stdio.h"
 
-#include "StdAfx.h"
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "message_buffer.h"
 
-#else /* defined(__RX) || defined(__RX__) */
+/* MQTT includes. */
+#include "aws_mqtt_agent.h"
 
-///* Standard includes. */
-//#include "string.h"
-//#include "stdio.h"
-//
-///* FreeRTOS includes. */
-//#include "FreeRTOS.h"
-//#include "task.h"
-//#include "message_buffer.h"
-//
-///* MQTT includes. */
-//#include "aws_mqtt_agent.h"
-//
-///* Credentials includes. */
-//#include "aws_clientcredential.h"
-
-#endif /* defined(__RX) || defined(__RX__) */
+/* Credentials includes. */
+#include "aws_clientcredential.h"
 
 /* Demo includes. */
 #include "aws_demo_config.h"
@@ -450,8 +440,6 @@ static void prvMQTTConnectAndPublishTask( void * pvParameters )
     const TickType_t xFiveSeconds = pdMS_TO_TICKS( 5000UL );
     const BaseType_t xIterationsInAMinute = 60 / 5;
     TaskHandle_t xEchoingTask = NULL;
-
-    vTaskDelay(10000);	// todo: this is renesas issue.
 
     /* Avoid compiler warnings about unused parameters. */
     ( void ) pvParameters;

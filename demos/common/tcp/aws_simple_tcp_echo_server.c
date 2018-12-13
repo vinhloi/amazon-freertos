@@ -36,27 +36,17 @@
  * http://www.FreeRTOS.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/examples_FreeRTOS_simulator.html
  */
 
-/* Trial use of StdAfx.h to check the availability of the header.
- * This will be reverted later. */
-#if defined(__RX) || defined(__RX__)
+/* Standard includes. */
+#include <stdint.h>
+#include <stdio.h>
 
-#include "StdAfx.h"
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
 
-#else /* defined(__RX) || defined(__RX__) */
-
-///* Standard includes. */
-//#include <stdint.h>
-//#include <stdio.h>
-//
-///* FreeRTOS includes. */
-//#include "FreeRTOS.h"
-//#include "task.h"
-//
-///* FreeRTOS+TCP includes. */
-//#include "FreeRTOS_IP.h"
-//#include "FreeRTOS_Sockets.h"
-
-#endif /* defined(__RX) || defined(__RX__) */
+/* FreeRTOS+TCP includes. */
+#include "FreeRTOS_IP.h"
+#include "FreeRTOS_Sockets.h"
 
 /* Demo specific includes */
 #include "aws_simple_tcp_echo_server.h"

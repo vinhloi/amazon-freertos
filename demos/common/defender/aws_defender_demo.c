@@ -24,27 +24,17 @@
  * http://www.FreeRTOS.org
  */
 
-/* Trial use of StdAfx.h to check the availability of the header.
- * This will be reverted later. */
-#if defined(__RX) || defined(__RX__)
+/* Standard includes. */
+#include "stdio.h"
+#include "string.h"
 
-#include "StdAfx.h"
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "message_buffer.h"
+#include "task.h"
 
-#else /* defined(__RX) || defined(__RX__) */
-
-///* Standard includes. */
-//#include "stdio.h"
-//#include "string.h"
-//
-///* FreeRTOS includes. */
-//#include "FreeRTOS.h"
-//#include "message_buffer.h"
-//#include "task.h"
-//
-///* Defender includes. */
-//#include "aws_defender.h"
-
-#endif /* defined(__RX) || defined(__RX__) */
+/* Defender includes. */
+#include "aws_defender.h"
 
 /* Demo for device defender */
 static void prvDefenderDemo( void * );

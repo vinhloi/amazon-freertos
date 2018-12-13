@@ -34,33 +34,21 @@
  * http://www.FreeRTOS.org/FreeRTOS-Plus/SOCKETS_Plus_TCP/examples_SOCKETS_simulator.html
  */
 
-/* Trial use of StdAfx.h to check the availability of the header.
- * This will be reverted later. */
-#if defined(__RX) || defined(__RX__)
+/* Standard includes. */
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "StdAfx.h"
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "event_groups.h"
 
-#else /* defined(__RX) || defined(__RX__) */
-
-///* Standard includes. */
-//#include <stdint.h>
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-//
-///* FreeRTOS includes. */
-//#include "FreeRTOS.h"
-//#include "task.h"
-//#include "queue.h"
-//#include "event_groups.h"
-//
-///* TCP/IP abstraction includes. */
-//#include "aws_secure_sockets.h"
-
-#endif /* defined(__RX) || defined(__RX__) */
-
-/* FreeRTOS-Plus-TCP configuration (for ipconfigUSE_TCP_WIN only) */
-#include "FreeRTOSIPConfig.h"
+/* FreeRTOS+TCP includes. */
+/* TCP/IP abstraction includes. */
+#include "aws_secure_sockets.h"
 
 /* Demo configuration */
 #include "aws_demo_config.h"

@@ -33,39 +33,28 @@
  * by production ready key provisioning mechanism.
  */
 
-/* Trial use of StdAfx.h to check the availability of the header.
- * This will be reverted later. */
-#if defined(__RX) || defined(__RX__)
+/* Standard includes. */
+#include <stdio.h>
+#include <string.h>
 
-#include "StdAfx.h"
+/* FreeRTOS includes. */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "semphr.h"
 
-#else /* defined(__RX) || defined(__RX__) */
+/* PKCS#11 includes. */
+#include "aws_pkcs11.h"
+#include "aws_pkcs11_config.h"
 
-///* Standard includes. */
-//#include <stdio.h>
-//#include <string.h>
-//
-///* FreeRTOS includes. */
-//#include "FreeRTOS.h"
-//#include "task.h"
-//#include "semphr.h"
-//
-///* PKCS#11 includes. */
-//#include "aws_pkcs11.h"
-//#include "aws_pkcs11_config.h"
-//
-///* Client credential includes. */
-//#include "aws_clientcredential.h"
-//#include "aws_default_root_certificates.h"
-//
-///* Key provisioning includes. */
-//#include "aws_dev_mode_key_provisioning.h"
-//
-///* mbedTLS includes. */
-//#include "mbedtls/base64.h"
+/* Client credential includes. */
+#include "aws_clientcredential.h"
+#include "aws_default_root_certificates.h"
 
-#endif /* defined(__RX) || defined(__RX__) */
+/* Key provisioning includes. */
+#include "aws_dev_mode_key_provisioning.h"
 
+/* mbedTLS includes. */
+#include "mbedtls/base64.h"
 /*-----------------------------------------------------------*/
 
 /* For convenience and to enable rapid evaluation the keys are stored in const
