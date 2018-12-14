@@ -89,8 +89,8 @@ extern int convert_pem_to_der( const unsigned char * pucInput,
                                size_t xLen,
                                unsigned char * pucOutput,
                                size_t * pxOlen );
-extern CK_RV xProvisionDevice( CK_SESSION_HANDLE xSession,
-                               ProvisioningParams_t * pxParams );
+//extern CK_RV xProvisionDevice( CK_SESSION_HANDLE xSession,
+//                               ProvisioningParams_t * pxParams );
 
 /* Workaround for the incompatibility between GNU/IAR C compilers and the CC-RX compiler. */
 #if defined(__CCRX__)

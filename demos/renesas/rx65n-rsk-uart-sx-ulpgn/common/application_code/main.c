@@ -83,14 +83,14 @@ extern void vApplicationDaemonTaskStartupHook( void );
 #include "aws_shadow.h"
 
 /* FreeRTOS+TCP includes. */
-#include "FreeRTOS_IP.h" // Comment out when unnecessary
+//#include "FreeRTOS_IP.h" // Comment out when unnecessary
 ////#include "FreeRTOS_Sockets.h" // Using aws_secure_sockets.h is better
 
 /* TCP/IP abstraction includes. */
 #include "aws_secure_sockets.h"
 
 /* WiFi interface includes. */
-//#include "aws_wifi.h" // Remove '//' when necessary
+#include "aws_wifi.h" // Remove '//' when necessary
 
 /* Standard includes. */
 #include <stdio.h>
