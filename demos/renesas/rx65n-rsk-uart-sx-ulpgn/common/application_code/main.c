@@ -23,25 +23,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  http://www.FreeRTOS.org
 */
 
-/* Application Framework include. */
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
-#include "semphr.h"
-#include "queue.h"
-//#include "croutine.h" // Amazon FreeRTOS does not have this header
-#include "timers.h"
-#include "event_groups.h"
-#include "message_buffer.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* FreeRTOS headers seem to lack following declaration */
-#if( configUSE_DAEMON_TASK_STARTUP_HOOK == 1 )
-extern void vApplicationDaemonTaskStartupHook( void );
-#endif /* configUSE_DAEMON_TASK_STARTUP_HOOK */
 
 /* Version includes. */
 #include "aws_application_version.h"
@@ -49,61 +33,23 @@ extern void vApplicationDaemonTaskStartupHook( void );
 /* System init includes. */
 #include "aws_system_init.h"
 
-/* PKCS#11 includes. */
-#include "aws_pkcs11.h"
-#include "aws_pkcs11_config.h"
-
-/* Client credential includes. */
-#include "aws_clientcredential.h"
-
-/* mbedTLS includes. */
-#include "mbedtls/base64.h"
-
-/* Defender includes. */
-#include "aws_defender.h"
-
-/* Key provisioning includes. */
-#include "aws_dev_mode_key_provisioning.h"
-
-/* Greengrass includes. */
-#include "aws_ggd_config.h"
-#include "aws_ggd_config_defaults.h"
-#include "aws_greengrass_discovery.h"
-
 /* Logging includes. */
 #include "aws_logging_task.h"
 
-/* MQTT includes. */
-#include "aws_mqtt_agent.h"
-
-/* Amazon FreeRTOS OTA agent includes. */
-#include "aws_ota_agent.h"
-
-/* Required for shadow APIs. */
-#include "aws_shadow.h"
-
-/* FreeRTOS+TCP includes. */
-//#include "FreeRTOS_IP.h" // Comment out when unnecessary
-////#include "FreeRTOS_Sockets.h" // Using aws_secure_sockets.h is better
+/* Key provisioning includes. */
+#include "aws_dev_mode_key_provisioning.h"
 
 /* TCP/IP abstraction includes. */
 #include "aws_secure_sockets.h"
 
 /* WiFi interface includes. */
-#include "aws_wifi.h" // Remove '//' when necessary
+#include "aws_wifi.h"
 
-/* Standard includes. */
-#include <stdio.h>
-#include <string.h>
-#include <stdarg.h>
-#include <stdint.h>
+/* Client credential includes. */
+#include "aws_clientcredential.h"
 
-/* Project specific includes. (You can replace headers for your needs.) */
+/* Demo includes */
 #include "aws_demo_runner.h"
-
-#ifdef __cplusplus
-}
-#endif
 
 #define mainLOGGING_TASK_STACK_SIZE         ( configMINIMAL_STACK_SIZE * 6 )
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
