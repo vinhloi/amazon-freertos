@@ -860,6 +860,33 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　ここまでで、テスト全件流してみる。問題なし。
 　一旦コードを登録する。
 
+　【ルネサスアメリカ、Amazonからの各種フィードバックを改めて確認】
+　あらかた片付いているが、残っているフィードバックもある。以下。
+　(1) This Renesas specific code should be in demos/renesas/rx65n-rsk/common/renesas_code folder or in lib/third_party/mcu_vendor/renesas
+　(2) For the folder demos/renesas/rx65n-rsk/ccrx-e2studio
+　    I would like to rename this to demos/renesas/rx65n-rsk/e2studio.
+　    We do not typically put the toolchain prepending the IDE name.
+　    If there are strong reasons to prepending the compiler to the project name then use the following: demos/renesas/rx65n-rsk/e2studio/ccrx/
+　
+　(1)はルートにぶら下がっているsrcフォルダを、ルネサスフォルダのどちらかに移動させるべし、という指摘。
+　これは指摘通り。直した方が良いであろう。demos/renesas/rx65n-rsk/common/renesas_codeに移動する。
+　実態を移動するわけではなくて、仮想フォルダを作って移動になるので、大した影響はなさそうだが、
+　NoMaY氏のバッチファイル関連がうまく移動できるかが課題か？　とにかくやってみる。
+　
+　まずはプロジェクトファイルと同列にある srcフォルダをリソースフィルタで除外対象とする。
+　つぎにdemos/renesas/rx65n-rsk/common/renesas_codeに\lib\third_party\mcu_vendor\renesas\amazon_freertos_commonを
+　リンクされたフォルダ機能で登録する。
+　つぎにdemos/renesas/rx65n-rsk/common/renesas_codeにFIT_modified_codeを仮想フォルダ機能で登録する。
+　FIT_modified_codeに各種FITモジュールをリンクされたフォルダ機能で登録する。
+　必要なリソースフィルタも適宜登録していく。
+　つぎにdemos/renesas/rx65n-rsk/common/renesas_codeに\demos\renesas\rx65n-rsk\ccrx-e2studio\src\smc_genを
+　リンクされたフォルダ機能で登録する。
+　さらに、インクルードパスを調整。
+　
+　ビルド、実行。問題なし。
+　一旦コードを登録する。
+
+　
 2018/12/01
 　引き続きテスト環境の調整。
 　平日に別メンバーが進めた進捗を確認。
