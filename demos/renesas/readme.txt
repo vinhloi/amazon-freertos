@@ -347,11 +347,11 @@ Board: Renesas Starter Kit+ for RX65N-2MB
     [en] https://www.renesas.com/us/en/products/software-tools/boards-and-kits/renesas-starter-kits/renesas-starter-kitplus-for-rx65n-2mb.html
     [ja] https://www.renesas.com/jp/ja/products/software-tools/boards-and-kits/renesas-starter-kits/renesas-starter-kitplus-for-rx65n-2mb.html
 
-Compiler: CC-RX V2.08 (you need non-expired evaluation license or product license to build Amazon FreeRTOS)
+Compiler: CC-RX V3.00 (you need non-expired evaluation license or product license to build Amazon FreeRTOS)
     [en] https://www.renesas.com/us/en/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
     [ja] https://www.renesas.com/jp/ja/products/software-tools/tools/compiler-assembler/compiler-package-for-rx-family-e2studio.html
 
-IDE: e2 studio V7.1.0
+IDE: e2 studio V7.2.0
     [en] https://www.renesas.com/us/en/products/software-tools/tools/ide/e2studio.html
     [ja] https://www.renesas.com/jp/ja/products/software-tools/tools/ide/e2studio.html
     
@@ -514,11 +514,11 @@ WIFI Module: Silex SX-ULPGN PMOD
            #define clientcredentialWIFI_SSID       "Paste Wi-Fi SSID here."
            #define clientcredentialWIFI_PASSWORD   "Paste Wi-Fi password here."
            
-IDE: CS+ v7.00.00
+IDE: CS+ v8.00.00
     [en] https://www.renesas.com/en-us/products/software-tools/tools/ide/csplus.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/ide/csplus.html
 
-Smart Configurator v1.4.0 (Standalone for CS+): 
+Smart Configurator v1.5.0 (Standalone for CS+): 
     [en] https://www.renesas.com/en-us/products/software-tools/tools/solution-toolkit/smart-configurator.html
     [ja] https://www.renesas.com/ja-jp/products/software-tools/tools/solution-toolkit/smart-configurator.html
     
@@ -775,6 +775,91 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/12/15
+　09fox氏が以下2点解析。Amazonからもアドバイスが届いた。
+　結果原因を突き止めることができた。
+　(1)AFQP_KeyGenerationEcdsaHappyPath
+　(2)AFQP_TLS_ConnectEC
+
+　(1)はPKCSの実装がおかしく、Amazon FreeRTOSの期待値と合っていなかったのが原因。
+　具体的には、「ラベル + 鍵種」の値毎にハンドルを作っていたところ、
+　「ラベル」毎にハンドルを作る（鍵種が異なってもハンドルは同じ）のが正解だった。
+　
+　(2)はシェルティのAWSアカウントのテスト用証明書が有効化されていなかったのが原因。
+　有効にしたらあっさり通った。
+　
+　これで、テスト全件OKとなった。以下コミットの状態でテスト全件OKを確認。
+　https://github.com/renesas-rx/amazon-freertos/commit/f9a3ef02655fa0d6735379dd8b1516ff878db612
+　
+　残件整理した結果、今週末は以下のように進める。
+　
+　- 各種開発環境の更新（e2 studio, CS+, Smart Configurator, CC-RX）
+　  →RX Driver Packageの更新は見送り。
+　- PKCSの実装で、データ保存をRAM上にしているが、フラッシュ上に保存するよう変更
+　- ルネサスアメリカ、Amazonからの各種フィードバックを改めて確認
+　- WIFIのSSID/PASS、AWSのアカウント情報のProvisioningができるモードを実装する。
+　　ただしこれは検定用ではなく、RX65N Amazon FreeRTOS対応ボードの初期ファーム用実装。
+　　なので、ブランチを作ってそちらで機能追加を行う。
+　- リリースタグを作って検定に回す
+　- v145の適用は週明けから考える
+
+　【PKCSの実装で、データ保存をRAM上にしているが、フラッシュ上に保存するよう変更】
+　
+　データフラッシュは、64*512 byte = 32KBある。
+　ひとまずその1/4の8KBを2面持ちして電源断対策を施す。
+　書き込み用のRAMバッファは同じ容量の8KB用意する。
+　フラッシュAPIに用意されているデータフラッシュのブロックサイズと
+　ブロック数を表すマクロを使って配列の要素数を決めておく。
+　
+　static uint8_t local_storage[60000];
+　↓
+　static uint8_t local_storage[(FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF)/4];
+　
+　RX65N Envision Kitの初期ファームのコードから、データフラッシュの電源断対策の
+　コードを移植する。具体的には以下3関数。
+　
+　static void update_dataflash_data_from_image(void);
+　static void update_dataflash_data_mirror_from_image(void);
+　static void check_dataflash_area(uint32_t retry_counter);
+　
+　さらに、データ構造体も移植し、PKCS用に作り直す。
+
+　typedef struct _pkcs_storage_control_block_sub
+　{
+	uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF)/4)-PKCS_SHA256_LENGTH];	/* RX65N case: 8KB */
+　}PKCS_STORAGE_CONTROL_BLOCK_SUB;
+
+　typedef struct _PKCS_CONTROL_BLOCK
+　{
+	PKCS_STORAGE_CONTROL_BLOCK_SUB data;
+	uint8_t hash_sha256[PKCS_SHA256_LENGTH];
+　}PKCS_CONTROL_BLOCK;
+　
+　RX65N Envision Kitの初期ファームはルネサスのSHA1ライブラリを使っているので、
+　こちらではmbed TLSのSHA256を使うよう、各種定義やコードを変更していく。
+　
+　以下コードフラッシュにデータを設置する必要がある。
+　
+　R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE, 1)
+　static const PKCS_CONTROL_BLOCK pkcs_control_block_data = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
+　R_ATTRIB_SECTION_CHANGE_END
+
+　R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE_MIRROR, 1)
+　static const PKCS_CONTROL_BLOCK pkcs_control_block_data_mirror = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
+　R_ATTRIB_SECTION_CHANGE_END
+　
+　が、r_compiler.h の コンパイラ差分吸収マクロ群に、セクションC用の
+　R_ATTRIB_SECTION_CHANGE()が無かったので追加。
+　
+　#define _R_ATTRIB_SECTION_CHANGE_C1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C, C##section_tag) /* The CC-RX adds postfix '_1' automatically */
+　#define _R_ATTRIB_SECTION_CHANGE_C2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C, C##section_tag) /* The CC-RX adds postfix '_2' automatically */
+　#define _R_ATTRIB_SECTION_CHANGE_C4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C, C##section_tag) /* The CC-RX does not add postfix '_4' */
+　
+　GCC側も同じ法則で追加。IARは落ち着いたら対応しよう。
+　
+　ここまでで、テスト全件流してみる。問題なし。
+　一旦コードを登録する。
+
 2018/12/01
 　引き続きテスト環境の調整。
 　平日に別メンバーが進めた進捗を確認。

@@ -298,6 +298,9 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 #define _R_ATTRIB_SECTION_CHANGE_B1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B, B##section_tag) /* The CC-RX adds postfix '_1' automatically */
 #define _R_ATTRIB_SECTION_CHANGE_B2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B, B##section_tag) /* The CC-RX adds postfix '_2' automatically */
 #define _R_ATTRIB_SECTION_CHANGE_B4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B, B##section_tag) /* The CC-RX does not add postfix '_4' */
+#define _R_ATTRIB_SECTION_CHANGE_C1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C, C##section_tag) /* The CC-RX adds postfix '_1' automatically */
+#define _R_ATTRIB_SECTION_CHANGE_C2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C, C##section_tag) /* The CC-RX adds postfix '_2' automatically */
+#define _R_ATTRIB_SECTION_CHANGE_C4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C, C##section_tag) /* The CC-RX does not add postfix '_4' */
 #define _R_ATTRIB_SECTION_CHANGE_P(section_tag)            __R_ATTRIB_SECTION_CHANGE_F(P, P##section_tag)
 
 #if !defined(__cplusplus)
@@ -315,6 +318,9 @@ extern uint8_t                    ustack[]; /* This symbol means the end address
 #define _R_ATTRIB_SECTION_CHANGE_B1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag##_1)
 #define _R_ATTRIB_SECTION_CHANGE_B2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag##_2)
 #define _R_ATTRIB_SECTION_CHANGE_B4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(B##section_tag) /* No postfix '_4' because the CC-RX does not add it */
+#define _R_ATTRIB_SECTION_CHANGE_C1(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C##section_tag##_1)
+#define _R_ATTRIB_SECTION_CHANGE_C2(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C##section_tag##_2)
+#define _R_ATTRIB_SECTION_CHANGE_C4(section_tag)           __R_ATTRIB_SECTION_CHANGE_V(C##section_tag) /* No postfix '_4' because the CC-RX does not add it */
 #define _R_ATTRIB_SECTION_CHANGE_P(section_tag)            __R_ATTRIB_SECTION_CHANGE_F(P##section_tag)
 
 #define R_ATTRIB_SECTION_CHANGE(type, section_tag, ...)    _R_ATTRIB_SECTION_CHANGE_##type##__VA_ARGS__(section_tag)

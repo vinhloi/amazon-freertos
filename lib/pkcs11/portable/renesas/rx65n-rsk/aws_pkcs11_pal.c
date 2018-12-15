@@ -50,13 +50,15 @@
 /* Amazon FreeRTOS Includes. */
 #include "aws_pkcs11.h"
 #include "FreeRTOS.h"
+#include "mbedtls/sha256.h"
 
 /* C runtime includes. */
 #include <stdio.h>
 #include <string.h>
 
-/* Renesas platform includes */
+/* Renesas RX platform includes */
 #include "platform.h"
+#include "r_flash_rx_if.h"
 
 typedef struct _pkcs_data
 {
@@ -72,6 +74,28 @@ typedef struct _pkcs_data
 
 #define PKCS_HANDLES_LABEL_MAX_LENGTH 40
 #define PKCS_OBJECT_HANDLES_NUM 5
+#define PKCS_SHA256_LENGTH 32
+
+#define MAX_CHECK_DATAFLASH_AREA_RETRY_COUNT 3
+
+#define PKCS_CONTROL_BLOCK_INITIAL_DATA \
+        {\
+            /* uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF)/4)-PKCS_SHA256_LENGTH]; */\
+            {0x00},\
+        },\
+        /* uint8_t hash_sha256[PKCS_SHA256_LENGTH]; */\
+        {0xea, 0x57, 0x12, 0x9a, 0x18, 0x10, 0x83, 0x80, 0x88, 0x80, 0x40, 0x1f, 0xae, 0xb2, 0xd2, 0xff, 0x1c, 0x14, 0x5e, 0x81, 0x22, 0x6b, 0x9d, 0x93, 0x21, 0xf8, 0x0c, 0xc1, 0xda, 0x29, 0x61, 0x64},
+
+typedef struct _pkcs_storage_control_block_sub
+{
+	uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF)/4)-PKCS_SHA256_LENGTH];	/* RX65N case: 8KB */
+}PKCS_STORAGE_CONTROL_BLOCK_SUB;
+
+typedef struct _PKCS_CONTROL_BLOCK
+{
+	PKCS_STORAGE_CONTROL_BLOCK_SUB data;
+	uint8_t hash_sha256[PKCS_SHA256_LENGTH];
+}PKCS_CONTROL_BLOCK;
 
 enum eObjectHandles
 {
@@ -83,7 +107,8 @@ enum eObjectHandles
     //eAwsRootCertificate
 };
 
-uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX_LENGTH] = {
+uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX_LENGTH] =
+{
         "",
         pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS,
         pkcs11configLABEL_DEVICE_PUBLIC_KEY_FOR_TLS,
@@ -95,11 +120,20 @@ uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX
 static PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM];
 static uint32_t stored_data_size = 0;
 
-R_ATTRIB_SECTION_CHANGE(B, _PKCS11_STORAGE, 1)
-static uint8_t local_storage[60000];	/* need to use NVM, now on RAM, this is experimental. (Renesas/Ishiguro) */
+static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;	/* RX65N case: 8KB */
+
+R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE, 1)
+static const PKCS_CONTROL_BLOCK pkcs_control_block_data = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
+R_ATTRIB_SECTION_CHANGE_END
+
+R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE_MIRROR, 1)
+static const PKCS_CONTROL_BLOCK pkcs_control_block_data_mirror = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
 R_ATTRIB_SECTION_CHANGE_END
 
 static uint32_t current_stored_size(void);
+static void update_dataflash_data_from_image(void);
+static void update_dataflash_data_mirror_from_image(void);
+static void check_dataflash_area(uint32_t retry_counter);
 
 /**
 * @brief Writes a file to local storage.
@@ -119,30 +153,52 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     CK_OBJECT_HANDLE xHandle = eInvalidHandle;
     uint32_t size;
     int i;
+    uint8_t hash_sha256[PKCS_SHA256_LENGTH];
+	mbedtls_sha256_context ctx;
 
-    for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++) {
-        if (!strcmp((char * )&object_handle_dictionary[i],
-                pxLabel->pValue)) {
-            xHandle = i;
-        }
-    }
+	mbedtls_sha256_init(&ctx);
+    R_FLASH_Open();
 
-    if (xHandle != eInvalidHandle) {
+	/* check the hash */
+	check_dataflash_area(0);
 
-        size = current_stored_size();
+	/* copy data from storage to ram */
+	memcpy(pkcs_control_block_data_image.data.local_storage , pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data_image.data.local_storage));
 
-        memcpy(&local_storage[size], pucData, ulDataSize);
+	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+	{
+		if (!strcmp((char * )&object_handle_dictionary[i], pxLabel->pValue))
+		{
+			xHandle = i;
+		}
+	}
 
-        pkcs_data[xHandle].Label.pValue = pxLabel->pValue;
-        pkcs_data[xHandle].Label.type = pxLabel->type;
-        pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
-        pkcs_data[xHandle].ulDataSize = ulDataSize;
-        pkcs_data[xHandle].local_storage_index = size;
-        pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERD;
+	if (xHandle != eInvalidHandle)
+	{
+		size = current_stored_size();
+		memcpy(&pkcs_control_block_data_image.data.local_storage[size], pucData, ulDataSize);
 
-        stored_data_size += ulDataSize;
+		pkcs_data[xHandle].Label.pValue = pxLabel->pValue;
+		pkcs_data[xHandle].Label.type = pxLabel->type;
+		pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
+		pkcs_data[xHandle].ulDataSize = ulDataSize;
+		pkcs_data[xHandle].local_storage_index = size;
+		pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERD;
 
-    }
+		stored_data_size += ulDataSize;
+
+		/* update the hash */
+		mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+		mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_image.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+		mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+		memcpy(pkcs_control_block_data_image.hash_sha256, hash_sha256, sizeof(hash_sha256));
+
+		/* update data from ram to storage */
+		update_dataflash_data_from_image();
+		update_dataflash_data_mirror_from_image();
+	}
+
+    R_FLASH_Close();
 
     return xHandle;
 
@@ -210,25 +266,25 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
 
     CK_OBJECT_HANDLE xHandleStorage = xHandle;
 
-    if (xHandleStorage == eAwsDevicePublicKey) {
-
+    if (xHandleStorage == eAwsDevicePublicKey)
+    {
         xHandleStorage = eAwsDevicePrivateKey;
-
     }
 
-    if (xHandle != eInvalidHandle) {
-        *ppucData = &local_storage[pkcs_data[xHandleStorage].local_storage_index];
+    if (xHandle != eInvalidHandle)
+    {
+        *ppucData = &pkcs_control_block_data_image.data.local_storage[pkcs_data[xHandleStorage].local_storage_index];
         *pulDataSize = pkcs_data[xHandleStorage].ulDataSize;
 
-        if (!strcmp((char * )&object_handle_dictionary[xHandle],
-                pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS)) {
+        if (!strcmp((char * )&object_handle_dictionary[xHandle], pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS))
+        {
             *pIsPrivate = CK_TRUE;
-        } else {
+        }
+        else
+        {
             *pIsPrivate = CK_FALSE;
         }
-
         xReturn = CKR_OK;
-
     }
 
     return xReturn;
@@ -246,10 +302,168 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
 void PKCS11_PAL_GetObjectValueCleanup( uint8_t * pucData,
     uint32_t ulDataSize )
 {
-    /* FIX ME. */
+    /* todo: nothing to do in now. Now, pkcs_data exists as static. I will fix this function when I will port this to heap memory. (Renesas/Ishiguro) */
 }
 
-uint32_t current_stored_size(void)
+static uint32_t current_stored_size(void)
 {
 	return stored_data_size;
 }
+
+static void update_dataflash_data_from_image(void)
+{
+    uint32_t required_dataflash_block_num;
+    flash_err_t flash_error_code = FLASH_SUCCESS;
+
+    required_dataflash_block_num = sizeof(PKCS_CONTROL_BLOCK) / FLASH_DF_BLOCK_SIZE;
+    if(sizeof(PKCS_CONTROL_BLOCK) % FLASH_DF_BLOCK_SIZE)
+    {
+        required_dataflash_block_num++;
+    }
+
+    configPRINTF(("erase dataflash(main)..."));
+    flash_error_code = R_FLASH_Erase((flash_block_address_t)&pkcs_control_block_data, required_dataflash_block_num);
+    if(FLASH_SUCCESS == flash_error_code)
+    {
+    	configPRINTF(("OK\r\n"));
+    }
+    else
+    {
+    	configPRINTF(("NG\r\n"));
+        configPRINTF(("R_FLASH_Erase() returns error code = %d.\r\n", flash_error_code));
+    }
+
+    configPRINTF(("write dataflash(main)..."));
+    flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
+    if(FLASH_SUCCESS == flash_error_code)
+    {
+    	configPRINTF(("OK\r\n"));
+    }
+    else
+    {
+    	configPRINTF(("NG\r\n"));
+        configPRINTF(("R_FLASH_Write() returns error code = %d.\r\n", flash_error_code));
+        return;
+    }
+    return;
+}
+
+static void update_dataflash_data_mirror_from_image(void)
+{
+    uint32_t required_dataflash_block_num;
+    flash_err_t flash_error_code = FLASH_SUCCESS;
+
+    required_dataflash_block_num = sizeof(PKCS_CONTROL_BLOCK) / FLASH_DF_BLOCK_SIZE;
+    if(sizeof(PKCS_CONTROL_BLOCK) % FLASH_DF_BLOCK_SIZE)
+    {
+        required_dataflash_block_num++;
+    }
+
+    configPRINTF(("erase dataflash(mirror)..."));
+    flash_error_code = R_FLASH_Erase((flash_block_address_t)&pkcs_control_block_data_mirror, required_dataflash_block_num);
+    if(FLASH_SUCCESS == flash_error_code)
+    {
+    	configPRINTF(("OK\r\n"));
+    }
+    else
+    {
+    	configPRINTF(("NG\r\n"));
+        configPRINTF(("R_FLASH_Erase() returns error code = %d.\r\n", flash_error_code));
+        return;
+    }
+
+    configPRINTF(("write dataflash(mirror)..."));
+    flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data_mirror, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
+    if(FLASH_SUCCESS == flash_error_code)
+    {
+    	configPRINTF(("OK\r\n"));
+    }
+    else
+    {
+    	configPRINTF(("NG\r\n"));
+        configPRINTF(("R_FLASH_Write() returns error code = %d.\r\n", flash_error_code));
+        return;
+    }
+    if(!memcmp(&pkcs_control_block_data, &pkcs_control_block_data_mirror, sizeof(PKCS_CONTROL_BLOCK)))
+    {
+    	configPRINTF(("data flash setting OK.\r\n"));
+    }
+    else
+    {
+    	configPRINTF(("data flash setting NG.\r\n"));
+        return;
+    }
+    return;
+}
+
+static void check_dataflash_area(uint32_t retry_counter)
+{
+    uint8_t hash_sha256[PKCS_SHA256_LENGTH];
+	mbedtls_sha256_context ctx;
+
+	mbedtls_sha256_init(&ctx);
+
+    if(retry_counter)
+    {
+    	configPRINTF(("recover retry count = %d.\r\n", retry_counter));
+        if(retry_counter == MAX_CHECK_DATAFLASH_AREA_RETRY_COUNT)
+        {
+        	configPRINTF(("retry over the limit.\r\n"));
+            while(1);
+        }
+    }
+    configPRINTF(("data flash(main) hash check..."));
+	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+    if(!memcmp(pkcs_control_block_data.hash_sha256, hash_sha256, sizeof(hash_sha256)))
+    {
+    	configPRINTF(("OK\r\n"));
+    	configPRINTF(("data flash(mirror) hash check..."));
+    	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+    	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+    	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+        if(!memcmp(pkcs_control_block_data_mirror.hash_sha256, hash_sha256, sizeof(hash_sha256)))
+        {
+        	configPRINTF(("OK\r\n"));
+        }
+        else
+        {
+        	configPRINTF(("NG\r\n"));
+        	configPRINTF(("recover mirror from main.\r\n"));
+            memcpy(&pkcs_control_block_data.data.local_storage, &pkcs_control_block_data, sizeof(pkcs_control_block_data));
+            update_dataflash_data_mirror_from_image();
+            check_dataflash_area(retry_counter+1);
+        }
+    }
+    else
+    {
+    	configPRINTF(("NG\r\n"));
+    	configPRINTF(("data flash(mirror) hash check..."));
+    	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+    	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+    	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+        if(!memcmp(pkcs_control_block_data_mirror.hash_sha256, hash_sha256, sizeof(hash_sha256)))
+        {
+        	configPRINTF(("OK\r\n"));
+        	configPRINTF(("recover main from mirror.\r\n"));
+            memcpy(&pkcs_control_block_data.data.local_storage, &pkcs_control_block_data_mirror, sizeof(pkcs_control_block_data_mirror));
+            update_dataflash_data_from_image();
+            check_dataflash_area(retry_counter+1);
+        }
+        else
+        {
+        	configPRINTF(("NG\r\n"));
+            while(1)
+            {
+            	vTaskDelay(10000);
+            	configPRINTF(("------------------------------------------------\r\n"));
+            	configPRINTF(("Data flash is completely broken.\r\n"));
+            	configPRINTF(("Please erase all code flash.\r\n"));
+            	configPRINTF(("And, write initial firmware using debugger/rom writer.\r\n"));
+            	configPRINTF(("------------------------------------------------\r\n"));
+            }
+        }
+    }
+}
+
