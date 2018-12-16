@@ -170,11 +170,6 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/bufferpool</locationURI>
 		</link>
 		<link>
-			<name>lib/aws/cbor</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/cbor</locationURI>
-		</link>
-		<link>
 			<name>lib/aws/crypto</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/crypto</locationURI>
@@ -341,15 +336,6 @@
 		</link>
 	</linkedResources>
 	<filteredResources>
-		<filter>
-			<id>1542442642004</id>
-			<name>lib/aws/cbor</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-src</arguments>
-			</matcher>
-		</filter>
 		<filter>
 			<id>1542429645503</id>
 			<name>lib/aws/FreeRTOS/portable</name>
