@@ -28,7 +28,7 @@
 #  define __STDC_LIMIT_MACROS 1
 #endif
 
-#if !defined(__RX) && !defined(__RX__)
+#if !defined(__RX)
 
 #include "cbor.h"
 #include <stdlib.h>
@@ -114,4 +114,4 @@ CborError _cbor_value_dup_string(const CborValue *value, void **buffer, size_t *
     return CborNoError;
 }
 
-#endif /* __RX and __RX__ check */
+#endif /* __RX check */

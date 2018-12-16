@@ -23,7 +23,7 @@
 ****************************************************************************/
 
 #include <assert.h>
-#if defined(__RX) || defined(__RX__)
+#if defined(__RX)
 void vAssertCalled(void);
 #  undef assert
 #  define assert(cond)      do { if (!(cond)) vAssertCalled(); } while (0)
