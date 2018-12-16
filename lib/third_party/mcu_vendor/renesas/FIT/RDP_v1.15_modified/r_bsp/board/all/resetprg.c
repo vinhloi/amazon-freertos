@@ -261,7 +261,6 @@ int __low_level_init ( void )
     hardware_setup();
 
     /* Enable interrupt and select the I stack or the U stack */
-    R_NOP(); // FIXME: What is the purpose of this NOP?
     R_SET_PSW(PSW_init);
 
 #if BSP_CFG_RUN_IN_USER_MODE == 1
