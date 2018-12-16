@@ -1,1 +1,1 @@
-/* dummy file for experiment of aws demos project with renesas rx mcu */
+/* aws_tls.c and x509_crt.c include time.h but its content is not necessary. */
