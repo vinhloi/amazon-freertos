@@ -72,10 +72,10 @@ extern "C" {
 #if !defined(MBEDTLS_PLATFORM_STD_FPRINTF)
 #define MBEDTLS_PLATFORM_STD_FPRINTF fprintf /**< The default \c fprintf function to use. */
 #endif
-#if !defined(MBEDTLS_PLATFORM_STD_CALLOC) && !defined(MBEDTLS_PLATFORM_MEMORY)
+#if !defined(MBEDTLS_PLATFORM_STD_CALLOC)
 #define MBEDTLS_PLATFORM_STD_CALLOC   calloc /**< The default \c calloc function to use. */
 #endif
-#if !defined(MBEDTLS_PLATFORM_STD_FREE) && !defined(MBEDTLS_PLATFORM_MEMORY)
+#if !defined(MBEDTLS_PLATFORM_STD_FREE)
 #define MBEDTLS_PLATFORM_STD_FREE       free /**< The default \c free function to use. */
 #endif
 #if !defined(MBEDTLS_PLATFORM_STD_EXIT)

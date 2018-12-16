@@ -9,6 +9,28 @@
 #undef MBEDTLS_SELF_TEST
 #endif
 
+/* Remove mbedTLS's unnecessary link of standard calloc 
+ * and free functions.
+ */
+#if !defined(MBEDTLS_PLATFORM_NO_STD_FUNCTIONS)
+#define MBEDTLS_PLATFORM_NO_STD_FUNCTIONS
+
+#if !defined(MBEDTLS_PLATFORM_MEMORY)
+#define MBEDTLS_PLATFORM_MEMORY
+#endif
+#if defined(MBEDTLS_PLATFORM_STD_CALLOC)
+#undef MBEDTLS_PLATFORM_STD_CALLOC
+#endif
+#if defined(MBEDTLS_PLATFORM_STD_FREE)
+#undef MBEDTLS_PLATFORM_STD_FREE
+#endif
+
+#if !defined(MBEDTLS_PLATFORM_SNPRINTF_MACRO)
+#define MBEDTLS_PLATFORM_SNPRINTF_MACRO snprintf
+#endif
+
+#endif /* !MBEDTLS_PLATFORM_NO_STD_FUNCTIONS */
+
 /* Workaround for CC-RX's non-standard 2nd argument type of 
  * memset function. CC-RX uses long but standard uses int.
  */
