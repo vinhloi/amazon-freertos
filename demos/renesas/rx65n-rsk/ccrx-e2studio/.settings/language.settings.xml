@@ -5,7 +5,16 @@
 			<provider class="org.eclipse.cdt.core.language.settings.providers.LanguageSettingsGenericProvider" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider" name="CDT ユーザー設定項目" prefer-non-shared="true" store-entries-with-project="true">
 				<language id="org.eclipse.cdt.core.gcc">
 					<resource project-relative-path="">
-						<entry kind="includeFile" name="/${ProjName}/src/amazon_freertos_common/compiler_support/ccrx/implicitlyinclude.h">
+						<entry kind="includePath" name="/${ProjName}/application_code/renesas_code/smc_gen/general">
+							<flag value="LOCAL|VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/application_code/renesas_code/smc_gen/r_config">
+							<flag value="LOCAL|VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includePath" name="/${ProjName}/application_code/renesas_code/smc_gen/r_pincfg">
+							<flag value="LOCAL|VALUE_WORKSPACE_PATH"/>
+						</entry>
+						<entry kind="includeFile" name="/${ProjName}/application_code/renesas_code/amazon_freertos_common/compiler_support/ccrx/implicitlyinclude.h">
 							<flag value="LOCAL|VALUE_WORKSPACE_PATH"/>
 						</entry>
 					</resource>
