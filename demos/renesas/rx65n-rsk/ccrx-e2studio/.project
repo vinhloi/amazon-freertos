@@ -65,21 +65,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>application_code/renesas_code/FIT_modified_code</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/amazon_freertos_common</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/amazon_freertos_common</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/smc_gen</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-rsk/ccrx-e2studio/src/smc_gen</locationURI>
-		</link>
-		<link>
 			<name>lib/aws/FreeRTOS</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/FreeRTOS</locationURI>
@@ -240,54 +225,24 @@
 			<locationURI>AWS_IOT_MCU_ROOT/demos/common/tcp/aws_tcp_echo_client_single_task.c</locationURI>
 		</link>
 		<link>
-			<name>application_code/renesas_code/FIT_modified_code/Please exclude unnecessary r_xxx from build</name>
-			<type>1</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/.files/Please%20exclude%20unnecessary%20r_xxx%20from%20build</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/FIT_modified_code/attention!.txt</name>
-			<type>1</type>
-			<locationURI>PROJECT_LOC/src/attention!.txt</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_bsp</name>
+			<name>application_code/renesas_code/src</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_bsp</locationURI>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_byteq</name>
+			<name>application_code/renesas_code/src/FIT_modified_code</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_byteq</locationURI>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_cmt_rx</name>
+			<name>application_code/renesas_code/src/amazon_freertos_common</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_cmt_rx</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/amazon_freertos_common</locationURI>
 		</link>
 		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_ether_rx</name>
+			<name>application_code/renesas_code/src/smc_gen</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_ether_rx</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_flash_rx</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flash_rx</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_riic_rx</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_sci_iic_rx</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/FIT_modified_code/r_sci_rx</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_rx</locationURI>
+			<locationURI>PROJECT_LOC/src/smc_gen</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/ota/aws_ota_agent.c</name>
@@ -319,10 +274,60 @@
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas</locationURI>
 		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/Please exclude unnecessary r_xxx from build</name>
+			<type>1</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/.files/Please%20exclude%20unnecessary%20r_xxx%20from%20build</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/attention!.txt</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/src/attention!.txt</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_bsp</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_bsp</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_byteq</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_byteq</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_cmt_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_cmt_rx</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_ether_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_ether_rx</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_flash_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flash_rx</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_riic_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_sci_iic_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_sci_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_rx</locationURI>
+		</link>
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1544857639228</id>
+			<id>1532925745925</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -331,7 +336,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1544857639236</id>
+			<id>1513514174593</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -340,21 +345,12 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/amazon_freertos_common/compiler_support</name>
-			<type>9</type>
+			<id>1537786054362</id>
+			<name>application_code/renesas_code/src</name>
+			<type>6</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-ccrx</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/amazon_freertos_common/network_support</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-onchip_rx_ether</arguments>
+				<arguments>1.0-name-matches-false-false-attention!.txt</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -403,21 +399,21 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_bsp/board</name>
+			<id>1536904742727</id>
+			<name>application_code/renesas_code/src/amazon_freertos_common/compiler_support</name>
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-true-all|rx65n|generic_rx65n</arguments>
+				<arguments>1.0-name-matches-false-false-ccrx</arguments>
 			</matcher>
 		</filter>
 		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_bsp/mcu</name>
+			<id>1536927312156</id>
+			<name>application_code/renesas_code/src/amazon_freertos_common/network_support</name>
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-true-all|rx65n</arguments>
+				<arguments>1.0-name-matches-false-false-onchip_rx_ether</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -439,57 +435,21 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_bsp/board/all</name>
-			<type>6</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-true-reset_program\.S|iar_call_inits\.s</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_ether_rx/src/targets</name>
+			<id>1536291011837</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_bsp/board</name>
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+				<arguments>1.0-name-matches-false-true-all|rx65n|generic_rx65n</arguments>
 			</matcher>
 		</filter>
 		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_flash_rx/src/targets</name>
+			<id>1536291077902</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_bsp/mcu</name>
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx65n</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_riic_rx/src/targets</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx65n</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_sci_iic_rx/src/targets</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx65n</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_sci_rx/src/targets</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+				<arguments>1.0-name-matches-false-true-all|rx65n</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -520,8 +480,62 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>0</id>
-			<name>application_code/renesas_code/FIT_modified_code/r_bsp/mcu/rx65n/register_access</name>
+			<id>1539520892012</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_bsp/board/all</name>
+			<type>6</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-true-reset_program\.S|iar_call_inits\.s</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1564441882426</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_ether_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1564441856894</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_flash_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1535360922766</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_riic_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1535360980389</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_sci_iic_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1564441820170</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_sci_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1537708651935</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_bsp/mcu/rx65n/register_access</name>
 			<type>9</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
