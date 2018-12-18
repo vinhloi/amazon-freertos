@@ -63,8 +63,8 @@ Exported global functions (to be accessed by other files)
 /* #define __RX 1 */ /* This is already defined by CCRX. */
 /* #define __LIT 1 */ /* This is automatically defined by CCRX. */
 /* #define __BIG 1 */ /* This is automatically defined by CCRX. */
-/* #define __FPU 1 */ /* This is automatically defined by ICCRX. */
-/* #define __RXV2 1 */ /* This is automatically defined by ICCRX. */
+/* #define __FPU 1 */ /* This is automatically defined by CCRX. */
+/* #define __RXV2 1 */ /* This is automatically defined by CCRX. */
 
 #elif defined(__GNUC__)
 
@@ -6575,6 +6575,19 @@ R_PRAGMA(bitfields=reversed_disjoint_types)\
 #endif
 
 
+/* ========== Warning supression macro ========== */
+/* This macro is used to suppress compiler messages about not only a parameter but also a auto variable not being used
+ * in a function. The nice thing about using this implementation is that it does not take any extra RAM or ROM.
+ * This macro is available for the followings:
+ * CC-RX's 'M0520826:Parameter "XXXX" was never referenced'
+ * CC-RX's 'W0520550:Variable "XXXX" was set but never used'
+ * GNURX's 'unused parameter 'XXXX' [-Wunused-parameter]'
+ * GNURX's 'variable 'XXXX' set but not used [-Wunused-but-set-variable]'
+ * When the variable is declared as volatile, the '&' can be applied like 'R_INTERNAL_NOT_USED(&volatile_variable);'.
+ */
+#define R_INTERNAL_NOT_USED(p)    ((void)(p))
+
+
 /* ========== Intrinsic Functions ========== */
 #if defined(__CCRX__)
 
@@ -6632,6 +6645,19 @@ R_PRAGMA(bitfields=reversed_disjoint_types)\
 #define R_WAIT()    __asm("wait")
 #define R_NOP()     __asm("nop")
 
+/* It is useful to define the following famous functions.
+ * These are the same as CG source code for GNURX.
+ */
+#if !defined(brk)
+#define brk()       asm("brk;")
+#endif
+#if !defined(wait)
+#define wait()      asm("wait;")
+#endif
+#if !defined(nop)
+#define nop()       asm("nop;")
+#endif
+
 /* ---------- Processor interrupt priority level (IPL) ---------- */
 //#define R_SET_IPL(x)    /* none */
 //#define R_GET_IPL()     /* none */
@@ -6677,6 +6703,19 @@ R_PRAGMA(bitfields=reversed_disjoint_types)\
 #define R_BRK()     __break()                 /* void __break(void) */
 #define R_WAIT()    __wait_for_interrupt()    /* void __wait_for_interrupt(void) */
 #define R_NOP()     __no_operation()          /* void __no_operation(void) */
+
+/* It is useful to define the following famous functions.
+ * TODO: Are these the same as CG source code for ICCRX?
+ */
+#if !defined(brk)
+#define brk()       __break()
+#endif
+#if !defined(wait)
+#define wait()      __wait_for_interrupt()
+#endif
+#if !defined(nop)
+#define nop()       __no_operation()
+#endif
 
 /* ---------- Processor interrupt priority level (IPL) ---------- */
 //#define R_SET_IPL(x)    __set_interrupt_level((__ilevel_t)(x))    /* void __set_interrupt_level(__ilevel_t) */
