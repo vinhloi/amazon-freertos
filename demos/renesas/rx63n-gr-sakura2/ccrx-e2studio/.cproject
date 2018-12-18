@@ -109,14 +109,6 @@
 						<entry excluding="renesas_code/FIT_modified_code/r_sci_iic_rx|renesas_code/FIT_modified_code/r_cmt_rx" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="application_code"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="config_files"/>
 						<entry excluding="third_party/mcu_vendor/renesas/amazon_freertos_common|third_party/mcu_vendor/renesas/FIT" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lib"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_bsp"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_byteq_rx"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_cmt_rx"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_ether_rx"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_flash_rx"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_pincfg"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_sci_iic_rx"/>
-						<entry excluding="/" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="r_sci_rx"/>
 						<entry excluding="FIT_modified_code/r_sci_iic_rx|FIT_modified_code/r_cmt_rx|FITConfigurator/UNUSED_generated_code" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>

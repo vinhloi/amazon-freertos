@@ -83,6 +83,7 @@ set MODIFIED_FIT_MODULES=r_bsp r_ether_rx r_flash_rx r_sci_rx r_byteq r_riic_rx 
 rem goto MOVE_STEP_1 && rem # For debug
 rem goto MOVE_STEP_2 && rem # For debug
 rem goto MOVE_STEP_3 && rem # For debug
+rem goto MOVE_STEP_4 && rem # For debug
 
 set ef=0
 if not exist "%pj%src\smc_gen\UNUSED_generated_code" (
@@ -98,7 +99,7 @@ if %ef%==1 goto ERROR
 :MOVE_STEP_1
 set ef=0
 for %%S in (%MODIFIED_FIT_MODULES%) do (
-    if exist "%pj%src\smc_gen\%%S" if exist "%pj%src\smc_gen\UNUSED_generated_code\%%S" (
+    if exist "%pj%src\smc_gen\%%S\readme.txt" if exist "%pj%src\smc_gen\UNUSED_generated_code\%%S" (
         rem ERROR
         set ef=1
         echo Error: Unable to move "src\smc_gen\%%S" --^> "src\smc_gen\UNUSED_generated_code\%%S" because the folder already exists.
@@ -109,8 +110,8 @@ if %ef%==1 goto ERROR
 :MOVE_STEP_2
 set ef=0
 for %%S in (%MODIFIED_FIT_MODULES%) do (
-    if exist "%pj%src\smc_gen\%%S" (
-        rem MOVE
+    if exist "%pj%src\smc_gen\%%S\readme.txt" (
+        rem MOVE_FOLDER
         echo moving folder: "src\smc_gen\%%S" --^> "src\smc_gen\UNUSED_generated_code\%%S"
         move "%pj%src\smc_gen\%%S" "%pj%src\smc_gen\UNUSED_generated_code" > nul
         if exist "%pj%src\smc_gen\%%S" (
@@ -122,8 +123,32 @@ for %%S in (%MODIFIED_FIT_MODULES%) do (
 if %ef%==1 goto ERROR
 
 :MOVE_STEP_3
+set ef=0
 for %%S in (%MODIFIED_FIT_MODULES%) do (
-    if exist "%pj%src\smc_gen\UNUSED_generated_code\%%S" (
+    if not exist "%pj%src\smc_gen\%%S" if exist "%pj%src\smc_gen\UNUSED_generated_code\%%S" if %ide%==e2 (
+        rem MAKE_EMPTY_FOLDER
+        if %%S==r_bsp (
+            mkdir "%pj%src\smc_gen\%%S"                  > nul 2>&1
+        ) else if %%S==r_ether_rx (
+            mkdir "%pj%src\smc_gen\%%S"                  > nul 2>&1
+        ) else if %%S==r_flash_rx (
+            mkdir "%pj%src\smc_gen\%%S"                  > nul 2>&1
+            mkdir "%pj%src\smc_gen\%%S\src"              > nul 2>&1
+            mkdir "%pj%src\smc_gen\%%S\src\flash_type_1" > nul 2>&1
+            mkdir "%pj%src\smc_gen\%%S\src\flash_type_2" > nul 2>&1
+            mkdir "%pj%src\smc_gen\%%S\src\flash_type_3" > nul 2>&1
+            mkdir "%pj%src\smc_gen\%%S\src\flash_type_4" > nul 2>&1
+            mkdir "%pj%src\smc_gen\%%S\src\targets"      > nul 2>&1
+        ) else (
+            mkdir "%pj%src\smc_gen\%%S"                  > nul 2>&1
+            mkdir "%pj%src\smc_gen\%%S\src"              > nul 2>&1
+        )
+    )
+)
+
+:MOVE_STEP_4
+for %%S in (%MODIFIED_FIT_MODULES%) do (
+    if exist "%pj%src\smc_gen\UNUSED_generated_code\%%S\readme.txt" (
         rem SUCCEEDED
         echo Use "src\FIT_modified_code\%%S" module instead of generated %%S
     )
