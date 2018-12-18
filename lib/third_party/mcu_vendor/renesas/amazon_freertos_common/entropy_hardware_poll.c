@@ -7,17 +7,22 @@
 
 #include <string.h>
 #include "platform.h"   // __LIT for all compilers
+#include "mbedtls/entropy_poll.h"
 
-int mbedtls_hardware_poll( void *data, unsigned char *output, size_t len, size_t *olen );
 void get_random_number(uint8_t *data, uint32_t len);
 
+/******************************************************************************
+Functions : hardware entropy collector(repeatedly called until enough gathered)
+******************************************************************************/
 int mbedtls_hardware_poll( void *data,
                     unsigned char *output, size_t len, size_t *olen )
 {
+	R_INTERNAL_NOT_USED(data);
+	R_INTERNAL_NOT_USED(len);
+
 	uint32_t random_number = 0;
 
 	get_random_number((uint8_t *)&random_number, sizeof(uint32_t));
-	((void) data);
 	*olen = 0;
 
 	memcpy(output, &random_number, sizeof(uint32_t));
