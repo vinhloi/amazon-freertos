@@ -91,7 +91,7 @@ static TaskHandle_t xTaskToNotify = NULL;
 
 static int16_t SendData( uint8_t *pucBuffer, size_t length );
 static int InitializeNetwork(void);
-static void check_ether_link(void);
+static void check_ether_link(void * pvParameters);
 static void prvEMACDeferredInterruptHandlerTask( void *pvParameters );
 static void clear_all_ether_rx_discriptors(uint32_t event);
 
@@ -457,8 +457,10 @@ void EINT_Trig_isr(void *ectrl)
  * Arguments    : none
  * Return Value : none
  **********************************************************************************************************************/
-static void check_ether_link(void)
+static void check_ether_link(void * pvParameters)
 {
+    R_INTERNAL_NOT_USED(pvParameters);
+
 	while(1)
 	{
     	vTaskDelay(1000);
