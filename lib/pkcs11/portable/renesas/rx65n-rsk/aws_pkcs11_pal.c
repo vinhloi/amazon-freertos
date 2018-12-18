@@ -220,6 +220,9 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
     uint8_t usLength )
 {
+	/* Avoid compiler warnings about unused variables. */
+	R_INTERNAL_NOT_USED(usLength);
+
 	CK_OBJECT_HANDLE xHandle = eInvalidHandle;
 	int i;
 
@@ -302,6 +305,10 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
 void PKCS11_PAL_GetObjectValueCleanup( uint8_t * pucData,
     uint32_t ulDataSize )
 {
+    /* Avoid compiler warnings about unused variables. */
+    R_INTERNAL_NOT_USED(pucData);
+    R_INTERNAL_NOT_USED(ulDataSize);
+
     /* todo: nothing to do in now. Now, pkcs_data exists as static. I will fix this function when I will port this to heap memory. (Renesas/Ishiguro) */
 }
 

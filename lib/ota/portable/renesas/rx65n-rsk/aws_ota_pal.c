@@ -32,6 +32,9 @@
 #include "aws_ota_pal.h"
 #include "aws_ota_agent_internal.h"
 
+/* Renesas RX platform includes */
+#include "platform.h"
+
 /* Specify the OTA signature algorithm we support on this platform. */
 const char pcOTA_JSON_FileSignatureKey[ OTA_FILE_SIG_KEY_STR_MAX_LENGTH ] = "sig-sha256-ecdsa";   /* FIX ME. */
 
@@ -84,6 +87,10 @@ OTA_Err_t prvPAL_CreateFileForRx( OTA_FileContext_t * const C )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_CreateFileForRx" );
 
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    R_INTERNAL_NOT_USED(C);
+
     /* FIX ME. */
     return kOTA_Err_RxFileCreateFailed;
 }
@@ -93,6 +100,10 @@ OTA_Err_t prvPAL_Abort( OTA_FileContext_t * const C )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_Abort" );
     
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    R_INTERNAL_NOT_USED(C);
+
     /* FIX ME. */
     return kOTA_Err_FileAbort;
 }
@@ -106,6 +117,13 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_WriteBlock" );
 
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    R_INTERNAL_NOT_USED(C);
+    R_INTERNAL_NOT_USED(ulOffset);
+    R_INTERNAL_NOT_USED(pacData);
+    R_INTERNAL_NOT_USED(ulBlockSize);
+
     /* FIX ME. */
     return -1;
 }
@@ -114,6 +132,10 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 OTA_Err_t prvPAL_CloseFile( OTA_FileContext_t * const C )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_CloseFile" );
+
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    R_INTERNAL_NOT_USED(C);
 
     /* FIX ME. */
     return kOTA_Err_FileClose;
@@ -125,6 +147,10 @@ static OTA_Err_t prvPAL_CheckFileSignature( OTA_FileContext_t * const C )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_CheckFileSignature" );
 
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    R_INTERNAL_NOT_USED(C);
+
     /* FIX ME. */
     return kOTA_Err_SignatureCheckFailed;
 }
@@ -135,6 +161,11 @@ static uint8_t * prvPAL_ReadAndAssumeCertificate( const uint8_t * const pucCertN
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_ReadAndAssumeCertificate" );
 
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    R_INTERNAL_NOT_USED(pucCertName);
+    R_INTERNAL_NOT_USED(ulSignerCertSize);
+
     /* FIX ME. */
     return NULL;
 }
@@ -143,6 +174,9 @@ static uint8_t * prvPAL_ReadAndAssumeCertificate( const uint8_t * const pucCertN
 OTA_Err_t prvPAL_ResetDevice( void )
 {
     DEFINE_OTA_METHOD_NAME("prvPAL_ResetDevice");
+
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
 
     /* FIX ME. */
     return kOTA_Err_ResetNotSupported;
@@ -153,6 +187,9 @@ OTA_Err_t prvPAL_ActivateNewImage( void )
 {
     DEFINE_OTA_METHOD_NAME("prvPAL_ActivateNewImage");
 
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+
     /* FIX ME. */
     return kOTA_Err_Uninitialized;
 }
@@ -161,6 +198,10 @@ OTA_Err_t prvPAL_ActivateNewImage( void )
 OTA_Err_t prvPAL_SetPlatformImageState( OTA_ImageState_t eState )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_SetPlatformImageState" );
+
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    R_INTERNAL_NOT_USED(eState);
 
     /* FIX ME. */
     return kOTA_Err_BadImageState;
@@ -171,8 +212,11 @@ OTA_PAL_ImageState_t prvPAL_GetPlatformImageState( void )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_GetPlatformImageState" );
 
+    /* Avoid compiler warnings about unused variables for a release including source code. */
+    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+
     /* FIX ME. */
-    return eOTA_ImageState_Unknown;
+    return (OTA_PAL_ImageState_t)eOTA_ImageState_Unknown;
 }
 /*-----------------------------------------------------------*/
 
