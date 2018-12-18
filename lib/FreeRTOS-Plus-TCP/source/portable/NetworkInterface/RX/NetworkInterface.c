@@ -39,7 +39,7 @@ Includes   <System Includes> , "Project Includes"
 #include "task.h"
 #include "FreeRTOS_IP.h"
 #include "FreeRTOS_IP_Private.h"
-#include "FreeRTOS_DNS.h"
+//#include "FreeRTOS_DNS.h"
 #include "NetworkBufferManagement.h"
 #include "NetworkInterface.h"
 
@@ -281,10 +281,10 @@ uint8_t *buffer_pointer;
  * Arguments    : pcName string pointer
  * Return Value :
  **********************************************************************************************************************/
-BaseType_t xApplicationDNSQueryHook(const char *pcName )
-{
-    return strcmp( pcName, "RX65N" ); //TODO complete stub function
-} /* End of function xApplicationDNSQueryHook() */
+//BaseType_t xApplicationDNSQueryHook(const char *pcName )
+//{
+//    return strcmp( pcName, "RenesasRX" ); //TODO complete stub function
+//} /* End of function xApplicationDNSQueryHook() */
 
 
 /***********************************************************************************************************************
