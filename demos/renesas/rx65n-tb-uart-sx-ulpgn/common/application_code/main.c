@@ -244,6 +244,6 @@ void prvWifiConnect( void )
 //    /* Assign the name "FreeRTOS" to this network node.  This function will
 //     * be called during the DHCP: the machine will be registered with an IP
 //     * address plus this name. */
-//    return "RX65N_FREERTOS_TCP_TEST";
+//    return "RenesasRX_FREERTOS_TCP_TEST";
 //}
 ///*-----------------------------------------------------------*/
