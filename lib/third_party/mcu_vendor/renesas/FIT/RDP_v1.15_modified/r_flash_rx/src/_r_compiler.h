@@ -6645,7 +6645,7 @@ R_PRAGMA(bitfields=reversed_disjoint_types)\
 #define R_WAIT()    __asm("wait")
 #define R_NOP()     __asm("nop")
 
-/* It is useful to define the following famous functions.
+/* It is useful to define the following commonly used functions.
  * These are the same as CG source code for GNURX.
  */
 #if !defined(brk)
@@ -6704,7 +6704,7 @@ R_PRAGMA(bitfields=reversed_disjoint_types)\
 #define R_WAIT()    __wait_for_interrupt()    /* void __wait_for_interrupt(void) */
 #define R_NOP()     __no_operation()          /* void __no_operation(void) */
 
-/* It is useful to define the following famous functions.
+/* It is useful to define the following commonly used functions.
  * TODO: Are these the same as CG source code for ICCRX?
  */
 #if !defined(brk)
