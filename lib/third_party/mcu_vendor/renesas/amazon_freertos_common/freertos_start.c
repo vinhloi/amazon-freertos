@@ -37,7 +37,9 @@ Includes   <System Includes> , "Project Includes"
 #include "platform.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#if defined(ENABLE_UNIT_TESTS) || defined(AMAZON_FREERTOS_ENABLE_UNIT_TESTS)
+#if defined(AMAZON_FREERTOS_ENABLE_UNIT_TESTS)
+#include "unity_internals.h"
+#elif defined(ENABLE_UNIT_TESTS)
 #include "unity.h"
 #endif
 
@@ -307,8 +309,10 @@ int8_t *_top_of_heap(void)
 ******************************************************************************/
 void vAssertCalled(void)
 {
-#if (0)
+#if defined(CONFIG_FREERTOS_ASSERT_FAIL_ABORT)
+    /* Assert call defined for debug builds. */
     /* debugging with E1/E2/E2L emulator */
+    /* if not using a emulator, you can use LED on/off or serial terminal */
     volatile unsigned long ul = 0;
 
     taskENTER_CRITICAL();
@@ -327,6 +331,9 @@ void vAssertCalled(void)
     /* TEST_ABORT() of unity_internal.h (and also TEST_PASS() of unity.h)
     jumps to the place where TEST_PROTECT() was executed. */
     TEST_ABORT();
+#else /* defined(CONFIG_FREERTOS_ASSERT_DISABLE) || defined(NDEBUG) or nothing */
+    /* Disable Assert call for release builds. */
+    /* nothing to do */
 #endif
 } /* End of function vAssertCalled() */
 
