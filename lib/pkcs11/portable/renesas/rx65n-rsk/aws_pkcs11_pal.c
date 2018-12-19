@@ -66,11 +66,12 @@ typedef struct _pkcs_data
 	uint32_t local_storage_index;
 	uint32_t ulDataSize;
 	uint32_t status;
+	CK_OBJECT_HANDLE xHandle;
 }PKCS_DATA;
 
 #define PKCS_DATA_STATUS_EMPTY 0
-#define PKCS_DATA_STATUS_REGISTERD 1
-#define PKCS_DATA_STATUS_DELETED 2
+#define PKCS_DATA_STATUS_REGISTERED 1
+#define PKCS_DATA_STATUS_HIT 2
 
 #define PKCS_HANDLES_LABEL_MAX_LENGTH 40
 #define PKCS_OBJECT_HANDLES_NUM 5
@@ -118,9 +119,7 @@ uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX
 };
 
 static PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM];
-static uint32_t stored_data_size = 0;
-
-static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;	/* RX65N case: 8KB */
+static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;		/* RX65N case: 8KB */
 
 R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE, 1)
 static const PKCS_CONTROL_BLOCK pkcs_control_block_data = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
@@ -130,7 +129,6 @@ R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE_MIRROR, 1)
 static const PKCS_CONTROL_BLOCK pkcs_control_block_data_mirror = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
 R_ATTRIB_SECTION_CHANGE_END
 
-static uint32_t current_stored_size(void);
 static void update_dataflash_data_from_image(void);
 static void update_dataflash_data_mirror_from_image(void);
 static void check_dataflash_area(uint32_t retry_counter);
@@ -151,7 +149,6 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     uint32_t ulDataSize )
 {
     CK_OBJECT_HANDLE xHandle = eInvalidHandle;
-    uint32_t size;
     int i;
     uint8_t hash_sha256[PKCS_SHA256_LENGTH];
 	mbedtls_sha256_context ctx;
@@ -165,6 +162,7 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 	/* copy data from storage to ram */
 	memcpy(pkcs_control_block_data_image.data.local_storage, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data_image.data.local_storage));
 
+	/* search specified label value from object_handle_dictionary */
 	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
 	{
 		if (!strcmp((char * )&object_handle_dictionary[i], pxLabel->pValue))
@@ -173,18 +171,93 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 		}
 	}
 
+	/* search current xHandle from pkcs_data */
+	uint32_t move_flag = 0, move_target_xHandle = 0;
+	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+	{
+		if (xHandle == pkcs_data[i].xHandle)
+		{
+			move_target_xHandle = i;
+			move_flag = 1;
+			pkcs_data[i].status = PKCS_DATA_STATUS_HIT;
+		}
+	}
+
+	/* search current registered_number from pkcs_data */
+	uint32_t registered_number = 1;
+	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+	{
+		if (pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
+		{
+			registered_number++;
+		}
+	}
+
 	if (xHandle != eInvalidHandle)
 	{
-		size = current_stored_size();
-		memcpy(&pkcs_control_block_data_image.data.local_storage[size], pucData, ulDataSize);
+		/* pre-calculate -> move data -> delete specified control data: pre-calculate phase */
+		uint32_t delete_target_index = 0, move_target_index = 0, total_stored_data = 0;
+		for(int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+		{
+			if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
+			{
+				if(i < move_target_xHandle)
+				{
+					delete_target_index += pkcs_data[i].ulDataSize;
+					total_stored_data += pkcs_data[i].ulDataSize;
+				}
+				else if(i == move_target_xHandle)
+				{
+					move_target_index = delete_target_index + pkcs_data[i].ulDataSize;
+					move_flag = 1;
+				}
+				else
+				{
+					total_stored_data += pkcs_data[i].ulDataSize;
+				}
+			}
+		}
+		/* pre-calculate -> move data -> delete specified control data: move data phase */
+		if(move_flag)
+		{
+			memmove(&pkcs_control_block_data_image.data.local_storage[delete_target_index],
+					&pkcs_control_block_data_image.data.local_storage[move_target_index],
+					total_stored_data);
 
-		pkcs_data[xHandle].Label.type = pxLabel->type;
-		pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
-		pkcs_data[xHandle].ulDataSize = ulDataSize;
-		pkcs_data[xHandle].local_storage_index = size;
-		pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERD;
+			/* pre-calculate -> move data -> delete specified control data: delete specified control data phase */
+			uint32_t current_index = 0;
+			for(int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+			{
+				if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED || pkcs_data[i].status == PKCS_DATA_STATUS_HIT)
+				{
+					if(i < move_target_xHandle)
+					{
+						current_index += pkcs_data[i].ulDataSize;
+					}
+					else
+					{
+						if((i + 1) != PKCS_OBJECT_HANDLES_NUM)
+						{
+							pkcs_data[i].Label.type = pkcs_data[i + 1].Label.type;
+							pkcs_data[i].Label.ulValueLen = pkcs_data[i + 1].Label.ulValueLen;
+							pkcs_data[i].local_storage_index = current_index;
+							pkcs_data[i].ulDataSize = pkcs_data[i + 1].ulDataSize;
+							pkcs_data[i].status = pkcs_data[i + 1].status;
+							pkcs_data[i].xHandle = pkcs_data[i + 1].xHandle;
+							current_index += pkcs_data[i + 1].ulDataSize;
+						}
+					}
+				}
+			}
+		}
 
-		stored_data_size += ulDataSize;
+		pkcs_data[registered_number].Label.type = pxLabel->type;
+		pkcs_data[registered_number].Label.ulValueLen = pxLabel->ulValueLen;
+		pkcs_data[registered_number].local_storage_index = total_stored_data;
+		pkcs_data[registered_number].ulDataSize = ulDataSize;
+		pkcs_data[registered_number].status = PKCS_DATA_STATUS_REGISTERED;
+		pkcs_data[registered_number].xHandle = xHandle;
+		memcpy(&pkcs_control_block_data_image.data.local_storage[total_stored_data], pucData, ulDataSize);
 
 		/* update the hash */
 		mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
@@ -266,19 +339,37 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
 {
     CK_RV xReturn = CKR_FUNCTION_FAILED;
 
-    CK_OBJECT_HANDLE xHandleStorage = xHandle;
-
+    /*
     if (xHandleStorage == eAwsDevicePublicKey)
     {
         xHandleStorage = eAwsDevicePrivateKey;
     }
+    */
 
     if (xHandle != eInvalidHandle)
     {
-        *ppucData = &pkcs_control_block_data_image.data.local_storage[pkcs_data[xHandleStorage].local_storage_index];
-        *pulDataSize = pkcs_data[xHandleStorage].ulDataSize;
+    	int i;
+    	for(i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+    	{
+    		if(pkcs_data[i].xHandle == xHandle)
+    		{
+    			break;
+    		}
+    	}
+    	if(xHandle == eAwsDevicePublicKey)
+    	{
+    		for(i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+    		{
+        		if(pkcs_data[i].xHandle == eAwsDevicePrivateKey)
+        		{
+        			break;
+        		}
+    		}
+    	}
+        *ppucData = &pkcs_control_block_data_image.data.local_storage[pkcs_data[i].local_storage_index];
+        *pulDataSize = pkcs_data[i].ulDataSize;
 
-        if (!strcmp((char * )&object_handle_dictionary[xHandle], pkcs11configLABEL_DEVICE_PRIVATE_KEY_FOR_TLS))
+        if (pkcs_data[i].xHandle == eAwsDevicePrivateKey)
         {
             *pIsPrivate = CK_TRUE;
         }
@@ -309,11 +400,6 @@ void PKCS11_PAL_GetObjectValueCleanup( uint8_t * pucData,
     R_INTERNAL_NOT_USED(ulDataSize);
 
     /* todo: nothing to do in now. Now, pkcs_data exists as static. I will fix this function when I will port this to heap memory. (Renesas/Ishiguro) */
-}
-
-static uint32_t current_stored_size(void)
-{
-	return stored_data_size;
 }
 
 static void update_dataflash_data_from_image(void)
