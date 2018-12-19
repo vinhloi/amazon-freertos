@@ -163,7 +163,7 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 	check_dataflash_area(0);
 
 	/* copy data from storage to ram */
-	memcpy(pkcs_control_block_data_image.data.local_storage , pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data_image.data.local_storage));
+	memcpy(pkcs_control_block_data_image.data.local_storage, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data_image.data.local_storage));
 
 	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
 	{
@@ -178,7 +178,6 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 		size = current_stored_size();
 		memcpy(&pkcs_control_block_data_image.data.local_storage[size], pucData, ulDataSize);
 
-		pkcs_data[xHandle].Label.pValue = pxLabel->pValue;
 		pkcs_data[xHandle].Label.type = pxLabel->type;
 		pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
 		pkcs_data[xHandle].ulDataSize = ulDataSize;
