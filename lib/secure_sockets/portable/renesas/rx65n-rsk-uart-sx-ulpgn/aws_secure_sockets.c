@@ -59,8 +59,8 @@
 #include "task.h"
 #include "aws_pkcs11.h"
 #include "aws_crypto.h"
+#include "platform.h"
 #include "sx_ulpgn_driver.h"
-#include "machine.h"
 
 /* Internal context structure. */
 typedef struct SSOCKETContext
