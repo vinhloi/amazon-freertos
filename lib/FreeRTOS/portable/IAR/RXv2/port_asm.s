@@ -25,7 +25,7 @@
  * 1 tab == 4 spaces!
  */
 
-//#include "PriorityDefinitions.h"
+#include "PriorityDefinitions.h"
 
 	PUBLIC _prvStartFirstTask
 	PUBLIC ___interrupt_27
@@ -147,15 +147,13 @@ ___interrupt_27:
 
 		/* Ensure the interrupt mask is set to the syscall priority while the kernel
 		structures are being accessed. */
-;;		MVTIPL		#configMAX_SYSCALL_INTERRUPT_PRIORITY
-		MVTIPL		#1
+		MVTIPL		#configMAX_SYSCALL_INTERRUPT_PRIORITY
 
 		/* Select the next task to run. */
 		BSR.A		_vTaskSwitchContext
 
 		/* Reset the interrupt mask as no more data structure access is required. */
-;;		MVTIPL		#configKERNEL_INTERRUPT_PRIORITY
-		MVTIPL		#4
+		MVTIPL		#configKERNEL_INTERRUPT_PRIORITY
 
 		/* Load the stack pointer of the task that is now selected as the Running
 		state task from its TCB. */
