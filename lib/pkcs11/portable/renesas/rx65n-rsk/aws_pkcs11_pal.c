@@ -171,93 +171,71 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 		}
 	}
 
-	/* search current xHandle from pkcs_data */
-	uint32_t move_flag = 0, move_target_xHandle = 0;
-	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-	{
-		if (xHandle == pkcs_data[i].xHandle)
-		{
-			move_target_xHandle = i;
-			move_flag = 1;
-			pkcs_data[i].status = PKCS_DATA_STATUS_HIT;
-		}
-	}
+    if (xHandle != eInvalidHandle) {
 
-	/* search current registered_number from pkcs_data */
-	uint32_t registered_number = 1;
-	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-	{
-		if (pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
-		{
-			registered_number++;
-		}
-	}
+        /* pre-calculate -> total stored data size : pre-calculate phase */
+        uint32_t total_stored_data_size = 0;
 
-	if (xHandle != eInvalidHandle)
-	{
-		/* pre-calculate -> move data -> delete specified control data: pre-calculate phase */
-		uint32_t delete_target_index = 0, move_target_index = 0, total_stored_data = 0;
-		for(int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-		{
-			if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
-			{
-				if(i < move_target_xHandle)
-				{
-					delete_target_index += pkcs_data[i].ulDataSize;
-					total_stored_data += pkcs_data[i].ulDataSize;
-				}
-				else if(i == move_target_xHandle)
-				{
-					move_target_index = delete_target_index + pkcs_data[i].ulDataSize;
-					move_flag = 1;
-				}
-				else
-				{
-					total_stored_data += pkcs_data[i].ulDataSize;
-				}
-			}
-		}
-		/* pre-calculate -> move data -> delete specified control data: move data phase */
-		if(move_flag)
-		{
-			memmove(&pkcs_control_block_data_image.data.local_storage[delete_target_index],
-					&pkcs_control_block_data_image.data.local_storage[move_target_index],
-					total_stored_data);
+        for (int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++) {
+            if (pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED) {
+                total_stored_data_size += pkcs_data[i].ulDataSize;
+            }
+        }
 
-			/* pre-calculate -> move data -> delete specified control data: delete specified control data phase */
-			uint32_t current_index = 0;
-			for(int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-			{
-				if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED || pkcs_data[i].status == PKCS_DATA_STATUS_HIT)
-				{
-					if(i < move_target_xHandle)
-					{
-						current_index += pkcs_data[i].ulDataSize;
-					}
-					else
-					{
-						if((i + 1) != PKCS_OBJECT_HANDLES_NUM)
-						{
-							pkcs_data[i].Label.type = pkcs_data[i + 1].Label.type;
-							pkcs_data[i].Label.ulValueLen = pkcs_data[i + 1].Label.ulValueLen;
-							pkcs_data[i].local_storage_index = current_index;
-							pkcs_data[i].ulDataSize = pkcs_data[i + 1].ulDataSize;
-							pkcs_data[i].status = pkcs_data[i + 1].status;
-							pkcs_data[i].xHandle = pkcs_data[i + 1].xHandle;
-							current_index += pkcs_data[i + 1].ulDataSize;
-						}
-					}
-				}
-			}
-		}
+        /* remove current xHandle from pkcs_data */
+        if (pkcs_data[xHandle].status == PKCS_DATA_STATUS_REGISTERED) {
 
-		pkcs_data[registered_number].Label.type = pxLabel->type;
-		pkcs_data[registered_number].Label.ulValueLen = pxLabel->ulValueLen;
-		pkcs_data[registered_number].local_storage_index = total_stored_data;
-		pkcs_data[registered_number].ulDataSize = ulDataSize;
-		pkcs_data[registered_number].status = PKCS_DATA_STATUS_REGISTERED;
-		pkcs_data[registered_number].xHandle = xHandle;
-		memcpy(&pkcs_control_block_data_image.data.local_storage[total_stored_data], pucData, ulDataSize);
+            uint32_t move_target_xHandle = 0, move_target_index = 0;
+
+            uint32_t delete_target_index = pkcs_data[xHandle].local_storage_index;
+            uint32_t delete_target_data_size = pkcs_data[xHandle].ulDataSize;
+
+            /* Search move target index and handle  */
+            for (int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++) {
+
+                if ((pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
+                        && (pkcs_data[i].local_storage_index == (delete_target_index + delete_target_data_size))) {
+                    move_target_xHandle = i;
+                    move_target_index = pkcs_data[i].local_storage_index;
+                    break;
+                }
+
+            }
+
+            if (move_target_xHandle != 0) {
+
+                /* Move target index to delete target index */
+                memmove(
+                        (void * )&pkcs_control_block_data_image.data.local_storage[delete_target_index],
+                        (void * )&pkcs_control_block_data_image.data.local_storage[move_target_index],
+                        (size_t )total_stored_data_size - move_target_index);
+
+                /* Fix index of all moved data  */
+                for (int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++) {
+
+                    if (pkcs_data[i].local_storage_index > delete_target_index) {
+                        pkcs_data[i].local_storage_index -= delete_target_data_size;
+                    }
+
+                }
+
+            }
+
+            /* Recalculate the end of data storage  */
+            total_stored_data_size -= delete_target_data_size;
+
+            pkcs_data[xHandle].local_storage_index = 0;
+            pkcs_data[xHandle].ulDataSize = 0;
+
+        }
+
+		pkcs_data[xHandle].Label.type = pxLabel->type;
+		pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
+		pkcs_data[xHandle].local_storage_index = total_stored_data_size;
+		pkcs_data[xHandle].ulDataSize = ulDataSize;
+		pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERED;
+		pkcs_data[xHandle].xHandle = xHandle;
+		memcpy(&pkcs_control_block_data_image.data.local_storage[total_stored_data_size], pucData, ulDataSize);
 
 		/* update the hash */
 		mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
@@ -269,6 +247,7 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 		update_dataflash_data_from_image();
 		update_dataflash_data_mirror_from_image();
 	}
+
 
     R_FLASH_Close();
 
@@ -338,38 +317,21 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
     CK_BBOOL * pIsPrivate )
 {
     CK_RV xReturn = CKR_FUNCTION_FAILED;
+    CK_OBJECT_HANDLE xHandleStorage = xHandle;
 
-    /*
+
     if (xHandleStorage == eAwsDevicePublicKey)
     {
         xHandleStorage = eAwsDevicePrivateKey;
     }
-    */
+
 
     if (xHandle != eInvalidHandle)
     {
-    	int i;
-    	for(i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-    	{
-    		if(pkcs_data[i].xHandle == xHandle)
-    		{
-    			break;
-    		}
-    	}
-    	if(xHandle == eAwsDevicePublicKey)
-    	{
-    		for(i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-    		{
-        		if(pkcs_data[i].xHandle == eAwsDevicePrivateKey)
-        		{
-        			break;
-        		}
-    		}
-    	}
-        *ppucData = &pkcs_control_block_data_image.data.local_storage[pkcs_data[i].local_storage_index];
-        *pulDataSize = pkcs_data[i].ulDataSize;
+        *ppucData = &pkcs_control_block_data_image.data.local_storage[pkcs_data[xHandleStorage].local_storage_index];
+        *pulDataSize = pkcs_data[xHandleStorage].ulDataSize;
 
-        if (pkcs_data[i].xHandle == eAwsDevicePrivateKey)
+        if (xHandle == eAwsDevicePrivateKey)
         {
             *pIsPrivate = CK_TRUE;
         }
@@ -381,6 +343,7 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
     }
 
     return xReturn;
+
 }
 
 
@@ -413,7 +376,7 @@ static void update_dataflash_data_from_image(void)
         required_dataflash_block_num++;
     }
 
-    configPRINTF(("erase dataflash(main)..."));
+    configPRINTF(("erase dataflash(main)...\r\n"));
     flash_error_code = R_FLASH_Erase((flash_block_address_t)&pkcs_control_block_data, required_dataflash_block_num);
     if(FLASH_SUCCESS == flash_error_code)
     {
@@ -425,7 +388,7 @@ static void update_dataflash_data_from_image(void)
         configPRINTF(("R_FLASH_Erase() returns error code = %d.\r\n", flash_error_code));
     }
 
-    configPRINTF(("write dataflash(main)..."));
+    configPRINTF(("write dataflash(main)...\r\n"));
     flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
     if(FLASH_SUCCESS == flash_error_code)
     {
@@ -451,7 +414,7 @@ static void update_dataflash_data_mirror_from_image(void)
         required_dataflash_block_num++;
     }
 
-    configPRINTF(("erase dataflash(mirror)..."));
+    configPRINTF(("erase dataflash(mirror)...\r\n"));
     flash_error_code = R_FLASH_Erase((flash_block_address_t)&pkcs_control_block_data_mirror, required_dataflash_block_num);
     if(FLASH_SUCCESS == flash_error_code)
     {
@@ -464,7 +427,7 @@ static void update_dataflash_data_mirror_from_image(void)
         return;
     }
 
-    configPRINTF(("write dataflash(mirror)..."));
+    configPRINTF(("write dataflash(mirror)...\r\n"));
     flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data_mirror, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
     if(FLASH_SUCCESS == flash_error_code)
     {
@@ -504,14 +467,14 @@ static void check_dataflash_area(uint32_t retry_counter)
             while(1);
         }
     }
-    configPRINTF(("data flash(main) hash check..."));
+    configPRINTF(("data flash(main) hash check...\r\n"));
 	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
 	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
 	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
     if(!memcmp(pkcs_control_block_data.hash_sha256, hash_sha256, sizeof(hash_sha256)))
     {
     	configPRINTF(("OK\r\n"));
-    	configPRINTF(("data flash(mirror) hash check..."));
+    	configPRINTF(("data flash(mirror) hash check...\r\n"));
     	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
     	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
     	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
@@ -531,7 +494,7 @@ static void check_dataflash_area(uint32_t retry_counter)
     else
     {
     	configPRINTF(("NG\r\n"));
-    	configPRINTF(("data flash(mirror) hash check..."));
+    	configPRINTF(("data flash(mirror) hash check...\r\n"));
     	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
     	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
     	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
@@ -558,4 +521,3 @@ static void check_dataflash_area(uint32_t retry_counter)
         }
     }
 }
-
