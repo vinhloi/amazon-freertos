@@ -27,12 +27,12 @@
 		<link>
 			<name>application_code</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common/application_code</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-rsk/common/application_code</locationURI>
 		</link>
 		<link>
 			<name>config_files</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/common/config_files</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-rsk/common/config_files</locationURI>
 		</link>
 		<link>
 			<name>lib</name>
@@ -61,6 +61,11 @@
 		</link>
 		<link>
 			<name>application_code/common_demos/source</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>application_code/renesas_code/src</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
@@ -225,11 +230,6 @@
 			<locationURI>AWS_IOT_MCU_ROOT/demos/common/tcp/aws_tcp_echo_client_single_task.c</locationURI>
 		</link>
 		<link>
-			<name>application_code/renesas_code/src</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>application_code/renesas_code/src/FIT_modified_code</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -242,7 +242,7 @@
 		<link>
 			<name>application_code/renesas_code/src/smc_gen</name>
 			<type>2</type>
-			<locationURI>PROJECT_LOC/src/smc_gen</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-rsk/e2studio/src/smc_gen</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/ota/aws_ota_agent.c</name>
@@ -273,16 +273,6 @@
 			<name>lib/third_party/mcu_vendor/renesas</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/src/FIT_modified_code/Please exclude unnecessary r_xxx from build</name>
-			<type>1</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/.files/Please%20exclude%20unnecessary%20r_xxx%20from%20build</locationURI>
-		</link>
-		<link>
-			<name>application_code/renesas_code/src/FIT_modified_code/attention!.txt</name>
-			<type>1</type>
-			<locationURI>PROJECT_LOC/src/attention!.txt</locationURI>
 		</link>
 		<link>
 			<name>application_code/renesas_code/src/FIT_modified_code/r_bsp</name>
@@ -327,7 +317,7 @@
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1532925745925</id>
+			<id>1545464902572</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -336,7 +326,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1513514174593</id>
+			<id>1545464902578</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
