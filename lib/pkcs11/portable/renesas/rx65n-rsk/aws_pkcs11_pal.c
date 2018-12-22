@@ -306,7 +306,10 @@ CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
     {
         if(!strcmp((char *)&object_handle_dictionary[i], (char *)pLabel))
         {
-            xHandle = i;
+            if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
+            {
+                xHandle = i;
+            }
         }
     }
 
