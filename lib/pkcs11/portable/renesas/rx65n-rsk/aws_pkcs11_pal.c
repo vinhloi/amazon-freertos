@@ -133,6 +133,25 @@ static void update_dataflash_data_from_image(void);
 static void update_dataflash_data_mirror_from_image(void);
 static void check_dataflash_area(uint32_t retry_counter);
 
+extern CK_RV prvMbedTLS_Initialize( void );
+
+CK_RV C_Initialize( CK_VOID_PTR pvInitArgs )
+{
+    R_FLASH_Open();
+
+	/* check the hash */
+	check_dataflash_area(0);
+
+	/* copy data from storage to ram */
+	memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
+
+    R_FLASH_Close();
+
+    prvMbedTLS_Initialize();
+
+	return CKR_OK;
+}
+
 /**
 * @brief Writes a file to local storage.
 *
@@ -156,11 +175,8 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 	mbedtls_sha256_init(&ctx);
     R_FLASH_Open();
 
-	/* check the hash */
-	check_dataflash_area(0);
-
 	/* copy data from storage to ram */
-	memcpy(pkcs_control_block_data_image.data.local_storage, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data_image.data.local_storage));
+	memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
 
 	/* search specified label value from object_handle_dictionary */
 	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
