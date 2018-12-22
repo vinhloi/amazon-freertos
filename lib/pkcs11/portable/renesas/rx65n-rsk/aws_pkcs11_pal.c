@@ -392,7 +392,7 @@ static void update_dataflash_data_from_image(void)
 
     configPRINTF(("write dataflash(main)...\r\n"));
     R_BSP_InterruptsDisable();
-    flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
+    flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image, (flash_block_address_t)&pkcs_control_block_data, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
     R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
@@ -435,7 +435,7 @@ static void update_dataflash_data_mirror_from_image(void)
 
     configPRINTF(("write dataflash(mirror)...\r\n"));
     R_BSP_InterruptsDisable();
-    flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data_mirror, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
+    flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image, (flash_block_address_t)&pkcs_control_block_data_mirror, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
     R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
@@ -494,7 +494,7 @@ static void check_dataflash_area(uint32_t retry_counter)
         {
         	configPRINTF(("NG\r\n"));
         	configPRINTF(("recover mirror from main.\r\n"));
-            memcpy(&pkcs_control_block_data.data.local_storage, &pkcs_control_block_data, sizeof(pkcs_control_block_data));
+            memcpy(&pkcs_control_block_data, &pkcs_control_block_data, sizeof(pkcs_control_block_data));
             update_dataflash_data_mirror_from_image();
             check_dataflash_area(retry_counter+1);
         }
@@ -510,7 +510,7 @@ static void check_dataflash_area(uint32_t retry_counter)
         {
         	configPRINTF(("OK\r\n"));
         	configPRINTF(("recover main from mirror.\r\n"));
-            memcpy(&pkcs_control_block_data.data.local_storage, &pkcs_control_block_data_mirror, sizeof(pkcs_control_block_data_mirror));
+            memcpy(&pkcs_control_block_data, &pkcs_control_block_data_mirror, sizeof(pkcs_control_block_data_mirror));
             update_dataflash_data_from_image();
             check_dataflash_area(retry_counter+1);
         }
