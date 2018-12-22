@@ -62,11 +62,11 @@
 
 typedef struct _pkcs_data
 {
-	CK_ATTRIBUTE Label;
-	uint32_t local_storage_index;
-	uint32_t ulDataSize;
-	uint32_t status;
-	CK_OBJECT_HANDLE xHandle;
+    CK_ATTRIBUTE Label;
+    uint32_t local_storage_index;
+    uint32_t ulDataSize;
+    uint32_t status;
+    CK_OBJECT_HANDLE xHandle;
 }PKCS_DATA;
 
 #define PKCS_DATA_STATUS_EMPTY 0
@@ -89,13 +89,13 @@ typedef struct _pkcs_data
 
 typedef struct _pkcs_storage_control_block_sub
 {
-	uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF)/4)-PKCS_SHA256_LENGTH];	/* RX65N case: 8KB */
+    uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF)/4)-PKCS_SHA256_LENGTH];  /* RX65N case: 8KB */
 }PKCS_STORAGE_CONTROL_BLOCK_SUB;
 
 typedef struct _PKCS_CONTROL_BLOCK
 {
-	PKCS_STORAGE_CONTROL_BLOCK_SUB data;
-	uint8_t hash_sha256[PKCS_SHA256_LENGTH];
+    PKCS_STORAGE_CONTROL_BLOCK_SUB data;
+    uint8_t hash_sha256[PKCS_SHA256_LENGTH];
 }PKCS_CONTROL_BLOCK;
 
 enum eObjectHandles
@@ -119,7 +119,7 @@ uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX
 };
 
 static PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM];
-static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;		/* RX65N case: 8KB */
+static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;        /* RX65N case: 8KB */
 
 R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE, 1)
 static const PKCS_CONTROL_BLOCK pkcs_control_block_data = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
@@ -139,17 +139,17 @@ CK_RV C_Initialize( CK_VOID_PTR pvInitArgs )
 {
     R_FLASH_Open();
 
-	/* check the hash */
-	check_dataflash_area(0);
+    /* check the hash */
+    check_dataflash_area(0);
 
-	/* copy data from storage to ram */
-	memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
+    /* copy data from storage to ram */
+    memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
 
     R_FLASH_Close();
 
     prvMbedTLS_Initialize();
 
-	return CKR_OK;
+    return CKR_OK;
 }
 
 /**
@@ -170,22 +170,22 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     CK_OBJECT_HANDLE xHandle = eInvalidHandle;
     int i;
     uint8_t hash_sha256[PKCS_SHA256_LENGTH];
-	mbedtls_sha256_context ctx;
+    mbedtls_sha256_context ctx;
 
-	mbedtls_sha256_init(&ctx);
+    mbedtls_sha256_init(&ctx);
     R_FLASH_Open();
 
-	/* copy data from storage to ram */
-	memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
+    /* copy data from storage to ram */
+    memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
 
-	/* search specified label value from object_handle_dictionary */
-	for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-	{
-		if (!strcmp((char * )&object_handle_dictionary[i], pxLabel->pValue))
-		{
-			xHandle = i;
-		}
-	}
+    /* search specified label value from object_handle_dictionary */
+    for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+    {
+        if (!strcmp((char * )&object_handle_dictionary[i], pxLabel->pValue))
+        {
+            xHandle = i;
+        }
+    }
 
     if (xHandle != eInvalidHandle) {
 
@@ -245,24 +245,24 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 
         }
 
-		pkcs_data[xHandle].Label.type = pxLabel->type;
-		pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
-		pkcs_data[xHandle].local_storage_index = total_stored_data_size;
-		pkcs_data[xHandle].ulDataSize = ulDataSize;
-		pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERED;
-		pkcs_data[xHandle].xHandle = xHandle;
-		memcpy(&pkcs_control_block_data_image.data.local_storage[total_stored_data_size], pucData, ulDataSize);
+        pkcs_data[xHandle].Label.type = pxLabel->type;
+        pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
+        pkcs_data[xHandle].local_storage_index = total_stored_data_size;
+        pkcs_data[xHandle].ulDataSize = ulDataSize;
+        pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERED;
+        pkcs_data[xHandle].xHandle = xHandle;
+        memcpy(&pkcs_control_block_data_image.data.local_storage[total_stored_data_size], pucData, ulDataSize);
 
-		/* update the hash */
-		mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-		mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_image.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
-		mbedtls_sha256_finish_ret(&ctx, hash_sha256);
-		memcpy(pkcs_control_block_data_image.hash_sha256, hash_sha256, sizeof(hash_sha256));
+        /* update the hash */
+        mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+        mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_image.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+        mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+        memcpy(pkcs_control_block_data_image.hash_sha256, hash_sha256, sizeof(hash_sha256));
 
-		/* update data from ram to storage */
-		update_dataflash_data_from_image();
-		update_dataflash_data_mirror_from_image();
-	}
+        /* update data from ram to storage */
+        update_dataflash_data_from_image();
+        update_dataflash_data_mirror_from_image();
+    }
 
 
     R_FLASH_Close();
@@ -287,19 +287,19 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
     uint8_t usLength )
 {
-	/* Avoid compiler warnings about unused variables. */
-	R_INTERNAL_NOT_USED(usLength);
+    /* Avoid compiler warnings about unused variables. */
+    R_INTERNAL_NOT_USED(usLength);
 
-	CK_OBJECT_HANDLE xHandle = eInvalidHandle;
-	int i;
+    CK_OBJECT_HANDLE xHandle = eInvalidHandle;
+    int i;
 
-	for(i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
-	{
-		if(!strcmp((char *)&object_handle_dictionary[i], (char *)pLabel))
-		{
+    for(i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
+    {
+        if(!strcmp((char *)&object_handle_dictionary[i], (char *)pLabel))
+        {
             xHandle = i;
-		}
-	}
+        }
+    }
 
     return xHandle;
 }
@@ -398,11 +398,11 @@ static void update_dataflash_data_from_image(void)
     R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
-    	configPRINTF(("OK\r\n"));
+        configPRINTF(("OK\r\n"));
     }
     else
     {
-    	configPRINTF(("NG\r\n"));
+        configPRINTF(("NG\r\n"));
         configPRINTF(("R_FLASH_Erase() returns error code = %d.\r\n", flash_error_code));
     }
 
@@ -412,11 +412,11 @@ static void update_dataflash_data_from_image(void)
     R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
-    	configPRINTF(("OK\r\n"));
+        configPRINTF(("OK\r\n"));
     }
     else
     {
-    	configPRINTF(("NG\r\n"));
+        configPRINTF(("NG\r\n"));
         configPRINTF(("R_FLASH_Write() returns error code = %d.\r\n", flash_error_code));
         return;
     }
@@ -440,11 +440,11 @@ static void update_dataflash_data_mirror_from_image(void)
     R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
-    	configPRINTF(("OK\r\n"));
+        configPRINTF(("OK\r\n"));
     }
     else
     {
-    	configPRINTF(("NG\r\n"));
+        configPRINTF(("NG\r\n"));
         configPRINTF(("R_FLASH_Erase() returns error code = %d.\r\n", flash_error_code));
         return;
     }
@@ -455,21 +455,21 @@ static void update_dataflash_data_mirror_from_image(void)
     R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
-    	configPRINTF(("OK\r\n"));
+        configPRINTF(("OK\r\n"));
     }
     else
     {
-    	configPRINTF(("NG\r\n"));
+        configPRINTF(("NG\r\n"));
         configPRINTF(("R_FLASH_Write() returns error code = %d.\r\n", flash_error_code));
         return;
     }
     if(!memcmp(&pkcs_control_block_data, &pkcs_control_block_data_mirror, sizeof(PKCS_CONTROL_BLOCK)))
     {
-    	configPRINTF(("data flash setting OK.\r\n"));
+        configPRINTF(("data flash setting OK.\r\n"));
     }
     else
     {
-    	configPRINTF(("data flash setting NG.\r\n"));
+        configPRINTF(("data flash setting NG.\r\n"));
         return;
     }
     return;
@@ -478,38 +478,38 @@ static void update_dataflash_data_mirror_from_image(void)
 static void check_dataflash_area(uint32_t retry_counter)
 {
     uint8_t hash_sha256[PKCS_SHA256_LENGTH];
-	mbedtls_sha256_context ctx;
+    mbedtls_sha256_context ctx;
 
-	mbedtls_sha256_init(&ctx);
+    mbedtls_sha256_init(&ctx);
 
     if(retry_counter)
     {
-    	configPRINTF(("recover retry count = %d.\r\n", retry_counter));
+        configPRINTF(("recover retry count = %d.\r\n", retry_counter));
         if(retry_counter == MAX_CHECK_DATAFLASH_AREA_RETRY_COUNT)
         {
-        	configPRINTF(("retry over the limit.\r\n"));
+            configPRINTF(("retry over the limit.\r\n"));
             while(1);
         }
     }
     configPRINTF(("data flash(main) hash check...\r\n"));
-	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
-	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+    mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+    mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+    mbedtls_sha256_finish_ret(&ctx, hash_sha256);
     if(!memcmp(pkcs_control_block_data.hash_sha256, hash_sha256, sizeof(hash_sha256)))
     {
-    	configPRINTF(("OK\r\n"));
-    	configPRINTF(("data flash(mirror) hash check...\r\n"));
-    	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-    	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
-    	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+        configPRINTF(("OK\r\n"));
+        configPRINTF(("data flash(mirror) hash check...\r\n"));
+        mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+        mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+        mbedtls_sha256_finish_ret(&ctx, hash_sha256);
         if(!memcmp(pkcs_control_block_data_mirror.hash_sha256, hash_sha256, sizeof(hash_sha256)))
         {
-        	configPRINTF(("OK\r\n"));
+            configPRINTF(("OK\r\n"));
         }
         else
         {
-        	configPRINTF(("NG\r\n"));
-        	configPRINTF(("recover mirror from main.\r\n"));
+            configPRINTF(("NG\r\n"));
+            configPRINTF(("recover mirror from main.\r\n"));
             memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(pkcs_control_block_data));
             update_dataflash_data_mirror_from_image();
             check_dataflash_area(retry_counter+1);
@@ -517,30 +517,30 @@ static void check_dataflash_area(uint32_t retry_counter)
     }
     else
     {
-    	configPRINTF(("NG\r\n"));
-    	configPRINTF(("data flash(mirror) hash check...\r\n"));
-    	mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-    	mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
-    	mbedtls_sha256_finish_ret(&ctx, hash_sha256);
+        configPRINTF(("NG\r\n"));
+        configPRINTF(("data flash(mirror) hash check...\r\n"));
+        mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
+        mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+        mbedtls_sha256_finish_ret(&ctx, hash_sha256);
         if(!memcmp(pkcs_control_block_data_mirror.hash_sha256, hash_sha256, sizeof(hash_sha256)))
         {
-        	configPRINTF(("OK\r\n"));
-        	configPRINTF(("recover main from mirror.\r\n"));
+            configPRINTF(("OK\r\n"));
+            configPRINTF(("recover main from mirror.\r\n"));
             memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data_mirror, sizeof(pkcs_control_block_data_mirror));
             update_dataflash_data_from_image();
             check_dataflash_area(retry_counter+1);
         }
         else
         {
-        	configPRINTF(("NG\r\n"));
+            configPRINTF(("NG\r\n"));
             while(1)
             {
-            	vTaskDelay(10000);
-            	configPRINTF(("------------------------------------------------\r\n"));
-            	configPRINTF(("Data flash is completely broken.\r\n"));
-            	configPRINTF(("Please erase all code flash.\r\n"));
-            	configPRINTF(("And, write initial firmware using debugger/rom writer.\r\n"));
-            	configPRINTF(("------------------------------------------------\r\n"));
+                vTaskDelay(10000);
+                configPRINTF(("------------------------------------------------\r\n"));
+                configPRINTF(("Data flash is completely broken.\r\n"));
+                configPRINTF(("Please erase all code flash.\r\n"));
+                configPRINTF(("And, write initial firmware using debugger/rom writer.\r\n"));
+                configPRINTF(("------------------------------------------------\r\n"));
             }
         }
     }
