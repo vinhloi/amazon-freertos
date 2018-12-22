@@ -81,7 +81,9 @@ typedef struct _pkcs_data
 
 #define PKCS_CONTROL_BLOCK_INITIAL_DATA \
     {\
-        /* uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF)/4)-PKCS_SHA256_LENGTH]; */\
+        /* uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF) / 4) - (sizeof(PKCS_DATA) * PKCS_OBJECT_HANDLES_NUM) - PKCS_SHA256_LENGTH]; */\
+        {0x00},\
+        /* PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM]; */\
         {0x00},\
     },\
     /* uint8_t hash_sha256[PKCS_SHA256_LENGTH]; */\
@@ -89,7 +91,8 @@ typedef struct _pkcs_data
 
 typedef struct _pkcs_storage_control_block_sub
 {
-    uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF) / 4) - PKCS_SHA256_LENGTH]; /* RX65N case: 8KB */
+    uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF) / 4) - (sizeof(PKCS_DATA) * PKCS_OBJECT_HANDLES_NUM) - PKCS_SHA256_LENGTH]; /* RX65N case: 8KB */
+    PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM];
 } PKCS_STORAGE_CONTROL_BLOCK_SUB;
 
 typedef struct _PKCS_CONTROL_BLOCK
@@ -118,7 +121,6 @@ uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX
     //pkcs11configLABEL_ROOT_CERTIFICATE,
 };
 
-static PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM];
 static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;        /* RX65N case: 8KB */
 
 R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE, 1)
@@ -143,7 +145,7 @@ CK_RV C_Initialize( CK_VOID_PTR pvInitArgs )
     check_dataflash_area(0);
 
     /* copy data from storage to ram */
-    memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
+    memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(pkcs_control_block_data_image));
 
     R_FLASH_Close();
 
@@ -175,8 +177,11 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
     mbedtls_sha256_init(&ctx);
     R_FLASH_Open();
 
+    /* check the hash */
+    check_dataflash_area(0);
+
     /* copy data from storage to ram */
-    memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(&pkcs_control_block_data_image));
+    memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(pkcs_control_block_data_image));
 
     /* search specified label value from object_handle_dictionary */
     for (i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
@@ -195,30 +200,30 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 
         for (int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
         {
-            if (pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
+            if (pkcs_control_block_data_image.data.pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
             {
-                total_stored_data_size += pkcs_data[i].ulDataSize;
+                total_stored_data_size += pkcs_control_block_data_image.data.pkcs_data[i].ulDataSize;
             }
         }
 
         /* remove current xHandle from pkcs_data */
-        if (pkcs_data[xHandle].status == PKCS_DATA_STATUS_REGISTERED)
+        if (pkcs_control_block_data_image.data.pkcs_data[xHandle].status == PKCS_DATA_STATUS_REGISTERED)
         {
 
             uint32_t move_target_xHandle = 0, move_target_index = 0;
 
-            uint32_t delete_target_index = pkcs_data[xHandle].local_storage_index;
-            uint32_t delete_target_data_size = pkcs_data[xHandle].ulDataSize;
+            uint32_t delete_target_index = pkcs_control_block_data_image.data.pkcs_data[xHandle].local_storage_index;
+            uint32_t delete_target_data_size = pkcs_control_block_data_image.data.pkcs_data[xHandle].ulDataSize;
 
             /* Search move target index and handle  */
             for (int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
             {
 
-                if ((pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
-                        && (pkcs_data[i].local_storage_index == (delete_target_index + delete_target_data_size)))
+                if ((pkcs_control_block_data_image.data.pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
+                        && (pkcs_control_block_data_image.data.pkcs_data[i].local_storage_index == (delete_target_index + delete_target_data_size)))
                 {
                     move_target_xHandle = i;
-                    move_target_index = pkcs_data[i].local_storage_index;
+                    move_target_index = pkcs_control_block_data_image.data.pkcs_data[i].local_storage_index;
                     break;
                 }
 
@@ -237,9 +242,9 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
                 for (int i = 1; i < PKCS_OBJECT_HANDLES_NUM; i++)
                 {
 
-                    if (pkcs_data[i].local_storage_index > delete_target_index)
+                    if (pkcs_control_block_data_image.data.pkcs_data[i].local_storage_index > delete_target_index)
                     {
-                        pkcs_data[i].local_storage_index -= delete_target_data_size;
+                        pkcs_control_block_data_image.data.pkcs_data[i].local_storage_index -= delete_target_data_size;
                     }
 
                 }
@@ -249,22 +254,22 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
             /* Recalculate the end of data storage  */
             total_stored_data_size -= delete_target_data_size;
 
-            pkcs_data[xHandle].local_storage_index = 0;
-            pkcs_data[xHandle].ulDataSize = 0;
+            pkcs_control_block_data_image.data.pkcs_data[xHandle].local_storage_index = 0;
+            pkcs_control_block_data_image.data.pkcs_data[xHandle].ulDataSize = 0;
 
         }
 
-        pkcs_data[xHandle].Label.type = pxLabel->type;
-        pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
-        pkcs_data[xHandle].local_storage_index = total_stored_data_size;
-        pkcs_data[xHandle].ulDataSize = ulDataSize;
-        pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERED;
-        pkcs_data[xHandle].xHandle = xHandle;
+        pkcs_control_block_data_image.data.pkcs_data[xHandle].Label.type = pxLabel->type;
+        pkcs_control_block_data_image.data.pkcs_data[xHandle].Label.ulValueLen = pxLabel->ulValueLen;
+        pkcs_control_block_data_image.data.pkcs_data[xHandle].local_storage_index = total_stored_data_size;
+        pkcs_control_block_data_image.data.pkcs_data[xHandle].ulDataSize = ulDataSize;
+        pkcs_control_block_data_image.data.pkcs_data[xHandle].status = PKCS_DATA_STATUS_REGISTERED;
+        pkcs_control_block_data_image.data.pkcs_data[xHandle].xHandle = xHandle;
         memcpy(&pkcs_control_block_data_image.data.local_storage[total_stored_data_size], pucData, ulDataSize);
 
         /* update the hash */
         mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-        mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_image.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+        mbedtls_sha256_update_ret(&ctx, (unsigned char *)&pkcs_control_block_data_image.data, sizeof(pkcs_control_block_data.data));
         mbedtls_sha256_finish_ret(&ctx, hash_sha256);
         memcpy(pkcs_control_block_data_image.hash_sha256, hash_sha256, sizeof(hash_sha256));
 
@@ -306,7 +311,7 @@ CK_OBJECT_HANDLE PKCS11_PAL_FindObject( uint8_t * pLabel,
     {
         if(!strcmp((char *)&object_handle_dictionary[i], (char *)pLabel))
         {
-            if(pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
+            if(pkcs_control_block_data_image.data.pkcs_data[i].status == PKCS_DATA_STATUS_REGISTERED)
             {
                 xHandle = i;
             }
@@ -356,8 +361,8 @@ CK_RV PKCS11_PAL_GetObjectValue( CK_OBJECT_HANDLE xHandle,
 
     if (xHandle != eInvalidHandle)
     {
-        *ppucData = &pkcs_control_block_data_image.data.local_storage[pkcs_data[xHandleStorage].local_storage_index];
-        *pulDataSize = pkcs_data[xHandleStorage].ulDataSize;
+        *ppucData = &pkcs_control_block_data_image.data.local_storage[pkcs_control_block_data_image.data.pkcs_data[xHandleStorage].local_storage_index];
+        *pulDataSize = pkcs_control_block_data_image.data.pkcs_data[xHandleStorage].ulDataSize;
 
         if (xHandle == eAwsDevicePrivateKey)
         {
@@ -505,14 +510,14 @@ static void check_dataflash_area(uint32_t retry_counter)
     }
     configPRINTF(("data flash(main) hash check...\r\n"));
     mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-    mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+    mbedtls_sha256_update_ret(&ctx, (unsigned char *)&pkcs_control_block_data.data, sizeof(pkcs_control_block_data.data));
     mbedtls_sha256_finish_ret(&ctx, hash_sha256);
     if(!memcmp(pkcs_control_block_data.hash_sha256, hash_sha256, sizeof(hash_sha256)))
     {
         configPRINTF(("OK\r\n"));
         configPRINTF(("data flash(mirror) hash check...\r\n"));
         mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-        mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+        mbedtls_sha256_update_ret(&ctx, (unsigned char *)&pkcs_control_block_data_mirror.data, sizeof(pkcs_control_block_data_mirror.data));
         mbedtls_sha256_finish_ret(&ctx, hash_sha256);
         if(!memcmp(pkcs_control_block_data_mirror.hash_sha256, hash_sha256, sizeof(hash_sha256)))
         {
@@ -532,7 +537,7 @@ static void check_dataflash_area(uint32_t retry_counter)
         configPRINTF(("NG\r\n"));
         configPRINTF(("data flash(mirror) hash check...\r\n"));
         mbedtls_sha256_starts_ret(&ctx, 0); /* 0 means SHA256 context */
-        mbedtls_sha256_update_ret(&ctx, pkcs_control_block_data_mirror.data.local_storage, sizeof(pkcs_control_block_data.data.local_storage));
+        mbedtls_sha256_update_ret(&ctx, (unsigned char *)&pkcs_control_block_data_mirror.data, sizeof(pkcs_control_block_data_mirror.data));
         mbedtls_sha256_finish_ret(&ctx, hash_sha256);
         if(!memcmp(pkcs_control_block_data_mirror.hash_sha256, hash_sha256, sizeof(hash_sha256)))
         {
