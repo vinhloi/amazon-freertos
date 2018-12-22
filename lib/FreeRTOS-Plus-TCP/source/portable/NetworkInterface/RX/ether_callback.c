@@ -96,17 +96,17 @@ void callback_ether(void * pparam)
 
     switch (pdecode->event_id)
     {
-            /* Callback function that notifies user to have detected magic packet. */
+        /* Callback function that notifies user to have detected magic packet. */
         case ETHER_CB_EVENT_ID_WAKEON_LAN:
             callback_wakeon_lan(channel);
             break;
 
-            /* Callback function that notifies user to have become Link up. */
+        /* Callback function that notifies user to have become Link up. */
         case ETHER_CB_EVENT_ID_LINK_ON:
             callback_link_on(channel);
             break;
 
-            /* Callback function that notifies user to have become Link down. */
+        /* Callback function that notifies user to have become Link down. */
         case ETHER_CB_EVENT_ID_LINK_OFF:
             callback_link_off(channel);
             break;

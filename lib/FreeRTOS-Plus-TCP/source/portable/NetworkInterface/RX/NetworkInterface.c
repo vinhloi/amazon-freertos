@@ -69,17 +69,17 @@ Includes   <System Includes> , "Project Includes"
 #define ETHER_BUFSIZE_MIN 60
 
 #if defined(BSP_MCU_RX65N) || defined(BSP_MCU_RX64M) || defined(BSP_MCU_RX71M)
-    #if ETHER_CFG_MODE_SEL == 0
-        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC0_MII()
-    #elif ETHER_CFG_MODE_SEL == 1
-        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC0_RMII()
-    #endif
+#if ETHER_CFG_MODE_SEL == 0
+#define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC0_MII()
+#elif ETHER_CFG_MODE_SEL == 1
+#define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC0_RMII()
+#endif
 #elif defined(BSP_MCU_RX63N)
-    #if ETHER_CFG_MODE_SEL == 0
-        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC_MII()
-    #elif ETHER_CFG_MODE_SEL == 1
-        #define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC_RMII()
-    #endif
+#if ETHER_CFG_MODE_SEL == 0
+#define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC_MII()
+#elif ETHER_CFG_MODE_SEL == 1
+#define R_ETHER_PinSet_CHANNEL_0()  R_ETHER_PinSet_ETHERC_RMII()
+#endif
 #endif
 
 /***********************************************************************************************************************
@@ -147,7 +147,7 @@ BaseType_t xNetworkInterfaceOutput( NetworkBufferDescriptor_t * const pxDescript
     if(0  > SendData( pxDescriptor->pucEthernetBuffer, pxDescriptor->xDataLength ))
     {
         vReleaseNetworkBufferAndDescriptor( pxDescriptor );
-    	return pdFALSE;
+        return pdFALSE;
     }
 
     /* Call the standard trace macro to log the send event. */
@@ -173,17 +173,17 @@ BaseType_t xNetworkInterfaceOutput( NetworkBufferDescriptor_t * const pxDescript
  **********************************************************************************************************************/
 static void prvEMACDeferredInterruptHandlerTask( void *pvParameters )
 {
-NetworkBufferDescriptor_t *pxBufferDescriptor;
-int32_t xBytesReceived;
+    NetworkBufferDescriptor_t *pxBufferDescriptor;
+    int32_t xBytesReceived;
 
-/* Avoid compiler warning about unreferenced parameter. */
-( void ) pvParameters;
+    /* Avoid compiler warning about unreferenced parameter. */
+    ( void ) pvParameters;
 
-/* Used to indicate that xSendEventStructToIPTask() is being called because
-of an Ethernet receive event. */
-IPStackEvent_t xRxEvent;
+    /* Used to indicate that xSendEventStructToIPTask() is being called because
+    of an Ethernet receive event. */
+    IPStackEvent_t xRxEvent;
 
-uint8_t *buffer_pointer;
+    uint8_t *buffer_pointer;
 
     for( ;; )
     {
@@ -295,16 +295,16 @@ uint8_t *buffer_pointer;
  **********************************************************************************************************************/
 void vNetworkInterfaceAllocateRAMToBuffers( NetworkBufferDescriptor_t pxNetworkBuffers[ ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS ] )
 {
-	uint32_t ul;
+    uint32_t ul;
     uint8_t *buffer_address;
     R_EXTERN_SEC(B_ETHERNET_BUFFERS_1)
 
     buffer_address = R_SECTOP(B_ETHERNET_BUFFERS_1);
 
-	for( ul = 0; ul < ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS; ul++ )
-	{
-		pxNetworkBuffers[ul].pucEthernetBuffer = (buffer_address + (ETHER_CFG_BUFSIZE * ul));
-	}
+    for( ul = 0; ul < ipconfigNUM_NETWORK_BUFFER_DESCRIPTORS; ul++ )
+    {
+        pxNetworkBuffers[ul].pucEthernetBuffer = (buffer_address + (ETHER_CFG_BUFSIZE * ul));
+    }
 }  /* End of function vNetworkInterfaceAllocateRAMToBuffers() */
 
 
@@ -316,61 +316,62 @@ void vNetworkInterfaceAllocateRAMToBuffers( NetworkBufferDescriptor_t pxNetworkB
  **********************************************************************************************************************/
 static int InitializeNetwork(void)
 {
-	ether_return_t eth_ret;
-	BaseType_t return_code = pdFALSE;
+    ether_return_t eth_ret;
+    BaseType_t return_code = pdFALSE;
     ether_param_t   param;
-	uint8_t myethaddr[6] =
-	{
-	    configMAC_ADDR0,
-	    configMAC_ADDR1,
-	    configMAC_ADDR2,
-	    configMAC_ADDR3,
-	    configMAC_ADDR4,
-	    configMAC_ADDR5
-	}; //XXX Fix me
+    uint8_t myethaddr[6] =
+    {
+        configMAC_ADDR0,
+        configMAC_ADDR1,
+        configMAC_ADDR2,
+        configMAC_ADDR3,
+        configMAC_ADDR4,
+        configMAC_ADDR5
+    }; //XXX Fix me
 
-	R_ETHER_PinSet_CHANNEL_0();
-	R_ETHER_Initial();
-	callback_ether_regist();
+    R_ETHER_PinSet_CHANNEL_0();
+    R_ETHER_Initial();
+    callback_ether_regist();
 
-	param.channel = ETHER_CHANNEL_0;
-	eth_ret = R_ETHER_Control(CONTROL_POWER_ON, param);        // PHY mode settings, module stop cancellation
+    param.channel = ETHER_CHANNEL_0;
+    eth_ret = R_ETHER_Control(CONTROL_POWER_ON, param);        // PHY mode settings, module stop cancellation
 
     if (ETHER_SUCCESS != eth_ret)
     {
         return pdFALSE;
     }
 
-	eth_ret = R_ETHER_Open_ZC2(ETHER_CHANNEL_0, myethaddr, ETHER_FLAG_OFF);
+    eth_ret = R_ETHER_Open_ZC2(ETHER_CHANNEL_0, myethaddr, ETHER_FLAG_OFF);
 
     if (ETHER_SUCCESS != eth_ret)
     {
         return pdFALSE;
     }
 
-	do //TODO allow for timeout
-	{
-		eth_ret = R_ETHER_CheckLink_ZC(0);
-	} while(ETHER_SUCCESS != eth_ret);
+    do //TODO allow for timeout
+    {
+        eth_ret = R_ETHER_CheckLink_ZC(0);
+    }
+    while(ETHER_SUCCESS != eth_ret);
 
-	return_code = xTaskCreate(prvEMACDeferredInterruptHandlerTask,
+    return_code = xTaskCreate(prvEMACDeferredInterruptHandlerTask,
                               "ETHER_RECEIVE_CHECK_TASK",
-							  100,
-							  0,
-							  configMAX_PRIORITIES,
-							  &ether_receive_check_task_handle);
+                              100,
+                              0,
+                              configMAX_PRIORITIES,
+                              &ether_receive_check_task_handle);
 
     if (pdFALSE == return_code)
     {
         return pdFALSE;
     }
 
-	return_code = xTaskCreate(check_ether_link,
+    return_code = xTaskCreate(check_ether_link,
                               "CHECK_ETHER_LINK_TIMER",
-							  100,
-							  0,
-							  configMAX_PRIORITIES,
-							  &ether_link_check_task_handle);
+                              100,
+                              0,
+                              configMAX_PRIORITIES,
+                              &ether_link_check_task_handle);
     if (pdFALSE == return_code)
     {
         return pdFALSE;
@@ -395,12 +396,12 @@ static int16_t SendData( uint8_t *pucBuffer, size_t length )//TODO complete stub
     /* (1) Retrieve the transmit buffer location controlled by the  descriptor. */
     ret = R_ETHER_Write_ZC2_GetBuf(ETHER_CHANNEL_0, (void **) &pwrite_buffer, &write_buf_size);
 
-	if (ETHER_SUCCESS == ret)
-	{
-		if (write_buf_size >= length)
-		{
-			memcpy(pwrite_buffer, pucBuffer, length);
-		}
+    if (ETHER_SUCCESS == ret)
+    {
+        if (write_buf_size >= length)
+        {
+            memcpy(pwrite_buffer, pucBuffer, length);
+        }
         if (length < ETHER_BUFSIZE_MIN)                                         /*under minimum*/
         {
             memset((pwrite_buffer + length), 0, (ETHER_BUFSIZE_MIN - length));  /*padding*/
@@ -408,16 +409,16 @@ static int16_t SendData( uint8_t *pucBuffer, size_t length )//TODO complete stub
         }
         ret = R_ETHER_Write_ZC2_SetBuf(ETHER_CHANNEL_0, (uint16_t)length);
         ret = R_ETHER_CheckWrite(ETHER_CHANNEL_0);
-	}
+    }
 
-	if (ETHER_SUCCESS != ret)
-	{
-		return -5; // XXX return meaningful value
-	}
-	else
-	{
-	    return 0;
-	}
+    if (ETHER_SUCCESS != ret)
+    {
+        return -5; // XXX return meaningful value
+    }
+    else
+    {
+        return 0;
+    }
 } /* End of function SendData() */
 
 
@@ -430,23 +431,23 @@ static int16_t SendData( uint8_t *pucBuffer, size_t length )//TODO complete stub
 ***********************************************************************************************************************/
 void EINT_Trig_isr(void *ectrl)
 {
-	ether_cb_arg_t *pdecode;
-	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    ether_cb_arg_t *pdecode;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-	pdecode = (ether_cb_arg_t*)ectrl;
+    pdecode = (ether_cb_arg_t*)ectrl;
 
-	if (pdecode->status_eesr & 0x00040000)// EDMAC FR (Frame Receive Event) interrupt
+    if (pdecode->status_eesr & 0x00040000)// EDMAC FR (Frame Receive Event) interrupt
     {
-		if(xTaskToNotify != NULL)
-		{
-			vTaskNotifyGiveFromISR(ether_receive_check_task_handle, &xHigherPriorityTaskWoken);
-		}
-	    /* If xHigherPriorityTaskWoken is now set to pdTRUE then a context switch
-	    should be performed to ensure the interrupt returns directly to the highest
-	    priority task.  The macro used for this purpose is dependent on the port in
-	    use and may be called portEND_SWITCHING_ISR(). */
-	    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
-		//TODO complete interrupt handler for other events.
+        if(xTaskToNotify != NULL)
+        {
+            vTaskNotifyGiveFromISR(ether_receive_check_task_handle, &xHigherPriorityTaskWoken);
+        }
+        /* If xHigherPriorityTaskWoken is now set to pdTRUE then a context switch
+        should be performed to ensure the interrupt returns directly to the highest
+        priority task.  The macro used for this purpose is dependent on the port in
+        use and may be called portEND_SWITCHING_ISR(). */
+        portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+        //TODO complete interrupt handler for other events.
     }
 } /* End of function EINT_Trig_isr() */
 
@@ -461,39 +462,39 @@ static void check_ether_link(void * pvParameters)
 {
     R_INTERNAL_NOT_USED(pvParameters);
 
-	while(1)
-	{
-    	vTaskDelay(1000);
-		R_ETHER_LinkProcess(0);
-	}
+    while(1)
+    {
+        vTaskDelay(1000);
+        R_ETHER_LinkProcess(0);
+    }
 } /* End of function check_ether_link() */
 
 static void clear_all_ether_rx_discriptors(uint32_t event)
 {
-	int32_t xBytesReceived;
-	uint8_t *buffer_pointer;
+    int32_t xBytesReceived;
+    uint8_t *buffer_pointer;
 
-	/* Avoid compiler warning about unreferenced parameter. */
-	(void)event;
+    /* Avoid compiler warning about unreferenced parameter. */
+    (void)event;
 
-	while(1)
-	{
-		/* See how much data was received.  */
-		xBytesReceived = R_ETHER_Read_ZC2(ETHER_CHANNEL_0, (void **)&buffer_pointer);
-		if(0 > xBytesReceived)
-		{
-			/* This is an error. Ignored. */
-		}
-		else if(0 < xBytesReceived)
-		{
-			R_ETHER_Read_ZC2_BufRelease(ETHER_CHANNEL_0);
-			iptraceETHERNET_RX_EVENT_LOST();
-		}
-		else
-		{
-			break;
-		}
-	}
+    while(1)
+    {
+        /* See how much data was received.  */
+        xBytesReceived = R_ETHER_Read_ZC2(ETHER_CHANNEL_0, (void **)&buffer_pointer);
+        if(0 > xBytesReceived)
+        {
+            /* This is an error. Ignored. */
+        }
+        else if(0 < xBytesReceived)
+        {
+            R_ETHER_Read_ZC2_BufRelease(ETHER_CHANNEL_0);
+            iptraceETHERNET_RX_EVENT_LOST();
+        }
+        else
+        {
+            break;
+        }
+    }
 }
 
 /***********************************************************************************************************************
@@ -504,9 +505,9 @@ static void clear_all_ether_rx_discriptors(uint32_t event)
  **********************************************************************************************************************/
 uint32_t ulRand( void )   //TODO make true random number
 {
-	uint32_t tmp;
-	get_random_number((uint8_t*)&tmp, 4);
-	return tmp;
+    uint32_t tmp;
+    get_random_number((uint8_t*)&tmp, 4);
+    return tmp;
 } /* End of function ulRand() */
 
 /***********************************************************************************************************************
