@@ -2,7 +2,7 @@
 #define MBEDTLS_USER_CONFIG_FILE "mbedtls_user_config.h"
 #endif
 
-/* Avoid CC-RX's compiler warning message 'M0520193: Zero used for 
+/* Avoid CC-RX's compiler warning message 'M0520193: Zero used for
  * undefined preprocessing identifier "XXXX"' in CC-RX's math.h */
 #if !defined(_FEVAL)
 #define _FEVAL 0

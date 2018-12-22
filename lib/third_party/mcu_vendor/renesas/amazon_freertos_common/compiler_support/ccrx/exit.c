@@ -3,6 +3,6 @@
 void abort( void );
 void abort( void )
 {
-    for(;;){}
+    for(;;) {}
 }
 #endif

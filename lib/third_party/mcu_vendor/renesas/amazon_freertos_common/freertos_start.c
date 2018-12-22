@@ -1,24 +1,24 @@
 /*******************************************************************************
 * DISCLAIMER
-* This software is supplied by Renesas Electronics Corporation and is only 
-* intended for use with Renesas products. No other uses are authorized. This 
+* This software is supplied by Renesas Electronics Corporation and is only
+* intended for use with Renesas products. No other uses are authorized. This
 * software is owned by Renesas Electronics Corporation and is protected under
 * all applicable laws, including copyright laws.
 * THIS SOFTWARE IS PROVIDED "AS IS" AND RENESAS MAKES NO WARRANTIES REGARDING
 * THIS SOFTWARE, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING BUT NOT
-* LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE 
+* LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
 * AND NON-INFRINGEMENT. ALL SUCH WARRANTIES ARE EXPRESSLY DISCLAIMED.
-* TO THE MAXIMUM EXTENT PERMITTED NOT PROHIBITED BY LAW, NEITHER RENESAS 
-* ELECTRONICS CORPORATION NOR ANY OF ITS AFFILIATED COMPANIES SHALL BE LIABLE 
+* TO THE MAXIMUM EXTENT PERMITTED NOT PROHIBITED BY LAW, NEITHER RENESAS
+* ELECTRONICS CORPORATION NOR ANY OF ITS AFFILIATED COMPANIES SHALL BE LIABLE
 * FOR ANY DIRECT, INDIRECT, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES FOR
 * ANY REASON RELATED TO THIS SOFTWARE, EVEN IF RENESAS OR ITS AFFILIATES HAVE
 * BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 * Renesas reserves the right, without notice, to make changes to this software
 * and to discontinue the availability of this software. By using this software,
-* you agree to the additional terms and conditions found by accessing the 
+* you agree to the additional terms and conditions found by accessing the
 * following link:
 * http://www.renesas.com/disclaimer
-* Copyright (C) 2016 Renesas Electronics Corporation. All rights reserved.    
+* Copyright (C) 2016 Renesas Electronics Corporation. All rights reserved.
 *******************************************************************************/
 /*******************************************************************************
 * File Name    : freertos_usr_func.c
@@ -115,7 +115,7 @@ Private global variables and functions
 ******************************************************************************/
 void vApplicationSetupTimerInterrupt(void)
 {
-	/* CMT channel 0 is configured as RTOS's system timer. */
+    /* CMT channel 0 is configured as RTOS's system timer. */
 #if (BSP_CFG_RTOS_SYSTEM_TIMER == 0)
     /* Protect off. */
     SYSTEM.PRCR.WORD = 0xA502;
@@ -278,7 +278,7 @@ int8_t *sbrk(size_t size)
 {
     R_INTERNAL_NOT_USED(size);
     vAssertCalled();
-    return (int8_t *)-1;
+    return (int8_t *) - 1;
 }
 #endif
 
@@ -291,8 +291,8 @@ int8_t *sbrk(size_t size)
 ******************************************************************************/
 #if defined(__GNUC__)
 extern int8_t end;
-int8_t *_heap_of_memory=(int8_t *)&end;
-int8_t *_last_heap_object=(int8_t *)&end;
+int8_t *_heap_of_memory = (int8_t *)&end;
+int8_t *_last_heap_object = (int8_t *)&end;
 extern int8_t *_top_of_heap(void);
 int8_t *_top_of_heap(void)
 {
@@ -349,17 +349,17 @@ void vApplicationIdleHook(void)
 {
     /* Implement user-code for user own purpose. */
 
-	static TickType_t xLastPrint = 0;
-	TickType_t xTimeNow;
-	const TickType_t xPrintFrequency = pdMS_TO_TICKS( 5000 );
+    static TickType_t xLastPrint = 0;
+    TickType_t xTimeNow;
+    const TickType_t xPrintFrequency = pdMS_TO_TICKS( 5000 );
 
-	xTimeNow = xTaskGetTickCount();
+    xTimeNow = xTaskGetTickCount();
 
-	if( ( xTimeNow - xLastPrint ) > xPrintFrequency )
-	{
-		configPRINT_STRING(("."));
-		xLastPrint = xTimeNow;
-	}
+    if( ( xTimeNow - xLastPrint ) > xPrintFrequency )
+    {
+        configPRINT_STRING(("."));
+        xLastPrint = xTimeNow;
+    }
 
 } /* End of function vApplicationIdleHook() */
 
@@ -460,9 +460,9 @@ void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
                                     StackType_t ** ppxIdleTaskStackBuffer,
                                     uint32_t * pulIdleTaskStackSize )
 {
-/* If the buffers to be provided to the Idle task are declared inside this
- * function then they must be declared static - otherwise they will be allocated on
- * the stack and so not exists after this function exits. */
+    /* If the buffers to be provided to the Idle task are declared inside this
+     * function then they must be declared static - otherwise they will be allocated on
+     * the stack and so not exists after this function exits. */
     static StaticTask_t xIdleTaskTCB;
     static StackType_t uxIdleTaskStack[ configMINIMAL_STACK_SIZE ];
 
@@ -486,9 +486,9 @@ void vApplicationGetTimerTaskMemory( StaticTask_t ** ppxTimerTaskTCBBuffer,
                                      StackType_t ** ppxTimerTaskStackBuffer,
                                      uint32_t * pulTimerTaskStackSize )
 {
-/* If the buffers to be provided to the Timer task are declared inside this
- * function then they must be declared static - otherwise they will be allocated on
- * the stack and so not exists after this function exits. */
+    /* If the buffers to be provided to the Timer task are declared inside this
+     * function then they must be declared static - otherwise they will be allocated on
+     * the stack and so not exists after this function exits. */
     static StaticTask_t xTimerTaskTCB;
     static StackType_t uxTimerTaskStack[ configMINIMAL_STACK_SIZE ];
 

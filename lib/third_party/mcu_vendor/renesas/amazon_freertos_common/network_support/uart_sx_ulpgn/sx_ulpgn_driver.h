@@ -67,50 +67,50 @@ extern uint8_t ULPGN_UART_DATA_PORT;
 
 typedef enum
 {
-	ULPGN_RETURN_OK            = 0,
-	ULPGN_RETURN_CONNECT,
-	ULPGN_RETURN_RING,
-	ULPGN_RETURN_NO_CARRIER,
-	ULPGN_RETURN_ERROR,
-	ULPGN_RETURN_DUMMY,
-	ULPGN_RETURN_NO_DIALTONE,
-	ULPGN_RETURN_BUSY,
-	ULPGN_RETURN_NO_ANSWER,
-	ULPGN_RETURN_ENUM_MAX,
-}sx_ulpgn_return_code_t;
+    ULPGN_RETURN_OK            = 0,
+    ULPGN_RETURN_CONNECT,
+    ULPGN_RETURN_RING,
+    ULPGN_RETURN_NO_CARRIER,
+    ULPGN_RETURN_ERROR,
+    ULPGN_RETURN_DUMMY,
+    ULPGN_RETURN_NO_DIALTONE,
+    ULPGN_RETURN_BUSY,
+    ULPGN_RETURN_NO_ANSWER,
+    ULPGN_RETURN_ENUM_MAX,
+} sx_ulpgn_return_code_t;
 
 typedef enum
 {
-	ULPGN_RETURN_STRING_TEXT            = 0,
-	ULPGN_RETURN_STRING_NUMERIC,
-	ULPGN_RETURN_STRING_MAX,
-}sx_ulpgn_return_string_t;
+    ULPGN_RETURN_STRING_TEXT            = 0,
+    ULPGN_RETURN_STRING_NUMERIC,
+    ULPGN_RETURN_STRING_MAX,
+} sx_ulpgn_return_string_t;
 
 typedef enum
 {
-	ULPGN_SECURITY_OPEN            = 0,
-	ULPGN_SECURITY_WPA,
-	ULPGN_SECURITY_WPA2,
-	ULPGN_SECURITY_WEP,
-	ULPGN_SECURITY_UNDEFINED,
-	ULPGN_SECURITY_MAX,
-}sx_ulpgn_security_t;
+    ULPGN_SECURITY_OPEN            = 0,
+    ULPGN_SECURITY_WPA,
+    ULPGN_SECURITY_WPA2,
+    ULPGN_SECURITY_WEP,
+    ULPGN_SECURITY_UNDEFINED,
+    ULPGN_SECURITY_MAX,
+} sx_ulpgn_security_t;
 
 typedef enum
 {
-	ULPGN_SOCKET_STATUS_CLOSED            = 0,
-	ULPGN_SOCKET_STATUS_SOCKET,
-	ULPGN_SOCKET_STATUS_BOUND,
-	ULPGN_SOCKET_STATUS_LISTEN,
-	ULPGN_SOCKET_STATUS_CONNECTED,
-	ULPGN_SOCKET_STATUS_MAX,
-}sx_ulpgn_socket_status_t;
+    ULPGN_SOCKET_STATUS_CLOSED            = 0,
+    ULPGN_SOCKET_STATUS_SOCKET,
+    ULPGN_SOCKET_STATUS_BOUND,
+    ULPGN_SOCKET_STATUS_LISTEN,
+    ULPGN_SOCKET_STATUS_CONNECTED,
+    ULPGN_SOCKET_STATUS_MAX,
+} sx_ulpgn_socket_status_t;
 
 int32_t sx_ulpgn_wifi_init(void);
 int32_t sx_ulpgn_socket_init(void);
 int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *ptextstring);
 int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *ppass);
-int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type,uint32_t ipversion);
+int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipversion);
 int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port);
 int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uint32_t timeout);

@@ -45,48 +45,48 @@ Includes   <System Includes> , "Project Includes"
  Macro definitions
  *******************************************************************************/
 #if !defined(MY_BSP_CFG_SERIAL_TERM_SCI)
-    #error "Error! Need to define MY_BSP_CFG_SERIAL_TERM_SCI in r_bsp_config.h"
+#error "Error! Need to define MY_BSP_CFG_SERIAL_TERM_SCI in r_bsp_config.h"
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (0)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI0()
-    #define SCI_CH_serial_term          SCI_CH0
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI0()
+#define SCI_CH_serial_term          SCI_CH0
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (1)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI1()
-    #define SCI_CH_serial_term          SCI_CH1
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI1()
+#define SCI_CH_serial_term          SCI_CH1
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (2)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI2()
-    #define SCI_CH_serial_term          SCI_CH2
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI2()
+#define SCI_CH_serial_term          SCI_CH2
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (3)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI3()
-    #define SCI_CH_serial_term          SCI_CH3
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI3()
+#define SCI_CH_serial_term          SCI_CH3
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (4)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI4()
-    #define SCI_CH_serial_term          SCI_CH4
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI4()
+#define SCI_CH_serial_term          SCI_CH4
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (5)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI5()
-    #define SCI_CH_serial_term          SCI_CH5
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI5()
+#define SCI_CH_serial_term          SCI_CH5
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (6)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI6()
-    #define SCI_CH_serial_term          SCI_CH6
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI6()
+#define SCI_CH_serial_term          SCI_CH6
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (7)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI7()
-    #define SCI_CH_serial_term          SCI_CH7
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI7()
+#define SCI_CH_serial_term          SCI_CH7
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (8)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI8()
-    #define SCI_CH_serial_term          SCI_CH8
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI8()
+#define SCI_CH_serial_term          SCI_CH8
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (9)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI9()
-    #define SCI_CH_serial_term          SCI_CH9
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI9()
+#define SCI_CH_serial_term          SCI_CH9
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (10)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI10()
-    #define SCI_CH_serial_term          SCI_CH10
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI10()
+#define SCI_CH_serial_term          SCI_CH10
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (11)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI11()
-    #define SCI_CH_serial_term          SCI_CH11
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI11()
+#define SCI_CH_serial_term          SCI_CH11
 #elif MY_BSP_CFG_SERIAL_TERM_SCI == (12)
-    #define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI12()
-    #define SCI_CH_serial_term          SCI_CH12
+#define R_SCI_PinSet_serial_term()  R_SCI_PinSet_SCI12()
+#define SCI_CH_serial_term          SCI_CH12
 #else
-    #error "Error! Invalid setting for MY_BSP_CFG_SERIAL_TERM_SCI in r_bsp_config.h"
+#error "Error! Invalid setting for MY_BSP_CFG_SERIAL_TERM_SCI in r_bsp_config.h"
 #endif
 
 /*******************************************************************************
@@ -194,37 +194,42 @@ static void my_sci_callback(void *pArgs)
 
 } /* End of function my_sci_callback() */
 
-void uart_string_printf(char *pString) {
-	uint16_t str_length = 0;
-	uint16_t transmit_length = 0;
-	sci_err_t sci_err;
-	uint32_t retry = 0xFFFF;
+void uart_string_printf(char *pString)
+{
+    uint16_t str_length = 0;
+    uint16_t transmit_length = 0;
+    sci_err_t sci_err;
+    uint32_t retry = 0xFFFF;
 
-	str_length = (uint16_t)strlen(pString);
+    str_length = (uint16_t)strlen(pString);
 
-	while ((retry > 0) && (str_length > 0)) {
+    while ((retry > 0) && (str_length > 0))
+    {
 
-		R_SCI_Control(my_sci_handle,SCI_CMD_TX_Q_BYTES_FREE, &transmit_length);
+        R_SCI_Control(my_sci_handle, SCI_CMD_TX_Q_BYTES_FREE, &transmit_length);
 
-		if(transmit_length>str_length){
-			transmit_length = str_length;
-		}
+        if(transmit_length > str_length)
+        {
+            transmit_length = str_length;
+        }
 
-		sci_err = R_SCI_Send(my_sci_handle, (uint8_t *) pString,
-				 transmit_length);
+        sci_err = R_SCI_Send(my_sci_handle, (uint8_t *) pString,
+                             transmit_length);
 
-		if ((sci_err == SCI_ERR_XCVR_BUSY) || (sci_err == SCI_ERR_INSUFFICIENT_SPACE)) {
-			retry--; // retry if previous transmission still in progress or tx buffer is insufficient.
-			continue;
-		}
+        if ((sci_err == SCI_ERR_XCVR_BUSY) || (sci_err == SCI_ERR_INSUFFICIENT_SPACE))
+        {
+            retry--; // retry if previous transmission still in progress or tx buffer is insufficient.
+            continue;
+        }
 
-		str_length -= transmit_length;
-		pString += transmit_length;
+        str_length -= transmit_length;
+        pString += transmit_length;
 
-	}
+    }
 
-	if (SCI_SUCCESS != sci_err) {
-		R_NOP(); //TODO error handling code
-	}
+    if (SCI_SUCCESS != sci_err)
+    {
+        R_NOP(); //TODO error handling code
+    }
 
 }
