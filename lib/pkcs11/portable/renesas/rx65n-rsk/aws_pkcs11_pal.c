@@ -494,7 +494,7 @@ static void check_dataflash_area(uint32_t retry_counter)
         {
         	configPRINTF(("NG\r\n"));
         	configPRINTF(("recover mirror from main.\r\n"));
-            memcpy(&pkcs_control_block_data, &pkcs_control_block_data, sizeof(pkcs_control_block_data));
+            memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data, sizeof(pkcs_control_block_data));
             update_dataflash_data_mirror_from_image();
             check_dataflash_area(retry_counter+1);
         }
@@ -510,7 +510,7 @@ static void check_dataflash_area(uint32_t retry_counter)
         {
         	configPRINTF(("OK\r\n"));
         	configPRINTF(("recover main from mirror.\r\n"));
-            memcpy(&pkcs_control_block_data, &pkcs_control_block_data_mirror, sizeof(pkcs_control_block_data_mirror));
+            memcpy(&pkcs_control_block_data_image, (void *)&pkcs_control_block_data_mirror, sizeof(pkcs_control_block_data_mirror));
             update_dataflash_data_from_image();
             check_dataflash_area(retry_counter+1);
         }
