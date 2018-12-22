@@ -785,6 +785,10 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　以下プロジェクトの動作確認OK。
 　\demos\renesas\rx65n-envision-kit\ccrx-e2studio
 　ここまででコミット。
+　
+　以下プロジェクトの動作確認NG。WIFIは25日週に担当者が確認する手はずなので今回は省略。
+　\demos\renesas\rx65n-rsk-uart-sx-ulpgn\ccrx-e2studio
+　ここまででコミット。
 
 2018/12/22
 　大詰め。
