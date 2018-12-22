@@ -305,6 +305,11 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx</locationURI>
 		</link>
 		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_s12ad_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_s12ad_rx</locationURI>
+		</link>
+		<link>
 			<name>application_code/renesas_code/src/FIT_modified_code/r_sci_iic_rx</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx</locationURI>
@@ -317,16 +322,7 @@
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1545464902572</id>
-			<name></name>
-			<type>6</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-aws_demos_build_path_check_and_make.bat</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1545464902578</id>
+			<id>1545475476368</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -503,6 +499,15 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-rx65n</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1545475354414</id>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_s12ad_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx65x</arguments>
 			</matcher>
 		</filter>
 		<filter>
