@@ -224,6 +224,7 @@
 <Item current="" id="vccSetting.InputValue"/>
 <Item current="vcc2_7-3_6" id="vccSetting.OutputValue"/>
 <Item current="3.3" id="vccSetting.vccTxt"/>
+<Item current="true" id="uckdivider.selectBox"/>
 </tool>
 <tool id="Pins" version="1.0.0.0">
 <pinItem allocation="22" direction="None" id="XTAL" locked="false" status="0"/>
@@ -603,7 +604,7 @@
 <configuration inuse="true" name="r_bsp">
 <component description="依存モジュール: なし&#10;The r_bsp package provides a foundation for code to be built on top of. It provides startup code, iodefines, and MCU information for different boards. There are 2 folders that make up the r_bsp package. The 'mcu' folder contains files that are common to a MCU group. These files provide functionality such as easy register access, CPU functions, and a file named 'mcu_info.h' for each MCU group. The 'mcu_info.h' file has information about the MCU on the board and is configured based on the information given in r_bsp_config.h. The information in 'mcu_info.h' is used to help configure Renesas middleware that uses the r_bsp package. The 'board' folder has a folder with startup code for each supported board.  Which MCU and board is chosen is decided by the settings in 'platform.h'. The user can choose which board they are using by uncommenting the include path that applies to their board. For example, if you are using the RSK+RX62N then you would uncomment the #include &quot;./board/rskrx62n/r_bsp.h&quot; include path. Users are encouraged to add their own boards to the 'board' directory. BSPs are configured by using the r_bsp_config.h file. Each board will have a reference configuration file named r_bsp_config_reference.h. The user should copy this file to their project, rename it to r_bsp_config.h, and use the options inside the file to configure the BSP for their project." detailDescription="Board Support Packages." display="r_bsp" id="r_bsp3.80" version="3.80">
 <gridItem id="BSP_CFG_STARTUP_DISABLE" selectedIndex="0"/>
-<gridItem id="BSP_CFG_USER_STACK_ENABLE" selectedIndex="1"/>
+<gridItem id="BSP_CFG_USER_STACK_ENABLE" selectedIndex="0"/>
 <gridItem id="#pragma stacksize su" selectedIndex="0x3000"/>
 <gridItem id="#pragma stacksize si" selectedIndex="0x3000"/>
 <gridItem id="BSP_CFG_HEAP_BYTES" selectedIndex="0x2000"/>
@@ -808,6 +809,90 @@
 <gridItem id="ETHER_CFG_LINK_PRESENT" selectedIndex="0"/>
 <gridItem id="ETHER_CFG_USE_LINKSTA" selectedIndex="0"/>
 <gridItem id="ETHER_CFG_USE_PHY_KSZ8041NL" selectedIndex="0"/>
+</component>
+<source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+<source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+</configuration>
+<configuration inuse="true" name="r_s12ad_rx">
+<component description="依存モジュール: r_bsp バージョン 2.90, 3.00, 3.01, 3.10, 3.20, 3.30, 3.40, 3.60&#10;This A/D driver supports the temperature sensor, internal reference voltage sensor, and all analog channels available on the MCU. Single scan and continuous scanning are supported. Group and Double Trigger modes are supported. Triggers may be synchronous, asynchronous, or initiated by software. The RX210 Sample and Hold, Self-Diagnosis, and Disconnect Detection Assist features are supported as well." detailDescription="Multi-Channel A/D and Sensor Driver." display="r_s12ad_rx" id="r_s12ad_rx2.30" version="2.30">
+<gridItem id="AN000" selectedIndex="0"/>
+<gridItem id="AN001" selectedIndex="0"/>
+<gridItem id="AN002" selectedIndex="0"/>
+<gridItem id="AN003" selectedIndex="0"/>
+<gridItem id="AN004" selectedIndex="0"/>
+<gridItem id="AN005" selectedIndex="0"/>
+<gridItem id="AN006" selectedIndex="0"/>
+<gridItem id="AN007" selectedIndex="0"/>
+<gridItem id="AN008" selectedIndex="0"/>
+<gridItem id="AN009" selectedIndex="0"/>
+<gridItem id="AN010" selectedIndex="0"/>
+<gridItem id="AN011" selectedIndex="0"/>
+<gridItem id="AN012" selectedIndex="0"/>
+<gridItem id="AN013" selectedIndex="0"/>
+<gridItem id="AN014" selectedIndex="0"/>
+<gridItem id="AN015" selectedIndex="0"/>
+<gridItem id="AN016" selectedIndex="0"/>
+<gridItem id="AN017" selectedIndex="0"/>
+<gridItem id="AN018" selectedIndex="0"/>
+<gridItem id="AN019" selectedIndex="0"/>
+<gridItem id="AN020" selectedIndex="0"/>
+<gridItem id="AN021" selectedIndex="0"/>
+<gridItem id="AN022" selectedIndex="0"/>
+<gridItem id="AN023" selectedIndex="0"/>
+<gridItem id="AN024" selectedIndex="0"/>
+<gridItem id="AN025" selectedIndex="0"/>
+<gridItem id="AN026" selectedIndex="0"/>
+<gridItem id="AN027" selectedIndex="0"/>
+<gridItem id="AN028" selectedIndex="0"/>
+<gridItem id="AN029" selectedIndex="0"/>
+<gridItem id="AN030" selectedIndex="0"/>
+<gridItem id="AN031" selectedIndex="0"/>
+<gridItem id="VREFH0" selectedIndex="0"/>
+<gridItem id="VREFL0" selectedIndex="0"/>
+<gridItem id="ADTRG0#" selectedIndex="0"/>
+<gridItem id="ADST0" selectedIndex="0"/>
+<gridItem id="S12AD0" selectedIndex="0"/>
+<gridItem id="AN100" selectedIndex="0"/>
+<gridItem id="AN101" selectedIndex="0"/>
+<gridItem id="AN102" selectedIndex="0"/>
+<gridItem id="AN103" selectedIndex="0"/>
+<gridItem id="AN104" selectedIndex="0"/>
+<gridItem id="AN105" selectedIndex="0"/>
+<gridItem id="AN106" selectedIndex="0"/>
+<gridItem id="AN107" selectedIndex="0"/>
+<gridItem id="AN108" selectedIndex="0"/>
+<gridItem id="AN109" selectedIndex="0"/>
+<gridItem id="AN110" selectedIndex="0"/>
+<gridItem id="AN111" selectedIndex="0"/>
+<gridItem id="AN112" selectedIndex="0"/>
+<gridItem id="AN113" selectedIndex="0"/>
+<gridItem id="AN114" selectedIndex="0"/>
+<gridItem id="AN115" selectedIndex="0"/>
+<gridItem id="AN116" selectedIndex="0"/>
+<gridItem id="AN117" selectedIndex="0"/>
+<gridItem id="AN118" selectedIndex="0"/>
+<gridItem id="AN119" selectedIndex="0"/>
+<gridItem id="AN120" selectedIndex="0"/>
+<gridItem id="ANEX0" selectedIndex="0"/>
+<gridItem id="ANEX1" selectedIndex="0"/>
+<gridItem id="ADTRG1#" selectedIndex="0"/>
+<gridItem id="S12AD1" selectedIndex="1"/>
+<gridItem id="AN200" selectedIndex="0"/>
+<gridItem id="AN201" selectedIndex="0"/>
+<gridItem id="AN202" selectedIndex="0"/>
+<gridItem id="AN203" selectedIndex="0"/>
+<gridItem id="AN204" selectedIndex="0"/>
+<gridItem id="AN205" selectedIndex="0"/>
+<gridItem id="AN206" selectedIndex="0"/>
+<gridItem id="AN207" selectedIndex="0"/>
+<gridItem id="AN208" selectedIndex="0"/>
+<gridItem id="AN209" selectedIndex="0"/>
+<gridItem id="AN210" selectedIndex="0"/>
+<gridItem id="AN211" selectedIndex="0"/>
+<gridItem id="ADTRG2#" selectedIndex="0"/>
+<gridItem id="ADST1" selectedIndex="0"/>
+<gridItem id="ADST2" selectedIndex="0"/>
+<gridItem id="S12AD2" selectedIndex="0"/>
 </component>
 <source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 <source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>

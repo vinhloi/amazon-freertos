@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include "platform.h"   // __LIT for all compilers
+#include "r_s12ad_rx_if.h"
 #include "mbedtls/entropy_poll.h"
 
 void get_random_number(uint8_t *data, uint32_t len);
@@ -40,6 +41,43 @@ void get_random_number(uint8_t *data, uint32_t len)
     uint32_t res;
     uint32_t lp;
     uint8_t *bPtr;
+    adc_cfg_t ad_cfg;
+    adc_ch_cfg_t ch_cfg;
+    adc_sst_t sst;
+    uint16_t temperature_data;
+
+    /* initialize temperature sensor */
+    memset(&ad_cfg, 0, sizeof(ad_cfg));
+    ad_cfg.resolution = ADC_RESOLUTION_12_BIT;
+    ad_cfg.trigger = ADC_TRIG_SOFTWARE;
+    ad_cfg.priority = 0;
+    ad_cfg.add_cnt   = ADC_ADD_OFF;
+    ad_cfg.alignment = ADC_ALIGN_RIGHT;
+    ad_cfg.clearing  = ADC_CLEAR_AFTER_READ_OFF;
+
+    R_ADC_Open(1, ADC_MODE_SS_ONE_CH, &ad_cfg, NULL);
+
+    memset(&sst, 0, sizeof(sst));
+    sst.reg_id = ADC_SST_TEMPERATURE;
+    sst.num_states = 240;
+    R_ADC_Control(1, ADC_CMD_SET_SAMPLE_STATE_CNT, &sst);
+
+    memset(&ch_cfg, 0, sizeof(ch_cfg));
+    ch_cfg.chan_mask = ADC_MASK_TEMP;
+    ch_cfg.diag_method = ADC_DIAG_OFF;
+    ch_cfg.anex_enable = false;
+    ch_cfg.sample_hold_mask = 0;
+    R_ADC_Control(1, ADC_CMD_ENABLE_CHANS, &ch_cfg);
+
+    vTaskDelay(10);
+
+    R_ADC_Control(1, ADC_CMD_SCAN_NOW, NULL);
+    while (R_ADC_Control(1, ADC_CMD_CHECK_SCAN_DONE, NULL) == ADC_ERR_SCAN_NOT_DONE);
+
+    R_ADC_Read(1, ADC_REG_TEMP, &temperature_data);
+
+    y += temperature_data;  /* randomness from internal temperature sensor */
+    y += xTaskGetTickCount();   /* randomness from system timer */
 
     res = len / 4;
     for (lp = 0; lp < res; lp++)
