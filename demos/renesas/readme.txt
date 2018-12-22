@@ -781,6 +781,11 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 --------------------------------------------------------------------------
 ■ポーティング記録	★印が解決すべき課題
 --------------------------------------------------------------------------
+2018/12/23
+　以下プロジェクトの動作確認OK。
+　\demos\renesas\rx65n-envision-kit\ccrx-e2studio
+　ここまででコミット。
+
 2018/12/22
 　大詰め。
 　Amazonからのフィードバックを片っ端から片付けていく。
@@ -811,6 +816,23 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　RX63Nのtests用プロジェクトは不要なのでもう消そう。
 　ひとまずここまででコミット。
+　
+　ほかのプロジェクトの動作確認はおおむね以下を追加していけばよいはず。
+　　(1)r_s12ad_rx モジュールをスマートコンフィグレータで追加する
+　　(2)プロジェクト側から、r_s12ad_rx モジュールの改造版を登録する
+　　　\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_s12ad_rx
+　　(3)プロジェクト側から、r_s12ad_rx モジュールの改造版へのインクルードパスを通す
+　　(4)aws_pkcs11_pal.c をRX65N RSKのものからコピーする
+　　　(機種依存が無いように書いたので、どのRXマイコンでも動くはず。
+　　　 今は機種毎にコードをフォルダ分離しているが、うまくいけばマージしても良いであろう)
+　　(5)PKCS11の初期化をオーバーライドしているので、コンフィグファイルで以下設定変更をコメントアウトし有効化
+　　　\demos\renesas\XXXX-XXXX\common\config_files\aws_pkcs11_config.h
+　　　#define pkcs11configC_INITIALIZE_ALT
+　　(6)C_PKCS11_STORAGE* を0x00100000番地にセクション追加
+　　(7)FreeRTOSのコンフィグでヒープとスタックの量を調整
+　　　\demos\renesas\XXXX-XXXX\common\config_files\FreeRTOSConfig.h
+　　　#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 512 )
+　　　#define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 128U * 1024U ) )
 　
 　以下プロジェクトの動作確認OK。
 　\demos\renesas\rx65n-rsk\ccrx-e2studio
