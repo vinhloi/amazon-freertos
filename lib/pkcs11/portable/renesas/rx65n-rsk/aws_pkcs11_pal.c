@@ -377,7 +377,9 @@ static void update_dataflash_data_from_image(void)
     }
 
     configPRINTF(("erase dataflash(main)...\r\n"));
+    R_BSP_InterruptsDisable();
     flash_error_code = R_FLASH_Erase((flash_block_address_t)&pkcs_control_block_data, required_dataflash_block_num);
+    R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
     	configPRINTF(("OK\r\n"));
@@ -389,7 +391,9 @@ static void update_dataflash_data_from_image(void)
     }
 
     configPRINTF(("write dataflash(main)...\r\n"));
+    R_BSP_InterruptsDisable();
     flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
+    R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
     	configPRINTF(("OK\r\n"));
@@ -415,7 +419,9 @@ static void update_dataflash_data_mirror_from_image(void)
     }
 
     configPRINTF(("erase dataflash(mirror)...\r\n"));
+    R_BSP_InterruptsDisable();
     flash_error_code = R_FLASH_Erase((flash_block_address_t)&pkcs_control_block_data_mirror, required_dataflash_block_num);
+    R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
     	configPRINTF(("OK\r\n"));
@@ -428,7 +434,9 @@ static void update_dataflash_data_mirror_from_image(void)
     }
 
     configPRINTF(("write dataflash(mirror)...\r\n"));
+    R_BSP_InterruptsDisable();
     flash_error_code = R_FLASH_Write((flash_block_address_t)&pkcs_control_block_data_image.data.local_storage, (flash_block_address_t)&pkcs_control_block_data_mirror, FLASH_DF_BLOCK_SIZE * required_dataflash_block_num);
+    R_BSP_InterruptsEnable();
     if(FLASH_SUCCESS == flash_error_code)
     {
     	configPRINTF(("OK\r\n"));
