@@ -1,10 +1,19 @@
 MEMORY
 {
 	RAM : ORIGIN = 0x0, LENGTH = 262144
+	DATAFLASH (!rx) : ORIGIN = 0x100000, LENGTH = 32768
 	RAMHI : ORIGIN = 0x800000, LENGTH = 393216
 	ROM : ORIGIN = 0xFFF00000, LENGTH = 1048576
 	OFS : ORIGIN = 0xFE7F5D00, LENGTH = 256
 }
+
+
+
+
+
+
+
+
 SECTIONS
 {
 	.exvectors 0xFFFFFF80 : AT(0xFFFFFF80)
@@ -96,16 +105,16 @@ SECTIONS
 		. += 0x100;
 		_r_bsp_NULL_end = .;
 	} >RAM
-/*
- *	.r_bsp_ustack BLOCK(4) :
- *	{
- *		KEEP(*(.r_bsp_ustack))
- *	} > RAM
- *	.ustack :
- *	{
- *		_ustack = .;
- *	} > RAM
- */
+	/*
+	 * .r_bsp_ustack BLOCK(4) :
+	 * {
+	 * 	KEEP(*(.r_bsp_ustack))
+	 * } > RAM
+	 * .ustack :
+	 * {
+	 * 	_ustack = .;
+	 * } > RAM
+	 */
 	.r_bsp_istack BLOCK(4) :
 	{
 		KEEP(*(.r_bsp_istack))
@@ -127,12 +136,6 @@ SECTIONS
 	.gcc_exc :
 	{
 		*(.gcc_exc)
-	} >RAM
-	B_PKCS11_STORAGE_1 :
-	{
-		_B_PKCS11_STORAGE_1_start = .;
-		*(B_PKCS11_STORAGE_1)
-		_B_PKCS11_STORAGE_1_end = .;
 	} >RAM
 	.bss 0x800000 : AT(0x800000)
 	{
@@ -192,4 +195,42 @@ SECTIONS
 	{
 		KEEP(*(.ofs7))
 	} >OFS
+	.dataflash 0x100000 : AT(0x00100000)
+	{
+	} >DATAFLASH
+	C_PKCS11_STORAGE_1 :
+	{
+	} >DATAFLASH C_PKCS11_STORAGE_MIRROR_1 :
+{
+} >DATAFLASH
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+

@@ -526,7 +526,7 @@ IDE/Compiler: EWRX/IAR v410
     [en] https://www.iar.com/iar-embedded-workbench/#!?architecture=RX
     [ja] https://www.iar.com/jp/iar-embedded-workbench/#!?architecture=RX
 
-Compiler: GCC for Renesas 4.8.4.201801-GNURX 
+Compiler: GCC for Renesas 4.8.4.201803-GNURX 
     [en] https://gcc-renesas.com/
     [ja] https://gcc-renesas.com/ja/
     
@@ -814,6 +814,13 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　
 　以下プロジェクトの動作確認OK。
 　\demos\renesas\rx65n-rsk\ccrx-e2studio
+　ここまででコミット。
+
+　以下プロジェクトの動作確認NG。
+　\demos\renesas\rx65n-rsk\gnurx-e2studio
+　フラッシュのEraseのAPIがエラーを吐いている。
+　データフラッシュへのデータ配置がうまくいってない。リンカスクリプトを見直す。
+　見直した結果、動作確認OK。
 　ここまででコミット。
 　
 2018/12/15
