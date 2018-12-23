@@ -789,6 +789,16 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　以下プロジェクトの動作確認NG。WIFIは25日週に担当者が確認する手はずなので今回は省略。
 　\demos\renesas\rx65n-rsk-uart-sx-ulpgn\ccrx-e2studio
 　ここまででコミット。
+　
+　以下プロジェクトの動作確認OK。
+　\demos\renesas\rx65n-envision-kit\gnurx-e2studio
+　以下プロジェクトのリンカスクリプトに不要な記述を発見。削除。
+　\demos\renesas\rx65n-rsk\gnurx-e2studio
+　ここまででコミット。
+
+　以下プロジェクトの動作確認OK。
+　\demos\renesas\rx65n-gr-rose\ccrx-e2studio
+　ここまででコミット。
 
 2018/12/22
 　大詰め。
@@ -824,6 +834,7 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　ほかのプロジェクトの動作確認はおおむね以下を追加していけばよいはず。
 　　(1)r_s12ad_rx モジュールをスマートコンフィグレータで追加する
 　　　→CS+の場合はスマートコンフィグレータ出力側のr_s12ad_rx モジュールをビルド対象から外しておく
+　　　→BSPのスタックの設定を 1stack にしておく。 2stack だとビルド時にエラーがでる。
 　　(2)プロジェクト側から、r_s12ad_rx モジュールの改造版を登録する
 　　　\lib\third_party\mcu_vendor\renesas\FIT\RDP_v1.15_modified\r_s12ad_rx
 　　(3)プロジェクト側から、r_s12ad_rx モジュールの改造版へのインクルードパスを通す
@@ -838,6 +849,8 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　　　\demos\renesas\XXXX-XXXX\common\config_files\FreeRTOSConfig.h
 　　　#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 512 )
 　　　#define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 128U * 1024U ) )
+　　(8)CC-RXを使用する場合、コンパイラバージョンをv3.00.00にしておく
+　　　(途中で確認項目に追加したので後でまとめて見直す)
 　
 　以下プロジェクトの動作確認OK。
 　\demos\renesas\rx65n-rsk\ccrx-e2studio
