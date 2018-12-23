@@ -63,6 +63,32 @@ I hope this solution will be helpful for embedded system developer in W/W.
 --------------------------------------------------------------------------
 Change Logs
 --------------------------------------------------------------------------
+v0.1.6:
+[TESTED] by Amazon FreeRTOS Qualification for
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+[MERGED] upstream Amazon FreeRTOS v1.4.5 master
+[ADDED] RX63N GR-SAKURA supports
+[ADDED] RX65N GR-ROSE GCC/C++ supports
+[DELETED] RX65N RSK + Silex SX-ULPGN supports (come back soon)
+[DELETED] RX65N Target Board + Silex SX-ULPGN supports (come back soon)
+[TESTED] demos MQTT echo behavior for
+         RX65N RSK CC-RX e2 studio with E2 Emulator Lite
+         RX65N RSK CC-RX CS+ with E2 Emulator Lite
+         RX65N RSK GCC e2 studio with E2 Emulator Lite
+         RX65N Envision Kit CC-RX CS+ with E2 Emulator Lite (on board)
+         RX65N Envision Kit CC-RX e2 studio with E2 Emulator Lite (on board)
+         RX65N Envision Kit GCC e2 studio with E2 Emulator Lite (on board)
+         RX65N GR-ROSE CC-RX e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE CC-RX CS+ with E2 Emulator Lite
+         RX65N GR-ROSE GCC e2 studio with E2 Emulator Lite
+         RX65N GR-ROSE GCC/C++ e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX e2 studio with E2 Emulator Lite
+         RX64M GR-KAEDE CC-RX CS+ with E2 Emulator Lite
+         RX64M GR-KAEDE GCC e2 studio with E2 Emulator Lite
+         RX63N GR-SAKURA CC-RX e2 studio with E2 Emulator Lite
+         RX63N GR-SAKURA CC-RX CS+ with E2 Emulator Lite
+         RX63N GR-SAKURA GCC e2 studio with E2 Emulator Lite
+
 v0.1.5:
 [UPDATED] Unifying BSP(CC-RX/GCC/IAR)
 [UPDATED] Increase configMINIMAL_STACK_SIZE value from 140 to 180
@@ -632,14 +658,15 @@ Compiler number:
 
                  / IDE      (1)         (2)         (3)
 Board Connection / Compiler (1) (2) (3) (1) (2) (3) (1) (2) (3)
-(1)   (2)        /           x   x       x   -   -   -   -     
+(1)   (2)        /           X   x       x   -   -   -   -     
 (2)   (2)        /           x   x       x   -   -   -   -   * 
 (3)   (2)        /           x   x       x   -   -   -   -     
 (4)   (2)        /           x   x       x   -   -   -   -     
-(5)   (4)        /           x   x       x   -   -   -   -     
-(6)   (4)        /           x   x       x   -   -   -   -     
+(5)   (4)        /           *   *       *   -   -   -   -     
+(6)   (4)        /           *   *       *   -   -   -   -     
 (7)   (2)        /           x   x       x   -   -   -   -     
 
+  X: tested (Amazon FreeRTOS Qualification)
   x: tested (MQTT echo demo)
   *: now trying(still junk)
   -: N/A
@@ -696,9 +723,9 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　ソフトウェア実装（AESとかRSAとか）をRX65N内蔵暗号器を使った
 　ハードウェア実装に置き換える　★一旦停止
 ⑩Ether層のゼロコピーに対応する　★一旦停止
-⑪Amazon FreeRTOS本家環境にマージし、Amazon FreeRTOS本家コードへの追従を簡単にできるようにする　★いまここ＠シェルティ
+⑪Amazon FreeRTOS本家環境にマージし、Amazon FreeRTOS本家コードへの追従を簡単にできるようにする
 ⑫Amazon FreeRTOS のGitのforkに登録する
-⑬Amazon FreeRTOS のCertificationを受験し合格しGitの本家に登録する
+⑬Amazon FreeRTOS のCertificationを受験し合格しGitの本家に登録する　★いまここ＠シェルティ
 　https://docs.aws.amazon.com/freertos/latest/userguide/freertos-qualification-program.html
 
 --------------------------------------------------------------------------
@@ -860,6 +887,11 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　　　他のプロジェクトにも同じものをあとでコピーしておく。★
 　・Etherが動かなくなっていた。以下補正。他のGCC系のプロジェクトも後でまとめて確認して修正する。★
 　ここまででコミット。
+　
+　最後、検定対象のRX65N RSK (Ether)のtestsプロジェクトでテストを通し最終確認、
+　また、AWSアップ用のRX65N RSK (Ether)のdemosプロジェクトも最終確認。OK。
+　
+　ここでコミット/リリースタグ。
 　　　
 2018/12/22
 　大詰め。
