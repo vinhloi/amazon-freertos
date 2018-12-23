@@ -142,7 +142,7 @@ SECTIONS
 		_ebss = .;
 		_end = .;
 	} >RAM
-	B_ETHERNET_BUFFERS_1 BLOCK(16) :
+	B_ETHERNET_BUFFERS_1 BLOCK(32) :
 	{
 		_B_ETHERNET_BUFFERS_1_start = .;
 		*(B_ETHERNET_BUFFERS_1)

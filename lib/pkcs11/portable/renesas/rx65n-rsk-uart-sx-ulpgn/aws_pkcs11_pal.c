@@ -79,6 +79,7 @@ typedef struct _pkcs_data
 
 #define MAX_CHECK_DATAFLASH_AREA_RETRY_COUNT 3
 
+#if defined (BSP_MCU_RX65N) || (BSP_MCU_RX651)
 #define PKCS_CONTROL_BLOCK_INITIAL_DATA \
     {\
         /* uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF) / 4) - (sizeof(PKCS_DATA) * PKCS_OBJECT_HANDLES_NUM) - PKCS_SHA256_LENGTH]; */\
@@ -88,6 +89,29 @@ typedef struct _pkcs_data
     },\
     /* uint8_t hash_sha256[PKCS_SHA256_LENGTH]; */\
     {0xea, 0x57, 0x12, 0x9a, 0x18, 0x10, 0x83, 0x80, 0x88, 0x80, 0x40, 0x1f, 0xae, 0xb2, 0xd2, 0xff, 0x1c, 0x14, 0x5e, 0x81, 0x22, 0x6b, 0x9d, 0x93, 0x21, 0xf8, 0x0c, 0xc1, 0xda, 0x29, 0x61, 0x64},
+#elif defined (BSP_MCU_RX64M)
+#define PKCS_CONTROL_BLOCK_INITIAL_DATA \
+    {\
+        /* uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF) / 4) - (sizeof(PKCS_DATA) * PKCS_OBJECT_HANDLES_NUM) - PKCS_SHA256_LENGTH]; */\
+        {0x00},\
+        /* PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM]; */\
+        {0x00},\
+    },\
+    /* uint8_t hash_sha256[PKCS_SHA256_LENGTH]; */\
+    {0x62, 0x90, 0xe6, 0x59, 0x20, 0x47, 0xec, 0x80, 0x14, 0x0a, 0x12, 0x52, 0xd3, 0x1a, 0x8b, 0xa8, 0xa3, 0x3a, 0x34, 0xcf, 0x57, 0x8b, 0x5c, 0x8c, 0x4a, 0x08, 0x17, 0x06, 0xb9, 0x41, 0x6f, 0xa6},
+#elif defined (BSP_MCU_RX63N) || (BSP_MCU_RX631) || (BSP_MCU_RX630)
+#define PKCS_CONTROL_BLOCK_INITIAL_DATA \
+    {\
+        /* uint8_t local_storage[((FLASH_DF_BLOCK_SIZE * FLASH_NUM_BLOCKS_DF) / 4) - (sizeof(PKCS_DATA) * PKCS_OBJECT_HANDLES_NUM) - PKCS_SHA256_LENGTH]; */\
+        {0x00},\
+        /* PKCS_DATA pkcs_data[PKCS_OBJECT_HANDLES_NUM]; */\
+        {0x00},\
+    },\
+    /* uint8_t hash_sha256[PKCS_SHA256_LENGTH]; */\
+    {0xea, 0x57, 0x12, 0x9a, 0x18, 0x10, 0x83, 0x80, 0x88, 0x80, 0x40, 0x1f, 0xae, 0xb2, 0xd2, 0xff, 0x1c, 0x14, 0x5e, 0x81, 0x22, 0x6b, 0x9d, 0x93, 0x21, 0xf8, 0x0c, 0xc1, 0xda, 0x29, 0x61, 0x64},
+#else
+#error "aws_pkcs11_pal.c does not support your MCU"
+#endif
 
 typedef struct _pkcs_storage_control_block_sub
 {
@@ -121,7 +145,7 @@ uint8_t object_handle_dictionary[PKCS_OBJECT_HANDLES_NUM][PKCS_HANDLES_LABEL_MAX
     //pkcs11configLABEL_ROOT_CERTIFICATE,
 };
 
-static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;        /* RX65N case: 8KB */
+static PKCS_CONTROL_BLOCK pkcs_control_block_data_image;        /* RX65N case: 8KB, RX64M case: 16KB, RX63N case: 8KB */
 
 R_ATTRIB_SECTION_CHANGE(C, _PKCS11_STORAGE, 1)
 static const PKCS_CONTROL_BLOCK pkcs_control_block_data = {PKCS_CONTROL_BLOCK_INITIAL_DATA};
@@ -140,6 +164,13 @@ extern CK_RV prvMbedTLS_Initialize( void );
 CK_RV C_Initialize( CK_VOID_PTR pvInitArgs )
 {
     R_FLASH_Open();
+
+#if defined (BSP_MCU_RX63N) || (BSP_MCU_RX631) || (BSP_MCU_RX630)
+    flash_access_window_config_t flash_access_window_config;
+    flash_access_window_config.read_en_mask = 0xffff;
+    flash_access_window_config.write_en_mask = 0xffff;
+    R_FLASH_Control(FLASH_CMD_ACCESSWINDOW_SET, &flash_access_window_config);
+#endif
 
     /* check the hash */
     check_dataflash_area(0);
@@ -176,6 +207,13 @@ CK_OBJECT_HANDLE PKCS11_PAL_SaveObject( CK_ATTRIBUTE_PTR pxLabel,
 
     mbedtls_sha256_init(&ctx);
     R_FLASH_Open();
+
+#if defined (BSP_MCU_RX63N) || (BSP_MCU_RX631) || (BSP_MCU_RX630)
+    flash_access_window_config_t flash_access_window_config;
+    flash_access_window_config.read_en_mask = 0xffff;
+    flash_access_window_config.write_en_mask = 0xffff;
+    R_FLASH_Control(FLASH_CMD_ACCESSWINDOW_SET, &flash_access_window_config);
+#endif
 
     /* check the hash */
     check_dataflash_area(0);
