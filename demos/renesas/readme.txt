@@ -827,7 +827,11 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　Etherが動かなくなっていた。以下補正。他のGCC系のプロジェクトも後でまとめて確認して修正する。★
 　BLOCK(16)→BLOCK(32)
 　ここまででコミット。
-　
+
+　以下プロジェクトの動作確認OK。
+　\demos\renesas\rx64m-gr-kaede\ccrx-csplus
+　ここまででコミット。
+
 2018/12/22
 　大詰め。
 　Amazonからのフィードバックを片っ端から片付けていく。
