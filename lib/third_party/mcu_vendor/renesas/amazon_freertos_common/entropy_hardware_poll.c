@@ -41,6 +41,7 @@ void get_random_number(uint8_t *data, uint32_t len)
     uint32_t res;
     uint32_t lp;
     uint8_t *bPtr;
+#if defined (BSP_MCU_RX65N) || (BSP_MCU_RX651) || (BSP_MCU_RX64M)
     adc_cfg_t ad_cfg;
     adc_ch_cfg_t ch_cfg;
     adc_sst_t sst;
@@ -77,6 +78,33 @@ void get_random_number(uint8_t *data, uint32_t len)
     R_ADC_Read(1, ADC_REG_TEMP, &temperature_data);
 
     y += temperature_data;  /* randomness from internal temperature sensor */
+#elif defined (BSP_MCU_RX63N) || (BSP_MCU_RX631) || (BSP_MCU_RX630)
+    adc_cfg_t ad_cfg;
+    adc_ch_cfg_t ch_cfg;
+    uint16_t temperature_data;
+
+    /* initialize temperature sensor */
+    memset(&ad_cfg, 0, sizeof(ad_cfg));
+    ad_cfg.trigger = ADC_TRIG_SOFTWARE;
+    ad_cfg.priority = 0;
+    ad_cfg.add_cnt   = ADC_ADD_OFF;
+    ad_cfg.alignment = ADC_ALIGN_RIGHT;
+    ad_cfg.clearing  = ADC_CLEAR_AFTER_READ_OFF;
+
+    R_ADC_Open(1, ADC_MODE_SS_ONE_CH, &ad_cfg, NULL);
+
+    memset(&ch_cfg, 0, sizeof(ch_cfg));
+    R_ADC_Control(1, ADC_CMD_ENABLE_CHANS, &ch_cfg);
+
+    vTaskDelay(10);
+
+    R_ADC_Control(1, ADC_CMD_SCAN_NOW, NULL);
+    while (R_ADC_Control(1, ADC_CMD_CHECK_SCAN_DONE, NULL) == ADC_ERR_SCAN_NOT_DONE);
+
+    R_ADC_Read(1, ADC_REG_TEMP, &temperature_data);
+
+    y += temperature_data;  /* randomness from internal temperature sensor, RX63N ver has not been confirmed. Maybe always zero is output. Please fix this anybody. */
+#endif
     y += xTaskGetTickCount();   /* randomness from system timer */
 
     res = len / 4;

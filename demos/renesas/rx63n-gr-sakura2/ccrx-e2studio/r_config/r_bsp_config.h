@@ -223,7 +223,7 @@ Configuration Options
  * If the interrupt stack is the only stack being used then the user will likely want to increase the default size
  * below.
  */
-#define BSP_CFG_ISTACK_BYTES            (0x1000)
+#define BSP_CFG_ISTACK_BYTES            (0x3000)
 
 #endif /* BSP_CFG_STARTUP_DISABLE == 0 */
 

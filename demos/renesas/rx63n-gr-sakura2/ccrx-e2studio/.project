@@ -230,6 +230,11 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flash_rx</locationURI>
 		</link>
 		<link>
+			<name>src/FIT_modified_code/r_s12ad_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_s12ad_rx</locationURI>
+		</link>
+		<link>
 			<name>src/FIT_modified_code/r_sci_iic_rx</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx</locationURI>
@@ -372,7 +377,7 @@
 	</linkedResources>
 	<filteredResources>
 		<filter>
-			<id>1532925745925</id>
+			<id>1545534815999</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
@@ -381,12 +386,12 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1513514174593</id>
+			<id>1545534816005</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-true-r_bsp|r_ether_rx|r_flash_rx|r_byteq|r_sci_rx|r_sci_iic_rx|r_cmt_rx|r_config|r_pincfg</arguments>
+				<arguments>1.0-name-matches-false-true-r_bsp|r_ether_rx|r_flash_rx|r_byteq|r_sci_rx|r_sci_iic_rx|r_cmt_rx|r_config|r_pincfg|r_s12ad_rx</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -396,6 +401,24 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-attention!.txt</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1536904742727</id>
+			<name>src/amazon_freertos_common/compiler_support</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-ccrx</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1536927312156</id>
+			<name>src/amazon_freertos_common/network_support</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-onchip_rx_ether</arguments>
 			</matcher>
 		</filter>
 		<filter>
@@ -507,6 +530,15 @@
 			</matcher>
 		</filter>
 		<filter>
+			<id>1545533943130</id>
+			<name>src/FIT_modified_code/r_s12ad_rx/src/targets</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-rx63x</arguments>
+			</matcher>
+		</filter>
+		<filter>
 			<id>1535360980389</id>
 			<name>src/FIT_modified_code/r_sci_iic_rx/src/targets</name>
 			<type>9</type>
@@ -549,24 +581,6 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-RX</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1536904742727</id>
-			<name>src/amazon_freertos_common/compiler_support</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-ccrx</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1536927312156</id>
-			<name>src/amazon_freertos_common/network_support</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-onchip_rx_ether</arguments>
 			</matcher>
 		</filter>
 		<filter>

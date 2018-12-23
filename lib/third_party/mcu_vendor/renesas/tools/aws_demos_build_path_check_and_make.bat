@@ -170,7 +170,7 @@ goto MAKE
 :FIT
 if %verbose%==1 echo Do pre-build operation for FIT Configurator generated/based code
 
-set MODIFIED_FIT_MODULES=r_bsp r_ether_rx r_flash_rx r_byteq r_sci_rx r_riic_rx r_sci_iic_rx r_cmt_rx
+set MODIFIED_FIT_MODULES=r_bsp r_ether_rx r_flash_rx r_byteq r_sci_rx r_riic_rx r_sci_iic_rx r_cmt_rx r_s12ad_rx
 
 :SHOW_MESSAGE
 set ef=0
