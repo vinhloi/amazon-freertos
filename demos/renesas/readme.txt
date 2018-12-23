@@ -816,6 +816,16 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　\demos\renesas\rx64m-gr-kaede\ccrx-e2studio
 　データフラッシュの大きさがRX65Nと違うので、aws_pkcs11_pal.c で保持する
 　PKCS11用のストレージ保管庫のハッシュ値の補正が必要だった。狙い通り他のコードは共通でいけた。
+　ifdefで機種依存部分は切り分け、ファイル自体は1個で実現。
+　aws_pkcs11_pal.cを他のプロジェクトにも同じものをコピーしておく。★
+　ここまででコミット。
+　
+　以下プロジェクトの動作確認OK。
+　\demos\renesas\rx64m-gr-kaede\gnurx-e2studio
+　リンカスクリプトでB_ETHERNET_BUFFERS_1を16バイト境界に配置しているが、
+　32バイト境界が正解。このプロジェクトでたまたま32の倍数ではない16バイト境界に配置され
+　Etherが動かなくなっていた。以下補正。他のGCC系のプロジェクトも後でまとめて確認して修正する。★
+　BLOCK(16)→BLOCK(32)
 　ここまででコミット。
 　
 2018/12/22
@@ -868,7 +878,7 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　　　#define configMINIMAL_STACK_SIZE                   ( ( unsigned short ) 512 )
 　　　#define configTOTAL_HEAP_SIZE                      ( ( size_t ) ( 128U * 1024U ) )
 　　(8)CC-RXを使用する場合、コンパイラバージョンをv3.00.00にしておく
-　　　(途中で確認項目に追加したので後でまとめて見直す)
+　　　(途中で確認項目に追加したので後でまとめて見直す)★
 　
 　以下プロジェクトの動作確認OK。
 　\demos\renesas\rx65n-rsk\ccrx-e2studio
