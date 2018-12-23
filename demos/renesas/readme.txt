@@ -832,7 +832,7 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　\demos\renesas\rx64m-gr-kaede\ccrx-csplus
 　ここまででコミット。
 
-　以下プロジェクトの動作確認OK。
+　以下プロジェクトの動作確認NG。
 　\demos\renesas\rx63n-gr-sakura2\ccrx-e2studio
 　PKCS11の実装でデータフラッシュ書き込みを行っている。
 　RX65N、RX64Mのコードをそのまま動かそうとしたら動かない。
@@ -841,6 +841,15 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　データフラッシュは読み出し・書き込み許可設定が可能。RX63xのときだけ実行されるコードを追加し
 　正常動作確認OK。
 　ここのaws_pkcs11_pal.cを他のプロジェクトにも同じものをあとでコピーしておく。★
+　ここまででコミット。
+　
+　あとふたつ。ゴールが見えてきた。どえらい疲れた。
+　以下プロジェクトの動作確OK。
+　\demos\renesas\rx63n-gr-sakura2\gnurx-e2studio
+　ここまででコミット。
+
+　以下プロジェクトの動作確OK。
+　\demos\renesas\rx63n-gr-sakura2\ccrx-csplus
 　ここまででコミット。
 　
 2018/12/22
