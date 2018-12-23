@@ -408,7 +408,7 @@ void adc_enable_s12adi0(void)
 * Arguments    : none
 * Return Value : none
 ******************************************************************************/
-R_PRAGMA_INTERRUPT(adc_s12adi0_isr, VECT(S12AD,S12ADI0))
+R_PRAGMA_STATIC_INTERRUPT(adc_s12adi0_isr, VECT(S12AD,S12ADI0))
 //#pragma interrupt adc_s12adi0_isr(vect=VECT(S12AD,S12ADI0), enable) // FOR TESTING ONLY!
 static void adc_s12adi0_isr(void)
 {

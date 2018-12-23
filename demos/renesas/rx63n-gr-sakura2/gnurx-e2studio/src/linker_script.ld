@@ -2,26 +2,28 @@ MEMORY
 {
 	RAM : ORIGIN = 0x0, LENGTH = 262144
 	ROM : ORIGIN = 0xFFF00000, LENGTH = 1048576
+DATAFLASH (!rx) : ORIGIN = 0x00100000, LENGTH = 32768 
 }
+
 SECTIONS
 {
-	.fvectors 0xFFFFFF80: AT(0xFFFFFF80)
+	.fvectors 0xFFFFFF80 : AT(0xFFFFFF80)
 	{
 		KEEP(*(.fvectors))
-	} > ROM
-	.text 0xFFF00000: AT(0xFFF00000)
+	} >ROM
+	.text 0xFFF00000 : AT(0xFFF00000)
 	{
 		*(.text)
 		*(.text.*)
 		*(P)
 		etext = .;
-	} > ROM
+	} >ROM
 	.rvectors :
 	{
 		_rvectors_start = .;
 		INCLUDE ../src/linker_script_rvectors.ld_inc
 		_rvectors_end = .;
-	} > ROM
+	} >ROM
 	.init :
 	{
 		KEEP(*(.init))
@@ -36,16 +38,16 @@ SECTIONS
 		KEEP(*(.fini_array))
 		KEEP(*(SORT(.fini_array.*)))
 		__fini_array_end = .;
-	} > ROM
+	} >ROM
 	.fini :
 	{
 		KEEP(*(.fini))
-	} > ROM
+	} >ROM
 	.got :
 	{
 		*(.got)
 		*(.got.plt)
-	} > ROM
+	} >ROM
 	.rodata :
 	{
 		*(.rodata)
@@ -54,19 +56,19 @@ SECTIONS
 		*(C_2)
 		*(C)
 		_erodata = .;
-	} > ROM
+	} >ROM
 	.eh_frame_hdr :
 	{
 		*(.eh_frame_hdr)
-	} > ROM
+	} >ROM
 	.eh_frame :
 	{
 		*(.eh_frame)
-	} > ROM
+	} >ROM
 	.jcr :
 	{
 		*(.jcr)
-	} > ROM
+	} >ROM
 	.tors :
 	{
 		__CTOR_LIST__ = .;
@@ -82,26 +84,26 @@ SECTIONS
 		__DTOR_END__ = .;
 		. = ALIGN(2);
 		_mdata = .;
-	} > ROM
+	} >ROM
 	.r_bsp_NULL 0 : AT(0)
 	{
 		. += 0x100;
 		_r_bsp_NULL_end = .;
-	} > RAM
-/*
- *	.r_bsp_ustack BLOCK(4) :
- *	{
- *		KEEP(*(.r_bsp_ustack))
- *	} > RAM
- *	.ustack :
- *	{
- *		_ustack = .;
- *	} > RAM
- */
+	} >RAM
+	/*
+	 * .r_bsp_ustack BLOCK(4) :
+	 * {
+	 * 	KEEP(*(.r_bsp_ustack))
+	 * } > RAM
+	 * .ustack :
+	 * {
+	 * 	_ustack = .;
+	 * } > RAM
+	 */
 	.r_bsp_istack BLOCK(4) :
 	{
 		KEEP(*(.r_bsp_istack))
-	} > RAM
+	} >RAM
 	.istack :
 	{
 		_istack = .;
@@ -115,11 +117,11 @@ SECTIONS
 		*(D_1)
 		*(D_2)
 		_edata = .;
-	} > RAM
+	} >RAM
 	.gcc_exc :
 	{
 		*(.gcc_exc)
-	} > RAM
+	} >RAM
 	.bss :
 	{
 		_bss = .;
@@ -131,7 +133,7 @@ SECTIONS
 		*(B_2)
 		_ebss = .;
 		_end = .;
-	} > RAM
+	} >RAM
 	B_ETHERNET_BUFFERS_1 BLOCK(16) :
 	{
 		_B_ETHERNET_BUFFERS_1_start = .;
@@ -150,4 +152,21 @@ SECTIONS
 		*(B_TX_DESC_1)
 		_B_TX_DESC_1_end = .;
 	} >RAM
+	C_PKCS11_STORAGE_1 :
+	{
+	} >DATAFLASH C_PKCS11_STORAGE_MIRROR_1 :
+{
+} >DATAFLASH
+
+
+
+
+
+
+
+
+
+
 }
+
+
