@@ -195,37 +195,14 @@ SECTIONS
 	{
 		KEEP(*(.ofs7))
 	} >OFS
-	.dataflash 0x100000 : AT(0x00100000)
-	{
-	} >DATAFLASH
 	C_PKCS11_STORAGE_1 :
 	{
-	} >DATAFLASH C_PKCS11_STORAGE_MIRROR_1 :
-{
-} >DATAFLASH
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} >DATAFLASH
+	C_PKCS11_STORAGE_MIRROR_1 :
+	{
+	} >DATAFLASH
 }
+
 
 
 

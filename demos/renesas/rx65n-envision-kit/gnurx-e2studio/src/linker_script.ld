@@ -4,7 +4,9 @@ MEMORY
 	RAMHI : ORIGIN = 0x800000, LENGTH = 393216
 	ROM : ORIGIN = 0xFFF00000, LENGTH = 1048576
 	OFS : ORIGIN = 0xFE7F5D00, LENGTH = 256
+DATAFLASH (!rx) : ORIGIN = 0x100000, LENGTH = 32768 
 }
+
 SECTIONS
 {
 	.exvectors 0xFFFFFF80 : AT(0xFFFFFF80)
@@ -96,16 +98,16 @@ SECTIONS
 		. += 0x100;
 		_r_bsp_NULL_end = .;
 	} >RAM
-/*
- *	.r_bsp_ustack BLOCK(4) :
- *	{
- *		KEEP(*(.r_bsp_ustack))
- *	} > RAM
- *	.ustack :
- *	{
- *		_ustack = .;
- *	} > RAM
- */
+	/*
+	 * .r_bsp_ustack BLOCK(4) :
+	 * {
+	 * 	KEEP(*(.r_bsp_ustack))
+	 * } > RAM
+	 * .ustack :
+	 * {
+	 * 	_ustack = .;
+	 * } > RAM
+	 */
 	.r_bsp_istack BLOCK(4) :
 	{
 		KEEP(*(.r_bsp_istack))
@@ -185,5 +187,17 @@ SECTIONS
 	.ofs7 0xFE7F5D10 : AT(0xFE7F5D70)
 	{
 		KEEP(*(.ofs7))
-	} >OFS
+	} >OFS C_PKCS11_STORAGE_1 : AT(0x00100000)
+{
+} >DATAFLASH C_PKCS11_STORAGE_MIRROR_1 :
+{
+} >DATAFLASH
+
+
+
+
 }
+
+
+
+
