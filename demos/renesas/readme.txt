@@ -812,6 +812,12 @@ RX65N Envision Kit、RX65N RSK(2MB版/暗号器あり品)をターゲットに�
 　\demos\renesas\rx65n-gr-rose\ccrx-csplus
 　ここまででコミット。
 　
+　以下プロジェクトの動作確認OK。
+　\demos\renesas\rx64m-gr-kaede\ccrx-e2studio
+　データフラッシュの大きさがRX65Nと違うので、aws_pkcs11_pal.c で保持する
+　PKCS11用のストレージ保管庫のハッシュ値の補正が必要だった。狙い通り他のコードは共通でいけた。
+　ここまででコミット。
+　
 2018/12/22
 　大詰め。
 　Amazonからのフィードバックを片っ端から片付けていく。

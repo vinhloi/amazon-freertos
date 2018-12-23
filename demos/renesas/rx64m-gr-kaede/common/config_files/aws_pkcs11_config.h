@@ -33,7 +33,7 @@
 #define _AWS_PKCS11_CONFIG_H_
 
 /* A non-standard version of C_INITIALIZE should be used by this port. */
-/* #define pkcs11configC_INITIALIZE_ALT */
+#define pkcs11configC_INITIALIZE_ALT
 
 /* Workaround for missing function prototypes for aws_pkcs11_mbedtls.c. */
 #include "threading_alt.h"
