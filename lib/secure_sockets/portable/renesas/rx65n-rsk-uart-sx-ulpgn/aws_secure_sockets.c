@@ -121,12 +121,12 @@ static BaseType_t prvNetworkRecv( void * pvContext,
 	BaseType_t receive_byte;
    SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) pvContext; /*lint !e9087 cast used for portability. */
 
+   if(pxContext->xSocket >= MAX_NUM_SSOCKETS)
+   {
+	   return SOCKETS_SOCKET_ERROR;
+   }
    receive_byte = sx_ulpgn_tcp_recv(pxContext->xSocket, pucReceiveBuffer, xReceiveLength, pxContext->ulRecvTimeout);
 
-   if(xReceiveLength == 64)
-   {
-   	nop();
-   }
    return receive_byte;
 }
 
@@ -389,6 +389,15 @@ int32_t SOCKETS_Shutdown( Socket_t xSocket,
                           uint32_t ulHow )
 {
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
+
+    if((pxContext == SOCKETS_INVALID_SOCKET) || (pxContext->xSocket >= MAX_NUM_SSOCKETS))
+    {
+    	return SOCKETS_EINVAL;
+    }
+    else if((ulHow != SOCKETS_SHUT_RD) && (ulHow != SOCKETS_SHUT_WR) && (ulHow != SOCKETS_SHUT_RDWR))
+    {
+    	return SOCKETS_EINVAL;
+    }
 
 	return sx_ulpgn_tcp_disconnect(pxContext->xSocket);
 }

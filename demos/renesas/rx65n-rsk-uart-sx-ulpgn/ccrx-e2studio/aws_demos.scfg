@@ -237,6 +237,7 @@
 <pinItem allocation="8" direction="None" id="TXD6" locked="false" status="1024"/>
 <pinItem allocation="63" direction="None" id="RXD7" locked="false" status="0"/>
 <pinItem allocation="65" direction="None" id="TXD7" locked="false" status="0"/>
+<pinItem allocation="13" direction="None" id="CTS6#" locked="false" status="0"/>
 <pinnumItem comment="ET-ET0ERXD1_RMII0RXD1" id="88"/>
 <pinnumItem comment="ET-ET0ERXD2" id="89"/>
 <pinnumItem comment="OnTFT-G2" id="110"/>
@@ -660,7 +661,7 @@
 <gridItem id="SCK6" selectedIndex="0"/>
 <gridItem id="RXD6/SMISO6" selectedIndex="1"/>
 <gridItem id="TXD6/SMOSI6" selectedIndex="1"/>
-<gridItem id="CTS6#/RTS6#/SS6#" selectedIndex="0"/>
+<gridItem id="CTS6#/RTS6#/SS6#" selectedIndex="1"/>
 <gridItem id="SCI6" selectedIndex="1"/>
 <gridItem id="SCK7" selectedIndex="0"/>
 <gridItem id="RXD7/SMISO7" selectedIndex="1"/>
