@@ -240,7 +240,7 @@ static TickType_t startbytetime[2], thisbytetime[2], endbytetime[2];
 static uint8_t byte_timeout_overflow_flag[2];
 
 uint8_t g_sx_ulpgn_return_mode;
-uint8_t socket_recv_buff[CREATEABLE_SOCKETS][1460];
+
 
 static void sx_ulpgn_uart_callback_second_port_for_command(void *pArgs);
 static void sx_ulpgn_uart_callback_default_port_for_inititial(void *pArgs);
@@ -274,7 +274,7 @@ static const TickType_t xMaxSemaphoreBlockTime = pdMS_TO_TICKS( 60000UL );
 typedef struct
 {
     byteq_hdl_t socket_byteq_hdl;
-    uint8_t socket_recv_buff[2048];
+    uint8_t socket_recv_buff[4096];
     uint8_t socket_status;
     uint8_t socket_recv_error_count;
     uint8_t socket_create_flag;
@@ -800,14 +800,16 @@ int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipvers
         sprintf((char *)buff, "ATNSOCK=%d,%d\r", (uint8_t)(type), (uint8_t)(ipversion));
 
         ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 10, 200, ULPGN_RETURN_OK);
-        //  ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 10, 200, ULPGN_RETURN_OK);
         if(ret != 0 && ret != -2)
         {
             ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
             return ret;
         }
         g_ulpgn_socket[socket_no].socket_create_flag = 1;
-        g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_SOCKET;
+        if(ret == 0)
+        {
+        	g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_SOCKET;
+        }
         //  ret = sx_ulpgn_serial_send_basic(socket_no, "ATNSTAT\r", 3, 200, ULPGN_RETURN_OK);
 
         ret = sx_ulpgn_get_socket_status(socket_no);
@@ -872,6 +874,8 @@ int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port)
         {
             g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_CONNECTED;
         }
+
+
         /* Give back the socketInUse mutex. */
         ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
 
@@ -1108,7 +1112,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
                 {
                     /* Give back the socketInUse mutex. */
                     ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                    return -1;
+                    return 0;
                 }
             }
         }

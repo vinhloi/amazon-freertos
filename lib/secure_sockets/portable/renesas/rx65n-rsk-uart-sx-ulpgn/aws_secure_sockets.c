@@ -91,6 +91,9 @@ typedef struct SSOCKETContext
  */
 static uint8_t ssockets_num_allocated = 0;
 
+static SemaphoreHandle_t xUcInUse = NULL;
+static const TickType_t xMaxSemaphoreBlockTime = pdMS_TO_TICKS( 60000UL );
+
 /* Generate a randomized TCP Initial Sequence Number per RFC. */
 uint32_t ulApplicationGetNextSequenceNumber(
     uint32_t ulSourceAddress,
@@ -159,55 +162,73 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
     uint8_t socketId;
     SSOCKETContextPtr_t pxContext = NULL;
 
-    socketId = sx_ulpgn_get_avail_socket();
+    if (xSemaphoreTake( xUcInUse, xMaxSemaphoreBlockTime) == pdTRUE)
+    {
 
-    /* Ensure that only supported values are supplied. */
-    configASSERT( lDomain == SOCKETS_AF_INET );
-    configASSERT( lType == SOCKETS_SOCK_STREAM );
-    configASSERT( lProtocol == SOCKETS_IPPROTO_TCP );
+		socketId = sx_ulpgn_get_avail_socket();
 
-	if(ssockets_num_allocated >= MAX_NUM_SSOCKETS || socketId == 255)
-	{
-        lStatus = SOCKETS_SOCKET_ERROR;
-	}
+		/* Ensure that only supported values are supplied. */
+		configASSERT( lDomain == SOCKETS_AF_INET );
+		configASSERT( lType == SOCKETS_SOCK_STREAM );
+		configASSERT( lProtocol == SOCKETS_IPPROTO_TCP );
 
-	 if( SOCKETS_ERROR_NONE == lStatus )
-	 {
-		/* Allocate the internal context structure. */
-		if( NULL == ( pxContext = pvPortMalloc( sizeof( SSOCKETContext_t ) ) ) )
+		if(ssockets_num_allocated >= MAX_NUM_SSOCKETS || socketId == 255)
 		{
-			lStatus = SOCKETS_ENOMEM;
+			lStatus = SOCKETS_SOCKET_ERROR;
 		}
-	}
 
-    if( SOCKETS_ERROR_NONE == lStatus )
-    {
-        memset( pxContext, 0, sizeof( SSOCKETContext_t ) );
-        pxContext->xSocket = socketId;
+		 if( SOCKETS_ERROR_NONE == lStatus )
+		 {
+			/* Allocate the internal context structure. */
+			if( NULL == ( pxContext = pvPortMalloc( sizeof( SSOCKETContext_t ) ) ) )
+			{
+				lStatus = SOCKETS_ENOMEM;
+			}
+		}
 
-        /* Create the wrapped socket. */
-        ret = sx_ulpgn_socket_create(socketId, 0, 4);
-        if(-1 == ret)
-        {
-            lStatus = SOCKETS_SOCKET_ERROR;
-        }
-        pxContext->ulRecvTimeout = socketsconfigDEFAULT_RECV_TIMEOUT;
-        pxContext->ulSendTimeout = socketsconfigDEFAULT_SEND_TIMEOUT;
+		if( SOCKETS_ERROR_NONE == lStatus )
+		{
+			memset( pxContext, 0, sizeof( SSOCKETContext_t ) );
+
+			/* Create the wrapped socket. */
+			ret = sx_ulpgn_socket_create(socketId, 0, 4);
+			if(-1 == ret)
+			{
+				lStatus = SOCKETS_SOCKET_ERROR;
+			}
+			else
+			{
+				pxContext->xSocket = socketId;
+				pxContext->ulRecvTimeout = socketsconfigDEFAULT_RECV_TIMEOUT;
+				pxContext->ulSendTimeout = socketsconfigDEFAULT_SEND_TIMEOUT;
+			}
+		}
+
+		if( SOCKETS_ERROR_NONE != lStatus )
+		{
+			if(NULL != pxContext)
+			{
+				vPortFree( pxContext );
+			}
+			/* Give back the socketInUse mutex. */
+		    xSemaphoreGive(xUcInUse);
+			return SOCKETS_INVALID_SOCKET;
+		}
+
+		else
+		{
+			if(ssockets_num_allocated < MAX_NUM_SSOCKETS)
+			{
+				ssockets_num_allocated++;
+			}
+			/* Give back the socketInUse mutex. */
+		    xSemaphoreGive(xUcInUse);
+			return pxContext;
+		}
     }
-
-    if( SOCKETS_ERROR_NONE != lStatus )
-    {
-        vPortFree( pxContext );
-        return SOCKETS_INVALID_SOCKET;
-    }
-
     else
     {
-    	if(ssockets_num_allocated < MAX_NUM_SSOCKETS)
-    	{
-    		ssockets_num_allocated++;
-    	}
-    	return pxContext;
+		return SOCKETS_INVALID_SOCKET;
     }
 }
 /*-----------------------------------------------------------*/
@@ -633,6 +654,16 @@ BaseType_t SOCKETS_Init( void )
 {
     /* FIX ME. */
     /* Empty initialization */
+
+	  /* Create the global mutex which is used to ensure
+	   * that only one socket is accessing the ucInUse bits in
+	   * the socket array. */
+	  xUcInUse = xSemaphoreCreateMutex();
+	  if (xUcInUse == NULL)
+	  {
+		return pdFAIL;
+	  }
+
     return pdPASS;
 }
 /*-----------------------------------------------------------*/
