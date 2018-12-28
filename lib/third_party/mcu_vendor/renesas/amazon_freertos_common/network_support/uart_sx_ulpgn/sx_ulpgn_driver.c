@@ -278,14 +278,24 @@ typedef struct
     uint8_t socket_status;
     uint8_t socket_recv_error_count;
     uint8_t socket_create_flag;
-
 } ulpgn_socket_t;
 
 ulpgn_socket_t g_ulpgn_socket[CREATEABLE_SOCKETS];
 
+typedef struct
+{
+    uint32_t queue_overflow_count;
+    uint32_t eri_overflow_count;
+    uint32_t eri_framing_count;
+    uint32_t eri_parity_count;
+} uart_error_count_t;
+
+uart_error_count_t uart_error_count[2];
+
 uint8_t g_sx_ulpgn_ipaddress[4];
 uint8_t g_sx_ulpgn_subnetmask[4];
 uint8_t g_sx_ulpgn_gateway[4];
+
 
 int32_t sx_ulpgn_wifi_init(void)
 {
@@ -308,10 +318,10 @@ int32_t sx_ulpgn_wifi_init(void)
     g_sx_ulpgn_rx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[1][3];
 
     /* Wifi Module hardware reset   */
-    ULPGN_RESET_PORT_DDR = 1;
-    ULPGN_RESET_PORT_DR = 0; /* Low */
+    ULPGN_RESET_PORT_PDR = 1;
+    ULPGN_RESET_PORT_PODR = 0; /* Low */
     R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
-    ULPGN_RESET_PORT_DR = 1; /* High */
+    ULPGN_RESET_PORT_PODR = 1; /* High */
 //  R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
 
     for (uint8_t i = 0; i < CREATEABLE_SOCKETS; i++)
@@ -400,8 +410,8 @@ int32_t sx_ulpgn_wifi_init(void)
             return ret;
         }
         R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_EN_CTS_IN, NULL);
-        PORT0.PODR.BIT.B2 = 0;
-        PORT0.PDR.BIT.B2 = 1;
+        ULPGN_HSUART1_RTS_PODR = 0;
+        ULPGN_HSUART1_RTS_PDR = 1;
         R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
 
         ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATUART=2,1\r", 3, 200, ULPGN_RETURN_OK);
@@ -441,10 +451,10 @@ int32_t sx_ulpgn_wifi_init(void)
         g_sx_ulpgn_rx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[0][3];
 
         /* Wifi Module hardware reset   */
-        ULPGN_RESET_PORT_DDR = 1;
-        ULPGN_RESET_PORT_DR = 0; /* Low */
+        ULPGN_RESET_PORT_PDR = 1;
+        ULPGN_RESET_PORT_PODR = 0; /* Low */
         R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
-        ULPGN_RESET_PORT_DR = 1; /* High */
+        ULPGN_RESET_PORT_PODR = 1; /* High */
         g_sx_ulpgn_return_mode = 0;
 
         ret = sx_ulpgn_serial_open_for_initial();
@@ -480,8 +490,8 @@ int32_t sx_ulpgn_wifi_init(void)
         change_boud.rate = 115200;
         R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_CHANGE_BAUD, &change_boud);
         R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_EN_CTS_IN, NULL);
-        PORT0.PODR.BIT.B2 = 0;
-        PORT0.PDR.BIT.B2 = 1;
+        ULPGN_HSUART1_RTS_PODR = 0;
+        ULPGN_HSUART1_RTS_PDR = 1;
         R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
 
     }
@@ -1495,13 +1505,13 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                 if(0 == ret)
                 {
                     /* RTS sets active */
-                    //              PORT0.PODR.BIT.B2 = 0;
+                    //              ULPGN_HSUART1_RTS_PODR = 0;
                     break;
                 }
             }
             current_socket_index = socket_no;
             /* RTS sets active */
-//          PORT0.PODR.BIT.B2 = 0;
+//          ULPGN_HSUART1_RTS_PODR = 0;
 #endif
 #if 0
             while(1)
@@ -1521,7 +1531,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                     if(0 != g_sx_ulpgn_uart_teiflag[ULPGN_UART_COMMAND_PORT])
                     {
                         /* RTS sets not active */
-                        PORT0.PODR.BIT.B2 = 1;
+                    	ULPGN_HSUART1_RTS_PODR = 1;
                         break;
                     }
                     if(-1 == check_timeout(ULPGN_UART_COMMAND_PORT, 1000))
@@ -1533,7 +1543,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                 if(timeout == 1)
                 {
                     /* RTS sets active */
-                    PORT0.PODR.BIT.B2 = 0;
+                	ULPGN_HSUART1_RTS_PODR = 0;
                     return -1;
                 }
                 bytetimeout_init(ULPGN_UART_COMMAND_PORT, 3);
@@ -1589,7 +1599,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                             continue;
                         }
                         /* RTS sets active */
-                        PORT0.PODR.BIT.B2 = 0;
+                        ULPGN_HSUART1_RTS_PODR = 0;
                         break;
                     }
                     if(-1 == check_bytetimeout(ULPGN_UART_COMMAND_PORT, recvcnt))
@@ -1609,7 +1619,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
             }
 #endif
             /* RTS sets active */
-            PORT0.PODR.BIT.B2 = 0;
+            ULPGN_HSUART1_RTS_PODR = 0;
 #if ULPGN_PORT_DEBUG == 1
 //          DEBUG_PORT4_DR =0;
 #endif
@@ -1887,6 +1897,8 @@ static void sx_ulpgn_uart_callback_default_port_for_inititial(void *pArgs)
 
 } /* End of function my_sci_callback() */
 
+
+
 static void sx_ulpgn_uart_callback_second_port_for_command(void *pArgs)
 {
     sci_cb_args_t   *p_args;
@@ -1907,25 +1919,25 @@ static void sx_ulpgn_uart_callback_second_port_for_command(void *pArgs)
     {
         /* From RXI interrupt; rx queue is full; 'lost' data is in p_args->byte
            You will need to increase buffer size or reduce baud rate */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_SECOND_PORT].queue_overflow_count++;
     }
     else if (SCI_EVT_OVFL_ERR == p_args->event)
     {
         /* From receiver overflow error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_SECOND_PORT].eri_overflow_count++;
     }
     else if (SCI_EVT_FRAMING_ERR == p_args->event)
     {
         /* From receiver framing error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_SECOND_PORT].eri_framing_count++;
     }
     else if (SCI_EVT_PARITY_ERR == p_args->event)
     {
         /* From receiver parity error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_SECOND_PORT].eri_parity_count++;
     }
     else
     {
@@ -1974,25 +1986,25 @@ static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs)
     {
         /* From RXI interrupt; rx queue is full; 'lost' data is in p_args->byte
            You will need to increase buffer size or reduce baud rate */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_DEFAULT_PORT].queue_overflow_count++;
     }
     else if (SCI_EVT_OVFL_ERR == p_args->event)
     {
         /* From receiver overflow error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_DEFAULT_PORT].eri_overflow_count++;
     }
     else if (SCI_EVT_FRAMING_ERR == p_args->event)
     {
         /* From receiver framing error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_DEFAULT_PORT].eri_framing_count++;
     }
     else if (SCI_EVT_PARITY_ERR == p_args->event)
     {
         /* From receiver parity error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-        R_NOP();
+    	uart_error_count[ULPGN_UART_DEFAULT_PORT].eri_parity_count++;
     }
     else
     {

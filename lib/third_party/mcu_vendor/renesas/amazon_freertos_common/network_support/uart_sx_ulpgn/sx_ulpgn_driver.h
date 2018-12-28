@@ -3,7 +3,7 @@
 
 #include "aws_wifi.h"
 
-#define DEBUGLOG  0
+#define DEBUGLOG  1
 #define ULPGN_PORT_DEBUG 0
 
 /* Configuration */
@@ -47,8 +47,8 @@ extern uint8_t ULPGN_UART_DATA_PORT;
 #define CREATEABLE_SOCKETS (4)
 
 #if BSP_CFG_BOARD_REVISION == 1 || BSP_CFG_BOARD_REVISION == 0
-#define ULPGN_RESET_PORT_DDR    PORTF.PDR.BIT.B5     /*PMOD PinNo.8 */
-#define ULPGN_RESET_PORT_DR     PORTF.PODR.BIT.B5    /*PMOD PinNo.8 */
+//#define ULPGN_RESET_PORT_DDR    PORTF.PDR.BIT.B5     /*PMOD PinNo.8 */
+//#define ULPGN_RESET_PORT_DR     PORTF.PODR.BIT.B5    /*PMOD PinNo.8 */
 
 #if ULPGN_PORT_DEBUG == 1
 #define DEBUG_PORT4_DDR PORT4.PDR.BIT.B7    /* TFT-46 */
