@@ -536,82 +536,89 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
     TickType_t xTimeout;
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
 
-    switch( lOptionName )
+    if( ( xSocket != SOCKETS_INVALID_SOCKET ) && ( xSocket != NULL ) )
     {
-        case SOCKETS_SO_SERVER_NAME_INDICATION:
+		switch( lOptionName )
+		{
+			case SOCKETS_SO_SERVER_NAME_INDICATION:
 
-            /* Non-NULL destination string indicates that SNI extension should
-             * be used during TLS negotiation. */
-            if( NULL == ( pxContext->pcDestination =
-                              ( char * ) pvPortMalloc( 1U + xOptionLength ) ) )
-            {
-                lStatus = SOCKETS_ENOMEM;
-            }
-            else
-            {
-                memcpy( pxContext->pcDestination, pvOptionValue, xOptionLength );
-                pxContext->pcDestination[ xOptionLength ] = '\0';
-            }
+				/* Non-NULL destination string indicates that SNI extension should
+				 * be used during TLS negotiation. */
+				if( NULL == ( pxContext->pcDestination =
+								  ( char * ) pvPortMalloc( 1U + xOptionLength ) ) )
+				{
+					lStatus = SOCKETS_ENOMEM;
+				}
+				else
+				{
+					memcpy( pxContext->pcDestination, pvOptionValue, xOptionLength );
+					pxContext->pcDestination[ xOptionLength ] = '\0';
+				}
 
-            break;
+				break;
 
-        case SOCKETS_SO_TRUSTED_SERVER_CERTIFICATE:
+			case SOCKETS_SO_TRUSTED_SERVER_CERTIFICATE:
 
-            /* Non-NULL server certificate field indicates that the default trust
-             * list should not be used. */
-            if( NULL == ( pxContext->pcServerCertificate =
-                              ( char * ) pvPortMalloc( xOptionLength ) ) )
-            {
-                lStatus = SOCKETS_ENOMEM;
-            }
-            else
-            {
-                memcpy( pxContext->pcServerCertificate, pvOptionValue, xOptionLength );
-                pxContext->ulServerCertificateLength = xOptionLength;
-            }
+				/* Non-NULL server certificate field indicates that the default trust
+				 * list should not be used. */
+				if( NULL == ( pxContext->pcServerCertificate =
+								  ( char * ) pvPortMalloc( xOptionLength ) ) )
+				{
+					lStatus = SOCKETS_ENOMEM;
+				}
+				else
+				{
+					memcpy( pxContext->pcServerCertificate, pvOptionValue, xOptionLength );
+					pxContext->ulServerCertificateLength = xOptionLength;
+				}
 
-            break;
+				break;
 
-        case SOCKETS_SO_REQUIRE_TLS:
-            pxContext->xRequireTLS = pdTRUE;
-            break;
+			case SOCKETS_SO_REQUIRE_TLS:
+				pxContext->xRequireTLS = pdTRUE;
+				break;
 
-        case SOCKETS_SO_NONBLOCK:
-            pxContext->ulSendTimeout = 1;
-            pxContext->ulRecvTimeout = 2;
-            break;
+			case SOCKETS_SO_NONBLOCK:
+				pxContext->ulSendTimeout = 1;
+				pxContext->ulRecvTimeout = 2;
+				break;
 
-        case SOCKETS_SO_RCVTIMEO:
-            /* Comply with Berkeley standard - a 0 timeout is wait forever. */
-            xTimeout = *( ( const TickType_t * ) pvOptionValue ); /*lint !e9087 pvOptionValue passed should be of TickType_t */
+			case SOCKETS_SO_RCVTIMEO:
+				/* Comply with Berkeley standard - a 0 timeout is wait forever. */
+				xTimeout = *( ( const TickType_t * ) pvOptionValue ); /*lint !e9087 pvOptionValue passed should be of TickType_t */
 
-            if( xTimeout == 0U )
-            {
-                xTimeout = portMAX_DELAY;
-            }
-        	pxContext->ulRecvTimeout = xTimeout;
-//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
-            break;
-        case SOCKETS_SO_SNDTIMEO:
-            /* Comply with Berkeley standard - a 0 timeout is wait forever. */
-            xTimeout = *( ( const TickType_t * ) pvOptionValue ); /*lint !e9087 pvOptionValue passed should be of TickType_t */
+				if( xTimeout == 0U )
+				{
+					xTimeout = portMAX_DELAY;
+				}
+				pxContext->ulRecvTimeout = xTimeout;
+	//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
+				break;
+			case SOCKETS_SO_SNDTIMEO:
+				/* Comply with Berkeley standard - a 0 timeout is wait forever. */
+				xTimeout = *( ( const TickType_t * ) pvOptionValue ); /*lint !e9087 pvOptionValue passed should be of TickType_t */
 
-            if( xTimeout == 0U )
-            {
-                xTimeout = portMAX_DELAY;
-            }
-        	pxContext->ulSendTimeout = xTimeout;
-//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
-            break;
+				if( xTimeout == 0U )
+				{
+					xTimeout = portMAX_DELAY;
+				}
+				pxContext->ulSendTimeout = xTimeout;
+	//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
+				break;
 
-        default:
-            lStatus = SOCKETS_ENOPROTOOPT;
-//            FreeRTOS_setsockopt( pxContext->xSocket,
-//                                           lLevel,
-//                                           lOptionName,
-//                                           pvOptionValue,
-//                                           xOptionLength );
-            break;
+			default:
+				lStatus = SOCKETS_ENOPROTOOPT;
+	//            FreeRTOS_setsockopt( pxContext->xSocket,
+	//                                           lLevel,
+	//                                           lOptionName,
+	//                                           pvOptionValue,
+	//                                           xOptionLength );
+				break;
+		}
+    }
+    else
+    {
+        lStatus = SOCKETS_EINVAL;
     }
 
     return lStatus;
