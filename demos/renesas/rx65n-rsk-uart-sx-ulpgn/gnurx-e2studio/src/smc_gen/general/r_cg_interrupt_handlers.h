@@ -19,10 +19,10 @@
 
 /***********************************************************************************************************************
 * File Name    : r_cg_interrupt_handlers.h
-* Version      : 1.2.0
+* Version      : 1.2.2
 * Device(s)    : R5F565NEDxFC
 * Description  : This file declares interrupt handlers.
-* Creation Date: 2018-12-08
+* Creation Date: 2018-12-28
 ***********************************************************************************************************************/
 
 #ifndef INTERRUPT_HANDLERS_H

@@ -206,6 +206,11 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx</locationURI>
 		</link>
 		<link>
+			<name>src/FIT_modified_code/r_s12ad_rx</name>
+			<type>2</type>
+			<locationURI>PARENT-4-PROJECT_LOC/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_s12ad_rx</locationURI>
+		</link>
+		<link>
 			<name>src/FIT_modified_code/r_sci_iic_rx</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_sci_iic_rx</locationURI>
@@ -340,6 +345,24 @@
 			</matcher>
 		</filter>
 		<filter>
+			<id>1536904742727</id>
+			<name>src/amazon_freertos_common/compiler_support</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-gnuc</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1536927312156</id>
+			<name>src/amazon_freertos_common/network_support</name>
+			<type>9</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-uart_sx_ulpgn</arguments>
+			</matcher>
+		</filter>
+		<filter>
 			<id>1513514756448</id>
 			<name>lib/aws/FreeRTOS/portable</name>
 			<type>9</type>
@@ -463,24 +486,6 @@
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
 				<arguments>1.0-name-matches-false-false-rx65n</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1536904742727</id>
-			<name>src/amazon_freertos_common/compiler_support</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-gnuc</arguments>
-			</matcher>
-		</filter>
-		<filter>
-			<id>1536927312156</id>
-			<name>src/amazon_freertos_common/network_support</name>
-			<type>9</type>
-			<matcher>
-				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-uart_sx_ulpgn</arguments>
 			</matcher>
 		</filter>
 		<filter>

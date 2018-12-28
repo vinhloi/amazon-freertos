@@ -625,8 +625,8 @@ Configuration Options
 
 /* This macro is used to select which SCI channel used for UART WiFi module.
  */
-#define MY_BSP_CFG_UART_WIFI_COMMAND_SCI            (6)
-#define MY_BSP_CFG_UART_WIFI_DATA_SCI               (7)
+#define MY_BSP_CFG_UART_WIFI_SCI                    (6)
+#define MY_BSP_CFG_UART_WIFI_SECOND_SCI             (7)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

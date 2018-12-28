@@ -631,6 +631,7 @@ static int32_t sx_ulpgn_serial_escape()
             return 1;
         }
     }
+    return -1;
 //#endif
 }
 
