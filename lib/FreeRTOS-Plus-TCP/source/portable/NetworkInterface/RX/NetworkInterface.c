@@ -498,18 +498,5 @@ static void clear_all_ether_rx_discriptors(uint32_t event)
 }
 
 /***********************************************************************************************************************
- * Function Name: ulRand ()
- * Description  : Random number generator
- * Arguments    : none
- * Return Value : unsigned 32-bit random number
- **********************************************************************************************************************/
-uint32_t ulRand( void )   //TODO make true random number
-{
-    uint32_t tmp;
-    get_random_number((uint8_t*)&tmp, 4);
-    return tmp;
-} /* End of function ulRand() */
-
-/***********************************************************************************************************************
  End of file "NetworkInterface.c"
  **********************************************************************************************************************/

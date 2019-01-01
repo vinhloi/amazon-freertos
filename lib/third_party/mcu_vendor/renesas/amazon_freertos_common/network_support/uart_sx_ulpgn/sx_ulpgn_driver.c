@@ -10,155 +10,148 @@
 #include "r_byteq_if.h"
 #include "sx_ulpgn_driver.h"
 
-#if !defined(MY_BSP_CFG_UART_WIFI_SCI)
-#error "Error! Need to define MY_BSP_CFG_UART_WIFI_SCI in r_bsp_config.h"
-#elif MY_BSP_CFG_UART_WIFI_SCI == (0)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI0()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH0
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH0_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH0_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (1)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI1()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH1
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH1_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH1_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (2)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI2()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH2
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH2_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH2_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (3)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI3()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH3
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH3_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH3_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (4)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI4()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH4
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH4_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH4_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (5)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI5()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH5
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH5_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH5_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (6)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI6()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH6
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH6_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH6_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (7)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI7()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH7
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH7_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH7_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (8)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI8()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH8
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH8_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH8_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (9)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI9()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH9
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH9_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH9_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (10)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI10()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH10
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH10_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH10_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (11)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI11()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH11
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH11_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH11_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SCI == (12)
-#define R_SCI_PinSet_sx_ulpgn_serial_default()  R_SCI_PinSet_SCI12()
-#define SCI_CH_sx_ulpgn_serial_default          SCI_CH12
-#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH12_TX_BUFSIZ
-#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH12_RX_BUFSIZ
+#if !defined(MY_BSP_CFG_UART_WIFI_COMMAND_SCI)
+#error "Error! Need to define MY_BSP_CFG_UART_WIFI_COMMAND_SCI in r_bsp_config.h"
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (0)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI0()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH0
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH0_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH0_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (1)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI1()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH1
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH1_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH1_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (2)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI2()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH2
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH2_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH2_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (3)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI3()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH3
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH3_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH3_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (4)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI4()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH4
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH4_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH4_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (5)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI5()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH5
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH5_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH5_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (6)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI6()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH6
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH6_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH6_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (7)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI7()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH7
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH7_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH7_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (8)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI8()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH8
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH8_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH8_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (9)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI9()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH9
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH9_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH9_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (10)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI10()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH10
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH10_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH10_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (11)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI11()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH11
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH11_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH11_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_COMMAND_SCI == (12)
+#define R_SCI_PinSet_sx_ulpgn_serial_command()  R_SCI_PinSet_SCI12()
+#define SCI_CH_sx_ulpgn_serial_command          SCI_CH12
+#define SCI_TX_BUSIZ_COMMAND                    SCI_CFG_CH12_TX_BUFSIZ
+#define SCI_RX_BUSIZ_COMMAND                    SCI_CFG_CH12_RX_BUFSIZ
 #else
-#error "Error! Invalid setting for MY_BSP_CFG_UART_WIFI_SCI in r_bsp_config.h"
+#error "Error! Invalid setting for MY_BSP_CFG_UART_WIFI_COMMAND_SCI in r_bsp_config.h"
 #endif
 
-#if !defined(MY_BSP_CFG_UART_WIFI_SECOND_SCI)
-#error "Error! Need to define MY_BSP_CFG_UART_WIFI_SECOND_SCI in r_bsp_config.h"
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (0)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI0()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH0
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH0_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH0_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (1)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI1()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH1
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH1_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH1_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (2)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI2()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH2
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH2_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH2_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (3)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI3()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH3
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH3_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH3_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (4)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI4()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH4
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH4_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH4_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (5)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI5()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH5
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH5_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH5_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (6)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI6()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH6
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH6_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH6_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (7)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI7()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH7
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH7_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH7_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (8)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI8()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH8
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH8_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH8_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (9)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI9()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH9
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH9_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH9_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (10)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI10()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH10
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH10_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH10_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (11)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI11()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH11
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH11_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH11_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (12)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()  R_SCI_PinSet_SCI12()
-#define SCI_CH_sx_ulpgn_serial_second          SCI_CH12
-#define SCI_TX_BUSIZ_SECOND                    SCI_CFG_CH12_TX_BUFSIZ
-#define SCI_RX_BUSIZ_SECOND                    SCI_CFG_CH12_RX_BUFSIZ
-#elif MY_BSP_CFG_UART_WIFI_SECOND_SCI == (-1)
-#define R_SCI_PinSet_sx_ulpgn_serial_second()
-#define SCI_CH_sx_ulpgn_serial_second
-#define SCI_TX_BUSIZ_SECOND
-#define SCI_RX_BUSIZ_SECOND
+#if !defined(MY_BSP_CFG_UART_WIFI_DATA_SCI)
+#error "Error! Need to define MY_BSP_CFG_UART_WIFI_DATA_SCI in r_bsp_config.h"
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (0)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI0()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH0
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH0_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH0_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (1)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI1()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH1
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH1_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH1_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (2)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI2()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH2
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH2_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH2_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (3)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI3()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH3
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH3_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH3_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (4)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI4()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH4
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH4_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH4_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (5)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI5()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH5
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH5_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH5_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (6)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI6()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH6
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH6_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH6_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (7)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI7()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH7
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH7_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH7_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (8)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI8()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH8
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH8_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH8_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (9)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI9()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH9
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH9_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH9_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (10)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI10()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH10
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH10_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH10_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (11)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI11()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH11
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH11_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH11_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_DATA_SCI == (12)
+#define R_SCI_PinSet_sx_ulpgn_serial_data()  R_SCI_PinSet_SCI12()
+#define SCI_CH_sx_ulpgn_serial_data          SCI_CH12
+#define SCI_TX_BUSIZ_DATA                    SCI_CFG_CH12_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DATA                    SCI_CFG_CH12_RX_BUFSIZ
 #else
-#error "Error! Invalid setting for MY_BSP_CFG_UART_WIFI_SECOND_SCI in r_bsp_config.h"
+#error "Error! Invalid setting for MY_BSP_CFG_UART_WIFI_DATA_SCI in r_bsp_config.h"
 #endif
 
-#define ULPGN_UART_DEFAULT_PORT (0)
-#define ULPGN_UART_SECOND_PORT (1)
 
 uint8_t ULPGN_USE_UART_NUM = 2;
 
@@ -199,9 +192,9 @@ const uint8_t ulpgn_return_dummy[]   = "";
 
 const uint32_t g_sx_ulpgn_serial_buffsize_table[2][4] =
 {
-    /*SCI_TX_BUSIZ_DEFAULT*//*SCI_TX_BUSIZ_SIZE*/   /*SCI_RX_BUSIZ_DEFAULT*/ /*SCI_RX_BUSIZ_SIZE*/
-    {SCI_TX_BUSIZ_DEFAULT,  SCI_TX_BUSIZ_SECOND,     SCI_RX_BUSIZ_DEFAULT,  SCI_TX_BUSIZ_SECOND,     }, /*ULPGN_USE_UART_NUM = 2 */
-    {SCI_TX_BUSIZ_DEFAULT,  SCI_TX_BUSIZ_DEFAULT,  SCI_RX_BUSIZ_DEFAULT,  SCI_RX_BUSIZ_DEFAULT,  }, /*ULPGN_USE_UART_NUM = 1 */
+    /*SCI_TX_BUSIZ_COMMAND*//*SCI_TX_BUSIZ_SIZE*/   /*SCI_RX_BUSIZ_COMMAND*/ /*SCI_RX_BUSIZ_SIZE*/
+    {SCI_TX_BUSIZ_COMMAND,  SCI_TX_BUSIZ_COMMAND,  SCI_RX_BUSIZ_COMMAND,  SCI_RX_BUSIZ_COMMAND,  }, /*ULPGN_USE_UART_NUM = 1 */
+    {SCI_TX_BUSIZ_COMMAND,  SCI_TX_BUSIZ_DATA,     SCI_RX_BUSIZ_COMMAND,  SCI_TX_BUSIZ_DATA,     }, /*ULPGN_USE_UART_NUM = 2 */
 };
 
 const uint8_t * const ulpgn_result_code[ULPGN_RETURN_ENUM_MAX][ULPGN_RETURN_STRING_MAX] =
@@ -240,21 +233,21 @@ static TickType_t startbytetime[2], thisbytetime[2], endbytetime[2];
 static uint8_t byte_timeout_overflow_flag[2];
 
 uint8_t g_sx_ulpgn_return_mode;
+uint8_t socket_create_flag[CREATEABLE_SOCKETS];
+uint8_t socket_recv_buff[CREATEABLE_SOCKETS][1460];
+byteq_hdl_t socket_byteq_hdl[CREATEABLE_SOCKETS];
+uint32_t socket_recv_error_count[4];
 
-
-static void sx_ulpgn_uart_callback_second_port_for_command(void *pArgs);
-static void sx_ulpgn_uart_callback_default_port_for_inititial(void *pArgs);
-static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs);
+static void sx_ulpgn_uart_callback_command_port(void *pArgs);
+static void sx_ulpgn_uart_callback_data_port(void *pArgs);
 static void timeout_init(uint8_t socket_no, uint32_t timeout_ms);
 static void bytetimeout_init(uint8_t socket_no, uint32_t timeout_ms);
 static int32_t check_timeout(uint8_t socket_no, int32_t rcvcount);
 static int32_t check_bytetimeout(uint8_t socket_no, int32_t rcvcount);
-static int32_t sx_ulpgn_serial_open_for_initial(void);
-static int32_t sx_ulpgn_serial_open_for_data(void);
-static int32_t sx_ulpgn_serial_close(void);
+static int32_t sx_ulpgn_serial_open(void);
 static int32_t sx_ulpgn_serial_escape(void);
-static int32_t sx_ulpgn_serial_second_port_open(void);
-static int32_t sx_ulpgn_serial_second_port_close(void);
+static int32_t sx_ulpgn_serial_data_port_open(void);
+static int32_t sx_ulpgn_serial_data_port_close(void);
 static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code);
 static int32_t sx_ulpgn_get_socket_status(uint8_t socket_no);
 static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no);
@@ -271,36 +264,12 @@ static SemaphoreHandle_t g_sx_ulpgn_semaphore = NULL;
  */
 static const TickType_t xMaxSemaphoreBlockTime = pdMS_TO_TICKS( 60000UL );
 
-typedef struct
-{
-    byteq_hdl_t socket_byteq_hdl;
-    uint8_t socket_recv_buff[4096];
-    uint8_t socket_status;
-    uint8_t socket_recv_error_count;
-    uint8_t socket_create_flag;
-} ulpgn_socket_t;
 
-ulpgn_socket_t g_ulpgn_socket[CREATEABLE_SOCKETS];
-
-typedef struct
-{
-    uint32_t queue_overflow_count;
-    uint32_t eri_overflow_count;
-    uint32_t eri_framing_count;
-    uint32_t eri_parity_count;
-} uart_error_count_t;
-
-uart_error_count_t uart_error_count[2];
-
-uint8_t g_sx_ulpgn_ipaddress[4];
-uint8_t g_sx_ulpgn_subnetmask[4];
-uint8_t g_sx_ulpgn_gateway[4];
 
 
 int32_t sx_ulpgn_wifi_init(void)
 {
     int32_t ret;
-    sci_baud_t change_boud;
 #if ULPGN_PORT_DEBUG == 1
     DEBUG_PORT4_DDR = 1;
     DEBUG_PORT4_DR = 0;
@@ -310,23 +279,23 @@ int32_t sx_ulpgn_wifi_init(void)
 
     ULPGN_USE_UART_NUM = 2;
     g_sx_ulpgn_cleateble_sockets = CREATEABLE_SOCKETS;
-    ULPGN_UART_COMMAND_PORT = ULPGN_UART_DEFAULT_PORT;
-//  ULPGN_UART_DATA_PORT = 1;
+    ULPGN_UART_COMMAND_PORT = 0;
+    ULPGN_UART_DATA_PORT = 1;
     g_sx_ulpgn_tx_busiz_command = g_sx_ulpgn_serial_buffsize_table[1][0];
     g_sx_ulpgn_tx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[1][1];
     g_sx_ulpgn_rx_busiz_command = g_sx_ulpgn_serial_buffsize_table[1][2];
     g_sx_ulpgn_rx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[1][3];
 
     /* Wifi Module hardware reset   */
-    ULPGN_RESET_PORT_PDR = 1;
-    ULPGN_RESET_PORT_PODR = 0; /* Low */
+    ULPGN_RESET_PORT_DDR = 1;
+    ULPGN_RESET_PORT_DR = 0; /* Low */
     R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
-    ULPGN_RESET_PORT_PODR = 1; /* High */
+    ULPGN_RESET_PORT_DR = 1; /* High */
 //  R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
 
     for (uint8_t i = 0; i < CREATEABLE_SOCKETS; i++)
     {
-        g_ulpgn_socket[i].socket_create_flag = 0;
+        socket_create_flag[i] = 0;
     }
 
     if (g_sx_ulpgn_semaphore != NULL)
@@ -342,12 +311,18 @@ int32_t sx_ulpgn_wifi_init(void)
     }
 
 
-    ret = sx_ulpgn_serial_open_for_initial();
+    ret = sx_ulpgn_serial_open();
     if(ret != 0)
     {
         return ret;
     }
 
+
+    ret = sx_ulpgn_serial_data_port_open();
+    if(ret != 0)
+    {
+        return ret;
+    }
 
     /* reboots the system */
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATZ\r", 2000, 4000, ULPGN_RETURN_OK);
@@ -370,65 +345,33 @@ int32_t sx_ulpgn_wifi_init(void)
     }
 
     /* Check HSUART2 connection */
-    /* Command Port = HSUART2 */
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATUART=2\r", 3, 200, ULPGN_RETURN_OK);
+    /* Command Port = HSUART1(PMOD-UART), Data Port = Debug　UART */
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATUART=2,1\r", 3, 200, ULPGN_RETURN_OK);
+//  ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATUART=0,1\r", 3, 200, ULPGN_RETURN_OK);
     if(ret != 0)
     {
         return ret;
     }
 
-    R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS); /* 1 sec */
+    R_BSP_SoftwareDelay(5000, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
 
-    ULPGN_UART_COMMAND_PORT = ULPGN_UART_SECOND_PORT;
-
-    ret = sx_ulpgn_serial_second_port_open();
-    if(ret != 0)
-    {
-        return ret;
-    }
-
-    sx_ulpgn_serial_close();
-
-    /* Command Port = HSUART2, Data Port = HSUART1 */
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "AT\r", 3, 200, ULPGN_RETURN_OK);
+    /* Command Port = HSUART1(PMOD-UART), Data Port = Debug　UART */
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_DATA_PORT, "ATUART=1,2\r", 3, 2000, ULPGN_RETURN_OK);
+//  ret = sx_ulpgn_serial_send_basic(ULPGN_UART_DATA_PORT, "ATUART=1,0\r", 3, 2000, ULPGN_RETURN_OK);
     if(ret == 0)
     {
         /* HSUART2 and SCI are connecting.
          *  -> multiple UART control. */
-#if DEBUGLOG == 1
-        printf("=-=-= Multiple connection!=-=-=\r\n");
-#endif
-        ret = sx_ulpgn_serial_open_for_data();
-        if(ret != 0)
-        {
-            return ret;
-        }
-        /* Change HSUART1 baudrate and flow control. */
-        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATBX1=921600,,,,h\r", 3, 200, ULPGN_RETURN_OK);
-        if(ret != 0)
-        {
-            return ret;
-        }
-        R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_EN_CTS_IN, NULL);
-        ULPGN_HSUART1_RTS_PODR = 0;
-        ULPGN_HSUART1_RTS_PDR = 1;
-        R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
-
-        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATUART=2,1\r", 3, 200, ULPGN_RETURN_OK);
-        if(ret != 0)
-        {
-            return ret;
-        }
-        R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS); /* 1 sec */
-
         ULPGN_USE_UART_NUM = 2;
         g_sx_ulpgn_cleateble_sockets = 4;
-        ULPGN_UART_COMMAND_PORT = ULPGN_UART_SECOND_PORT;
-        ULPGN_UART_DATA_PORT = ULPGN_UART_DEFAULT_PORT;
+        ULPGN_UART_COMMAND_PORT = 0;
+        ULPGN_UART_DATA_PORT = 1;
         g_sx_ulpgn_tx_busiz_command = g_sx_ulpgn_serial_buffsize_table[1][0];
         g_sx_ulpgn_tx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[1][1];
         g_sx_ulpgn_rx_busiz_command = g_sx_ulpgn_serial_buffsize_table[1][2];
         g_sx_ulpgn_rx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[1][3];
+
+        R_BSP_SoftwareDelay(5000, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
 
     }
     else
@@ -436,32 +379,23 @@ int32_t sx_ulpgn_wifi_init(void)
         /* HSUART2 and SCI are not connecting.
          * -> single UART */
 
-#if DEBUGLOG == 1
-        printf("=-=-= Single connection!=-=-=\r\n");
-#endif
-        ret = sx_ulpgn_serial_second_port_close();
+        ret = sx_ulpgn_serial_data_port_close();
 
         ULPGN_USE_UART_NUM = 1;
         g_sx_ulpgn_cleateble_sockets = 1;
-        ULPGN_UART_COMMAND_PORT = ULPGN_UART_DEFAULT_PORT;
-        ULPGN_UART_DATA_PORT = ULPGN_UART_DEFAULT_PORT;
+        ULPGN_UART_COMMAND_PORT = 0;
+        ULPGN_UART_DATA_PORT = 0;
         g_sx_ulpgn_tx_busiz_command = g_sx_ulpgn_serial_buffsize_table[0][0];
         g_sx_ulpgn_tx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[0][1];
         g_sx_ulpgn_rx_busiz_command = g_sx_ulpgn_serial_buffsize_table[0][2];
         g_sx_ulpgn_rx_busiz_data    = g_sx_ulpgn_serial_buffsize_table[0][3];
 
         /* Wifi Module hardware reset   */
-        ULPGN_RESET_PORT_PDR = 1;
-        ULPGN_RESET_PORT_PODR = 0; /* Low */
+        ULPGN_RESET_PORT_DDR = 1;
+        ULPGN_RESET_PORT_DR = 0; /* Low */
         R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
-        ULPGN_RESET_PORT_PODR = 1; /* High */
+        ULPGN_RESET_PORT_DR = 1; /* High */
         g_sx_ulpgn_return_mode = 0;
-
-        ret = sx_ulpgn_serial_open_for_initial();
-        if(ret != 0)
-        {
-            return ret;
-        }
 
         /* reboots the system */
         ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATZ\r", 1000, 2000, ULPGN_RETURN_OK);
@@ -479,40 +413,19 @@ int32_t sx_ulpgn_wifi_init(void)
         {
             return ret;
         }
-
-        /* Change HSUART1 baudrate and flow control. */
-        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATBX1=115200,,,,h\r", 3, 200, ULPGN_RETURN_OK);
-        if(ret != 0)
-        {
-            return ret;
-        }
-        change_boud.pclk = BSP_PCLKB_HZ;
-        change_boud.rate = 115200;
-        R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_CHANGE_BAUD, &change_boud);
-        R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_EN_CTS_IN, NULL);
-        ULPGN_HSUART1_RTS_PODR = 0;
-        ULPGN_HSUART1_RTS_PDR = 1;
-        R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
-
     }
 
 
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATS108=100\r", 3, 200, ULPGN_RETURN_OK);
-    if(ret != 0)
-    {
-        return ret;
-    }
-
-//  1875000 921600
     /* Escape guard time = 200msec */
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATS12=1\r", 1000 , 200, ULPGN_RETURN_OK);
+
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATS12=1\r", 3 , 200, ULPGN_RETURN_OK);
     if(ret != 0)
     {
         return ret;
     }
 
     /* Disconnect from currently connected Access Point, */
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATWD\r", 3, 200, ULPGN_RETURN_OK);
+    ret = sx_ulpgn_serial_send_basic(0, "ATWD\r", 3, 200, ULPGN_RETURN_OK);
     if(ret != 0)
     {
         return ret;
@@ -588,18 +501,7 @@ int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 3, 5000, ULPGN_RETURN_OK);
     if(0 == ret)
     {
-        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATW\r", 3, 1000, ULPGN_RETURN_OK);
-        if(0 == ret)
-        {
-            while(1)
-            {
-                ret = sx_ulpgn_get_ipaddress();
-                if(0 == ret)
-                {
-                    break;
-                }
-            }
-        }
+        sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATW\r", 3, 1000, ULPGN_RETURN_OK);
     }
     return ret;
 }
@@ -610,7 +512,7 @@ int32_t sx_ulpgn_wifi_disconnect()
 
     for (uint8_t i = 0; i < CREATEABLE_SOCKETS; i++)
     {
-        if (0 != R_BYTEQ_Close(g_ulpgn_socket[i].socket_byteq_hdl))
+        if (0 != R_BYTEQ_Close(socket_byteq_hdl[i]))
         {
             return -1;
         }
@@ -641,7 +543,6 @@ static int32_t sx_ulpgn_serial_escape()
             return 1;
         }
     }
-    return -1;
 //#endif
 }
 
@@ -769,7 +670,7 @@ uint8_t sx_ulpgn_get_avail_socket()
 {
     for (int8_t i = 0; i < g_sx_ulpgn_cleateble_sockets; i++)
     {
-        if (g_ulpgn_socket[i].socket_create_flag == 0)
+        if (socket_create_flag[i] == 0)
         {
             return i;
         }
@@ -789,7 +690,7 @@ int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipvers
         printf("sx_ulpgn_socket_create(%d)\r\n", socket_no);
         R_BSP_CpuInterruptLevelWrite (0);
 #endif
-        if( g_ulpgn_socket[socket_no].socket_create_flag == 1)
+        if( socket_create_flag[socket_no] == 1)
         {
             ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
             return -1;
@@ -811,16 +712,13 @@ int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipvers
         sprintf((char *)buff, "ATNSOCK=%d,%d\r", (uint8_t)(type), (uint8_t)(ipversion));
 
         ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 10, 200, ULPGN_RETURN_OK);
+        //  ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 10, 200, ULPGN_RETURN_OK);
         if(ret != 0 && ret != -2)
         {
             ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
             return ret;
         }
-        g_ulpgn_socket[socket_no].socket_create_flag = 1;
-        if(ret == 0)
-        {
-        	g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_SOCKET;
-        }
+        socket_create_flag[socket_no] = 1;
         //  ret = sx_ulpgn_serial_send_basic(socket_no, "ATNSTAT\r", 3, 200, ULPGN_RETURN_OK);
 
         ret = sx_ulpgn_get_socket_status(socket_no);
@@ -842,7 +740,7 @@ int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port)
     int32_t ret;
     if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
-        if( g_ulpgn_socket[socket_no].socket_create_flag  == 0)
+        if( socket_create_flag[socket_no] == 0)
         {
             /* Give back the socketInUse mutex. */
             ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
@@ -881,12 +779,6 @@ int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port)
             ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 10000, ULPGN_RETURN_CONNECT);
 //#endif
         }
-        if(ret == 0)
-        {
-            g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_CONNECTED;
-        }
-
-
         /* Give back the socketInUse mutex. */
         ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
 
@@ -911,7 +803,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
 
     if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
-        if(0 == g_ulpgn_socket[socket_no].socket_create_flag )
+        if(0 == socket_create_flag[socket_no])
         {
             /* Give back the socketInUse mutex. */
             ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
@@ -1013,7 +905,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 
     if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
-        if(0 == g_ulpgn_socket[socket_no].socket_create_flag)
+        if(0 == socket_create_flag[socket_no])
         {
             /* Give back the socketInUse mutex. */
             ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
@@ -1028,26 +920,10 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 //#if ULPGN_USE_UART_NUM == 2
         if(ULPGN_USE_UART_NUM == 2)
         {
-            if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
-            {
-                /* Give back the socketInUse mutex. */
-#if DEBUGLOG == 1
-                R_BSP_CpuInterruptLevelWrite (14);
-                printf("status not connect.\r\n");
-                R_BSP_CpuInterruptLevelWrite (0);
-#endif
-                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                return -1;
-            }
             ret = sx_ulpgn_change_socket_index(socket_no);
             if(ret != 0)
             {
                 /* Give back the socketInUse mutex. */
-#if DEBUGLOG == 1
-                R_BSP_CpuInterruptLevelWrite (14);
-                printf("sockindex error.\r\n");
-                R_BSP_CpuInterruptLevelWrite (0);
-#endif
                 ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
                 return -1;
             }
@@ -1081,7 +957,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
             if(ULPGN_USE_UART_NUM == 2)
             {
 
-                byteq_ret = R_BYTEQ_Get(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, (pdata + recvcnt));
+                byteq_ret = R_BYTEQ_Get(socket_byteq_hdl[current_socket_index], (pdata + recvcnt));
                 if(BYTEQ_SUCCESS == byteq_ret)
                 {
                     recvcnt++;
@@ -1123,7 +999,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
                 {
                     /* Give back the socketInUse mutex. */
                     ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                    return 0;
+                    return -1;
                 }
             }
         }
@@ -1149,7 +1025,7 @@ int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no)
     int32_t ret = 0;
     if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
-        if(1 == g_ulpgn_socket[socket_no].socket_create_flag)
+        if(1 == socket_create_flag[socket_no])
         {
 #if DEBUGLOG == 1
             R_BSP_CpuInterruptLevelWrite (14);
@@ -1180,12 +1056,11 @@ int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no)
             ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATNCLOSE\r", 3, 1000, ULPGN_RETURN_OK);
             if(0 == ret)
             {
-                g_ulpgn_socket[socket_no].socket_create_flag = 0;
-                g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_CLOSED;
+                socket_create_flag[socket_no] = 0;
 //#if ULPGN_USE_UART_NUM == 2
                 if(ULPGN_USE_UART_NUM == 2)
                 {
-                    R_BYTEQ_Flush(g_ulpgn_socket[socket_no].socket_byteq_hdl);
+                    R_BYTEQ_Flush(socket_byteq_hdl[socket_no]);
                 }
 //#endif
             }
@@ -1205,48 +1080,6 @@ int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no)
     }
     return ret;
 
-}
-
-int32_t sx_ulpgn_get_ipaddress(void)
-{
-
-    uint32_t result;
-    uint32_t ipaddr[4];
-    uint32_t subnetmask[4];
-    uint32_t gateway[4];
-    int32_t func_ret;
-    int32_t scanf_ret;
-    uint32_t count;
-    func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATNSET=\?\r", 3, 3000, ULPGN_RETURN_OK);
-    if(func_ret != 0)
-    {
-        return -1;
-    }
-    scanf_ret = sscanf((const char *)recvbuff, "IP:%d.%d.%d.%d, Mask:%d.%d.%d.%d, Gateway:%d.%d.%d.%d\r\n", \
-                       &ipaddr[0], &ipaddr[1], &ipaddr[2], &ipaddr[3], \
-                       &subnetmask[0], &subnetmask[1], &subnetmask[2], &subnetmask[3], \
-                       &gateway[0], &gateway[1], &gateway[2], &gateway[3]);
-    if(scanf_ret != 12)
-    {
-        return -1;
-    }
-    if(subnetmask[0] == 0)
-    {
-        return -1;
-    }
-    g_sx_ulpgn_ipaddress[0] = ipaddr[0];
-    g_sx_ulpgn_ipaddress[1] = ipaddr[1];
-    g_sx_ulpgn_ipaddress[2] = ipaddr[2];
-    g_sx_ulpgn_ipaddress[3] = ipaddr[3];
-    g_sx_ulpgn_subnetmask[0] = subnetmask[0];
-    g_sx_ulpgn_subnetmask[1] = subnetmask[1];
-    g_sx_ulpgn_subnetmask[2] = subnetmask[2];
-    g_sx_ulpgn_subnetmask[3] = subnetmask[3];
-    g_sx_ulpgn_gateway[0] = gateway[0];
-    g_sx_ulpgn_gateway[1] = gateway[1];
-    g_sx_ulpgn_gateway[2] = gateway[2];
-    g_sx_ulpgn_gateway[3] = gateway[3];
-    return 0;
 }
 
 int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr)
@@ -1273,7 +1106,6 @@ int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr)
         return -1;
     }
     *ulipaddr = (((uint32_t)ipaddr[0]) << 24) | (((uint32_t)ipaddr[1]) << 16) | (((uint32_t)ipaddr[2]) << 8) | ((uint32_t)ipaddr[3]);
-
     return 0;
 }
 
@@ -1459,61 +1291,43 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
     uint32_t recvcnt = 0;
     int32_t ret;
     uint16_t i;
-    uint16_t read_data = 0;
-    uint16_t read_data2;
+    uint16_t read_data = 0;;
     uint8_t before_socket_no;
     int8_t receive_ret;
     if(ULPGN_USE_UART_NUM == 2)
     {
         if(socket_no != current_socket_index)
         {
+            R_BSP_InterruptsDisable();
             before_socket_no = current_socket_index;
-            read_data = 0;
+#if ULPGN_PORT_DEBUG == 1
+            DEBUG_PORT4_DR = 0;
+#endif
+
             if(SCI_SUCCESS == R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], SCI_CMD_RX_Q_BYTES_AVAIL_TO_READ, &read_data))
             {
                 if(read_data > 0)
                 {
-                    while(read_data > 0)
+                    R_SCI_Receive(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], buff, read_data);
+                    for(i = 0; i < read_data; i++ )
                     {
-                        if(sizeof(recvbuff) >= read_data)
-                        {
-                            read_data2 = read_data;
-                        }
-                        else
-                        {
-                            read_data2 = sizeof(recvbuff);
-                        }
-                        R_SCI_Receive(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], recvbuff, read_data2);
-                        for(i = 0; i < read_data2; i++ )
-                        {
-                            R_BYTEQ_Put(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, *(recvbuff + i));
-                        }
-                        read_data -= read_data2;
+                        R_BYTEQ_Put(socket_byteq_hdl[current_socket_index], *(buff + i));
                     }
                 }
             }
-#if DEBUGLOG ==1
-            printf("Before ATNSOCKINDEX SCI_Receive size = %d\r\n", read_data);
-#endif
+            R_BSP_InterruptsEnable();
 
             sprintf((char *)buff, "ATNSOCKINDEX=%d\r", socket_no);
-
 #if 1
-            while(1)
-            {
-                ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 3, 5000, ULPGN_RETURN_OK);
-                if(0 == ret)
-                {
-                    /* RTS sets active */
-                    //              ULPGN_HSUART1_RTS_PODR = 0;
-                    break;
-                }
-            }
-            current_socket_index = socket_no;
-            /* RTS sets active */
-//          ULPGN_HSUART1_RTS_PODR = 0;
+#if ULPGN_PORT_DEBUG == 1
+            DEBUG_PORT4_DR = 1;
 #endif
-#if 0
+            vTaskDelay(200);
+#if ULPGN_PORT_DEBUG == 1
+            DEBUG_PORT4_DR = 0;
+#endif
+            //          R_BSP_SoftwareDelay(200, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
+#endif
             while(1)
             {
                 recvcnt = 0;
@@ -1523,15 +1337,12 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                 ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT], (uint8_t *)buff, strlen((const char *)buff));
                 if(SCI_SUCCESS != ercd)
                 {
-                    /* RTS sets active */
                     return -1;
                 }
                 while(1)
                 {
                     if(0 != g_sx_ulpgn_uart_teiflag[ULPGN_UART_COMMAND_PORT])
                     {
-                        /* RTS sets not active */
-                    	ULPGN_HSUART1_RTS_PODR = 1;
                         break;
                     }
                     if(-1 == check_timeout(ULPGN_UART_COMMAND_PORT, 1000))
@@ -1542,8 +1353,6 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                 }
                 if(timeout == 1)
                 {
-                    /* RTS sets active */
-                	ULPGN_HSUART1_RTS_PODR = 0;
                     return -1;
                 }
                 bytetimeout_init(ULPGN_UART_COMMAND_PORT, 3);
@@ -1557,18 +1366,14 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                             receive_ret = recvbuff[0];
                             if(receive_ret == *ulpgn_result_code[ULPGN_RETURN_OK][ULPGN_RETURN_STRING_NUMERIC])
                             {
-
-                                R_BSP_SoftwareDelay(100, BSP_DELAY_MICROSECS); /* 5us mergin 1us */
-
-
-//                              R_BSP_InterruptsDisable();
+                                R_BSP_InterruptsDisable();
                                 current_socket_index = socket_no;
 #if ULPGN_PORT_DEBUG == 1
-//                              DEBUG_PORT4_DR = 1;
-//                              DEBUG_PORT7_DR = socket_no;
+                                DEBUG_PORT4_DR = 1;
+                                DEBUG_PORT7_DR = socket_no;
 #endif
                                 ercd = R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], SCI_CMD_RX_Q_BYTES_AVAIL_TO_READ, &read_data);
-//                              R_BSP_InterruptsEnable();
+                                R_BSP_InterruptsEnable();
                                 if(SCI_SUCCESS == ercd)
                                 {
                                     if(read_data > 0)
@@ -1576,7 +1381,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                                         R_SCI_Receive(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], buff, read_data);
                                         for(i = 0; i < read_data; i++ )
                                         {
-                                            R_BYTEQ_Put(g_ulpgn_socket[before_socket_no].socket_byteq_hdl, *(buff + i));
+                                            R_BYTEQ_Put(socket_byteq_hdl[before_socket_no], *(buff + i));
                                         }
                                     }
                                 }
@@ -1594,12 +1399,10 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                         if(recvcnt < 2)
                         {
 #if DEBUGLOG ==1
-//                          printf("ATNSOCKINDEX=%c\r\n",receive_ret);
+                            printf("ATNSOCKINDEX=%c\r\n", receive_ret);
 #endif
                             continue;
                         }
-                        /* RTS sets active */
-                        ULPGN_HSUART1_RTS_PODR = 0;
                         break;
                     }
                     if(-1 == check_bytetimeout(ULPGN_UART_COMMAND_PORT, recvcnt))
@@ -1617,11 +1420,8 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                     break;
                 }
             }
-#endif
-            /* RTS sets active */
-            ULPGN_HSUART1_RTS_PODR = 0;
 #if ULPGN_PORT_DEBUG == 1
-//          DEBUG_PORT4_DR =0;
+            DEBUG_PORT4_DR = 0;
 #endif
         }
     }
@@ -1709,22 +1509,21 @@ static int32_t check_bytetimeout(uint8_t socket_no, int32_t rcvcount)
     return 0;
 }
 
-static int32_t sx_ulpgn_serial_open_for_initial(void)
+static int32_t sx_ulpgn_serial_open(void)
 {
     sci_err_t   my_sci_err;
 
-    R_SCI_PinSet_sx_ulpgn_serial_default();
+    R_SCI_PinSet_sx_ulpgn_serial_command();
 
-    memset(&sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], 0, sizeof(sci_hdl_t));
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.baud_rate    = 115200;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.clk_src      = SCI_CLK_INT;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.data_size    = SCI_DATA_8BIT;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_en    = SCI_PARITY_OFF;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_type  = SCI_EVEN_PARITY;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.stop_bits    = SCI_STOPBITS_1;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
+    g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT].async.baud_rate    = 115200;
+    g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT].async.clk_src      = SCI_CLK_INT;
+    g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT].async.data_size    = SCI_DATA_8BIT;
+    g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT].async.parity_en    = SCI_PARITY_OFF;
+    g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT].async.parity_type  = SCI_EVEN_PARITY;
+    g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT].async.stop_bits    = SCI_STOPBITS_1;
+    g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
 
-    my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial_default, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT], sx_ulpgn_uart_callback_default_port_for_inititial, &sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT]);
+    my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial_command, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config[ULPGN_UART_COMMAND_PORT], sx_ulpgn_uart_callback_command_port, &sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT]);
 
     if(SCI_SUCCESS != my_sci_err)
     {
@@ -1735,52 +1534,24 @@ static int32_t sx_ulpgn_serial_open_for_initial(void)
 
 }
 
-static int32_t sx_ulpgn_serial_open_for_data(void)
-{
-    sci_err_t   my_sci_err;
-
-    R_SCI_PinSet_sx_ulpgn_serial_default();
-
-    memset(&sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], 0, sizeof(sci_hdl_t));
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.baud_rate    = 921600;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.clk_src      = SCI_CLK_INT;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.data_size    = SCI_DATA_8BIT;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_en    = SCI_PARITY_OFF;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_type  = SCI_EVEN_PARITY;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.stop_bits    = SCI_STOPBITS_1;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
-
-    my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial_default, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT], sx_ulpgn_uart_callback_default_port_for_data, &sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT]);
-
-    if(SCI_SUCCESS != my_sci_err)
-    {
-        return -1;
-    }
-
-    return 0;
-
-}
-
-
-static int32_t sx_ulpgn_serial_second_port_open(void)
+static int32_t sx_ulpgn_serial_data_port_open(void)
 {
     sci_err_t   my_sci_err;
 //#if ULPGN_USE_UART_NUM == 2
 //  if(ULPGN_USE_UART_NUM == 2)
 //  {
 
-    R_SCI_PinSet_sx_ulpgn_serial_second();
+    R_SCI_PinSet_sx_ulpgn_serial_data();
 
-    memset(&sx_ulpgn_uart_sci_handle[ULPGN_UART_SECOND_PORT], 0, sizeof(sci_hdl_t));
-    g_sx_ulpgn_sci_config[ULPGN_UART_SECOND_PORT].async.baud_rate    = 115200;
-    g_sx_ulpgn_sci_config[ULPGN_UART_SECOND_PORT].async.clk_src      = SCI_CLK_INT;
-    g_sx_ulpgn_sci_config[ULPGN_UART_SECOND_PORT].async.data_size    = SCI_DATA_8BIT;
-    g_sx_ulpgn_sci_config[ULPGN_UART_SECOND_PORT].async.parity_en    = SCI_PARITY_OFF;
-    g_sx_ulpgn_sci_config[ULPGN_UART_SECOND_PORT].async.parity_type  = SCI_EVEN_PARITY;
-    g_sx_ulpgn_sci_config[ULPGN_UART_SECOND_PORT].async.stop_bits    = SCI_STOPBITS_1;
-    g_sx_ulpgn_sci_config[ULPGN_UART_SECOND_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
+    g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT].async.baud_rate    = 115200;
+    g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT].async.clk_src      = SCI_CLK_INT;
+    g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT].async.data_size    = SCI_DATA_8BIT;
+    g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT].async.parity_en    = SCI_PARITY_OFF;
+    g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT].async.parity_type  = SCI_EVEN_PARITY;
+    g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT].async.stop_bits    = SCI_STOPBITS_1;
+    g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
 
-    my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial_second, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT], sx_ulpgn_uart_callback_second_port_for_command, &sx_ulpgn_uart_sci_handle[ULPGN_UART_SECOND_PORT]);
+    my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial_data, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config[ULPGN_UART_DATA_PORT], sx_ulpgn_uart_callback_data_port, &sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT]);
 
     if(SCI_SUCCESS != my_sci_err)
     {
@@ -1792,23 +1563,11 @@ static int32_t sx_ulpgn_serial_second_port_open(void)
     return 0;
 }
 
-static int32_t sx_ulpgn_serial_close(void)
+static int32_t sx_ulpgn_serial_data_port_close(void)
 {
     sci_err_t   my_sci_err;
 
-    my_sci_err = R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_RX_Q_FLUSH, NULL);
-    my_sci_err = R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_TX_Q_FLUSH, NULL);
-    my_sci_err = R_SCI_Close(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT]);
-    return 0;
-}
-
-static int32_t sx_ulpgn_serial_second_port_close(void)
-{
-    sci_err_t   my_sci_err;
-
-    my_sci_err = R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_SECOND_PORT], SCI_CMD_RX_Q_FLUSH, NULL);
-    my_sci_err = R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_SECOND_PORT], SCI_CMD_TX_Q_FLUSH, NULL);
-    my_sci_err = R_SCI_Close(sx_ulpgn_uart_sci_handle[ULPGN_UART_SECOND_PORT]);
+    my_sci_err = R_SCI_Close(SCI_CH_sx_ulpgn_serial_data);
     return 0;
 }
 
@@ -1821,7 +1580,7 @@ int32_t sx_ulpgn_socket_init(void)
     {
         for(i = 0; i < g_sx_ulpgn_cleateble_sockets; i++)
         {
-            if(BYTEQ_SUCCESS != R_BYTEQ_Open(g_ulpgn_socket[i].socket_recv_buff, sizeof(g_ulpgn_socket[i].socket_recv_buff), &g_ulpgn_socket[i].socket_byteq_hdl))
+            if(BYTEQ_SUCCESS != R_BYTEQ_Open(socket_recv_buff[i], 2048, &socket_byteq_hdl[i]))
             {
                 return -1;
             }
@@ -1833,11 +1592,13 @@ int32_t sx_ulpgn_socket_init(void)
     return 0;
 
 }
-static void sx_ulpgn_uart_callback_default_port_for_inititial(void *pArgs)
+
+static void sx_ulpgn_uart_callback_command_port(void *pArgs)
 {
     sci_cb_args_t   *p_args;
 
     p_args = (sci_cb_args_t *)pArgs;
+
     if (SCI_EVT_RX_CHAR == p_args->event)
     {
         /* From RXI interrupt; received character data is in p_args->byte */
@@ -1847,7 +1608,11 @@ static void sx_ulpgn_uart_callback_default_port_for_inititial(void *pArgs)
 #if SCI_CFG_TEI_INCLUDED
     else if (SCI_EVT_TEI == p_args->event)
     {
-        g_sx_ulpgn_uart_teiflag[ULPGN_UART_DEFAULT_PORT] = 1;
+        g_sx_ulpgn_uart_teiflag[ULPGN_UART_COMMAND_PORT] = 1;
+        R_NOP();
+        R_NOP();
+        R_NOP();
+
     }
 #endif
     else if (SCI_EVT_RXBUF_OVFL == p_args->event)
@@ -1897,75 +1662,32 @@ static void sx_ulpgn_uart_callback_default_port_for_inititial(void *pArgs)
 
 } /* End of function my_sci_callback() */
 
-
-
-static void sx_ulpgn_uart_callback_second_port_for_command(void *pArgs)
-{
-    sci_cb_args_t   *p_args;
-
-    p_args = (sci_cb_args_t *)pArgs;
-    if (SCI_EVT_RX_CHAR == p_args->event)
-    {
-        /* From RXI interrupt; received character data is in p_args->byte */
-        R_NOP();
-    }
-#if SCI_CFG_TEI_INCLUDED
-    else if (SCI_EVT_TEI == p_args->event)
-    {
-        g_sx_ulpgn_uart_teiflag[ULPGN_UART_SECOND_PORT] = 1;
-    }
-#endif
-    else if (SCI_EVT_RXBUF_OVFL == p_args->event)
-    {
-        /* From RXI interrupt; rx queue is full; 'lost' data is in p_args->byte
-           You will need to increase buffer size or reduce baud rate */
-    	uart_error_count[ULPGN_UART_SECOND_PORT].queue_overflow_count++;
-    }
-    else if (SCI_EVT_OVFL_ERR == p_args->event)
-    {
-        /* From receiver overflow error interrupt; error data is in p_args->byte
-           Error condition is cleared in calling interrupt routine */
-    	uart_error_count[ULPGN_UART_SECOND_PORT].eri_overflow_count++;
-    }
-    else if (SCI_EVT_FRAMING_ERR == p_args->event)
-    {
-        /* From receiver framing error interrupt; error data is in p_args->byte
-           Error condition is cleared in calling interrupt routine */
-    	uart_error_count[ULPGN_UART_SECOND_PORT].eri_framing_count++;
-    }
-    else if (SCI_EVT_PARITY_ERR == p_args->event)
-    {
-        /* From receiver parity error interrupt; error data is in p_args->byte
-           Error condition is cleared in calling interrupt routine */
-    	uart_error_count[ULPGN_UART_SECOND_PORT].eri_parity_count++;
-    }
-    else
-    {
-        /* Do nothing */
-    }
-
-} /* End of function my_sci_callback() */
-
-static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs)
+//#if ULPGN_USE_UART_NUM == 2
+static void sx_ulpgn_uart_callback_data_port(void *pArgs)
 {
     sci_cb_args_t   *p_args;
     sci_err_t ret;
-    byteq_err_t byteq_ret;
     uint8_t data;
 
     p_args = (sci_cb_args_t *)pArgs;
 
     if (SCI_EVT_RX_CHAR == p_args->event)
     {
-        if(g_ulpgn_socket[current_socket_index].socket_create_flag == 1)
+        if(socket_create_flag[current_socket_index] == 1)
         {
+            //ret = R_SCI_Receive(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], &data, 1);
+            //if (ret != 0)
+            //{
+            //  socket_recv_error_count[current_socket_index]++;
+            //  return;
+            //}
             /* From RXI interrupt; received character data is in p_args->byte */
 
-            R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_RX_Q_FLUSH, NULL);
-            byteq_ret = R_BYTEQ_Put(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, p_args->byte);
-            if (byteq_ret != 0)
+            R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], SCI_CMD_RX_Q_FLUSH, NULL);
+            ret = R_BYTEQ_Put(socket_byteq_hdl[current_socket_index], p_args->byte);
+            if (ret != 0)
             {
-                g_ulpgn_socket[current_socket_index].socket_recv_error_count++;
+                socket_recv_error_count[current_socket_index]++;
                 return;
             }
             else
@@ -1979,32 +1701,33 @@ static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs)
 #if SCI_CFG_TEI_INCLUDED
     else if (SCI_EVT_TEI == p_args->event)
     {
-        g_sx_ulpgn_uart_teiflag[ULPGN_UART_DEFAULT_PORT] = 1;
+        g_sx_ulpgn_uart_teiflag[ULPGN_UART_DATA_PORT] = 1;
+        R_NOP();
     }
 #endif
     else if (SCI_EVT_RXBUF_OVFL == p_args->event)
     {
         /* From RXI interrupt; rx queue is full; 'lost' data is in p_args->byte
            You will need to increase buffer size or reduce baud rate */
-    	uart_error_count[ULPGN_UART_DEFAULT_PORT].queue_overflow_count++;
+        R_NOP();
     }
     else if (SCI_EVT_OVFL_ERR == p_args->event)
     {
         /* From receiver overflow error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-    	uart_error_count[ULPGN_UART_DEFAULT_PORT].eri_overflow_count++;
+        R_NOP();
     }
     else if (SCI_EVT_FRAMING_ERR == p_args->event)
     {
         /* From receiver framing error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-    	uart_error_count[ULPGN_UART_DEFAULT_PORT].eri_framing_count++;
+        R_NOP();
     }
     else if (SCI_EVT_PARITY_ERR == p_args->event)
     {
         /* From receiver parity error interrupt; error data is in p_args->byte
            Error condition is cleared in calling interrupt routine */
-    	uart_error_count[ULPGN_UART_DEFAULT_PORT].eri_parity_count++;
+        R_NOP();
     }
     else
     {
@@ -2012,3 +1735,4 @@ static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs)
     }
 
 } /* End of function my_sci_callback() */
+//#endif

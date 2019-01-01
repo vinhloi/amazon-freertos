@@ -90,6 +90,11 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/crypto</locationURI>
 		</link>
 		<link>
+			<name>lib/aws/freertos_plus_tcp</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/secure_sockets/portable/freertos_plus_tcp</locationURI>
+		</link>
+		<link>
 			<name>lib/aws/greengrass</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/greengrass</locationURI>
@@ -105,19 +110,9 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/mqtt</locationURI>
 		</link>
 		<link>
-			<name>lib/aws/ota</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/portable/renesas/rx65n-rsk</locationURI>
-		</link>
-		<link>
 			<name>lib/aws/pkcs11</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/pkcs11/portable/renesas/rx65n-rsk</locationURI>
-		</link>
-		<link>
-			<name>lib/aws/secure_sockets</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/secure_sockets/portable/renesas/rx65n-rsk</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/shadow</name>
@@ -133,11 +128,6 @@
 			<name>lib/aws/utils</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/utils</locationURI>
-		</link>
-		<link>
-			<name>lib/aws/wifi</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/wifi/portable/renesas/rx65n-rsk</locationURI>
 		</link>
 		<link>
 			<name>lib/third_party/jsmn</name>
@@ -158,11 +148,6 @@
 			<name>lib/third_party/pkcs11</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/pkcs11</locationURI>
-		</link>
-		<link>
-			<name>lib/third_party/tinycbor</name>
-			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/tinycbor</locationURI>
 		</link>
 		<link>
 			<name>application_code/common_demos/include/aws_application_version.h</name>
@@ -205,11 +190,6 @@
 			<locationURI>AWS_IOT_MCU_ROOT/demos/common/logging/aws_logging_task_dynamic_buffers.c</locationURI>
 		</link>
 		<link>
-			<name>application_code/common_demos/source/aws_ota_update_demo.c</name>
-			<type>1</type>
-			<locationURI>AWS_IOT_MCU_ROOT/demos/common/ota/aws_ota_update_demo.c</locationURI>
-		</link>
-		<link>
 			<name>application_code/common_demos/source/aws_shadow_lightbulb_on_off.c</name>
 			<type>1</type>
 			<locationURI>AWS_IOT_MCU_ROOT/demos/common/shadow/aws_shadow_lightbulb_on_off.c</locationURI>
@@ -243,16 +223,6 @@
 			<name>application_code/renesas_code/src/smc_gen</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/demos/renesas/rx65n-rsk/e2studio/src/smc_gen</locationURI>
-		</link>
-		<link>
-			<name>lib/aws/ota/aws_ota_agent.c</name>
-			<type>1</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/aws_ota_agent.c</locationURI>
-		</link>
-		<link>
-			<name>lib/aws/ota/aws_ota_cbor.c</name>
-			<type>1</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/aws_ota_cbor.c</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/pkcs11/aws_pkcs11_mbedtls.c</name>
