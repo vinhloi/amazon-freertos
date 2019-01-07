@@ -47,8 +47,8 @@ extern uint8_t ULPGN_UART_DATA_PORT;
 #define CREATEABLE_SOCKETS (4)
 
 #if BSP_CFG_BOARD_REVISION == 1 || BSP_CFG_BOARD_REVISION == 0
-#define ULPGN_RESET_PORT_DDR    PORTF.PDR.BIT.B5     /*PMOD PinNo.8 */
-#define ULPGN_RESET_PORT_DR     PORTF.PODR.BIT.B5    /*PMOD PinNo.8 */
+//#define ULPGN_RESET_PORT_DDR    PORTF.PDR.BIT.B5     /*PMOD PinNo.8 */
+//#define ULPGN_RESET_PORT_DR     PORTF.PODR.BIT.B5    /*PMOD PinNo.8 */
 
 #if ULPGN_PORT_DEBUG == 1
 #define DEBUG_PORT4_DDR PORT4.PDR.BIT.B7    /* TFT-46 */
@@ -115,6 +115,7 @@ int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port);
 int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no);
+int32_t sx_ulpgn_get_ipaddress(void);
 int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr);
 int32_t sx_ulpgn_serial_tcp_recv_timeout_set(uint8_t socket_no, TickType_t timeout_ms);
 uint8_t sx_ulpgn_get_avail_socket();
