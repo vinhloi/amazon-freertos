@@ -162,15 +162,19 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
     uint8_t socketId;
     SSOCKETContextPtr_t pxContext = NULL;
 
+	/* Ensure that only supported values are supplied. */
+	configASSERT( lDomain == SOCKETS_AF_INET );
+	configASSERT( lType == SOCKETS_SOCK_STREAM );
+	configASSERT( lProtocol == SOCKETS_IPPROTO_TCP );
+	/* Ensure that only supported values are supplied. */
+    if((lDomain != SOCKETS_AF_INET) || ( lType != SOCKETS_SOCK_STREAM ) || ( lProtocol != SOCKETS_IPPROTO_TCP ))
+	{
+		return SOCKETS_INVALID_SOCKET;
+	}
     if (xSemaphoreTake( xUcInUse, xMaxSemaphoreBlockTime) == pdTRUE)
     {
 
 		socketId = sx_ulpgn_get_avail_socket();
-
-		/* Ensure that only supported values are supplied. */
-		configASSERT( lDomain == SOCKETS_AF_INET );
-		configASSERT( lType == SOCKETS_SOCK_STREAM );
-		configASSERT( lProtocol == SOCKETS_IPPROTO_TCP );
 
 		if(ssockets_num_allocated >= MAX_NUM_SSOCKETS || socketId == 255)
 		{
@@ -575,12 +579,30 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 				break;
 
 			case SOCKETS_SO_REQUIRE_TLS:
-				pxContext->xRequireTLS = pdTRUE;
+                /* Do not set the TLS option if the socket is possibly already connected. */
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
+                else
+                {
+                    pxContext->xRequireTLS = pdTRUE;
+                }
 				break;
 
 			case SOCKETS_SO_NONBLOCK:
-				pxContext->ulSendTimeout = 1;
-				pxContext->ulRecvTimeout = 2;
+                /* Non-blocking connect is not supported.  Socket may be set to nonblocking
+                 * only after a connection is made. */
+
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    pxContext->ulSendTimeout = 1;
+    				pxContext->ulRecvTimeout = 2;
+                }
+                else
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
 				break;
 
 			case SOCKETS_SO_RCVTIMEO:

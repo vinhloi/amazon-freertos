@@ -129,31 +129,21 @@
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.linkerSection.421001419" name="セクション" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.linkerSection" useByScannerDiscovery="false" value="R_1,R_2,R,SI/04,C_PKCS11_STORAGE*/0100000,B,B_1,B_2/0800000,C_1,C_2,C,C$*,D*,W*,L,P*/0FFE00000,EXCEPTVECT/0FFFFFF80,RESETVECT/0FFFFFFFC" valueType="string"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.noneLinkageOrderList.335426047" name="(リンク順序のリスト)" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.noneLinkageOrderList" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS/portable/Renesas/RX600v2\port_asm.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/crypto\aws_test_crypto.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/devmode_key_provisioning\aws_dev_mode_key_provisioning.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/framework\aws_test_framework.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/greengrass\aws_test_greengrass_discovery.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/greengrass\aws_test_helper_secure_connect.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/logging\aws_logging_task_dynamic_buffers.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/memory_leak\aws_memory_leak.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/mqtt\aws_test_mqtt_agent.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/mqtt\aws_test_mqtt_lib.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/pkcs11\aws_test_pkcs11.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/secure_sockets\aws_test_tcp.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/shadow\aws_test_shadow.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/test_runner\aws_test_runner.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\application_code/common_test/tls\aws_test_tls.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\application_code\main.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code\entropy_hardware_poll.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code\freertos_usr_func.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/board/rskrx65n_2mb\dbsct.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/board/rskrx65n_2mb\hwsetup.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/board/rskrx65n_2mb\lowlvl.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/board/rskrx65n_2mb\lowsrc.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/board/rskrx65n_2mb\resetprg.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/board/rskrx65n_2mb\sbrk.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/board/rskrx65n_2mb\vecttbl.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/all\r_bsp_common.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\cpu.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\locking.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\mcu_clocks.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\mcu_init.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\mcu_interrupts.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\mcu_locks.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\mcu_mapped_interrupts.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_bsp/mcu/rx65n\mcu_startup.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code/r_pincfg\r_pinset.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\application_code/vendor_code\rskrx65n_uart.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS\event_groups.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS\list.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS/portable/MemMang\heap_4.obj&quot;"/>
@@ -162,32 +152,140 @@
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS\stream_buffer.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS\tasks.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS\timers.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_ARP.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_DHCP.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_DNS.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_IP.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_Sockets.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_Stream_Buffer.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_TCP_IP.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_TCP_WIN.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source\FreeRTOS_UDP_IP.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source/portable/BufferManagement\BufferAllocation_2.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source/portable/NetworkInterface/Renesas\NetworkInterface.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/aws/FreeRTOS-Plus-TCP/source/portable/NetworkInterface/Renesas\ether_callback.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/bufferpool\aws_bufferpool_static_thread_safe.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/crypto\aws_crypto.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/greengrass\aws_greengrass_discovery.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/greengrass\aws_helper_secure_connect.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/mqtt\aws_mqtt_agent.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/mqtt\aws_mqtt_lib.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/pkcs11\aws_pkcs11_mbedtls.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/pkcs11/portable/renesas/rx65n-rsk-uart-sx-ulpgn\aws_pkcs11_pal.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/secure_sockets/portable/renesas/rx65n-rsk-uart-sx-ulpgn\aws_secure_sockets.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/shadow\aws_shadow.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/shadow\aws_shadow_json.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/tls\aws_tls.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\lib/aws/utils\aws_system_init.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_byteq/src\r_byteq.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_cmt_rtos_rx/src\r_cmt_rx.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_ether_rx/src/phy\phy.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_ether_rx/src\r_ether_rx.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_ether_rx/src/targets/rx65n\r_ether_setting_rx65n.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_gpio_rx/src\r_gpio_rx.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_gpio_rx/src/targets/rx65n\r_gpio_rx65n.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_irq_rx/src\r_irq_rx.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_sci_rx/src\r_sci_rx.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_sci_rx/src/targets/rx65n\r_sci_rx65n.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/fit_drivers_aws_v1/r_sci_rx/src/targets/rx65n\r_sci_rx65n_data.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/unity\unity.obj&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/unity_fixture\unity_fixture.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/aws/wifi/portable/renesas/rx65n-rsk-uart-sx-ulpgn\aws_wifi.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/jsmn\jsmn.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\aes.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\aesni.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\arc4.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\asn1parse.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\asn1write.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\base64.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\bignum.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\blowfish.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\camellia.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ccm.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\certs.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\cipher.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\cipher_wrap.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\cmac.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ctr_drbg.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\debug.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\des.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\dhm.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ecdh.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ecdsa.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ecjpake.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ecp.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ecp_curves.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\entropy.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\entropy_poll.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\error.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\gcm.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\havege.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\hmac_drbg.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\md.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\md2.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\md4.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\md5.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\md_wrap.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\memory_buffer_alloc.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\net_sockets.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\oid.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\padlock.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\pem.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\pk.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\pk_wrap.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\pkcs12.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\pkcs5.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\pkparse.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\pkwrite.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\platform.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\platform_util.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ripemd160.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\rsa.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\rsa_internal.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\sha1.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\sha256.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\sha512.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ssl_cache.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ssl_ciphersuites.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ssl_cli.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ssl_cookie.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ssl_srv.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ssl_ticket.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\ssl_tls.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\threading.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\timing.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\version.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\version_features.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\x509.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\x509_create.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\x509_crl.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\x509_crt.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\x509_csr.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\x509write_crt.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\x509write_csr.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/mbed_tls/library\xtea.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/unity/extras/fixture/src\unity_fixture.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\lib/third_party/unity/src\unity.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/all\dbsct.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/all\lowlvl.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/all\lowsrc.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/all\resetprg.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/all\sbrk.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/generic_rx65n\r_bsp_hwsetup_reference.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/rx65n\clkconf.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/board/rx65n\vecttbl.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/all\r_bsp_common.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\cpu.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\locking.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\mcu_clocks.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\mcu_init.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\mcu_interrupts.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\mcu_locks.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\mcu_mapped_interrupts.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_bsp/mcu/rx65n\mcu_startup.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_byteq/src\r_byteq.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_1\r_codeflash.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_1\r_codeflash_extra.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_1\r_dataflash.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_1\r_flash_type1.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_1\r_flash_utils.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_2\r_flash_type2.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_3\r_flash_type3.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src/flash_type_4\r_flash_type4.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src\r_flash_fcu.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src\r_flash_group.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_flash_rx/src\r_flash_rx.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_s12ad_rx/src\r_s12ad_rx.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_s12ad_rx/src/targets/rx65x\r_s12ad_rx65x.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_sci_rx/src\r_sci_rx.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_sci_rx/src/targets/rx65n\r_sci_rx65n.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/FIT_modefied_code/r_sci_rx/src/targets/rx65n\r_sci_rx65n_data.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/amazon_freertos_common/compiler_support/ccrx\exit.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/amazon_freertos_common\entropy_hardware_poll.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/amazon_freertos_common\freertos_start.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/amazon_freertos_common/network_support/uart_sx_ulpgn\sx_ulpgn_driver.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/amazon_freertos_common\serial_term_uart.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/smc_gen/general\r_cg_hardware_setup.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/smc_gen/general\r_smc_cgc.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/smc_gen/general\r_smc_cgc_user.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/smc_gen/general\r_smc_interrupt.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/smc_gen/r_pincfg\Pin.obj&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;.\src/smc_gen/r_pincfg\r_sci_rx_pinset.obj&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;.\aws_tests.lib&quot;"/>
 								</option>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.outputSymbolAllocation.570191124" name="外部シンボル割り付け情報ファイルを出力する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.outputSymbolAllocation" useByScannerDiscovery="false" value="true" valueType="boolean"/>
@@ -195,6 +293,7 @@
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.showSymbol.1294042342" name="シンボル情報を出力する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.showSymbol" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.showTotalSize.1830399460" name="セクションの合計サイズを出力する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.showTotalSize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.stack.440864551" name="スタック使用量情報ファイルを出力する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.stack" useByScannerDiscovery="false" value="true" valueType="boolean"/>
+								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.show.1026091545" name="リスト・ファイルの内容" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.show" useByScannerDiscovery="false" value="com.renesas.cdt.managedbuild.renesas.ccrx.linker.option.show.all" valueType="enumerated"/>
 							</tool>
 							<tool id="com.renesas.cdt.managedbuild.renesas.ccrx.base.librarian.1112381756" name="Library Generator" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.base.librarian">
 								<option id="com.renesas.cdt.managedbuild.renesas.ccrx.librarian.option.fpu.1525683556" name="浮動小数点演算命令を使用する" superClass="com.renesas.cdt.managedbuild.renesas.ccrx.librarian.option.fpu" useByScannerDiscovery="false" value="com.renesas.cdt.managedbuild.renesas.ccrx.librarian.option.fpu.yes" valueType="enumerated"/>

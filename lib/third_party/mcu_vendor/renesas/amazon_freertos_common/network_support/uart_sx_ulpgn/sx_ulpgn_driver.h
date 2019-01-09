@@ -111,6 +111,7 @@ int32_t sx_ulpgn_socket_init(void);
 int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *ptextstring);
 int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *ppass);
 int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipversion);
+int32_t sx_ulpgn_get_tcp_socket_status(uint8_t socket_no);
 int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port);
 int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uint32_t timeout);

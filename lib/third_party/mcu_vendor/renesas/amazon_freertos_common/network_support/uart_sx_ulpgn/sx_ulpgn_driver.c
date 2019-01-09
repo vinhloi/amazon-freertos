@@ -200,8 +200,8 @@ const uint8_t ulpgn_return_dummy[]   = "";
 const uint32_t g_sx_ulpgn_serial_buffsize_table[2][4] =
 {
     /*SCI_TX_BUSIZ_DEFAULT*//*SCI_TX_BUSIZ_SIZE*/   /*SCI_RX_BUSIZ_DEFAULT*/ /*SCI_RX_BUSIZ_SIZE*/
-    {SCI_TX_BUSIZ_DEFAULT,  SCI_TX_BUSIZ_SECOND,     SCI_RX_BUSIZ_DEFAULT,  SCI_TX_BUSIZ_SECOND,     }, /*ULPGN_USE_UART_NUM = 2 */
     {SCI_TX_BUSIZ_DEFAULT,  SCI_TX_BUSIZ_DEFAULT,  SCI_RX_BUSIZ_DEFAULT,  SCI_RX_BUSIZ_DEFAULT,  }, /*ULPGN_USE_UART_NUM = 1 */
+    {SCI_TX_BUSIZ_SECOND,   SCI_TX_BUSIZ_DEFAULT,  SCI_TX_BUSIZ_SECOND,   SCI_RX_BUSIZ_DEFAULT,  }, /*ULPGN_USE_UART_NUM = 2 */
 };
 
 const uint8_t * const ulpgn_result_code[ULPGN_RETURN_ENUM_MAX][ULPGN_RETURN_STRING_MAX] =
@@ -245,10 +245,13 @@ uint8_t g_sx_ulpgn_return_mode;
 static void sx_ulpgn_uart_callback_second_port_for_command(void *pArgs);
 static void sx_ulpgn_uart_callback_default_port_for_inititial(void *pArgs);
 static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs);
-static void timeout_init(uint8_t socket_no, uint32_t timeout_ms);
-static void bytetimeout_init(uint8_t socket_no, uint32_t timeout_ms);
-static int32_t check_timeout(uint8_t socket_no, int32_t rcvcount);
-static int32_t check_bytetimeout(uint8_t socket_no, int32_t rcvcount);
+static void timeout_init(uint8_t serial_ch, uint32_t timeout_ms);
+static void bytetimeout_init(uint8_t serial_ch, uint32_t timeout_ms);
+static int32_t check_timeout(uint8_t serial_ch, int32_t rcvcount);
+static int32_t check_bytetimeout(uint8_t serial_ch, int32_t rcvcount);
+static void tcp_timeout_init(uint8_t socket_no, uint32_t timeout_ms, uint8_t flag);
+static int32_t tcp_check_timeout(uint8_t socket_no, uint8_t flag);
+
 static int32_t sx_ulpgn_serial_open_for_initial(void);
 static int32_t sx_ulpgn_serial_open_for_data(void);
 static int32_t sx_ulpgn_serial_close(void);
@@ -258,7 +261,7 @@ static int32_t sx_ulpgn_serial_second_port_close(void);
 static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code);
 static int32_t sx_ulpgn_get_socket_status(uint8_t socket_no);
 static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no);
-static TickType_t g_sl_ulpgn_tcp_recv_timeout = 3000;       /* ## slowly problem ## unit: 1ms */
+static TickType_t g_sl_ulpgn_tcp_recv_timeout = 0;       /* ## slowly problem ## unit: 1ms */
 
 /**
  * @brief The global mutex to ensure that only one operation is accessing the
@@ -274,10 +277,18 @@ static const TickType_t xMaxSemaphoreBlockTime = pdMS_TO_TICKS( 60000UL );
 typedef struct
 {
     byteq_hdl_t socket_byteq_hdl;
-    uint8_t socket_recv_buff[4096];
+    uint8_t socket_recv_buff[16384];
     uint8_t socket_status;
     uint8_t socket_recv_error_count;
     uint8_t socket_create_flag;
+    TickType_t send_starttime;
+    TickType_t send_thistime;
+    TickType_t send_endtime;
+    TickType_t recv_starttime;
+    TickType_t recv_thistime;
+    TickType_t recv_endtime;
+    uint8_t send_timeout_overflow_flag;
+    uint8_t recv_timeout_overflow_flag;
 } ulpgn_socket_t;
 
 ulpgn_socket_t g_ulpgn_socket[CREATEABLE_SOCKETS];
@@ -404,7 +415,7 @@ int32_t sx_ulpgn_wifi_init(void)
             return ret;
         }
         /* Change HSUART1 baudrate and flow control. */
-        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATBX1=921600,,,,h\r", 3, 200, ULPGN_RETURN_OK);
+        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATBX1=230400,,,,h\r", 3, 200, ULPGN_RETURN_OK);
         if(ret != 0)
         {
             return ret;
@@ -511,6 +522,13 @@ int32_t sx_ulpgn_wifi_init(void)
         return ret;
     }
 
+    /* Buffer size = 1420byte */
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATBSIZE=1420\r", 1000 , 200, ULPGN_RETURN_OK);
+    if(ret != 0)
+    {
+        return ret;
+    }
+
     /* Disconnect from currently connected Access Point, */
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATWD\r", 3, 200, ULPGN_RETURN_OK);
     if(ret != 0)
@@ -547,6 +565,7 @@ int32_t sx_ulpgn_wifi_init(void)
 
     return ret;
 }
+
 
 int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *ppass)
 {
@@ -777,6 +796,15 @@ uint8_t sx_ulpgn_get_avail_socket()
     return 255;
 }
 
+int32_t sx_ulpgn_get_tcp_socket_status(uint8_t socket_no)
+{
+	if(socket_no >= g_sx_ulpgn_cleateble_sockets)
+	{
+	    return -1;
+	}
+	return g_ulpgn_socket[socket_no].socket_status;
+}
+
 int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipversion)
 {
     int32_t ret;
@@ -785,7 +813,7 @@ int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipvers
     {
 
 #if DEBUGLOG == 1
-        R_BSP_CpuInterruptLevelWrite (14);
+        R_BSP_CpuInterruptLevelWrite (13);
         printf("sx_ulpgn_socket_create(%d)\r\n", socket_no);
         R_BSP_CpuInterruptLevelWrite (0);
 #endif
@@ -850,7 +878,7 @@ int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port)
         }
 
 #if DEBUGLOG == 1
-        R_BSP_CpuInterruptLevelWrite (14);
+        R_BSP_CpuInterruptLevelWrite (13);
         printf("sx_ulpgn_tcp_connect(%d)\r\n", socket_no);
         R_BSP_CpuInterruptLevelWrite (0);
 #endif
@@ -908,6 +936,9 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
     int32_t ret;
     sci_err_t ercd;
 //  sci_baud_t baud;
+    TickType_t starttime;
+	TickType_t stoptime;
+
 
     if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
@@ -917,8 +948,20 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
             ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
             return -1;
         }
+        if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
+        {
+            /* Give back the socketInUse mutex. */
 #if DEBUGLOG == 1
-        R_BSP_CpuInterruptLevelWrite (14);
+            R_BSP_CpuInterruptLevelWrite (13);
+            printf("status not connect.\r\n");
+            R_BSP_CpuInterruptLevelWrite (0);
+#endif
+            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+            return -1;
+        }
+
+#if DEBUGLOG == 1
+        R_BSP_CpuInterruptLevelWrite (13);
         printf("sx_ulpgn_tcp_send(%d)\r\n", socket_no);
         R_BSP_CpuInterruptLevelWrite (0);
 #endif
@@ -935,7 +978,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
         }
 //#endif
         sended_length = 0;
-        timeout_init(1, timeout_ms);
+        tcp_timeout_init(socket_no, timeout_ms, 0);
 
         timeout = 0;
 
@@ -950,8 +993,12 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
             {
                 lenghttmp1 = length - sended_length;
             }
+            if(lenghttmp1 > 1420)
+            {
+            	lenghttmp1 = 1420;
+            }
             g_sx_ulpgn_uart_teiflag[ULPGN_UART_DATA_PORT] = 0;
-            ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], (uint8_t *)pdata, lenghttmp1);
+            ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle[ULPGN_UART_DATA_PORT], (uint8_t *)pdata + sended_length, lenghttmp1);
             if(SCI_SUCCESS != ercd)
             {
                 /* Give back the socketInUse mutex. */
@@ -965,7 +1012,9 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
                 {
                     break;
                 }
-                //if(-1 == check_timeout(0))
+                vTaskDelay(1);
+
+                //if(-1 == tcp_check_timeout(socket_no, 0))
                 //{
                 //  timeout = 1;
                 //  break;
@@ -977,6 +1026,8 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
             //}
             sended_length += lenghttmp1;
         }
+        vTaskDelay(1);
+
         if(timeout == 1 )
         {
             /* Give back the socketInUse mutex. */
@@ -985,7 +1036,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
         }
 
 #if DEBUGLOG == 1
-        R_BSP_CpuInterruptLevelWrite (14);
+        R_BSP_CpuInterruptLevelWrite (13);
         printf("tcp %d byte send\r\n", sended_length);
         R_BSP_CpuInterruptLevelWrite (0);
 #endif
@@ -1011,129 +1062,225 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 #endif
     TickType_t tmptime1;
 
-    if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
+    if(ULPGN_USE_UART_NUM == 2)
     {
         if(0 == g_ulpgn_socket[socket_no].socket_create_flag)
         {
-            /* Give back the socketInUse mutex. */
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
             return -1;
         }
 
-#if DEBUGLOG == 1
-        R_BSP_CpuInterruptLevelWrite (14);
-        printf("sx_ulpgn_tcp_recv(%d)\r\n", socket_no);
-        R_BSP_CpuInterruptLevelWrite (0);
-#endif
-//#if ULPGN_USE_UART_NUM == 2
-        if(ULPGN_USE_UART_NUM == 2)
+        if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
         {
-            if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
-            {
-                /* Give back the socketInUse mutex. */
+            /* Give back the socketInUse mutex. */
 #if DEBUGLOG == 1
-                R_BSP_CpuInterruptLevelWrite (14);
-                printf("status not connect.\r\n");
-                R_BSP_CpuInterruptLevelWrite (0);
+            R_BSP_CpuInterruptLevelWrite (13);
+            printf("status not connect.\r\n");
+            R_BSP_CpuInterruptLevelWrite (0);
 #endif
-                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                return -1;
-            }
-            ret = sx_ulpgn_change_socket_index(socket_no);
-            if(ret != 0)
-            {
-                /* Give back the socketInUse mutex. */
-#if DEBUGLOG == 1
-                R_BSP_CpuInterruptLevelWrite (14);
-                printf("sockindex error.\r\n");
-                R_BSP_CpuInterruptLevelWrite (0);
-#endif
-                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                return -1;
-            }
+            return -1;
         }
-//#endif
-        if(g_sl_ulpgn_tcp_recv_timeout != 0)
+        if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
         {
-            timeout_init(1, timeout_ms);
-        }
-        while(1)
-        {
-//#if ULPGN_USE_UART_NUM == 1
-            if(ULPGN_USE_UART_NUM == 1)
-            {
-                ercd = R_SCI_Receive(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT], (pdata + recvcnt), 1);
-                if(SCI_SUCCESS == ercd)
-                {
-                    recvcnt++;
-                    if(recvcnt >= length)
-                    {
-                        break;
-                    }
-                }
-                if(-1 == check_timeout(1, 0))
-                {
-                    break;
-                }
-            }
-//#endif
-//#if ULPGN_USE_UART_NUM == 2
-            if(ULPGN_USE_UART_NUM == 2)
-            {
 
-                byteq_ret = R_BYTEQ_Get(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, (pdata + recvcnt));
-                if(BYTEQ_SUCCESS == byteq_ret)
-                {
-                    recvcnt++;
-                    if(recvcnt >= length)
-                    {
-                        break;
-                    }
-                }
-                if(g_sl_ulpgn_tcp_recv_timeout != 0)
-                {
-                    if(-1 == check_timeout(1, 0))
-                    {
-#if DEBUGLOG == 1
-                        R_BSP_CpuInterruptLevelWrite (14);
-                        printf("recv timeout\r\n");
-                        R_BSP_CpuInterruptLevelWrite (0);
-#endif
-                        R_NOP();
-                        break;
-                    }
-                }
-            }
-//#endif
+	        ret = sx_ulpgn_change_socket_index(socket_no);
+	        if(ret != 0)
+	        {
+	            /* Give back the socketInUse mutex. */
+	#if DEBUGLOG == 1
+	            R_BSP_CpuInterruptLevelWrite (13);
+	            printf("sockindex error.\r\n");
+	            R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+	            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+	            return -1;
+	        }
         }
-#if DEBUGLOG == 1
-        tmptime2 = xTaskGetTickCount();
-        R_BSP_CpuInterruptLevelWrite (14);
-        printf("r:%06d:tcp %ld byte received.reqsize=%ld,%x\r\n", tmptime2, recvcnt, length, (uint32_t)pdata);
-        R_BSP_CpuInterruptLevelWrite (0);
-#endif
-
-//#if ULPGN_USE_UART_NUM == 2
-        if(ULPGN_USE_UART_NUM == 2)
-        {
-            if(recvcnt == 0)
-            {
-                ret = sx_ulpgn_get_socket_status(socket_no);
-                if(ret != ULPGN_SOCKET_STATUS_CONNECTED)
-                {
-                    /* Give back the socketInUse mutex. */
-                    ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                    return 0;
-                }
-            }
-        }
-//#endif
         /* Give back the socketInUse mutex. */
         ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+
+		if((timeout_ms != 0) && (timeout_ms != portMAX_DELAY))
+		{
+			tcp_timeout_init(socket_no, timeout_ms, 1);
+		}
+
+        while(1)
+        {
+	        byteq_ret = R_BYTEQ_Get(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, (pdata + recvcnt));
+	        if(BYTEQ_SUCCESS == byteq_ret)
+	        {
+//	        	printf("%02x\r\n",*(pdata + recvcnt));
+	            recvcnt++;
+	            if(recvcnt >= length)
+	            {
+	                break;
+	            }
+	            continue;
+	        }
+	        if((timeout_ms != 0) && (timeout_ms != portMAX_DELAY))
+	        {
+	            if(-1 == tcp_check_timeout(socket_no, 1))
+	            {
+	#if DEBUGLOG == 1
+	                R_BSP_CpuInterruptLevelWrite (13);
+	                printf("recv timeout\r\n");
+	                R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+	                R_NOP();
+	                break;
+	            }
+	            vTaskDelay(10);
+	        }
+	    }
+        if(recvcnt == 0)
+        {
+            ret = sx_ulpgn_get_socket_status(socket_no);
+            if(ret != ULPGN_SOCKET_STATUS_CONNECTED)
+            {
+                /* Give back the socketInUse mutex. */
+//                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+                return 0;
+            }
+			/* socket is not closed, and recieve data size is 0. */
+//			( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+			return -1;
+        }
     }
-    else
+
+    if(ULPGN_USE_UART_NUM == 1)
     {
-        return -1;
+		if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
+		{
+			if(0 == g_ulpgn_socket[socket_no].socket_create_flag)
+			{
+				/* Give back the socketInUse mutex. */
+				( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+				return -1;
+			}
+
+	#if DEBUGLOG == 1
+			R_BSP_CpuInterruptLevelWrite (13);
+			printf("sx_ulpgn_tcp_recv(%d)\r\n", socket_no);
+			R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+	//#if ULPGN_USE_UART_NUM == 2
+			if(ULPGN_USE_UART_NUM == 2)
+			{
+				if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
+				{
+					/* Give back the socketInUse mutex. */
+	#if DEBUGLOG == 1
+					R_BSP_CpuInterruptLevelWrite (13);
+					printf("status not connect.\r\n");
+					R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+					( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+					return -1;
+				}
+				ret = sx_ulpgn_change_socket_index(socket_no);
+				if(ret != 0)
+				{
+					/* Give back the socketInUse mutex. */
+	#if DEBUGLOG == 1
+					R_BSP_CpuInterruptLevelWrite (13);
+					printf("sockindex error.\r\n");
+					R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+					( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+					return -1;
+				}
+			}
+	//#endif
+			if((timeout_ms != 0) && (timeout_ms != portMAX_DELAY))
+			{
+				timeout_init(1, timeout_ms);
+			}
+			while(1)
+			{
+	//#if ULPGN_USE_UART_NUM == 1
+				if(ULPGN_USE_UART_NUM == 1)
+				{
+					ercd = R_SCI_Receive(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT], (pdata + recvcnt), 1);
+					if(SCI_SUCCESS == ercd)
+					{
+						recvcnt++;
+						if(recvcnt >= length)
+						{
+							break;
+						}
+					}
+					if((timeout_ms != 0) && (timeout_ms != portMAX_DELAY))
+					{
+						if(-1 == check_timeout(1, 0))
+						{
+							break;
+						}
+						vTaskDelay(1);
+					}
+				}
+	//#endif
+	//#if ULPGN_USE_UART_NUM == 2
+				if(ULPGN_USE_UART_NUM == 2)
+				{
+
+					byteq_ret = R_BYTEQ_Get(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, (pdata + recvcnt));
+					if(BYTEQ_SUCCESS == byteq_ret)
+					{
+						recvcnt++;
+						if(recvcnt >= length)
+						{
+							break;
+						}
+					}
+					if((timeout_ms != 0) && (timeout_ms != portMAX_DELAY))
+					{
+						if(-1 == check_timeout(1, 0))
+						{
+	#if DEBUGLOG == 1
+							R_BSP_CpuInterruptLevelWrite (13);
+							printf("recv timeout\r\n");
+							R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+							R_NOP();
+							break;
+						}
+						vTaskDelay(1);
+					}
+				}
+	//#endif
+			}
+	#if DEBUGLOG == 1
+			tmptime2 = xTaskGetTickCount();
+			R_BSP_CpuInterruptLevelWrite (13);
+			printf("r:%06d:tcp %ld byte received.reqsize=%ld,%x\r\n", tmptime2, recvcnt, length, (uint32_t)pdata);
+			R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+
+	//#if ULPGN_USE_UART_NUM == 2
+			if(ULPGN_USE_UART_NUM == 2)
+			{
+				if(recvcnt == 0)
+				{
+					ret = sx_ulpgn_get_socket_status(socket_no);
+					if(ret != ULPGN_SOCKET_STATUS_CONNECTED)
+					{
+						/* Give back the socketInUse mutex. */
+						( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+						return 0;
+					}
+
+					/* socket is not closed, and recieve data size is 0. */
+					( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+					return -1;
+				}
+			}
+	//#endif
+			/* Give back the socketInUse mutex. */
+			( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+		}
+		else
+		{
+			return -1;
+		}
     }
     return recvcnt;
 }
@@ -1152,7 +1299,7 @@ int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no)
         if(1 == g_ulpgn_socket[socket_no].socket_create_flag)
         {
 #if DEBUGLOG == 1
-            R_BSP_CpuInterruptLevelWrite (14);
+            R_BSP_CpuInterruptLevelWrite (13);
             printf("sx_ulpgn_tcp_disconnect(%d)\r\n", socket_no);
             R_BSP_CpuInterruptLevelWrite (0);
 #endif
@@ -1320,7 +1467,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptex
         if(timeout == 1)
         {
 #if DEBUGLOG == 1
-            R_BSP_CpuInterruptLevelWrite (14);
+            R_BSP_CpuInterruptLevelWrite (13);
             printf("timeout.\r\n", tmptime1, ptextstring);
             R_BSP_CpuInterruptLevelWrite (0);
 #endif
@@ -1331,13 +1478,13 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptex
         tmptime1 = xTaskGetTickCount();
         if(ptextstring[strlen((const char *)ptextstring) - 1] != '\r')
         {
-            R_BSP_CpuInterruptLevelWrite (14);
+            R_BSP_CpuInterruptLevelWrite (13);
             printf("s:%06d:%s\r\n", tmptime1, ptextstring);
             R_BSP_CpuInterruptLevelWrite (0);
         }
         else
         {
-            R_BSP_CpuInterruptLevelWrite (14);
+            R_BSP_CpuInterruptLevelWrite (13);
             printf("s:%06d:%s", tmptime1, ptextstring);
             printf("\n");
             R_BSP_CpuInterruptLevelWrite (0);
@@ -1629,36 +1776,109 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
 }
 //#endif
 
-static void timeout_init(uint8_t socket_no, uint32_t timeout_ms)
+static void timeout_init(uint8_t serial_ch, uint32_t timeout_ms)
 {
-    starttime[socket_no] = xTaskGetTickCount();
-    endtime[socket_no] = starttime[socket_no] + timeout_ms;
-    if((starttime[socket_no] + endtime[socket_no]) < starttime[socket_no])
+    starttime[serial_ch] = xTaskGetTickCount();
+    endtime[serial_ch] = starttime[serial_ch] + timeout_ms;
+    if((starttime[serial_ch] + endtime[serial_ch]) < starttime[serial_ch])
     {
         /* overflow */
-        timeout_overflow_flag[socket_no] = 1;
+        timeout_overflow_flag[serial_ch] = 1;
     }
     else
     {
-        timeout_overflow_flag[socket_no] = 0;
+        timeout_overflow_flag[serial_ch] = 0;
     }
 }
 
-static int32_t check_timeout(uint8_t socket_no, int32_t rcvcount)
+static void tcp_timeout_init(uint8_t socket_no, uint32_t timeout_ms, uint8_t flag)
+{
+	TickType_t *starttime;
+	TickType_t *thistime;
+	TickType_t *endtime;
+	uint8_t    *timeout_overflow_flag;
+	if(0 == flag)
+	{
+		starttime             = &g_ulpgn_socket[socket_no].send_starttime ;
+		thistime              = &g_ulpgn_socket[socket_no].send_thistime ;
+		endtime               = &g_ulpgn_socket[socket_no].send_endtime ;
+		timeout_overflow_flag = &g_ulpgn_socket[socket_no].send_timeout_overflow_flag;
+	}
+	else
+	{
+		starttime             = &g_ulpgn_socket[socket_no].recv_starttime ;
+		thistime              = &g_ulpgn_socket[socket_no].recv_thistime ;
+		endtime               = &g_ulpgn_socket[socket_no].recv_endtime ;
+		timeout_overflow_flag = &g_ulpgn_socket[socket_no].recv_timeout_overflow_flag;
+	}
+    *starttime = xTaskGetTickCount();
+    *endtime = *starttime + timeout_ms;
+    if((*starttime + *endtime) < *starttime)
+    {
+        /* overflow */
+        *timeout_overflow_flag = 1;
+    }
+    else
+    {
+        *timeout_overflow_flag = 0;
+    }
+
+}
+static int32_t tcp_check_timeout(uint8_t socket_no, uint8_t flag)
+{
+	TickType_t *starttime;
+	TickType_t *thistime;
+	TickType_t *endtime;
+	uint8_t    *timeout_overflow_flag;
+	if(0 == flag)
+	{
+		starttime             = &g_ulpgn_socket[socket_no].send_starttime ;
+		thistime              = &g_ulpgn_socket[socket_no].send_thistime ;
+		endtime               = &g_ulpgn_socket[socket_no].send_endtime ;
+		timeout_overflow_flag = &g_ulpgn_socket[socket_no].send_timeout_overflow_flag;
+	}
+	else
+	{
+		starttime             = &g_ulpgn_socket[socket_no].recv_starttime ;
+		thistime              = &g_ulpgn_socket[socket_no].recv_thistime ;
+		endtime               = &g_ulpgn_socket[socket_no].recv_endtime ;
+		timeout_overflow_flag = &g_ulpgn_socket[socket_no].recv_timeout_overflow_flag;
+	}
+    *thistime = xTaskGetTickCount();
+    if(*timeout_overflow_flag == 0)
+    {
+        if(*thistime >= *endtime || *thistime < *starttime)
+        {
+            return -1;
+        }
+    }
+    else
+    {
+        if(*thistime < *starttime && *thistime <= *endtime)
+        {
+            /* Not timeout  */
+            return -1;
+        }
+    }
+    /* Not timeout  */
+    return 0;
+}
+
+static int32_t check_timeout(uint8_t serial_ch, int32_t rcvcount)
 {
     if(0 == rcvcount)
     {
-        thistime[socket_no] = xTaskGetTickCount();
-        if(timeout_overflow_flag[socket_no] == 0)
+        thistime[serial_ch] = xTaskGetTickCount();
+        if(timeout_overflow_flag[serial_ch] == 0)
         {
-            if(thistime[socket_no] >= endtime[socket_no] || thistime[socket_no] < starttime[socket_no])
+            if(thistime[serial_ch] >= endtime[serial_ch] || thistime[serial_ch] < starttime[serial_ch])
             {
                 return -1;
             }
         }
         else
         {
-            if(thistime[socket_no] < starttime[socket_no] && thistime[socket_no] <= endtime[socket_no])
+            if(thistime[serial_ch] < starttime[serial_ch] && thistime[serial_ch] <= endtime[serial_ch])
             {
                 /* Not timeout  */
                 return -1;
@@ -1669,36 +1889,36 @@ static int32_t check_timeout(uint8_t socket_no, int32_t rcvcount)
     return 0;
 }
 
-static void bytetimeout_init(uint8_t socket_no, uint32_t timeout_ms)
+static void bytetimeout_init(uint8_t serial_ch, uint32_t timeout_ms)
 {
-    startbytetime[socket_no] = xTaskGetTickCount();
-    endbytetime[socket_no] = startbytetime[socket_no] + timeout_ms;
-    if((startbytetime[socket_no] + endbytetime[socket_no]) < startbytetime[socket_no])
+    startbytetime[serial_ch] = xTaskGetTickCount();
+    endbytetime[serial_ch] = startbytetime[serial_ch] + timeout_ms;
+    if((startbytetime[serial_ch] + endbytetime[serial_ch]) < startbytetime[serial_ch])
     {
         /* overflow */
-        byte_timeout_overflow_flag[socket_no] = 1;
+        byte_timeout_overflow_flag[serial_ch] = 1;
     }
     else
     {
-        byte_timeout_overflow_flag[socket_no] = 0;
+        byte_timeout_overflow_flag[serial_ch] = 0;
     }
 }
 
-static int32_t check_bytetimeout(uint8_t socket_no, int32_t rcvcount)
+static int32_t check_bytetimeout(uint8_t serial_ch, int32_t rcvcount)
 {
     if(0 != rcvcount)
     {
-        thisbytetime[socket_no] = xTaskGetTickCount();
-        if(byte_timeout_overflow_flag[socket_no] == 0)
+        thisbytetime[serial_ch] = xTaskGetTickCount();
+        if(byte_timeout_overflow_flag[serial_ch] == 0)
         {
-            if(thisbytetime[socket_no] >= endbytetime[socket_no] || thisbytetime[socket_no] < startbytetime[socket_no])
+            if(thisbytetime[serial_ch] >= endbytetime[serial_ch] || thisbytetime[serial_ch] < startbytetime[serial_ch])
             {
                 return -1;
             }
         }
         else
         {
-            if(thisbytetime[socket_no] < startbytetime[socket_no] && thisbytetime[socket_no] <= endbytetime[socket_no])
+            if(thisbytetime[serial_ch] < startbytetime[serial_ch] && thisbytetime[serial_ch] <= endbytetime[serial_ch])
             {
                 /* Not timeout  */
                 return -1;
@@ -1722,7 +1942,7 @@ static int32_t sx_ulpgn_serial_open_for_initial(void)
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_en    = SCI_PARITY_OFF;
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_type  = SCI_EVEN_PARITY;
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.stop_bits    = SCI_STOPBITS_1;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
+    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.int_priority = 14;    // 1=lowest, 15=highest
 
     my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial_default, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT], sx_ulpgn_uart_callback_default_port_for_inititial, &sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT]);
 
@@ -1738,20 +1958,28 @@ static int32_t sx_ulpgn_serial_open_for_initial(void)
 static int32_t sx_ulpgn_serial_open_for_data(void)
 {
     sci_err_t   my_sci_err;
+    uint8_t level;
 
     R_SCI_PinSet_sx_ulpgn_serial_default();
 
     memset(&sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], 0, sizeof(sci_hdl_t));
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.baud_rate    = 921600;
+    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.baud_rate    = 230400;
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.clk_src      = SCI_CLK_INT;
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.data_size    = SCI_DATA_8BIT;
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_en    = SCI_PARITY_OFF;
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.parity_type  = SCI_EVEN_PARITY;
     g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.stop_bits    = SCI_STOPBITS_1;
-    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
+    g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.int_priority = 14;    // 1=lowest, 15=highest
 
     my_sci_err = R_SCI_Open(SCI_CH_sx_ulpgn_serial_default, SCI_MODE_ASYNC, &g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT], sx_ulpgn_uart_callback_default_port_for_data, &sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT]);
 
+    if(SCI_SUCCESS != my_sci_err)
+    {
+        return -1;
+    }
+
+    level = g_sx_ulpgn_sci_config[ULPGN_UART_DEFAULT_PORT].async.int_priority + 1;
+    my_sci_err = R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_SET_RXI_PRIORITY,&level);
     if(SCI_SUCCESS != my_sci_err)
     {
         return -1;
