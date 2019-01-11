@@ -265,14 +265,19 @@ static TickType_t g_sl_ulpgn_tcp_recv_timeout = 0;       /* ## slowly problem ##
 
 /**
  * @brief The global mutex to ensure that only one operation is accessing the
- * g_sx_ulpgn_semaphore flag at one time.
+ * g_sx_ulpgn_tx_semaphore flag at one time.
  */
-static SemaphoreHandle_t g_sx_ulpgn_semaphore = NULL;
+static SemaphoreHandle_t g_sx_ulpgn_tx_semaphore = NULL;
+static SemaphoreHandle_t g_sx_ulpgn_rx_semaphore = NULL;
 
 /**
  * @brief Maximum time in ticks to wait for obtaining a semaphore.
  */
 static const TickType_t xMaxSemaphoreBlockTime = pdMS_TO_TICKS( 60000UL );
+
+uint8_t data1;
+uint8_t data2;
+uint8_t data3;
 
 typedef struct
 {
@@ -281,6 +286,7 @@ typedef struct
     uint8_t socket_status;
     uint8_t socket_recv_error_count;
     uint8_t socket_create_flag;
+    uint8_t socket_not_create_recv_count;
     TickType_t send_starttime;
     TickType_t send_thistime;
     TickType_t send_endtime;
@@ -340,18 +346,29 @@ int32_t sx_ulpgn_wifi_init(void)
         g_ulpgn_socket[i].socket_create_flag = 0;
     }
 
-    if (g_sx_ulpgn_semaphore != NULL)
+    if (g_sx_ulpgn_tx_semaphore != NULL)
     {
-        vSemaphoreDelete(g_sx_ulpgn_semaphore);
+        vSemaphoreDelete(g_sx_ulpgn_tx_semaphore);
     }
 
-    g_sx_ulpgn_semaphore = xSemaphoreCreateMutex();
+    g_sx_ulpgn_tx_semaphore = xSemaphoreCreateMutex();
 
-    if( g_sx_ulpgn_semaphore == NULL )
+    if( g_sx_ulpgn_tx_semaphore == NULL )
     {
         return -1;
     }
 
+    if (g_sx_ulpgn_rx_semaphore != NULL)
+    {
+        vSemaphoreDelete(g_sx_ulpgn_rx_semaphore);
+    }
+
+    g_sx_ulpgn_rx_semaphore = xSemaphoreCreateMutex();
+
+    if( g_sx_ulpgn_rx_semaphore == NULL )
+    {
+        return -1;
+    }
 
     ret = sx_ulpgn_serial_open_for_initial();
     if(ret != 0)
@@ -508,7 +525,7 @@ int32_t sx_ulpgn_wifi_init(void)
     }
 
 
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATS108=100\r", 3, 200, ULPGN_RETURN_OK);
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATS108=1\r", 3, 200, ULPGN_RETURN_OK);
     if(ret != 0)
     {
         return ret;
@@ -576,7 +593,8 @@ int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *
     volatile char secu[3][10];
     uint32_t security_encrypt_type = 1;
 
-    vTaskDelay(2000); // timing issue
+    R_BSP_SoftwareDelay(2000, BSP_DELAY_MILLISECS);
+//    vTaskDelay(2000); // timing issue
 
     strcpy((char *)buff, "ATWAWPA=");
     strcat((char *)buff, (const char *)pssid);
@@ -631,11 +649,15 @@ int32_t sx_ulpgn_wifi_disconnect()
     {
         if (0 != R_BYTEQ_Close(g_ulpgn_socket[i].socket_byteq_hdl))
         {
-            return -1;
+//            return -1;
         }
     }
 
     sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATWD\r", 3, 1000, ULPGN_RETURN_OK);
+    memset(g_sx_ulpgn_ipaddress, 0, sizeof(g_sx_ulpgn_ipaddress));
+    memset(g_sx_ulpgn_subnetmask, 0, sizeof(g_sx_ulpgn_subnetmask));
+    memset(g_sx_ulpgn_gateway, 0, sizeof(g_sx_ulpgn_gateway));
+
     R_SCI_Close(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT]);
     if(ULPGN_USE_UART_NUM == 2)
     {
@@ -644,12 +666,24 @@ int32_t sx_ulpgn_wifi_disconnect()
     return 0;
 }
 
+int32_t is_sx_ulpgn_wifi_connect(void)
+{
+	int32_t ret = -1;
+
+	if(g_sx_ulpgn_subnetmask[0] != 0)
+	{
+		ret = 0;
+	}
+	return ret;
+}
+
 static int32_t sx_ulpgn_serial_escape()
 {
 //#if ULPGN_USE_UART_NUM == 1 // escape sequence is only needed for single socket
     if(ULPGN_USE_UART_NUM == 1)
     {
-        vTaskDelay(500 / portTICK_PERIOD_MS);
+        R_BSP_SoftwareDelay(500, BSP_DELAY_MILLISECS);
+//        vTaskDelay(500 / portTICK_PERIOD_MS);
         if (R_SCI_Send(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT], "+++", 3) == SCI_SUCCESS)
         {
             //      transparent_mode = false;
@@ -809,52 +843,65 @@ int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipvers
 {
     int32_t ret;
 
-    if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
+    if( xSemaphoreTake( g_sx_ulpgn_tx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
-
-#if DEBUGLOG == 1
-        R_BSP_CpuInterruptLevelWrite (13);
-        printf("sx_ulpgn_socket_create(%d)\r\n", socket_no);
-        R_BSP_CpuInterruptLevelWrite (0);
-#endif
-        if( g_ulpgn_socket[socket_no].socket_create_flag == 1)
+        if( xSemaphoreTake( g_sx_ulpgn_rx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
         {
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-            return -1;
-        }
+	#if DEBUGLOG == 1
+			R_BSP_CpuInterruptLevelWrite (13);
+			printf("sx_ulpgn_socket_create(%d)\r\n", socket_no);
+			R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+			if( g_ulpgn_socket[socket_no].socket_create_flag == 1)
+			{
+				( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+				( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+				return -1;
+			}
 
-//#if ULPGN_USE_UART_NUM == 2
-        if(ULPGN_USE_UART_NUM == 2)
+	//#if ULPGN_USE_UART_NUM == 2
+			if(ULPGN_USE_UART_NUM == 2)
+			{
+				ret = sx_ulpgn_change_socket_index(socket_no);
+				if(ret != 0)
+				{
+					( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+					( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+					return -1;
+				}
+			}
+	//#endif
+			ret = sx_ulpgn_get_socket_status(socket_no);
+
+			sprintf((char *)buff, "ATNSOCK=%d,%d\r", (uint8_t)(type), (uint8_t)(ipversion));
+
+			ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 10, 200, ULPGN_RETURN_OK);
+			if(ret != 0 && ret != -2)
+			{
+				( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+				( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+				return ret;
+			}
+			g_ulpgn_socket[socket_no].socket_create_flag = 1;
+			if(ret == 0)
+			{
+				g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_SOCKET;
+				R_BYTEQ_Flush(g_ulpgn_socket[socket_no].socket_byteq_hdl);
+			}
+			//  ret = sx_ulpgn_serial_send_basic(socket_no, "ATNSTAT\r", 3, 200, ULPGN_RETURN_OK);
+
+			ret = sx_ulpgn_get_socket_status(socket_no);
+
+			/* Give back the socketInUse mutex. */
+			( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+			( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+        }
+        else
         {
-            ret = sx_ulpgn_change_socket_index(socket_no);
-            if(ret != 0)
-            {
-                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                return -1;
-            }
+			/* Give back the socketInUse mutex. */
+			( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+
         }
-//#endif
-        ret = sx_ulpgn_get_socket_status(socket_no);
-
-        sprintf((char *)buff, "ATNSOCK=%d,%d\r", (uint8_t)(type), (uint8_t)(ipversion));
-
-        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 10, 200, ULPGN_RETURN_OK);
-        if(ret != 0 && ret != -2)
-        {
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-            return ret;
-        }
-        g_ulpgn_socket[socket_no].socket_create_flag = 1;
-        if(ret == 0)
-        {
-        	g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_SOCKET;
-        }
-        //  ret = sx_ulpgn_serial_send_basic(socket_no, "ATNSTAT\r", 3, 200, ULPGN_RETURN_OK);
-
-        ret = sx_ulpgn_get_socket_status(socket_no);
-
-        /* Give back the socketInUse mutex. */
-        ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
     }
     else
     {
@@ -868,56 +915,65 @@ int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipvers
 int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port)
 {
     int32_t ret;
-    if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
+    if( xSemaphoreTake( g_sx_ulpgn_tx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
-        if( g_ulpgn_socket[socket_no].socket_create_flag  == 0)
+        if( xSemaphoreTake( g_sx_ulpgn_rx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
         {
-            /* Give back the socketInUse mutex. */
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-            return -1;
-        }
+			if( g_ulpgn_socket[socket_no].socket_create_flag  == 0)
+			{
+				/* Give back the socketInUse mutex. */
+				( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+				( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+				return -1;
+			}
 
-#if DEBUGLOG == 1
-        R_BSP_CpuInterruptLevelWrite (13);
-        printf("sx_ulpgn_tcp_connect(%d)\r\n", socket_no);
-        R_BSP_CpuInterruptLevelWrite (0);
-#endif
-//#if ULPGN_USE_UART_NUM == 2
-        if(ULPGN_USE_UART_NUM == 2)
+	#if DEBUGLOG == 1
+			R_BSP_CpuInterruptLevelWrite (13);
+			printf("sx_ulpgn_tcp_connect(%d)\r\n", socket_no);
+			R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+	//#if ULPGN_USE_UART_NUM == 2
+			if(ULPGN_USE_UART_NUM == 2)
+			{
+				ret = sx_ulpgn_change_socket_index(socket_no);
+				if(ret != 0)
+				{
+					/* Give back the socketInUse mutex. */
+					( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+					( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+					return -1;
+				}
+			}
+	//#endif
+			strcpy((char *)buff, "ATNCTCP=");
+			sprintf((char *)buff + strlen((char *)buff), "%d.%d.%d.%d,%d\r", (uint8_t)(ipaddr >> 24), (uint8_t)(ipaddr >> 16), (uint8_t)(ipaddr >> 8), (uint8_t)(ipaddr), port);
+
+	//#if ULPGN_USE_UART_NUM == 2
+			if(ULPGN_USE_UART_NUM == 2)
+			{
+				ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 10000, ULPGN_RETURN_OK);
+			}
+	//#endif
+			if(ULPGN_USE_UART_NUM == 1)
+			{
+	//#if ULPGN_USE_UART_NUM == 1
+				ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 10000, ULPGN_RETURN_CONNECT);
+	//#endif
+			}
+			if(ret == 0)
+			{
+				g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_CONNECTED;
+			}
+
+
+			/* Give back the socketInUse mutex. */
+			( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+			( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+        }
+        else
         {
-            ret = sx_ulpgn_change_socket_index(socket_no);
-            if(ret != 0)
-            {
-                /* Give back the socketInUse mutex. */
-                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                return -1;
-            }
+			( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
         }
-//#endif
-        strcpy((char *)buff, "ATNCTCP=");
-        sprintf((char *)buff + strlen((char *)buff), "%d.%d.%d.%d,%d\r", (uint8_t)(ipaddr >> 24), (uint8_t)(ipaddr >> 16), (uint8_t)(ipaddr >> 8), (uint8_t)(ipaddr), port);
-
-//#if ULPGN_USE_UART_NUM == 2
-        if(ULPGN_USE_UART_NUM == 2)
-        {
-            ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 10000, ULPGN_RETURN_OK);
-        }
-//#endif
-        if(ULPGN_USE_UART_NUM == 1)
-        {
-//#if ULPGN_USE_UART_NUM == 1
-            ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 10000, ULPGN_RETURN_CONNECT);
-//#endif
-        }
-        if(ret == 0)
-        {
-            g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_CONNECTED;
-        }
-
-
-        /* Give back the socketInUse mutex. */
-        ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-
     }
     else
     {
@@ -940,12 +996,12 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
 	TickType_t stoptime;
 
 
-    if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
+    if( xSemaphoreTake( g_sx_ulpgn_tx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
         if(0 == g_ulpgn_socket[socket_no].socket_create_flag )
         {
             /* Give back the socketInUse mutex. */
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+            ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
             return -1;
         }
         if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
@@ -956,8 +1012,28 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
             printf("status not connect.\r\n");
             R_BSP_CpuInterruptLevelWrite (0);
 #endif
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+            ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
             return -1;
+        }
+
+        if(ULPGN_USE_UART_NUM == 2)
+        {
+        	if(socket_no != current_socket_index)
+        	{
+        	    if( xSemaphoreTake( g_sx_ulpgn_rx_semaphore, xMaxSemaphoreBlockTime ) != pdTRUE )
+        	    {
+                    ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+                    return -1;
+        	    }
+                ret = sx_ulpgn_change_socket_index(socket_no);
+                ( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+                if(ret != 0)
+                {
+                    /* Give back the socketInUse mutex. */
+                    ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+                    return -1;
+                }
+        	}
         }
 
 #if DEBUGLOG == 1
@@ -965,18 +1041,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
         printf("sx_ulpgn_tcp_send(%d)\r\n", socket_no);
         R_BSP_CpuInterruptLevelWrite (0);
 #endif
-//#if ULPGN_USE_UART_NUM == 2
-        if(ULPGN_USE_UART_NUM == 2)
-        {
-            ret = sx_ulpgn_change_socket_index(socket_no);
-            if(ret != 0)
-            {
-                /* Give back the socketInUse mutex. */
-                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                return -1;
-            }
-        }
-//#endif
+
         sended_length = 0;
         tcp_timeout_init(socket_no, timeout_ms, 0);
 
@@ -1002,7 +1067,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
             if(SCI_SUCCESS != ercd)
             {
                 /* Give back the socketInUse mutex. */
-                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+                ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
                 return -1;
             }
 
@@ -1026,12 +1091,12 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
             //}
             sended_length += lenghttmp1;
         }
-        vTaskDelay(1);
+//        vTaskDelay(1);
 
         if(timeout == 1 )
         {
             /* Give back the socketInUse mutex. */
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+            ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
             return -1;
         }
 
@@ -1042,7 +1107,7 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
 #endif
 
         /* Give back the socketInUse mutex. */
-        ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+        ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
     }
     else
     {
@@ -1064,39 +1129,48 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 
     if(ULPGN_USE_UART_NUM == 2)
     {
-        if(0 == g_ulpgn_socket[socket_no].socket_create_flag)
+        if( xSemaphoreTake( g_sx_ulpgn_rx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
         {
-            return -1;
-        }
+			if(0 == g_ulpgn_socket[socket_no].socket_create_flag)
+			{
+	            ( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+				return -1;
+			}
 
-        if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
-        {
-            /* Give back the socketInUse mutex. */
-#if DEBUGLOG == 1
-            R_BSP_CpuInterruptLevelWrite (13);
-            printf("status not connect.\r\n");
-            R_BSP_CpuInterruptLevelWrite (0);
-#endif
-            return -1;
-        }
-        if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
-        {
-
-	        ret = sx_ulpgn_change_socket_index(socket_no);
-	        if(ret != 0)
-	        {
-	            /* Give back the socketInUse mutex. */
+			if(ULPGN_SOCKET_STATUS_CONNECTED != g_ulpgn_socket[socket_no].socket_status)
+			{
+				/* Give back the socketInUse mutex. */
 	#if DEBUGLOG == 1
-	            R_BSP_CpuInterruptLevelWrite (13);
-	            printf("sockindex error.\r\n");
-	            R_BSP_CpuInterruptLevelWrite (0);
+				R_BSP_CpuInterruptLevelWrite (13);
+				printf("status not connect.\r\n");
+				R_BSP_CpuInterruptLevelWrite (0);
 	#endif
-	            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-	            return -1;
+	            ( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+				return -1;
+			}
+
+	        if(ULPGN_USE_UART_NUM == 2)
+	        {
+	        	if(socket_no != current_socket_index)
+	        	{
+	        	    if( xSemaphoreTake( g_sx_ulpgn_tx_semaphore, xMaxSemaphoreBlockTime ) != pdTRUE )
+	        	    {
+	                    ( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+	                    return -1;
+	        	    }
+	                ret = sx_ulpgn_change_socket_index(socket_no);
+	                ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+	                if(ret != 0)
+	                {
+	                    /* Give back the socketInUse mutex. */
+	                    ( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+	                    return -1;
+	                }
+	        	}
 	        }
         }
         /* Give back the socketInUse mutex. */
-        ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+//        ( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
 
 		if((timeout_ms != 0) && (timeout_ms != portMAX_DELAY))
 		{
@@ -1105,7 +1179,9 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 
         while(1)
         {
+            R_BSP_CpuInterruptLevelWrite (15);
 	        byteq_ret = R_BYTEQ_Get(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, (pdata + recvcnt));
+            R_BSP_CpuInterruptLevelWrite (0);
 	        if(BYTEQ_SUCCESS == byteq_ret)
 	        {
 //	        	printf("%02x\r\n",*(pdata + recvcnt));
@@ -1122,12 +1198,13 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 	            {
 	#if DEBUGLOG == 1
 	                R_BSP_CpuInterruptLevelWrite (13);
-	                printf("recv timeout\r\n");
+	                printf("recv timeout.%d received. requestsize=%d,lastdata=%02x,data1=%02x\r\n",recvcnt,length,*(pdata + (recvcnt-1)),data1);
 	                R_BSP_CpuInterruptLevelWrite (0);
 	#endif
 	                R_NOP();
 	                break;
 	            }
+//	            R_BSP_SoftwareDelay(10, BSP_DELAY_MILLISECS);
 	            vTaskDelay(10);
 	        }
 	    }
@@ -1137,23 +1214,25 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
             if(ret != ULPGN_SOCKET_STATUS_CONNECTED)
             {
                 /* Give back the socketInUse mutex. */
-//                ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+                ( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
                 return 0;
             }
 			/* socket is not closed, and recieve data size is 0. */
-//			( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+			( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
 			return -1;
         }
+		/* socket is not closed, and recieve data size is 0. */
+		( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
     }
 
     if(ULPGN_USE_UART_NUM == 1)
     {
-		if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
+		if( xSemaphoreTake( g_sx_ulpgn_rx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
 		{
 			if(0 == g_ulpgn_socket[socket_no].socket_create_flag)
 			{
 				/* Give back the socketInUse mutex. */
-				( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+				( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
 				return -1;
 			}
 
@@ -1173,7 +1252,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 					printf("status not connect.\r\n");
 					R_BSP_CpuInterruptLevelWrite (0);
 	#endif
-					( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+					( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
 					return -1;
 				}
 				ret = sx_ulpgn_change_socket_index(socket_no);
@@ -1185,7 +1264,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 					printf("sockindex error.\r\n");
 					R_BSP_CpuInterruptLevelWrite (0);
 	#endif
-					( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+					( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
 					return -1;
 				}
 			}
@@ -1214,7 +1293,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 						{
 							break;
 						}
-						vTaskDelay(1);
+//						vTaskDelay(1);
 					}
 				}
 	//#endif
@@ -1243,7 +1322,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 							R_NOP();
 							break;
 						}
-						vTaskDelay(1);
+//						vTaskDelay(1);
 					}
 				}
 	//#endif
@@ -1264,18 +1343,18 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 					if(ret != ULPGN_SOCKET_STATUS_CONNECTED)
 					{
 						/* Give back the socketInUse mutex. */
-						( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+						( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
 						return 0;
 					}
 
 					/* socket is not closed, and recieve data size is 0. */
-					( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+					( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
 					return -1;
 				}
 			}
 	//#endif
 			/* Give back the socketInUse mutex. */
-			( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+			( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
 		}
 		else
 		{
@@ -1294,56 +1373,67 @@ int32_t sx_ulpgn_serial_tcp_recv_timeout_set(uint8_t socket_no, TickType_t timeo
 int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no)
 {
     int32_t ret = 0;
-    if( xSemaphoreTake( g_sx_ulpgn_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
+    if( xSemaphoreTake( g_sx_ulpgn_tx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
     {
-        if(1 == g_ulpgn_socket[socket_no].socket_create_flag)
+        if( xSemaphoreTake( g_sx_ulpgn_rx_semaphore, xMaxSemaphoreBlockTime ) == pdTRUE )
         {
-#if DEBUGLOG == 1
-            R_BSP_CpuInterruptLevelWrite (13);
-            printf("sx_ulpgn_tcp_disconnect(%d)\r\n", socket_no);
-            R_BSP_CpuInterruptLevelWrite (0);
-#endif
-//#if ULPGN_USE_UART_NUM == 2
-            if(ULPGN_USE_UART_NUM == 2)
-            {
-                ret = sx_ulpgn_change_socket_index(socket_no);
-                if(ret != 0)
-                {
-                    /* Give back the socketInUse mutex. */
-                    ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-                    return -1;
-                }
-            }
-//#endif
+			if(1 == g_ulpgn_socket[socket_no].socket_create_flag)
+			{
+	#if DEBUGLOG == 1
+				R_BSP_CpuInterruptLevelWrite (13);
+				printf("sx_ulpgn_tcp_disconnect(%d)\r\n", socket_no);
+				R_BSP_CpuInterruptLevelWrite (0);
+	#endif
+	//#if ULPGN_USE_UART_NUM == 2
+				if(ULPGN_USE_UART_NUM == 2)
+				{
+					ret = sx_ulpgn_change_socket_index(socket_no);
+					if(ret != 0)
+					{
+						/* Give back the socketInUse mutex. */
+						( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+						( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+						return -1;
+					}
+				}
+	//#endif
 
-//#if ULPGN_USE_UART_NUM == 1
-            if(ULPGN_USE_UART_NUM == 1)
-            {
-                R_BSP_SoftwareDelay(201, BSP_DELAY_MILLISECS); /* 1s */
-                R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT], SCI_CMD_RX_Q_FLUSH, NULL);
-                ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "+++", 3, 1000, ULPGN_RETURN_OK);
-            }
-//#endif
-            ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATNCLOSE\r", 3, 1000, ULPGN_RETURN_OK);
-            if(0 == ret)
-            {
-                g_ulpgn_socket[socket_no].socket_create_flag = 0;
-                g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_CLOSED;
-//#if ULPGN_USE_UART_NUM == 2
-                if(ULPGN_USE_UART_NUM == 2)
-                {
-                    R_BYTEQ_Flush(g_ulpgn_socket[socket_no].socket_byteq_hdl);
-                }
-//#endif
-            }
-            /* Give back the socketInUse mutex. */
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
+	//#if ULPGN_USE_UART_NUM == 1
+				if(ULPGN_USE_UART_NUM == 1)
+				{
+					R_BSP_SoftwareDelay(201, BSP_DELAY_MILLISECS); /* 1s */
+					R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT], SCI_CMD_RX_Q_FLUSH, NULL);
+					ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "+++", 3, 1000, ULPGN_RETURN_OK);
+				}
+	//#endif
+				ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATNCLOSE\r", 3, 1000, ULPGN_RETURN_OK);
+				if(0 == ret)
+				{
+					g_ulpgn_socket[socket_no].socket_create_flag = 0;
+					g_ulpgn_socket[socket_no].socket_status = ULPGN_SOCKET_STATUS_CLOSED;
+	//#if ULPGN_USE_UART_NUM == 2
+					if(ULPGN_USE_UART_NUM == 2)
+					{
+						R_BYTEQ_Flush(g_ulpgn_socket[socket_no].socket_byteq_hdl);
+					}
+					R_BSP_SoftwareDelay(1000, BSP_DELAY_MILLISECS);
+	//#endif
+				}
+				/* Give back the socketInUse mutex. */
+				( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+				( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+			}
+			else
+			{
+				/* Give back the socketInUse mutex. */
+				( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+				( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+				return -1;
+			}
         }
         else
         {
-            /* Give back the socketInUse mutex. */
-            ( void ) xSemaphoreGive( g_sx_ulpgn_semaphore );
-            return -1;
+			( void ) xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
         }
     }
     else
@@ -1645,7 +1735,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
 
             sprintf((char *)buff, "ATNSOCKINDEX=%d\r", socket_no);
 
-#if 1
+#if 0
             while(1)
             {
                 ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 3, 5000, ULPGN_RETURN_OK);
@@ -1660,7 +1750,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
             /* RTS sets active */
 //          ULPGN_HSUART1_RTS_PODR = 0;
 #endif
-#if 0
+#if 1
             while(1)
             {
                 recvcnt = 0;
@@ -1679,6 +1769,7 @@ static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no)
                     {
                         /* RTS sets not active */
                     	ULPGN_HSUART1_RTS_PODR = 1;
+                        R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 26ms */
                         break;
                     }
                     if(-1 == check_timeout(ULPGN_UART_COMMAND_PORT, 1000))
@@ -2185,23 +2276,25 @@ static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs)
 
     if (SCI_EVT_RX_CHAR == p_args->event)
     {
+    	data1 = p_args->byte;
         if(g_ulpgn_socket[current_socket_index].socket_create_flag == 1)
         {
             /* From RXI interrupt; received character data is in p_args->byte */
-
             R_SCI_Control(sx_ulpgn_uart_sci_handle[ULPGN_UART_DEFAULT_PORT], SCI_CMD_RX_Q_FLUSH, NULL);
             byteq_ret = R_BYTEQ_Put(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, p_args->byte);
             if (byteq_ret != 0)
             {
-                g_ulpgn_socket[current_socket_index].socket_recv_error_count++;
+//                g_ulpgn_socket[current_socket_index].socket_recv_error_count++;
                 return;
             }
             else
             {
+                g_ulpgn_socket[current_socket_index].socket_recv_error_count++;
             }
         }
         else
         {
+        	g_ulpgn_socket[current_socket_index].socket_not_create_recv_count= p_args->byte;
         }
     }
 #if SCI_CFG_TEI_INCLUDED

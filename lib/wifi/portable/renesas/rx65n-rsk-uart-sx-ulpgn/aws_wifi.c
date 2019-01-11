@@ -120,7 +120,7 @@ WIFIReturnCode_t WIFI_On( void )
 WIFIReturnCode_t WIFI_Off( void )
 {
     /* FIX ME. */
-    R_SCI_Close(SCI_CH7);
+	sx_ulpgn_wifi_disconnect();
 
 	return eWiFiSuccess;
 }
@@ -154,14 +154,18 @@ WIFIReturnCode_t WIFI_ConnectAP( const WIFINetworkParams_t * const pxNetworkPara
 WIFIReturnCode_t WIFI_Disconnect( void )
 {
     /* FIX ME. */
-    return eWiFiFailure;
+	sx_ulpgn_wifi_disconnect();
+    return eWiFiSuccess;
 }
 /*-----------------------------------------------------------*/
 
 WIFIReturnCode_t WIFI_Reset( void )
 {
+	WIFIReturnCode_t ret;
     /* FIX ME. */
-    return eWiFiFailure;
+	WIFI_Off();
+	ret = WIFI_On();
+    return ret;
 }
 /*-----------------------------------------------------------*/
 
@@ -229,7 +233,11 @@ WIFIReturnCode_t WIFI_GetIP( uint8_t * pucIPAddr )
 WIFIReturnCode_t WIFI_GetMAC( uint8_t * pucMac )
 {
     /* FIX ME. */
-//	sx_ulpgn_wifi_get_macaddr();
+	WIFIReturnCode_t ret = eWiFiFailure;
+	if(0 == sx_ulpgn_wifi_get_macaddr(pucMac))
+	{
+		ret = eWiFiSuccess;
+	}
     return eWiFiNotSupported;
 }
 /*-----------------------------------------------------------*/
@@ -279,5 +287,16 @@ WIFIReturnCode_t WIFI_GetPMMode( WIFIPMMode_t * pxPMModeType,
 }
 /*-----------------------------------------------------------*/
 
+BaseType_t WIFI_IsConnected( void )
+{
+    BaseType_t xIsConnected = pdFALSE;
+
+    if ( 0 == is_sx_ulpgn_wifi_connect() )
+    {
+        xIsConnected = pdTRUE;
+    }
+
+    return xIsConnected;
+}
 
 

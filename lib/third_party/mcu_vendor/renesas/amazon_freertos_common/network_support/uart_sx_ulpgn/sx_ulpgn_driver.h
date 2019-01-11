@@ -108,7 +108,8 @@ typedef enum
 
 int32_t sx_ulpgn_wifi_init(void);
 int32_t sx_ulpgn_socket_init(void);
-int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *ptextstring);
+int32_t is_sx_ulpgn_wifi_connect(void);
+int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *pmacaddr);
 int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *ppass);
 int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipversion);
 int32_t sx_ulpgn_get_tcp_socket_status(uint8_t socket_no);

@@ -225,6 +225,7 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
 			{
 				ssockets_num_allocated++;
 			}
+
 			/* Give back the socketInUse mutex. */
 		    xSemaphoreGive(xUcInUse);
 			return pxContext;
