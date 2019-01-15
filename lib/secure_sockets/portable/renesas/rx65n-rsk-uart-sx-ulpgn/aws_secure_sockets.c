@@ -547,26 +547,38 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 		{
 			case SOCKETS_SO_SERVER_NAME_INDICATION:
 
-				/* Non-NULL destination string indicates that SNI extension should
-				 * be used during TLS negotiation. */
-				if( NULL == ( pxContext->pcDestination =
-								  ( char * ) pvPortMalloc( 1U + xOptionLength ) ) )
-				{
-					lStatus = SOCKETS_ENOMEM;
-				}
-				else
-				{
-					memcpy( pxContext->pcDestination, pvOptionValue, xOptionLength );
-					pxContext->pcDestination[ xOptionLength ] = '\0';
-				}
+                /* Do not set the SNI options if the socket is possibly already connected. */
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
+
+                /* Non-NULL destination string indicates that SNI extension should
+                 * be used during TLS negotiation. */
+                else if( NULL == ( pxContext->pcDestination =
+                                       ( char * ) pvPortMalloc( 1U + xOptionLength ) ) )
+                {
+                    lStatus = SOCKETS_ENOMEM;
+                }
+                else
+                {
+                    memcpy( pxContext->pcDestination, pvOptionValue, xOptionLength );
+                    pxContext->pcDestination[ xOptionLength ] = '\0';
+                }
 
 				break;
 
 			case SOCKETS_SO_TRUSTED_SERVER_CERTIFICATE:
 
+                /* Do not set the trusted server certificate if the socket is possibly already connected. */
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
+
 				/* Non-NULL server certificate field indicates that the default trust
 				 * list should not be used. */
-				if( NULL == ( pxContext->pcServerCertificate =
+                else if( NULL == ( pxContext->pcServerCertificate =
 								  ( char * ) pvPortMalloc( xOptionLength ) ) )
 				{
 					lStatus = SOCKETS_ENOMEM;
@@ -577,7 +589,7 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 					pxContext->ulServerCertificateLength = xOptionLength;
 				}
 
-				break;
+                break;
 
 			case SOCKETS_SO_REQUIRE_TLS:
                 /* Do not set the TLS option if the socket is possibly already connected. */
@@ -598,7 +610,7 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
                 if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
                 {
                     pxContext->ulSendTimeout = 1;
-    				pxContext->ulRecvTimeout = 2;
+    				pxContext->ulRecvTimeout = 1;
                 }
                 else
                 {
@@ -614,8 +626,9 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 				{
 					xTimeout = portMAX_DELAY;
 				}
+
 				pxContext->ulRecvTimeout = xTimeout;
-	//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
+
 				break;
 			case SOCKETS_SO_SNDTIMEO:
 				/* Comply with Berkeley standard - a 0 timeout is wait forever. */
@@ -626,16 +639,15 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 					xTimeout = portMAX_DELAY;
 				}
 				pxContext->ulSendTimeout = xTimeout;
-	//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
 				break;
 
 			default:
 				lStatus = SOCKETS_ENOPROTOOPT;
-	//            FreeRTOS_setsockopt( pxContext->xSocket,
-	//                                           lLevel,
-	//                                           lOptionName,
-	//                                           pvOptionValue,
-	//                                           xOptionLength );
+//            FreeRTOS_setsockopt( pxContext->xSocket,
+//                                           lLevel,
+//                                           lOptionName,
+//                                           pvOptionValue,
+//                                           xOptionLength );
 				break;
 		}
     }
