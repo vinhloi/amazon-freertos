@@ -120,7 +120,10 @@ WIFIReturnCode_t WIFI_On( void )
 WIFIReturnCode_t WIFI_Off( void )
 {
     /* FIX ME. */
-	sx_ulpgn_wifi_disconnect();
+
+    WIFIReturnCode_t xRetVal = eWiFiFailure;
+
+	sx_ulpgn_wifi_off();
 
 	return eWiFiSuccess;
 }
@@ -140,11 +143,11 @@ WIFIReturnCode_t WIFI_ConnectAP( const WIFINetworkParams_t * const pxNetworkPara
 			pxNetworkParams->pcSSID,
 			convert_security,
 			pxNetworkParams->pcPassword);
+
 	if(ret != 0)
 	{
 		return eWiFiFailure;
 	}
-
 
 	return eWiFiSuccess;
 }
@@ -172,8 +175,7 @@ WIFIReturnCode_t WIFI_Reset( void )
 WIFIReturnCode_t WIFI_Scan( WIFIScanResult_t * pxBuffer,
                             uint8_t ucNumNetworks )
 {
-    /* FIX ME. */
-    return eWiFiFailure;
+    return sx_ulpgn_wifi_scan(pxBuffer,ucNumNetworks);
 }
 /*-----------------------------------------------------------*/
 
@@ -223,10 +225,11 @@ WIFIReturnCode_t WIFI_Ping( uint8_t * pucIPAddr,
 }
 /*-----------------------------------------------------------*/
 
-WIFIReturnCode_t WIFI_GetIP( uint8_t * pucIPAddr )
-{
+WIFIReturnCode_t WIFI_GetIP(uint8_t *pucIPAddr) {
+
     /* FIX ME. */
-    return eWiFiNotSupported;
+    return (WIFIReturnCode_t)sx_ulpgn_get_ip(pucIPAddr);
+
 }
 /*-----------------------------------------------------------*/
 
@@ -238,7 +241,7 @@ WIFIReturnCode_t WIFI_GetMAC( uint8_t * pucMac )
 	{
 		ret = eWiFiSuccess;
 	}
-    return eWiFiNotSupported;
+    return ret;
 }
 /*-----------------------------------------------------------*/
 
@@ -246,7 +249,9 @@ WIFIReturnCode_t WIFI_GetHostIP( char * pcHost,
                                  uint8_t * pucIPAddr )
 {
     /* FIX ME. */
-    return eWiFiNotSupported;
+
+    return (WIFIReturnCode_t)sx_ulpgn_dns_query(pcHost,pucIPAddr);
+
 }
 /*-----------------------------------------------------------*/
 

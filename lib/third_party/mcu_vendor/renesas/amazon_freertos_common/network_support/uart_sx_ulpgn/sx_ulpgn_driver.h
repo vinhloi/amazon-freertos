@@ -3,7 +3,7 @@
 
 #include "aws_wifi.h"
 
-#define DEBUGLOG  0
+#define DEBUGLOG  1
 #define ULPGN_PORT_DEBUG 0
 
 /* Configuration */
@@ -118,11 +118,11 @@ int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t lengt
 int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no);
 int32_t sx_ulpgn_get_ipaddress(void);
-int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr);
+int32_t sx_ulpgn_dns_query(const char *ptextstring, uint8_t *ucipaddr);
 int32_t sx_ulpgn_serial_tcp_recv_timeout_set(uint8_t socket_no, TickType_t timeout_ms);
 uint8_t sx_ulpgn_get_avail_socket(void);
 int32_t sx_ulpgn_wifi_disconnect(void);
-int32_t sx_ulpgn_get_ip(uint32_t *ulipaddr);
+int32_t sx_ulpgn_get_ip(uint8_t *ucipaddr);
 int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks);
 
 #endif /* #define SX_ULPGN_DRIVER_H */

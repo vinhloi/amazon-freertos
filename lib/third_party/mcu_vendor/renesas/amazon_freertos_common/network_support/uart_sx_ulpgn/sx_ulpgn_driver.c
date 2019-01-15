@@ -657,6 +657,14 @@ int32_t sx_ulpgn_wifi_disconnect(void)
     memset(g_sx_ulpgn_subnetmask, 0, sizeof(g_sx_ulpgn_subnetmask));
     memset(g_sx_ulpgn_gateway, 0, sizeof(g_sx_ulpgn_gateway));
 
+    return 0;
+}
+
+int32_t sx_ulpgn_wifi_off(void)
+{
+
+    sx_ulpgn_wifi_disconnect();
+
     R_SCI_Close(sx_ulpgn_uart_sci_handle[ULPGN_UART_COMMAND_PORT]);
     if(ULPGN_USE_UART_NUM == 2)
     {
@@ -733,7 +741,7 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATWS\r", 5000, 8000, ULPGN_RETURN_OK);
     if (strlen(recvbuff) < 10)
     {
-        return -1;
+        return eWiFiFailure;
     }
 
     do
@@ -785,14 +793,13 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
     }
     while(++idx < maxNetworks);
 
-    return 0;
+    return eWiFiSuccess;
 }
 
-int32_t sx_ulpgn_get_ip(uint32_t *ulipaddr)
+int32_t sx_ulpgn_get_ip(uint8_t *ucipaddr)
 {
     int32_t ret;
     char *buff = recvbuff;
-    uint8_t ipaddr[4];
 
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATNSET?\r", 500, 5000, ULPGN_RETURN_OK);
     if (ret != 0)
@@ -804,16 +811,15 @@ int32_t sx_ulpgn_get_ip(uint32_t *ulipaddr)
         buff += 2;
     }
 
-    ret = sscanf((const char *)buff, "IP:%d.%d.%d.%d ", &ipaddr[0], &ipaddr[1], &ipaddr[2], &ipaddr[3]);
+    ret = sscanf((const char *)buff, "IP:%d.%d.%d.%d ", (uint8_t *)ucipaddr, (uint8_t *)(ucipaddr+1), (uint8_t *)(ucipaddr+2), (uint8_t *)(ucipaddr+3));
 
     if (ret == 4)
     {
-        memcpy(ulipaddr, &ipaddr[0], sizeof(ipaddr));
-        return 0;
+        return eWiFiSuccess;
     }
     else
     {
-        return -1;
+        return eWiFiFailure;
     }
 }
 
@@ -1492,10 +1498,9 @@ int32_t sx_ulpgn_get_ipaddress(void)
     return 0;
 }
 
-int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr)
+int32_t sx_ulpgn_dns_query(const char *ptextstring, uint8_t *ipaddr)
 {
     uint32_t result;
-    uint32_t ipaddr[4];
     int32_t func_ret;
     int32_t scanf_ret;
     strcpy((char *)buff, "ATNDNSQUERY=");
@@ -1504,20 +1509,66 @@ int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr)
     func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 3, 3000, ULPGN_RETURN_OK);
     if(func_ret != 0)
     {
-        return -1;
+        return eWiFiFailure;
     }
-    scanf_ret = sscanf((const char *)recvbuff, "%lu\r\n%lu.%lu.%lu.%lu\r\n", &result, &ipaddr[0], &ipaddr[1], &ipaddr[2], &ipaddr[3]);
+    scanf_ret = sscanf((const char *)recvbuff, "%lu\r\n%u.%u.%u.%u\r\n", &result, &ipaddr[0], &ipaddr[1], &ipaddr[2], &ipaddr[3]);
     if(scanf_ret != 5)
     {
-        return -1;
+        return eWiFiFailure;
     }
     if(result != 1)
     {
-        return -1;
+        return eWiFiFailure;
     }
-    *ulipaddr = (((uint32_t)ipaddr[0]) << 24) | (((uint32_t)ipaddr[1]) << 16) | (((uint32_t)ipaddr[2]) << 8) | ((uint32_t)ipaddr[3]);
 
-    return 0;
+    return eWiFiSuccess;
+
+}
+
+int32_t sx_ulpgn_set_PMM(const uint8_t powermode ,const void * powersubmode)
+{
+    uint32_t result;
+    int32_t func_ret;
+    int32_t scanf_ret;
+    strcpy((char *)buff, "\ATWPM=");
+    sprintf((char *)buff + strlen((char *)buff), "%u\r", powermode);
+
+    func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 3, 3000, ULPGN_RETURN_OK);
+    if(func_ret != 0)
+    {
+        return eWiFiFailure;
+    }
+    scanf_ret = sscanf((const char *)recvbuff, "%lu\r\n", &result);
+    if((scanf_ret != 1)&& (result != 0))
+    {
+        return eWiFiFailure;
+    }
+
+    return eWiFiSuccess;
+
+}
+
+int32_t sx_ulpgn_get_PMM(const uint8_t powermode ,const void * powersubmode)
+{
+    uint32_t result;
+    int32_t func_ret;
+    int32_t scanf_ret;
+    uint8_t res_mode[10]={0};
+    strcpy((char *)buff, "\ATWPM=?");
+
+    func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 3, 3000, ULPGN_RETURN_OK);
+    if(func_ret != 0)
+    {
+        return eWiFiFailure;
+    }
+    scanf_ret = sscanf((const char *)recvbuff, "Power Mode = %10s \r\n", res_mode);
+    if(scanf_ret < 9 )
+    {
+        return eWiFiFailure;
+    }
+
+    return eWiFiSuccess;
+
 }
 
 
