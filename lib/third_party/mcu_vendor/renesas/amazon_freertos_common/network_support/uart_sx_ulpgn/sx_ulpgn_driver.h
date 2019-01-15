@@ -120,8 +120,8 @@ int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no);
 int32_t sx_ulpgn_get_ipaddress(void);
 int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr);
 int32_t sx_ulpgn_serial_tcp_recv_timeout_set(uint8_t socket_no, TickType_t timeout_ms);
-uint8_t sx_ulpgn_get_avail_socket();
-int32_t sx_ulpgn_wifi_disconnect();
+uint8_t sx_ulpgn_get_avail_socket(void);
+int32_t sx_ulpgn_wifi_disconnect(void);
 int32_t sx_ulpgn_get_ip(uint32_t *ulipaddr);
 int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks);
 

@@ -231,7 +231,6 @@ volatile uint8_t current_socket_index;
 uint8_t buff[1000];
 uint8_t recvbuff[1000];
 sci_cfg_t   g_sx_ulpgn_sci_config[2];
-sci_err_t   g_sx_ulpgn_sci_err;
 volatile uint32_t g_sx_ulpgn_uart_teiflag[2];
 static uint8_t timeout_overflow_flag[2];
 static sci_hdl_t sx_ulpgn_uart_sci_handle[2];
@@ -641,7 +640,7 @@ int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *
     return ret;
 }
 
-int32_t sx_ulpgn_wifi_disconnect()
+int32_t sx_ulpgn_wifi_disconnect(void)
 {
     sx_ulpgn_serial_escape();
 
@@ -818,7 +817,7 @@ int32_t sx_ulpgn_get_ip(uint32_t *ulipaddr)
     }
 }
 
-uint8_t sx_ulpgn_get_avail_socket()
+uint8_t sx_ulpgn_get_avail_socket(void)
 {
     for (int8_t i = 0; i < g_sx_ulpgn_cleateble_sockets; i++)
     {
@@ -1205,7 +1204,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 	                break;
 	            }
 //	            R_BSP_SoftwareDelay(10, BSP_DELAY_MILLISECS);
-	            vTaskDelay(10);
+	            vTaskDelay(1);
 	        }
 	    }
         if(recvcnt == 0)
@@ -1219,10 +1218,17 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
             }
 			/* socket is not closed, and recieve data size is 0. */
 			( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
-			return -1;
+			return 0;
         }
 		/* socket is not closed, and recieve data size is 0. */
 		( void ) xSemaphoreGive( g_sx_ulpgn_rx_semaphore );
+#if DEBUGLOG == 1
+		tmptime2 = xTaskGetTickCount();
+		R_BSP_CpuInterruptLevelWrite (13);
+		printf("r:%06d:tcp %ld byte received.reqsize=%ld,%x\r\n", tmptime2, recvcnt, length, (uint32_t)pdata);
+		R_BSP_CpuInterruptLevelWrite (0);
+#endif
+
     }
 
     if(ULPGN_USE_UART_NUM == 1)
@@ -2284,12 +2290,11 @@ static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs)
             byteq_ret = R_BYTEQ_Put(g_ulpgn_socket[current_socket_index].socket_byteq_hdl, p_args->byte);
             if (byteq_ret != 0)
             {
-//                g_ulpgn_socket[current_socket_index].socket_recv_error_count++;
+                g_ulpgn_socket[current_socket_index].socket_recv_error_count++;
                 return;
             }
             else
             {
-                g_ulpgn_socket[current_socket_index].socket_recv_error_count++;
             }
         }
         else
