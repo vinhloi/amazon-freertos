@@ -676,7 +676,7 @@ uint32_t SOCKETS_GetHostByName( const char * pcHostName )
 	ret = sx_ulpgn_dns_query(pcHostName, &ulAddr);
 	if(0 == ret)
 	{
-		ulAddr = SOCKETS_htonl( ulAddr );
+//		ulAddr = SOCKETS_htonl( ulAddr );
 	}
 	return ulAddr;
 }
