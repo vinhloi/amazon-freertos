@@ -130,6 +130,33 @@ WIFIReturnCode_t WIFI_ConnectAP(
         const WIFINetworkParams_t * const pxNetworkParams) {
     int32_t ret;
     uint32_t convert_security;
+
+    if( NULL == pxNetworkParams || NULL == pxNetworkParams->pcSSID )
+    {
+        return eWiFiFailure;
+    }
+
+    if ( pxNetworkParams->xSecurity >= eWiFiSecurityNotSupported)
+    {
+        return eWiFiFailure;
+    }
+
+    if( NULL == pxNetworkParams->pcPassword &&
+        eWiFiSecurityOpen != pxNetworkParams->xSecurity )
+    {
+        return eWiFiFailure;
+    }
+
+    if ( pxNetworkParams->ucSSIDLength > wificonfigMAX_SSID_LEN )
+    {
+        return eWiFiFailure;
+    }
+
+    if ( pxNetworkParams->ucPasswordLength > wificonfigMAX_PASSPHRASE_LEN )
+    {
+        return eWiFiFailure;
+    }
+
     convert_security = prvConvertSecurityFromSilexAT(
             pxNetworkParams->xSecurity);
     ret = sx_ulpgn_wifi_connect(pxNetworkParams->pcSSID, convert_security,
@@ -200,6 +227,16 @@ WIFIReturnCode_t WIFI_NetworkDelete(uint16_t usIndex) {
 WIFIReturnCode_t WIFI_Ping(uint8_t *pucIPAddr, uint16_t usCount,
         uint32_t ulIntervalMS) {
     /* FIX ME. */
+#if 0
+	WIFIReturnCode_t ret = eWiFiFailure;
+	int32_t ping_ret;
+	ping_ret = sx_ulpgn_wifi_ping(pucIPAddr, usCount, ulIntervalMS);
+	if(0 == ping_ret)
+	{
+		ret = eWiFiSuccess;
+	}
+    return ret;
+#endif
     return eWiFiNotSupported;
 }
 /*-----------------------------------------------------------*/
@@ -242,6 +279,11 @@ WIFIReturnCode_t WIFI_GetHostIP(char *pcHost, uint8_t *pucIPAddr) {
 
     WIFIReturnCode_t result = eWiFiFailure;
     uint32_t ret;
+
+    if( NULL == pcHost || NULL == pucIPAddr )
+    {
+        return eWiFiFailure;
+    }
 
     ret = sx_ulpgn_dns_query(pcHost, pucIPAddr);
 

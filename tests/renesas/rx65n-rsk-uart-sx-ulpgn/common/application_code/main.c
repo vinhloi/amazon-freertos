@@ -202,8 +202,11 @@ void prvWifiConnect( void )
 
     /* Setup parameters. */
     xJoinAPParams.pcSSID = clientcredentialWIFI_SSID;
+    xJoinAPParams.ucSSIDLength = sizeof( clientcredentialWIFI_SSID );
     xJoinAPParams.pcPassword = clientcredentialWIFI_PASSWORD;
+    xJoinAPParams.ucPasswordLength = sizeof( clientcredentialWIFI_PASSWORD );
     xJoinAPParams.xSecurity = clientcredentialWIFI_SECURITY;
+    xJoinAPParams.cChannel = 0;
 
     xWifiStatus = WIFI_ConnectAP( &( xJoinAPParams ) );
 

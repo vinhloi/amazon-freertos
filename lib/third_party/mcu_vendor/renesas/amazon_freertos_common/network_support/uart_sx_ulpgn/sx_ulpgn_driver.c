@@ -160,6 +160,9 @@
 #define ULPGN_UART_DEFAULT_PORT (0)
 #define ULPGN_UART_SECOND_PORT (1)
 
+#define MUTEX_TX (1 << 0)
+#define MUTEX_RX (1 << 1)
+
 uint8_t ULPGN_USE_UART_NUM = 2;
 
 uint32_t g_sx_ulpgn_tx_busiz_command;
@@ -229,7 +232,7 @@ const uint8_t * const ulpgn_socket_status[ULPGN_SOCKET_STATUS_MAX] =
 
 volatile uint8_t current_socket_index;
 uint8_t buff[1000];
-uint8_t recvbuff[1000];
+uint8_t recvbuff[1500];
 sci_cfg_t   g_sx_ulpgn_sci_config[2];
 volatile uint32_t g_sx_ulpgn_uart_teiflag[2];
 static uint8_t timeout_overflow_flag[2];
@@ -258,6 +261,9 @@ static int32_t sx_ulpgn_serial_escape(void);
 static int32_t sx_ulpgn_serial_second_port_open(void);
 static int32_t sx_ulpgn_serial_second_port_close(void);
 static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code);
+
+static int32_t sx_ulpgn_serial_send_basic_take_mutex(uint8_t mutex_flag);
+static void sx_ulpgn_serial_send_basic_give_mutex(uint8_t mutex_flag);
 static int32_t sx_ulpgn_get_socket_status(uint8_t socket_no);
 static int32_t sx_ulpgn_change_socket_index(uint8_t socket_no);
 static TickType_t g_sl_ulpgn_tcp_recv_timeout = 0;       /* ## slowly problem ## unit: 1ms */
@@ -577,7 +583,7 @@ int32_t sx_ulpgn_wifi_init(void)
 
         ret = sx_ulpgn_serial_send_basic(ULPGN_UART_DATA_PORT, NULL, 1000, 200, ULPGN_RETURN_OK);
     }
-    ret = sx_ulpgn_socket_init();
+//    ret = sx_ulpgn_socket_init();
 
     return ret;
 }
@@ -591,6 +597,22 @@ int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *
     int32_t scanf_ret;
     volatile char secu[3][10];
     uint32_t security_encrypt_type = 1;
+    uint8_t mutex_flag;
+
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
+
+    if(0 ==  is_sx_ulpgn_wifi_connect())
+    {
+    	/* If Wifi is already connected, do nothing and return success. */
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+    	return 0;
+    }
+
 
     R_BSP_SoftwareDelay(2000, BSP_DELAY_MILLISECS);
 //    vTaskDelay(2000); // timing issue
@@ -600,6 +622,7 @@ int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *
     strcat((char *)buff, ",");
     if(security != ULPGN_SECURITY_WPA && security != ULPGN_SECURITY_WPA2)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
     if(security == ULPGN_SECURITY_WPA)
@@ -621,7 +644,7 @@ int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *
     strcat((char *)buff, (const char *)ppass);
     strcat((char *)buff, "\r");
 
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 3, 5000, ULPGN_RETURN_OK);
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 3, 20000, ULPGN_RETURN_OK);
     if(0 == ret)
     {
         ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATW\r", 3, 1000, ULPGN_RETURN_OK);
@@ -632,16 +655,34 @@ int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *
                 ret = sx_ulpgn_get_ipaddress();
                 if(0 == ret)
                 {
+                    ret = sx_ulpgn_socket_init();
                     break;
                 }
             }
         }
     }
+    sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
     return ret;
 }
 
 int32_t sx_ulpgn_wifi_disconnect(void)
 {
+	uint8_t mutex_flag;
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
+
+	if(0 != is_sx_ulpgn_wifi_connect())
+    {
+    	/* If Wifi is not connected, do nothing and return success. */
+	    sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+    	return 0;
+    }
+
+
     sx_ulpgn_serial_escape();
 
     for (uint8_t i = 0; i < CREATEABLE_SOCKETS; i++)
@@ -657,6 +698,7 @@ int32_t sx_ulpgn_wifi_disconnect(void)
     memset(g_sx_ulpgn_subnetmask, 0, sizeof(g_sx_ulpgn_subnetmask));
     memset(g_sx_ulpgn_gateway, 0, sizeof(g_sx_ulpgn_gateway));
 
+    sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
     return 0;
 }
 
@@ -710,14 +752,23 @@ int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *pmacaddr)
 {
     int32_t ret;
     uint8_t macaddr[6];
+	uint8_t mutex_flag;
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
 
     if(pmacaddr == NULL){
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATW\r", 300, 3000, ULPGN_RETURN_OK);
     if (ret != 0)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
@@ -726,10 +777,12 @@ int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *pmacaddr)
     if (ret == 6)
     {
         memcpy(pmacaddr, &macaddr[0], sizeof(macaddr));
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return 0;
     }
     else
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 }
@@ -740,11 +793,19 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
     uint8_t idx = 0;
     uint8_t *bssid;
     char *ptr = recvbuff + 2;
+	uint8_t mutex_flag;
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
 
     // TODO investigate why this never returns the full response
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATWS\r", 5000, 8000, ULPGN_RETURN_OK);
     if (strlen(recvbuff) < 10)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
@@ -756,21 +817,37 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
         }
         // SSID
         ret = sscanf(ptr, "ssid = %32s\r", results[idx].cSSID);
-        if (ret != 1) return idx > 0 ? 0 : -1;
+        if (ret != 1)
+		{
+        	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+			return idx > 0 ? 0 : -1;
+		}
         while(*(ptr++) != '\n');
 
         // BSSID
         bssid = &results[idx].ucBSSID[0];
         ret = sscanf(ptr, "bssid = %x:%x:%x:%x:%x:%x\r", &bssid[0], &bssid[1], &bssid[2], &bssid[3], &bssid[4], &bssid[5], &bssid[6]);
-        if (ret != 6) return idx > 0 ? 0 : -1;
+        if (ret != 6)
+        {
+        	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+        	return idx > 0 ? 0 : -1;
+        }
         while(*(ptr++) != '\n');
 
         ret = sscanf(ptr, "channel = %d\r", &results[idx].cChannel);
-        if (ret != 1) return idx > 0 ? 0 : -1;
+        if (ret != 1)
+		{
+			sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+			return idx > 0 ? 0 : -1;
+		}
         while(*(ptr++) != '\n');
 
         ret = sscanf(ptr, "indicator = %d\r", &results[idx].cRSSI);
-        if (ret != 1) return idx > 0 ? 0 : -1;
+        if (ret != 1)
+		{
+			sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+			return idx > 0 ? 0 : -1;
+		}
         while(*(ptr++) != '\n');
 
         if (strncmp(ptr, "security = NONE!", 16) == 0)
@@ -797,6 +874,38 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
     }
     while(++idx < maxNetworks);
 
+	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+    return 0;
+}
+
+int32_t sx_ulpgn_wifi_ping(uint8_t *pucIPAddr, uint16_t usCount, uint32_t ulIntervalMS)
+{
+    int32_t ret;
+    uint16_t i;
+	uint8_t mutex_flag;
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
+
+	sprintf((char *)buff, "ATNPING=%d.%d.%d.%d,,%d\r", \
+			(uint8_t)(pucIPAddr[0]),(uint8_t)(pucIPAddr[1]),(uint8_t)(pucIPAddr[2]),(uint8_t)(pucIPAddr[3]),\
+			ulIntervalMS);
+
+	for(i = 0; i<usCount; i++)
+	{
+		// TODO investigate why this never returns the full response
+		ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, buff, 3, 8000, ULPGN_RETURN_OK);
+		if (ret < 0)
+		{
+			sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
+			return -1;
+		}
+	}
+
+	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
     return 0;
 }
 
@@ -806,14 +915,24 @@ int32_t sx_ulpgn_get_ip(uint8_t *ucip_addr)
     uint32_t temp_addr[4];
     uint32_t i = 0;
     char *buff = recvbuff;
+	uint8_t mutex_flag;
 
-    if(ucip_addr == NULL){
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
+
+    if(ucip_addr == NULL)
+    {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATNSET?\r", 500, 5000, ULPGN_RETURN_OK);
     if (ret != 0)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
     if (buff[0] == '\n' && buff[1] == '\0')
@@ -826,6 +945,7 @@ int32_t sx_ulpgn_get_ip(uint8_t *ucip_addr)
 
     if (ret != 4)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
@@ -833,11 +953,13 @@ int32_t sx_ulpgn_get_ip(uint8_t *ucip_addr)
            if(temp_addr[i]<=255){
                ucip_addr[i] = (uint8_t)temp_addr[i];
            }else{
+           	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
                return -1;
            }
         }
 
 
+	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
     return 0;
 
 }
@@ -1485,6 +1607,7 @@ int32_t sx_ulpgn_get_ipaddress(void)
     int32_t func_ret;
     int32_t scanf_ret;
     uint32_t count;
+
     func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATNSET=\?\r", 3, 3000, ULPGN_RETURN_OK);
     if(func_ret != 0)
     {
@@ -1524,10 +1647,18 @@ int32_t sx_ulpgn_dns_query(const char *ptextstring, uint8_t *ip_addr)
     int32_t scanf_ret;
     uint32_t temp_addr[4];
     int32_t i = 0;
+    uint8_t mutex_flag;
 
     if(ip_addr == NULL){
         return -1;
     }
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
+
 
     strcpy((char *)buff, "ATNDNSQUERY=");
     sprintf((char *)buff + strlen((char *)buff), "%s\r", ptextstring);
@@ -1535,15 +1666,18 @@ int32_t sx_ulpgn_dns_query(const char *ptextstring, uint8_t *ip_addr)
     func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 3, 3000, ULPGN_RETURN_OK);
     if(func_ret != 0)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
     scanf_ret = sscanf((const char *)recvbuff, "%lu\r\n%u.%u.%u.%u\r\n", &result, &temp_addr[0], &temp_addr[1], &temp_addr[2], &temp_addr[3]);
     if(scanf_ret != 5)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
     if(result != 1)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
@@ -1551,9 +1685,11 @@ int32_t sx_ulpgn_dns_query(const char *ptextstring, uint8_t *ip_addr)
        if(temp_addr[i]<=255){
            ip_addr[i] = (uint8_t)temp_addr[i];
        }else{
+           sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
            return -1;
        }
     }
+	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
 
     return 0;
 
@@ -1564,6 +1700,13 @@ int32_t sx_ulpgn_set_power_mode(const uint8_t powermode ,const void * submode)
     uint32_t result;
     int32_t func_ret;
     int32_t scanf_ret;
+    uint8_t mutex_flag;
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
 
     strcpy((char *)buff, "\ATWPM=");
     sprintf((char *)buff + strlen((char *)buff), "%u\r", powermode);
@@ -1571,14 +1714,17 @@ int32_t sx_ulpgn_set_power_mode(const uint8_t powermode ,const void * submode)
     func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 3, 3000, ULPGN_RETURN_OK);
     if(func_ret != 0)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
     scanf_ret = sscanf((const char *)recvbuff, "%lu\r\n", &result);
     if((scanf_ret != 1)&& (result != 0))
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
+	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
     return 0;
 
 }
@@ -1590,39 +1736,96 @@ int32_t sx_ulpgn_get_power_mode(uint8_t *power_mode ,void * sub_mode)
     int32_t scanf_ret;
     uint8_t response_power_mode[10]={0};
     const char * power_mode_dict[2]={"Max Perf","Power Save"};
+    uint8_t mutex_flag;
+
+    mutex_flag = (MUTEX_TX | MUTEX_RX);
+    if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
+	{
+    	return -1;
+	}
+
     strcpy((char *)buff, "\ATWPM=?");
 
     func_ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 3, 3000, ULPGN_RETURN_OK);
     if(func_ret != 0)
     {
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
     scanf_ret = sscanf((const char *)recvbuff, "Power Mode = %10s \r\n", response_power_mode);
     if(strcmp((const char *)response_power_mode,power_mode_dict[0]) )
     {
         *power_mode=0;
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return 0;
     }else if(strcmp((const char *)response_power_mode,power_mode_dict[1]))
     {
         *power_mode=1;
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return 0;
     }else{
+    	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
         return -1;
     }
 
+	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
     return 0;
 
 }
+
+
+
+static int32_t sx_ulpgn_serial_send_basic_take_mutex(uint8_t mutex_flag)
+{
+	if(0 != (mutex_flag & MUTEX_TX))
+	{
+		if( xSemaphoreTake( g_sx_ulpgn_tx_semaphore, xMaxSemaphoreBlockTime ) != pdTRUE )
+		{
+        	return -1;
+		}
+	}
+
+	if(0 != (mutex_flag & MUTEX_RX))
+	{
+		if( xSemaphoreTake( g_sx_ulpgn_rx_semaphore, xMaxSemaphoreBlockTime ) != pdTRUE )
+		{
+			if(0 != (mutex_flag & MUTEX_TX))
+			{
+				xSemaphoreGive( g_sx_ulpgn_tx_semaphore );
+			}
+			return -1;
+		}
+	}
+	return 0;
+}
+
+static void sx_ulpgn_serial_send_basic_give_mutex(uint8_t mutex_flag)
+{
+	if(0 != (mutex_flag & MUTEX_RX))
+	{
+		xSemaphoreGive( g_sx_ulpgn_rx_semaphore);
+	}
+	if(0 != (mutex_flag & MUTEX_TX))
+	{
+		xSemaphoreGive( g_sx_ulpgn_tx_semaphore);
+	}
+	return;
+}
+uint8_t last_data[ULPGN_RETURN_TEXT_LENGTH];
 
 static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptextstring, uint16_t response_type, uint16_t timeout_ms, sx_ulpgn_return_code_t expect_code)
 {
 #if DEBUGLOG == 1
     TickType_t tmptime1, tmptime2;
 #endif
-    memset(recvbuff, 0, sizeof(recvbuff));
     volatile int32_t timeout;
     sci_err_t ercd;
     uint32_t recvcnt = 0;
+    uint8_t receive_data;
+    uint8_t last_data_cnt = 0;
+
+    memset(recvbuff, 0, sizeof(recvbuff));
+    memset(last_data, 0, sizeof(last_data));
 
     timeout_init(serial_ch_id, timeout_ms);
 
@@ -1633,6 +1836,7 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptex
         timeout = 0;
         recvcnt = 0;
         g_sx_ulpgn_uart_teiflag[serial_ch_id] = 0;
+        R_SCI_Control(sx_ulpgn_uart_sci_handle[serial_ch_id], SCI_CMD_RX_Q_FLUSH, NULL);
         ercd = R_SCI_Send(sx_ulpgn_uart_sci_handle[serial_ch_id], (uint8_t *)ptextstring, (uint16_t)strlen((const char *)ptextstring));
         if(SCI_SUCCESS != ercd)
         {
@@ -1682,10 +1886,23 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptex
     }
     while(1)
     {
-        ercd = R_SCI_Receive(sx_ulpgn_uart_sci_handle[serial_ch_id], &recvbuff[recvcnt], 1);
+        ercd = R_SCI_Receive(sx_ulpgn_uart_sci_handle[serial_ch_id], &receive_data, 1);
         if(SCI_SUCCESS == ercd)
         {
+        	recvbuff[recvcnt] = receive_data;
             recvcnt++;
+            if(last_data_cnt < (ULPGN_RETURN_TEXT_LENGTH - 2))
+            {
+            	last_data[last_data_cnt] = receive_data;
+            	last_data_cnt++;
+            }
+            else
+            {
+            	memmove(&last_data[0],&last_data[1],ULPGN_RETURN_TEXT_LENGTH - 2);
+            	last_data_cnt--;
+            	last_data[last_data_cnt] = receive_data;
+            	last_data_cnt++;
+            }
             bytetimeout_init(serial_ch_id, response_type);
             if(recvcnt < 4)
             {
@@ -1711,6 +1928,26 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptex
         return -1;
     }
 
+    if(recvcnt == sizeof(recvbuff) - 2)
+    {
+        while(1)
+        {
+			ercd = R_SCI_Receive(sx_ulpgn_uart_sci_handle[serial_ch_id], &receive_data, 1);
+			if(SCI_SUCCESS == ercd)
+			{
+				memmove(&last_data[0],&last_data[1],ULPGN_RETURN_TEXT_LENGTH - 2);
+            	last_data_cnt--;
+            	last_data[last_data_cnt] = receive_data;
+            	last_data_cnt++;
+				bytetimeout_init(serial_ch_id, response_type);
+			}
+			if(-1 == check_bytetimeout(serial_ch_id, recvcnt))
+			{
+				break;
+			}
+        }
+    }
+
 #if DEBUGLOG == 1
     tmptime2 = xTaskGetTickCount();
     if(recvbuff[recvcnt - 1] != '\r')
@@ -1734,10 +1971,10 @@ static int32_t sx_ulpgn_serial_send_basic(uint8_t serial_ch_id, const char *ptex
     const uint32_t expected_len = strlen(expected_result);
     uint32_t expected_offset = 0;
 
-    if(0 != strncmp((const char *)&recvbuff[recvcnt - strlen((const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode]) ],
+    if(0 != strncmp((const char *)&last_data[last_data_cnt - strlen((const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode]) ],
                     (const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode], strlen((const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode])))
     {
-        if(0 == strncmp((const char *)&recvbuff[recvcnt - strlen((const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode]) ],
+        if(0 == strncmp((const char *)&last_data[last_data_cnt - strlen((const char *)ulpgn_result_code[expect_code][g_sx_ulpgn_return_mode]) ],
                         (const char *)ulpgn_result_code[ULPGN_RETURN_BUSY][g_sx_ulpgn_return_mode], strlen((const char *)ulpgn_result_code[ULPGN_RETURN_BUSY][g_sx_ulpgn_return_mode])))
         {
             /* busy */

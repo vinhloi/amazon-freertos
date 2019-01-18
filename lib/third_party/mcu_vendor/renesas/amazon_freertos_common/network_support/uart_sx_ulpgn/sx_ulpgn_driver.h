@@ -21,6 +21,8 @@
 #define ULPGN_RETURN_TEXT_NO_DIALTONE "NO_DIALTONE\r\n"
 #define ULPGN_RETURN_TEXT_BUSY        "BUSY\r\n"
 #define ULPGN_RETURN_TEXT_NO_ANSWER   "NO_ANSWER\r\n"
+#define ULPGN_RETURN_TEXT_LENGTH      (13+1) /* strlen(ULPGN_RETURN_TEXT_NO_DIALTONE)+1 */
+
 
 #define ULPGN_RETURN_NUMERIC_OK          "0\r"
 #define ULPGN_RETURN_NUMERIC_CONNECT     "1\r"
@@ -126,5 +128,6 @@ int32_t sx_ulpgn_get_ip(uint8_t *ucipaddr);
 int32_t sx_ulpgn_set_power_mode(const uint8_t powermode ,const void * submode);
 int32_t sx_ulpgn_get_power_mode(uint8_t *powermode ,void * submode);
 int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks);
+int32_t sx_ulpgn_wifi_ping(uint8_t *pucIPAddr, uint16_t usCount, uint32_t ulIntervalMS);
 
 #endif /* #define SX_ULPGN_DRIVER_H */
