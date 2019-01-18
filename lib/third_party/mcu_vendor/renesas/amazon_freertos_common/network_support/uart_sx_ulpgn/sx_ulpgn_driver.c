@@ -816,7 +816,7 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
             break; // end of list
         }
         // SSID
-        ret = sscanf(ptr, "ssid = %32s\r", results[idx].cSSID);
+        ret = sscanf(ptr, "ssid = %[^\r]", results[idx].cSSID);
         if (ret != 1)
 		{
         	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
@@ -858,16 +858,19 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
         else
         {
             while(*(ptr++) != '\n');
-            if (strncmp(ptr, "WPA", 3) == 0)
-            {
-                results[idx].xSecurity = eWiFiSecurityWPA;
-            }
-            else  if (strncmp(ptr, "RSN/WPA2", 8) == 0)
-            {
-                results[idx].xSecurity = eWiFiSecurityWPA2;
-            }
-            // Note WEP is not recognized by the modem
-            while(*(ptr++) != '\n');
+            if(*(ptr++) !='\r')
+			{
+				if (strncmp(ptr, "WPA", 3) == 0)
+				{
+					results[idx].xSecurity = eWiFiSecurityWPA;
+				}
+				else  if (strncmp(ptr, "RSN/WPA2", 8) == 0)
+				{
+					results[idx].xSecurity = eWiFiSecurityWPA2;
+				}
+				// Note WEP is not recognized by the modem
+				while(*(ptr++) != '\n');
+			}
         }
 
         while(*ptr != '\0' && *(ptr++) != '\n'); // end of record
