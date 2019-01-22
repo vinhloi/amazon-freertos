@@ -46,7 +46,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #define mainLOGGING_TASK_STACK_SIZE         ( configMINIMAL_STACK_SIZE * 6 )
 #define mainLOGGING_MESSAGE_QUEUE_LENGTH    ( 15 )
-#define mainTEST_RUNNER_TASK_STACK_SIZE    ( configMINIMAL_STACK_SIZE * 8 )
+#define mainTEST_RUNNER_TASK_STACK_SIZE    ( configMINIMAL_STACK_SIZE * 16 )
 
 /* The MAC address array is not declared const as the MAC address will
 normally be read from an EEPROM and not hard coded (in real deployed
@@ -202,8 +202,11 @@ void prvWifiConnect( void )
 
     /* Setup parameters. */
     xJoinAPParams.pcSSID = clientcredentialWIFI_SSID;
+    xJoinAPParams.ucSSIDLength = sizeof( clientcredentialWIFI_SSID );
     xJoinAPParams.pcPassword = clientcredentialWIFI_PASSWORD;
+    xJoinAPParams.ucPasswordLength = sizeof( clientcredentialWIFI_PASSWORD );
     xJoinAPParams.xSecurity = clientcredentialWIFI_SECURITY;
+    xJoinAPParams.cChannel = 0;
 
     xWifiStatus = WIFI_ConnectAP( &( xJoinAPParams ) );
 

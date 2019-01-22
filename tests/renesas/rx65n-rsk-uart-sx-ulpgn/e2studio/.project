@@ -140,6 +140,11 @@
 			<locationURI>AWS_IOT_MCU_ROOT/tests/common/tls</locationURI>
 		</link>
 		<link>
+			<name>application_code/common_test/wifi</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/tests/common/wifi</locationURI>
+		</link>
+		<link>
 			<name>lib/aws/FreeRTOS</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/FreeRTOS</locationURI>

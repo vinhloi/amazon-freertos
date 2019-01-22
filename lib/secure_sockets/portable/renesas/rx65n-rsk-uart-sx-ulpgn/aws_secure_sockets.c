@@ -162,15 +162,19 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
     uint8_t socketId;
     SSOCKETContextPtr_t pxContext = NULL;
 
+	/* Ensure that only supported values are supplied. */
+	configASSERT( lDomain == SOCKETS_AF_INET );
+	configASSERT( lType == SOCKETS_SOCK_STREAM );
+	configASSERT( lProtocol == SOCKETS_IPPROTO_TCP );
+	/* Ensure that only supported values are supplied. */
+    if((lDomain != SOCKETS_AF_INET) || ( lType != SOCKETS_SOCK_STREAM ) || ( lProtocol != SOCKETS_IPPROTO_TCP ))
+	{
+		return SOCKETS_INVALID_SOCKET;
+	}
     if (xSemaphoreTake( xUcInUse, xMaxSemaphoreBlockTime) == pdTRUE)
     {
 
 		socketId = sx_ulpgn_get_avail_socket();
-
-		/* Ensure that only supported values are supplied. */
-		configASSERT( lDomain == SOCKETS_AF_INET );
-		configASSERT( lType == SOCKETS_SOCK_STREAM );
-		configASSERT( lProtocol == SOCKETS_IPPROTO_TCP );
 
 		if(ssockets_num_allocated >= MAX_NUM_SSOCKETS || socketId == 255)
 		{
@@ -221,6 +225,7 @@ Socket_t SOCKETS_Socket( int32_t lDomain,
 			{
 				ssockets_num_allocated++;
 			}
+
 			/* Give back the socketInUse mutex. */
 		    xSemaphoreGive(xUcInUse);
 			return pxContext;
@@ -542,26 +547,38 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 		{
 			case SOCKETS_SO_SERVER_NAME_INDICATION:
 
-				/* Non-NULL destination string indicates that SNI extension should
-				 * be used during TLS negotiation. */
-				if( NULL == ( pxContext->pcDestination =
-								  ( char * ) pvPortMalloc( 1U + xOptionLength ) ) )
-				{
-					lStatus = SOCKETS_ENOMEM;
-				}
-				else
-				{
-					memcpy( pxContext->pcDestination, pvOptionValue, xOptionLength );
-					pxContext->pcDestination[ xOptionLength ] = '\0';
-				}
+                /* Do not set the SNI options if the socket is possibly already connected. */
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
+
+                /* Non-NULL destination string indicates that SNI extension should
+                 * be used during TLS negotiation. */
+                else if( NULL == ( pxContext->pcDestination =
+                                       ( char * ) pvPortMalloc( 1U + xOptionLength ) ) )
+                {
+                    lStatus = SOCKETS_ENOMEM;
+                }
+                else
+                {
+                    memcpy( pxContext->pcDestination, pvOptionValue, xOptionLength );
+                    pxContext->pcDestination[ xOptionLength ] = '\0';
+                }
 
 				break;
 
 			case SOCKETS_SO_TRUSTED_SERVER_CERTIFICATE:
 
+                /* Do not set the trusted server certificate if the socket is possibly already connected. */
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
+
 				/* Non-NULL server certificate field indicates that the default trust
 				 * list should not be used. */
-				if( NULL == ( pxContext->pcServerCertificate =
+                else if( NULL == ( pxContext->pcServerCertificate =
 								  ( char * ) pvPortMalloc( xOptionLength ) ) )
 				{
 					lStatus = SOCKETS_ENOMEM;
@@ -572,15 +589,33 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 					pxContext->ulServerCertificateLength = xOptionLength;
 				}
 
-				break;
+                break;
 
 			case SOCKETS_SO_REQUIRE_TLS:
-				pxContext->xRequireTLS = pdTRUE;
+                /* Do not set the TLS option if the socket is possibly already connected. */
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
+                else
+                {
+                    pxContext->xRequireTLS = pdTRUE;
+                }
 				break;
 
 			case SOCKETS_SO_NONBLOCK:
-				pxContext->ulSendTimeout = 1;
-				pxContext->ulRecvTimeout = 2;
+                /* Non-blocking connect is not supported.  Socket may be set to nonblocking
+                 * only after a connection is made. */
+
+                if( ULPGN_SOCKET_STATUS_CONNECTED == sx_ulpgn_get_tcp_socket_status(pxContext->xSocket) )
+                {
+                    pxContext->ulSendTimeout = 1;
+    				pxContext->ulRecvTimeout = 1;
+                }
+                else
+                {
+                    lStatus = SOCKETS_EISCONN;
+                }
 				break;
 
 			case SOCKETS_SO_RCVTIMEO:
@@ -591,8 +626,9 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 				{
 					xTimeout = portMAX_DELAY;
 				}
+
 				pxContext->ulRecvTimeout = xTimeout;
-	//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
+
 				break;
 			case SOCKETS_SO_SNDTIMEO:
 				/* Comply with Berkeley standard - a 0 timeout is wait forever. */
@@ -603,16 +639,15 @@ int32_t SOCKETS_SetSockOpt( Socket_t xSocket,
 					xTimeout = portMAX_DELAY;
 				}
 				pxContext->ulSendTimeout = xTimeout;
-	//            sx_ulpgn_serial_tcp_timeout_set(xTimeout);
 				break;
 
 			default:
 				lStatus = SOCKETS_ENOPROTOOPT;
-	//            FreeRTOS_setsockopt( pxContext->xSocket,
-	//                                           lLevel,
-	//                                           lOptionName,
-	//                                           pvOptionValue,
-	//                                           xOptionLength );
+//            FreeRTOS_setsockopt( pxContext->xSocket,
+//                                           lLevel,
+//                                           lOptionName,
+//                                           pvOptionValue,
+//                                           xOptionLength );
 				break;
 		}
     }
@@ -641,7 +676,7 @@ uint32_t SOCKETS_GetHostByName( const char * pcHostName )
 	ret = sx_ulpgn_dns_query(pcHostName, &ulAddr);
 	if(0 == ret)
 	{
-		ulAddr = SOCKETS_htonl( ulAddr );
+//		ulAddr = SOCKETS_htonl( ulAddr );
 	}
 	return ulAddr;
 }

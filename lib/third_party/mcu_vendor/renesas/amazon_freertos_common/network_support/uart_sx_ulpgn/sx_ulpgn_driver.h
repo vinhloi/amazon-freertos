@@ -21,6 +21,8 @@
 #define ULPGN_RETURN_TEXT_NO_DIALTONE "NO_DIALTONE\r\n"
 #define ULPGN_RETURN_TEXT_BUSY        "BUSY\r\n"
 #define ULPGN_RETURN_TEXT_NO_ANSWER   "NO_ANSWER\r\n"
+#define ULPGN_RETURN_TEXT_LENGTH      (13+1) /* strlen(ULPGN_RETURN_TEXT_NO_DIALTONE)+1 */
+
 
 #define ULPGN_RETURN_NUMERIC_OK          "0\r"
 #define ULPGN_RETURN_NUMERIC_CONNECT     "1\r"
@@ -108,19 +110,24 @@ typedef enum
 
 int32_t sx_ulpgn_wifi_init(void);
 int32_t sx_ulpgn_socket_init(void);
-int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *ptextstring);
+int32_t is_sx_ulpgn_wifi_connect(void);
+int32_t sx_ulpgn_wifi_get_macaddr(uint8_t *pmacaddr);
 int32_t sx_ulpgn_wifi_connect(const char *pssid, uint32_t security, const char *ppass);
 int32_t sx_ulpgn_socket_create(uint8_t socket_no, uint32_t type, uint32_t ipversion);
+int32_t sx_ulpgn_get_tcp_socket_status(uint8_t socket_no);
 int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port);
 int32_t sx_ulpgn_tcp_send(uint8_t socket_no, const uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uint32_t timeout);
 int32_t sx_ulpgn_tcp_disconnect(uint8_t socket_no);
 int32_t sx_ulpgn_get_ipaddress(void);
-int32_t sx_ulpgn_dns_query(const char *ptextstring, uint32_t *ulipaddr);
+int32_t sx_ulpgn_dns_query(const char *ptextstring, uint8_t *ucipaddr);
 int32_t sx_ulpgn_serial_tcp_recv_timeout_set(uint8_t socket_no, TickType_t timeout_ms);
-uint8_t sx_ulpgn_get_avail_socket();
-int32_t sx_ulpgn_wifi_disconnect();
-int32_t sx_ulpgn_get_ip(uint32_t *ulipaddr);
+uint8_t sx_ulpgn_get_avail_socket(void);
+int32_t sx_ulpgn_wifi_disconnect(void);
+int32_t sx_ulpgn_get_ip(uint8_t *ucipaddr);
+int32_t sx_ulpgn_set_power_mode(const uint8_t powermode ,const void * submode);
+int32_t sx_ulpgn_get_power_mode(uint8_t *powermode ,void * submode);
 int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks);
+int32_t sx_ulpgn_wifi_ping(uint8_t *pucIPAddr, uint16_t usCount, uint32_t ulIntervalMS);
 
 #endif /* #define SX_ULPGN_DRIVER_H */
