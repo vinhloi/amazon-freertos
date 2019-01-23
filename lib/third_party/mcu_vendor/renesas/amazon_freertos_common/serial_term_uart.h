@@ -12,4 +12,10 @@
 void uart_config(void);
 void uart_string_printf(char * pString);
 
+void uart_printf(char * pString,...);
+unsigned short uart_string_scanf(char *pString, unsigned short str_length);
+
+void uart_charput(uint32_t output_int);	//TODO Fix wrapper function arguments to char
+uint32_t uart_charget (void);			//TODO Fix wrapper function return value to char
+
 #endif /* VENDOR_CODE_RSKRX65N_UART_H_ */

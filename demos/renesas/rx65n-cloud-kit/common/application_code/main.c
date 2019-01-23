@@ -23,9 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  http://www.FreeRTOS.org
 */
 
+#include <stdio.h>
+
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "event_groups.h"
 
 /* Version includes. */
 #include "aws_application_version.h"
@@ -157,9 +160,273 @@ static void prvMiscInitialization( void )
 }
 /*-----------------------------------------------------------*/
 
+#include "r_bsp.h"
+
+EventGroupHandle_t xUserSwitchEventGroup;
+
+#pragma interrupt  userSwitchISR(vect=VECT(ICU,IRQ1))
+
+void userSwitchISR(void) {
+
+    BaseType_t xHigherPriorityTaskWoken = pdTRUE;
+    BaseType_t xResult;
+
+    ///TODO: xEventGroupSetBitsFromISR does not work properly.
+
+//    xResult = xEventGroupSetBitsFromISR(xUserSwitchEventGroup, /* The event group being updated. */
+//            (1 << 0), /* The bits being set. */
+//    &xHigherPriorityTaskWoken);
+
+    xResult = xEventGroupSetBits(xUserSwitchEventGroup, /* The event group being updated. */
+            (1 << 0) /* The bits being set. */);
+
+//    /* Was the message posted successfully? */
+//    if (xResult != pdFAIL) {
+//        /* If xHigherPriorityTaskWoken is now set to pdTRUE then a context
+//         switch should be requested.  The macro used is port specific and will
+//         be either portYIELD_FROM_ISR() or portEND_SWITCHING_ISR() - refer to
+//         the documentation page for the port being used. */
+//        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+//    }
+
+}
+
+void prvUserSwitchISRInitialization(){
+
+    R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
+
+    IEN(ICU,IRQ1)= 0;
+
+    MPC.P31PFS.BIT.ISEL = 1;
+
+    ICU.IRQFLTE0.BIT.FLTEN1 = 0;
+    ICU.IRQFLTC0.BIT.FCLKSEL1 = 0;
+
+    ICU.IRQCR[1].BIT.IRQMD = 3;
+    IPR(ICU,IRQ1)= 15;
+    IR(ICU,IRQ1)= 0;
+    ICU.IRQFLTE0.BIT.FLTEN1 = 1;
+    IEN(ICU,IRQ1)= 1;
+
+    R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
+
+}
+
+void prvUserSwitchISRTermination(){
+
+    R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
+
+    IEN(ICU,IRQ1)= 0;
+
+    R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
+
+}
+
+void prvGetStringFromTerminal(char *pString, size_t num) {
+
+    uint32_t pointer = 0;
+
+    while (pointer < num) {
+        scanf("%c", (pString + pointer));
+
+        if (pString[pointer] == '\b') {
+
+//            printf(" ");
+//            printf("\b");
+
+            if (pointer > 0) {
+                printf(" \b");
+                pointer--;
+            }else{
+                printf(" ");
+            }
+            continue;
+
+        } else if (pString[pointer] == '\n') {
+            pString[pointer] = '\0';
+            break;
+        }
+        pointer++;
+    }
+
+}
+
+#define MAX_SSID_CHARACTER_NUM  (32)
+#define MAX_PASSPHRASE_CHARACTER_NUM  (64)
+#define MAX_SERVER_ADDRESS_CHARACTER_NUM  (64)
+#define MAX_DEVICE_NAME_CHARACTER_NUM  (64)
+#define MAX_CERTIFICATE_CHARACTER_NUM  (64)
+
+#define SAMPLE_CERTIFICATE_FORMAT           "-----BEGIN CERTIFICATE-----\n"\
+        "YMPGn8u67GB9t+aEMr5P+1gmIgNb1LTV+/Xjli5wwOQuvfwu7uJBVcA0Ln0kcmnL\n"\
+        "R7EUQIN9Z/SG9jGr8XmksrUuEvmEF/Bibyc+E1ixVA0hmnM3oTDPb5Lc9un8rNsu\n"\
+        "KNF+AksjoBXyOGVkCeoMbo4bF6BxyLObyavpw/LPh5aPgAIynplYb6LVAgMBAAGj\n"\
+        ".......\n"\
+        "-----END CERTIFICATE-----\n\n\n"
+#define CERTIFICATE_BEGIN_FORMAT "-----BEGIN CERTIFICATE-----\n"
+#define CERTIFICATE_END_FORMAT   "-----END CERTIFICATE-----"
+
+void prvConnectivityConfigurationUpdate() {
+
+    uint8_t str_ssid[MAX_SSID_CHARACTER_NUM + 1];
+    uint8_t str_passphrase[MAX_PASSPHRASE_CHARACTER_NUM + 1];
+    uint8_t str_sertificate[MAX_CERTIFICATE_CHARACTER_NUM + 1];
+    uint8_t str_server_address[MAX_SERVER_ADDRESS_CHARACTER_NUM + 1];
+    uint8_t str_device_name[MAX_DEVICE_NAME_CHARACTER_NUM + 1];
+    uint32_t current_str_pointer;
+    uint8_t answer_char;
+    uint32_t security_mode;
+
+    printf("Do you want to configure the Wifi credentials ? (y/n)"); ///TODO Fix messeage.
+
+    scanf("%1s", &answer_char);
+
+    printf("\n"); ///TODO Fix messeage.
+
+    if (answer_char == 'y') {
+
+        memset(str_ssid, '\0', MAX_SSID_CHARACTER_NUM + 1);
+
+        printf("Enter SSID:"); ///TODO Fix messeage.
+
+        prvGetStringFromTerminal(str_ssid, 32);
+
+        printf("\n"); ///TODO Fix messeage.
+
+        printf("You have enterd %s as the ssid.\n\n", str_ssid); ///TODO Fix messeage.
+
+        printf(("Enter Security Mode (0 - Open, 1 - WEP, 2 - WPA, 3 - WPA2):")); ///TODO Fix messeage.
+
+        scanf("%d ", security_mode);
+
+        printf("\n"); ///TODO Fix messeage.
+
+        if ((0 < security_mode) && (security_mode <= 3)) {
+
+            memset(str_passphrase, '\0', MAX_PASSPHRASE_CHARACTER_NUM + 1);
+
+            printf(""); ///TODO Fix messeage.
+
+            printf("Enter :"); ///TODO Fix messeage.
+            scanf("%64s", str_passphrase);
+
+        } else {
+
+            printf(""); ///TODO Fix messeage.
+
+            security_mode = 0;
+
+        }
+
+    }
+
+    printf("Do you want to update your AWS security credentials ? (y/n)"); ///TODO Fix messeage.
+
+    scanf("%1s", &answer_char);
+
+    printf("\n"); ///TODO Fix messeage.
+
+    if (answer_char == 'y') {
+
+        memset(str_sertificate, '\0', MAX_CERTIFICATE_CHARACTER_NUM + 1);
+        current_str_pointer = 0;
+
+        printf("Enter keys as per the following format:\n\n"); ///TODO Fix messeage.
+
+        printf(SAMPLE_CERTIFICATE_FORMAT); ///TODO Fix messeage.
+
+        printf("Enter the root CA: \n\n"); ///TODO Fix messeage.
+
+        do {
+
+            scanf("%1s",(str_sertificate + current_str_pointer++));
+
+            if (current_str_pointer < sizeof(CERTIFICATE_BEGIN_FORMAT)) {
+                continue;
+            }
+
+            if ((strncmp(str_sertificate, CERTIFICATE_BEGIN_FORMAT, sizeof(CERTIFICATE_BEGIN_FORMAT) - 1) != 0)
+                    || strlen(str_sertificate) > sizeof(str_sertificate)) {
+                memset(str_sertificate, '\0', MAX_CERTIFICATE_CHARACTER_NUM + 1);
+
+                current_str_pointer = 0;
+                printf("Incorrect format: \n\n");
+                continue;
+            }
+
+        } while (strncmp(str_sertificate + strlen(str_sertificate) - sizeof(CERTIFICATE_END_FORMAT),
+                CERTIFICATE_END_FORMAT, sizeof(CERTIFICATE_END_FORMAT)) != 0);
+
+        printf("read: ---> \n\n"); ///TODO Fix messeage.
+
+        printf("%s", str_sertificate);
+
+        printf(("<---\n")); ///TODO Fix messeage.
+
+        ///TODO update function here!
+
+    }
+
+    printf("Do you want to update server address and device name ? (y/n)"); ///TODO Fix messeage.
+
+    scanf("%1s", &answer_char);
+
+    printf("\n"); ///TODO Fix messeage.
+
+    if (answer_char == 'y') {
+
+        printf("Enter the server address:"); ///TODO Fix messeage.
+
+        scanf("%64s", str_server_address);
+
+        printf("\n"); ///TODO Fix messeage.
+
+        printf("You have enterd %64s as the server address.\n\n", str_server_address); ///TODO Fix messeage.
+
+        printf("Enter the device name:"); ///TODO Fix messeage.
+
+        scanf("%64s", str_device_name);
+
+        printf("\n"); ///TODO Fix messeage.
+
+        printf("You have enterd %64s as the device name.\n\n",str_server_address); ///TODO Fix messeage.
+
+    }
+
+}
+
+
 void vApplicationDaemonTaskStartupHook( void )
 {
+    char test[8];
+
 	prvMiscInitialization();
+
+	xUserSwitchEventGroup = xEventGroupCreate();
+
+	if (xUserSwitchEventGroup == NULL) {
+	    /* The event group was not created because there was insufficient
+        FreeRTOS heap available. */
+        while (1)
+            ;
+    }
+
+    prvGetStringFromTerminal(test, 8);
+
+	prvUserSwitchISRInitialization();
+
+    configPRINT_STRING(("Press the User button (Blue) within the next 5 seconds if you want to change the configuration"
+                        "(Wifi and AWS security credentials).\r\n"));///TODO Fix messeage.
+
+    /* Wait a maximum of 5000ms for being User switch pushed. */
+	if (xEventGroupWaitBits(xUserSwitchEventGroup, (1 << 0), pdTRUE, pdFALSE, 5000) != 0) {
+
+	    prvConnectivityConfigurationUpdate();
+
+    }
+
+	prvUserSwitchISRTermination();
+
     if( SYSTEM_Init() == pdPASS )
     {
 #if(0)
@@ -172,8 +439,6 @@ void vApplicationDaemonTaskStartupHook( void )
                          ucDNSServerAddress,
                          ucMACAddress );
 #endif
-
-
 
     	/* Connect to the wifi before running the demos */
         prvWifiConnect();
@@ -212,7 +477,6 @@ void prvWifiConnect( void )
     else
     {
         configPRINTF( ( "WiFi module failed to initialize.\r\n" ) );
-
         while( 1 )
         {
         }

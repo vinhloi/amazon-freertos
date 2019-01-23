@@ -188,11 +188,11 @@ Configuration Options
 
 /* If desired the user may redirect the stdio charget() and/or charput() functions to their own respective functions
    by enabling below and providing and replacing the my_sw_... function names with the names of their own functions. */
-#define BSP_CFG_USER_CHARGET_ENABLED    (0)
-#define BSP_CFG_USER_CHARGET_FUNCTION     my_sw_charget_function
+#define BSP_CFG_USER_CHARGET_ENABLED    (1)
+#define BSP_CFG_USER_CHARGET_FUNCTION     uart_charget
 
-#define BSP_CFG_USER_CHARPUT_ENABLED    (0)
-#define BSP_CFG_USER_CHARPUT_FUNCTION     my_sw_charput_function
+#define BSP_CFG_USER_CHARPUT_ENABLED    (1)
+#define BSP_CFG_USER_CHARPUT_FUNCTION     uart_charput
 
 /* After reset MCU will operate in Supervisor mode. To switch to User mode, set this macro to '1'. For more information
    on the differences between these 2 modes see the CPU >> Processor Mode section of your MCU's hardware manual.
