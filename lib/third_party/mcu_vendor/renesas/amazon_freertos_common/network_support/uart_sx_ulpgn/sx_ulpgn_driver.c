@@ -280,10 +280,6 @@ static SemaphoreHandle_t g_sx_ulpgn_rx_semaphore = NULL;
  */
 static const TickType_t xMaxSemaphoreBlockTime = pdMS_TO_TICKS( 60000UL );
 
-uint8_t data1;
-uint8_t data2;
-uint8_t data3;
-
 typedef struct
 {
     byteq_hdl_t socket_byteq_hdl;
@@ -1100,13 +1096,13 @@ int32_t sx_ulpgn_tcp_connect(uint8_t socket_no, uint32_t ipaddr, uint16_t port)
 	//#if ULPGN_USE_UART_NUM == 2
 			if(ULPGN_USE_UART_NUM == 2)
 			{
-				ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 10000, ULPGN_RETURN_OK);
+				ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 15000, ULPGN_RETURN_OK);
 			}
 	//#endif
 			if(ULPGN_USE_UART_NUM == 1)
 			{
 	//#if ULPGN_USE_UART_NUM == 1
-				ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 10000, ULPGN_RETURN_CONNECT);
+				ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, (char *)buff, 300, 15000, ULPGN_RETURN_CONNECT);
 	//#endif
 			}
 			if(ret == 0)
@@ -2615,7 +2611,6 @@ static void sx_ulpgn_uart_callback_default_port_for_data(void *pArgs)
 
     if (SCI_EVT_RX_CHAR == p_args->event)
     {
-    	data1 = p_args->byte;
         if(g_ulpgn_socket[current_socket_index].socket_create_flag == 1)
         {
             /* From RXI interrupt; received character data is in p_args->byte */
