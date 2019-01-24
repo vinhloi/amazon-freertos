@@ -40,7 +40,6 @@ Includes   <System Includes> , "Project Includes"
 #include "r_sci_rx_if.h"        // The SCI module API interface file.
 #include "r_pinset.h"
 
-
 /*******************************************************************************
  Macro definitions
  *******************************************************************************/
@@ -231,5 +230,100 @@ void uart_string_printf(char *pString)
     {
         R_NOP(); //TODO error handling code
     }
+
+}
+
+unsigned short uart_string_scanf(char *pString, unsigned short str_length) {
+
+    sci_err_t sci_err = SCI_ERR_XCVR_BUSY;
+    uint16_t receive_length = 0;
+    uint16_t total_receive_length = 0;
+    uint32_t retry = 0xFFFF;
+
+    while ((retry > 0) && (str_length > 0)) {
+
+        R_SCI_Control(my_sci_handle, SCI_CMD_RX_Q_BYTES_AVAIL_TO_READ,
+                &receive_length);
+
+        if (receive_length > str_length) {
+            receive_length = str_length;
+        }
+
+        sci_err = R_SCI_Receive(my_sci_handle, (uint8_t *) pString,
+                receive_length);
+
+        if ((sci_err == SCI_ERR_XCVR_BUSY) || (sci_err == SCI_ERR_INSUFFICIENT_SPACE)) {
+            retry--; // retry if previous transmission still in progress or tx buffer is insufficient.
+            continue;
+        }
+
+        str_length -= receive_length;
+        total_receive_length += receive_length;
+        pString += receive_length;
+
+
+        if (*(pString - 1) == '\n'){
+            *(pString - 1) = '\0';
+            total_receive_length--;
+            break;
+        }
+
+    }
+
+    if (SCI_SUCCESS != sci_err) {
+        total_receive_length = -1;
+        R_NOP(); //TODO error handling code
+    }
+
+    return total_receive_length;
+
+}
+
+/***********************************************************************************************************************
+* Function Name: uart_charput
+* Description  : Puts a character on a serial port
+* Arguments    : sent character
+* Return Value : none
+***********************************************************************************************************************/
+void uart_charput(uint32_t output_int)
+{
+    uint8_t output_char = (uint8_t)output_int;
+    volatile uint32_t output_length = 0;
+    sci_err_t sci_err;
+
+    /* Wait for Tx buffer free */
+    /* WAIT_LOOP */
+    while (output_length == 0) {
+        R_SCI_Control(my_sci_handle, SCI_CMD_TX_Q_BYTES_FREE, &output_length);
+    }
+
+    do {
+        sci_err = R_SCI_Send(my_sci_handle, (uint8_t *) &output_char, 1);
+    } while (sci_err != SCI_SUCCESS);
+
+}
+
+/***********************************************************************************************************************
+* Function Name: charget
+* Description  : Gets a character on a serial port
+* Arguments    : none
+* Return Value : received character
+***********************************************************************************************************************/
+uint32_t uart_charget (void)
+{
+    uint8_t input_char;
+    volatile uint32_t input_length=0;
+
+    /* Wait for rx buffer avail to read */
+    /* WAIT_LOOP */
+
+    while (input_length == 0) {
+        R_SCI_Control(my_sci_handle, SCI_CMD_RX_Q_BYTES_AVAIL_TO_READ, &input_length);
+    }
+
+    R_SCI_Receive(my_sci_handle, &input_char, 1);
+
+    /* Read data, send back up */
+    return (uint32_t)input_char;
 
 }
