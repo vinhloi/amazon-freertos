@@ -14,7 +14,7 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2018 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2019 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
 * File Name    : r_sci_rx_pinset.c
@@ -22,7 +22,7 @@
 * Device(s)    : R5F565NEDxFP
 * Tool-Chain   : RXC toolchain
 * Description  : Setting of port and mpc registers
-* Creation Date: 2018-08-10
+* Creation Date: 2019-01-31
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -36,22 +36,22 @@ Global variables and functions
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
-* Function Name: R_SCI_PinSet_SCI12
+* Function Name: R_SCI_PinSet_SCI2
 * Description  : This function initializes pins for r_sci_rx module
 * Arguments    : none
 * Return Value : none
 ***********************************************************************************************************************/
-void R_SCI_PinSet_SCI12(void)
+void R_SCI_PinSet_SCI2()
 {
     R_BSP_RegisterProtectDisable(BSP_REG_PROTECT_MPC);
 
-    /* Set RXD12/SMISO12 pin */
-    MPC.PE2PFS.BYTE = 0x0CU;
-    PORTE.PMR.BIT.B2 = 1U;
+    /* Set RXD2/SMISO2 pin */
+    MPC.P52PFS.BYTE = 0x0AU;
+    PORT5.PMR.BIT.B2 = 1U;
 
-    /* Set TXD12/SMOSI12 pin */
-    MPC.PE1PFS.BYTE = 0x0CU;
-    PORTE.PMR.BIT.B1 = 1U;
+    /* Set TXD2/SMOSI2 pin */
+    MPC.P50PFS.BYTE = 0x0AU;
+    PORT5.PMR.BIT.B0 = 1U;
 
     R_BSP_RegisterProtectEnable(BSP_REG_PROTECT_MPC);
 }
