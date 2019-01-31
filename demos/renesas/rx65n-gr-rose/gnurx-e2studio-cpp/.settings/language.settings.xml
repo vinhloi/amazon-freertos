@@ -18,7 +18,7 @@
 					</resource>
 				</language>
 			</provider>
-			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector" console="false" env-hash="-1575772285219665858" id="com.renesas.cdt.managedbuild.gcc.rx.ui.languageprovider" keep-relative-paths="false" name="Renesas GCCBuildinCompilerSettings" parameter="${COMMAND} ${toolchain_flags} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector" console="false" env-hash="1624696190570742761" id="com.renesas.cdt.managedbuild.gcc.rx.ui.languageprovider" keep-relative-paths="false" name="Renesas GCCBuildinCompilerSettings" parameter="${COMMAND} ${toolchain_flags} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>

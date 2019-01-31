@@ -99,6 +99,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FIT_modified_code/r_s12ad_rx}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FIT_setting_files/r_config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FIT_setting_files/r_pincfg}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_bsp}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/general}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/smc_gen/r_pincfg}&quot;"/>
@@ -198,16 +199,16 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="aws_demos.com.renesas.cdt.managedbuild.gcc.rx.projectType.Id.508258234" name="実行可能" projectType="com.renesas.cdt.managedbuild.gcc.rx.projectType.Id"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355;com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355.;com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler.1299520236;com.renesas.cdt.managedbuild.gcc.core.inputType.compiler.cpp.927131393">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355;com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355.;com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler.1299520236;com.renesas.cdt.managedbuild.gcc.core.inputType.compiler.c.1398003101">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355;com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355.;com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler.1299520236;com.renesas.cdt.managedbuild.gcc.core.inputType.compiler.c.1398003101">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355;com.renesas.cdt.managedbuild.gcc.rx.configuration.debug.365004355.;com.renesas.cdt.managedbuild.gcc.rx.tool.cpp.compiler.1299520236;com.renesas.cdt.managedbuild.gcc.core.inputType.compiler.cpp.927131393">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

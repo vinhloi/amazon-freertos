@@ -621,7 +621,7 @@ Configuration Options
 
 /* This macro is used to select which SCI channel used for debug serial terminal.
  */
-#define MY_BSP_CFG_SERIAL_TERM_SCI                  (12)
+#define MY_BSP_CFG_SERIAL_TERM_SCI                  (2)
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 
