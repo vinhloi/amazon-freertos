@@ -35,8 +35,8 @@
 Includes   <System Includes> , "Project Includes"
 ******************************************************************************/
 #include <string.h>             // For strlen
-#include "serial_term_uart.h"   // Serial Transfer Demo interface file.
 #include "platform.h"           // Located in the FIT BSP module
+#include "serial_term_uart.h"   // Serial Transfer Demo interface file.
 #include "r_sci_rx_if.h"        // The SCI module API interface file.
 #include "r_pinset.h"
 
