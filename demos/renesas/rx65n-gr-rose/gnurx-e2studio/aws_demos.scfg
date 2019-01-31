@@ -214,6 +214,7 @@
 <Item current="" id="vccSetting.InputValue"/>
 <Item current="vcc2_7-3_6" id="vccSetting.OutputValue"/>
 <Item current="3.3" id="vccSetting.vccTxt"/>
+<Item current="true" id="uckdivider.selectBox"/>
 </tool>
 <tool id="Pins" version="1.0.0.0">
 <pinItem allocation="E1" direction="None" id="XTAL" locked="false" status="0"/>
@@ -228,8 +229,10 @@
 <pinItem allocation="56" direction="None" id="RMII0_TXD_EN" locked="false" status="512"/>
 <pinItem allocation="67" direction="None" id="ET0_MDIO" locked="false" status="512"/>
 <pinItem allocation="53" direction="None" id="RMII0_CRS_DV" locked="false" status="512"/>
-<pinItem allocation="77" direction="None" id="TXD12" locked="false" status="512"/>
-<pinItem allocation="76" direction="None" id="RXD12" locked="false" status="512"/>
+<pinItem allocation="" direction="None" id="TXD12" locked="false" status="0"/>
+<pinItem allocation="" direction="None" id="RXD12" locked="false" status="0"/>
+<pinItem allocation="42" direction="None" id="RXD2" locked="false" status="512"/>
+<pinItem allocation="44" direction="None" id="TXD2" locked="false" status="512"/>
 </tool>
 <tool id="Interrupt">
 <Item id="BSC_BUSERR" priority="15"/>
@@ -485,8 +488,8 @@
 <gridItem id="BSP_CFG_EBMAPCR_4TH_PRIORITY" selectedIndex="2"/>
 <gridItem id="BSP_CFG_EBMAPCR_5TH_PRIORITY" selectedIndex="4"/>
 </component>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+<source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+<source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 </configuration>
 </tool>
 </smc>
