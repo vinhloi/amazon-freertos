@@ -213,7 +213,7 @@ int32_t esp8266_wifi_init(void)
 		return ret;
 	}
 
-	ret = esp8266_serial_send_basic(ESP8266_UART_COMMAND_PORT, "AT\r\n", 1000, 20000, ESP8266_RETURN_OK, ESP8266_RETURN_READY);
+	ret = esp8266_serial_send_basic(ESP8266_UART_COMMAND_PORT, "AT\r\n", 1000, 20000, ESP8266_RETURN_OK);
 
 	/* reboots the system */
 	ret = esp8266_serial_send_rst(ESP8266_UART_COMMAND_PORT, "AT+RST\r\n", 1000, 20000, ESP8266_RETURN_OK, ESP8266_RETURN_READY);

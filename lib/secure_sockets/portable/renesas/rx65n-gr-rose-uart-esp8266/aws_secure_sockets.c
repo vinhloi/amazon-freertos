@@ -42,7 +42,7 @@
 #include "aws_crypto.h"
 #include "platform.h"
 #include "esp8266_driver.h"
-#include "machine.h"
+//#include "machine.h"
 
 /* Internal context structure. */
 typedef struct SSOCKETContext
