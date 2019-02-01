@@ -220,20 +220,22 @@
 <Item current="true" id="uckdivider.selectBox"/>
 </tool>
 <tool id="Pins" version="1.0.0.0">
-<pinItem allocation="E1" direction="None" id="XTAL" locked="false" status="0"/>
-<pinItem allocation="59" direction="None" id="RMII0_RXD0" locked="false" status="0"/>
-<pinItem allocation="61" direction="None" id="RMII0_RXD1" locked="false" status="0"/>
-<pinItem allocation="54" direction="None" id="RMII0_TXD1" locked="false" status="0"/>
-<pinItem allocation="55" direction="None" id="RMII0_TXD0" locked="false" status="0"/>
-<pinItem allocation="58" direction="None" id="REF50CK0" locked="false" status="0"/>
-<pinItem allocation="66" direction="None" id="ET0_MDC" locked="false" status="0"/>
-<pinItem allocation="F1" direction="None" id="EXTAL" locked="false" status="0"/>
-<pinItem allocation="57" direction="None" id="RMII0_RX_ER" locked="false" status="0"/>
-<pinItem allocation="56" direction="None" id="RMII0_TXD_EN" locked="false" status="0"/>
-<pinItem allocation="67" direction="None" id="ET0_MDIO" locked="false" status="0"/>
-<pinItem allocation="53" direction="None" id="RMII0_CRS_DV" locked="false" status="0"/>
-<pinItem allocation="77" direction="None" id="TXD12" locked="false" status="0"/>
-<pinItem allocation="76" direction="None" id="RXD12" locked="false" status="0"/>
+<pinItem allocation="E1" comments="" direction="None" id="XTAL" locked="false" status="0"/>
+<pinItem allocation="59" comments="" direction="None" id="RMII0_RXD0" locked="false" status="0"/>
+<pinItem allocation="61" comments="" direction="None" id="RMII0_RXD1" locked="false" status="0"/>
+<pinItem allocation="54" comments="" direction="None" id="RMII0_TXD1" locked="false" status="0"/>
+<pinItem allocation="55" comments="" direction="None" id="RMII0_TXD0" locked="false" status="0"/>
+<pinItem allocation="58" comments="" direction="None" id="REF50CK0" locked="false" status="0"/>
+<pinItem allocation="66" comments="" direction="None" id="ET0_MDC" locked="false" status="0"/>
+<pinItem allocation="F1" comments="" direction="None" id="EXTAL" locked="false" status="0"/>
+<pinItem allocation="57" comments="" direction="None" id="RMII0_RX_ER" locked="false" status="0"/>
+<pinItem allocation="56" comments="" direction="None" id="RMII0_TXD_EN" locked="false" status="0"/>
+<pinItem allocation="67" comments="" direction="None" id="ET0_MDIO" locked="false" status="0"/>
+<pinItem allocation="53" comments="" direction="None" id="RMII0_CRS_DV" locked="false" status="0"/>
+<pinItem allocation="" comments="" direction="None" id="TXD12" locked="false" status="0"/>
+<pinItem allocation="" comments="" direction="None" id="RXD12" locked="false" status="0"/>
+<pinItem allocation="42" comments="" direction="None" id="RXD2" locked="false" status="0"/>
+<pinItem allocation="44" comments="" direction="None" id="TXD2" locked="false" status="0"/>
 </tool>
 <tool id="Interrupt">
 <Item id="BSC_BUSERR" priority="15"/>
@@ -481,10 +483,10 @@
 <gridItem id="CTS1#/RTS1#/SS1#" selectedIndex="0"/>
 <gridItem id="SCI1" selectedIndex="0"/>
 <gridItem id="SCK2" selectedIndex="0"/>
-<gridItem id="RXD2/SMISO2" selectedIndex="0"/>
-<gridItem id="TXD2/SMOSI2" selectedIndex="0"/>
+<gridItem id="RXD2/SMISO2" selectedIndex="1"/>
+<gridItem id="TXD2/SMOSI2" selectedIndex="1"/>
 <gridItem id="CTS2#/RTS2#/SS2#" selectedIndex="0"/>
-<gridItem id="SCI2" selectedIndex="0"/>
+<gridItem id="SCI2" selectedIndex="1"/>
 <gridItem id="SCK3" selectedIndex="0"/>
 <gridItem id="RXD3/SMISO3" selectedIndex="0"/>
 <gridItem id="TXD3/SMOSI3" selectedIndex="0"/>
@@ -535,10 +537,10 @@
 <gridItem id="RTS11#" selectedIndex="0"/>
 <gridItem id="SCI11" selectedIndex="0"/>
 <gridItem id="SCK12" selectedIndex="0"/>
-<gridItem id="RXD12/SMISO12" selectedIndex="1"/>
-<gridItem id="TXD12/SMOSI12" selectedIndex="1"/>
+<gridItem id="RXD12/SMISO12" selectedIndex="0"/>
+<gridItem id="TXD12/SMOSI12" selectedIndex="0"/>
 <gridItem id="CTS12#/RTS12#/SS12#" selectedIndex="0"/>
-<gridItem id="SCI12" selectedIndex="1"/>
+<gridItem id="SCI12" selectedIndex="0"/>
 </component>
 <source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 <source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
