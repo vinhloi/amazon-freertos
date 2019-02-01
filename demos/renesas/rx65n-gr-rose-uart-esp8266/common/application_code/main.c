@@ -1,6 +1,6 @@
 /*
 Amazon FreeRTOS
-Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -22,8 +22,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  http://aws.amazon.com/freertos
  http://www.FreeRTOS.org
 */
-
-#if !defined(CPPAPP)
 
 /* FreeRTOS includes. */
 #include "FreeRTOS.h"
@@ -89,26 +87,26 @@ static const uint8_t ucIPAddress[ 4 ] =
 };
 static const uint8_t ucNetMask[ 4 ] =
 {
-	configNET_MASK0,
-	configNET_MASK1,
-	configNET_MASK2,
-	configNET_MASK3
+    configNET_MASK0,
+    configNET_MASK1,
+    configNET_MASK2,
+    configNET_MASK3
 };
 static const uint8_t ucGatewayAddress[ 4 ] =
 {
-	configGATEWAY_ADDR0,
-	configGATEWAY_ADDR1,
-	configGATEWAY_ADDR2,
-	configGATEWAY_ADDR3
+    configGATEWAY_ADDR0,
+    configGATEWAY_ADDR1,
+    configGATEWAY_ADDR2,
+    configGATEWAY_ADDR3
 };
 
 /* The following is the address of an OpenDNS server. */
 static const uint8_t ucDNSServerAddress[ 4 ] =
 {
-	configDNS_SERVER_ADDR0,
-	configDNS_SERVER_ADDR1,
-	configDNS_SERVER_ADDR2,
-	configDNS_SERVER_ADDR3
+    configDNS_SERVER_ADDR0,
+    configDNS_SERVER_ADDR1,
+    configDNS_SERVER_ADDR2,
+    configDNS_SERVER_ADDR3
 };
 
 /**
@@ -128,7 +126,8 @@ static void prvMiscInitialization( void );
 /*-----------------------------------------------------------*/
 
 /**
- * @brief Application runtime entry point.
+ * @brief The application entry point from a power on reset is PowerON_Reset_PC()
+ * in resetprg.c.
  */
 void main( void )
 {
@@ -142,16 +141,16 @@ void main( void )
 
     while(1)
     {
-    	vTaskDelay(10000);
+        vTaskDelay(10000);
     }
 }
 /*-----------------------------------------------------------*/
 
 static void prvMiscInitialization( void )
 {
-    /* FIX ME. */
-	uart_config();
-	configPRINT_STRING(("Hello World.\r\n"));
+    /* Initialize UART for serial terminal. */
+    uart_config();
+
     /* Start logging task. */
     xLoggingTaskInitialize( mainLOGGING_TASK_STACK_SIZE,
                             tskIDLE_PRIORITY,
@@ -184,15 +183,6 @@ void vApplicationDaemonTaskStartupHook( void )
 
         /* Run all demos. */
         DEMO_RUNNER_RunDemos();
-#if(0)
-        /* Create the task to run tests. */
-        xTaskCreate( TEST_RUNNER_RunTests_task,
-                     "RunTests_task",
-                     mainTEST_RUNNER_TASK_STACK_SIZE,
-                     NULL,
-                     tskIDLE_PRIORITY,
-                     NULL );
-#endif
     }
 }
 /*-----------------------------------------------------------*/
@@ -220,8 +210,11 @@ void prvWifiConnect( void )
 
     /* Setup parameters. */
     xJoinAPParams.pcSSID = clientcredentialWIFI_SSID;
+    xJoinAPParams.ucSSIDLength = sizeof( clientcredentialWIFI_SSID );
     xJoinAPParams.pcPassword = clientcredentialWIFI_PASSWORD;
+    xJoinAPParams.ucPasswordLength = sizeof( clientcredentialWIFI_PASSWORD );
     xJoinAPParams.xSecurity = clientcredentialWIFI_SECURITY;
+    xJoinAPParams.cChannel = 0;
 
     xWifiStatus = WIFI_ConnectAP( &( xJoinAPParams ) );
 
@@ -246,8 +239,6 @@ const char * pcApplicationHostnameHook( void )
     /* Assign the name "FreeRTOS" to this network node.  This function will
      * be called during the DHCP: the machine will be registered with an IP
      * address plus this name. */
-    return "RenesasRX_FREERTOS_TCP_TEST";
+    return clientcredentialIOT_THING_NAME;
 }
 /*-----------------------------------------------------------*/
-
-#endif /* !defined(CPPAPP) */

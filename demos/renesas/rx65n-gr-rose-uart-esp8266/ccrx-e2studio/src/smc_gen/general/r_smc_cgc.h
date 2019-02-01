@@ -22,7 +22,7 @@
 * Version      : 1.1.3
 * Device(s)    : R5F565NEDxFP
 * Description  : This file implements cgc setting.
-* Creation Date: 2018-12-28
+* Creation Date: 2019-02-01
 ***********************************************************************************************************************/
 
 #ifndef SMC_CGC_H

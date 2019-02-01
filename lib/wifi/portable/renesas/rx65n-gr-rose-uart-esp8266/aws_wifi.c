@@ -25,7 +25,7 @@
 
 /**
  * @file aws_wifi.c
- * @brief WiFi Interface.
+ * @brief Wi-Fi Interface.
  */
 #include <stdio.h>
 #include <string.h>
@@ -120,10 +120,7 @@ WIFIReturnCode_t WIFI_On( void )
 WIFIReturnCode_t WIFI_Off( void )
 {
     /* FIX ME. */
-    R_SCI_Close(SCI_CH7);
-    R_SCI_Close(SCI_CH6);
-
-	return eWiFiSuccess;
+    return eWiFiFailure;
 }
 /*-----------------------------------------------------------*/
 
@@ -149,7 +146,6 @@ WIFIReturnCode_t WIFI_ConnectAP( const WIFINetworkParams_t * const pxNetworkPara
 
 	return eWiFiSuccess;
 }
-
 /*-----------------------------------------------------------*/
 
 WIFIReturnCode_t WIFI_Disconnect( void )
@@ -274,11 +270,14 @@ WIFIReturnCode_t WIFI_SetPMMode( WIFIPMMode_t xPMModeType,
 
 WIFIReturnCode_t WIFI_GetPMMode( WIFIPMMode_t * pxPMModeType,
                                  void * pvOptionValue )
-                                 {
+{
     /* FIX ME. */
     return eWiFiNotSupported;
 }
 /*-----------------------------------------------------------*/
 
-
-
+BaseType_t WIFI_IsConnected(void)
+{
+	/* FIX ME. */
+	return pdFALSE;
+}

@@ -112,7 +112,7 @@
 		<link>
 			<name>lib/aws/ota</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/portable/renesas/rx65n-gr-rose</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/portable/renesas/rx65n-gr-rose-uart-esp8266</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/pkcs11</name>

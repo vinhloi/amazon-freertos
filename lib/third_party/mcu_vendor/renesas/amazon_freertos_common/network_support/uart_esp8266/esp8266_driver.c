@@ -8,6 +8,76 @@
 #include "r_byteq_if.h"
 #include "esp8266_driver.h"
 
+#if !defined(MY_BSP_CFG_UART_WIFI_SCI)
+#error "Error! Need to define MY_BSP_CFG_UART_WIFI_SCI in r_bsp_config.h"
+#elif MY_BSP_CFG_UART_WIFI_SCI == (0)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI0()
+#define SCI_CH_esp8266_serial_default           SCI_CH0
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH0_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH0_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (1)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI1()
+#define SCI_CH_esp8266_serial_default           SCI_CH1
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH1_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH1_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (2)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI2()
+#define SCI_CH_esp8266_serial_default           SCI_CH2
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH2_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH2_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (3)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI3()
+#define SCI_CH_esp8266_serial_default           SCI_CH3
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH3_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH3_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (4)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI4()
+#define SCI_CH_esp8266_serial_default           SCI_CH4
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH4_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH4_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (5)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI5()
+#define SCI_CH_esp8266_serial_default           SCI_CH5
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH5_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH5_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (6)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI6()
+#define SCI_CH_esp8266_serial_default           SCI_CH6
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH6_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH6_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (7)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI7()
+#define SCI_CH_esp8266_serial_default           SCI_CH7
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH7_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH7_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (8)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI8()
+#define SCI_CH_esp8266_serial_default           SCI_CH8
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH8_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH8_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (9)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI9()
+#define SCI_CH_esp8266_serial_default           SCI_CH9
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH9_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH9_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (10)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI10()
+#define SCI_CH_esp8266_serial_default           SCI_CH10
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH10_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH10_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (11)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI11()
+#define SCI_CH_esp8266_serial_default           SCI_CH11
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH11_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH11_RX_BUFSIZ
+#elif MY_BSP_CFG_UART_WIFI_SCI == (12)
+#define R_SCI_PinSet_esp8266_serial_default()   R_SCI_PinSet_SCI12()
+#define SCI_CH_esp8266_serial_default           SCI_CH12
+#define SCI_TX_BUSIZ_DEFAULT                    SCI_CFG_CH12_TX_BUFSIZ
+#define SCI_RX_BUSIZ_DEFAULT                    SCI_CFG_CH12_RX_BUFSIZ
+#else
+#error "Error! Invalid setting for MY_BSP_CFG_UART_WIFI_SCI in r_bsp_config.h"
+#endif
 
 
 const uint8_t esp8266_return_text_ok[]          = ESP8266_RETURN_TEXT_OK;
@@ -371,7 +441,7 @@ int32_t esp8266_tcp_send(uint8_t socket_no, uint8_t *pdata, int32_t length, uint
 		R_BSP_CpuInterruptLevelWrite (0);
 	#endif
 		sended_length = 0;
-		lenghttmp1 = SCI_TX_BUSIZ_DATA;
+		lenghttmp1 = SCI_TX_BUSIZ_DEFAULT;
 		while(sended_length < length)
 		{
 			if((length - sended_length) > 2048)
@@ -1119,13 +1189,7 @@ static int32_t esp8266_serial_open(uint32_t baudrate)
 {
 	sci_err_t   my_sci_err;
 
-#if (BSP_CFG_BOARD_REVISION == 1)
-	R_SCI_PinSet_SCI6();
-#elif (1)
-	R_SCI_PinSet_SCI3();
-#elif (BSP_CFG_BOARD_REVISION == 5)
-	R_SCI_PinSet_SCI10();
-#endif
+	R_SCI_PinSet_esp8266_serial_default();
 
 	g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT].async.baud_rate    = baudrate;
 	g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT].async.clk_src      = SCI_CLK_INT;
@@ -1135,13 +1199,7 @@ static int32_t esp8266_serial_open(uint32_t baudrate)
 	g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT].async.stop_bits    = SCI_STOPBITS_1;
 	g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT].async.int_priority = 15;    // 1=lowest, 15=highest
 
-#if (BSP_CFG_BOARD_REVISION == 1)
-    my_sci_err = R_SCI_Open(SCI_CH6, SCI_MODE_ASYNC, &g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT], esp8266_uart_callback_command_port, &esp8266_uart_sci_handle[ESP8266_UART_COMMAND_PORT]);
-#elif  (1)
-    my_sci_err = R_SCI_Open(SCI_CH3, SCI_MODE_ASYNC, &g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT], esp8266_uart_callback_command_port, &esp8266_uart_sci_handle[ESP8266_UART_COMMAND_PORT]);
-#elif  (BSP_CFG_BOARD_REVISION == 5)
-    my_sci_err = R_SCI_Open(SCI_CH10, SCI_MODE_ASYNC, &g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT], esp8266_uart_callback_command_port, &esp8266_uart_sci_handle[ESP8266_UART_COMMAND_PORT]);
-#endif
+    my_sci_err = R_SCI_Open(SCI_CH_esp8266_serial_default, SCI_MODE_ASYNC, &g_esp8266_sci_config[ESP8266_UART_COMMAND_PORT], esp8266_uart_callback_command_port, &esp8266_uart_sci_handle[ESP8266_UART_COMMAND_PORT]);
 
     if(SCI_SUCCESS != my_sci_err)
     {

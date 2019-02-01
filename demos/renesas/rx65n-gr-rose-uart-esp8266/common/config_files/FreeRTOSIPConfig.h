@@ -30,23 +30,14 @@
 * http://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/TCP_IP_Configuration.html
 *
 *****************************************************************************/
-
-
 #ifndef FREERTOS_IP_CONFIG_H
 #define FREERTOS_IP_CONFIG_H
-
-/* Prototype for the function used to print out.  In this case it prints to the
- * console before the network is connected then a UDP port after the network has
- * connected. */
-//extern void vLoggingPrintf( const char * pcFormatString,
-//                            ... );
 
 /* Set to 1 to print out debug messages.  If ipconfigHAS_DEBUG_PRINTF is set to
  * 1 then FreeRTOS_debug_printf should be defined to the function used to print
  * out the debugging messages. */
-#define ipconfigHAS_DEBUG_PRINTF    1
+#define ipconfigHAS_DEBUG_PRINTF    0
 #if ( ipconfigHAS_DEBUG_PRINTF == 1 )
-    //#define FreeRTOS_debug_printf( X )    vLoggingPrintf( X )
     #define FreeRTOS_debug_printf( X )    configPRINTF( X )
 #endif
 
