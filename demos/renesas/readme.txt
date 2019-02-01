@@ -420,19 +420,19 @@ Board: RX65N Envision Kit
            RX65N Envision Kit has no parts related Ethernet.
            Please implements LAN8720A and RJ45 connector onto your RX65N Envision Kit.
 
-Board: RX65N GR-ROSE proto1
+Board: RX65N GR-ROSE proto2 (Board Circuit Document No.:X65A-M01-B , Document Rev.B8)
     [en] now preparing
     [ja] now preparing
          [event info] http://gadget.renesas.com/ja/event/2018/RenesasNight13.html
 
-         The log will be output from CN9 10pin=TxD12(PE1) connector as UART.
+         The log will be output from CN4 10pin=TxD2(P50) connector as UART.
          Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
          and "LF" only as return code for your console.
          PMOD UART/USB convertor can be used for this signal.
          https://store.digilentinc.com/pmod-usbuart-usb-to-uart-interface/
 
          Please contact as following.
-         PMOD UART/USB ----- RX65N GR-ROSE CN9
+         PMOD UART/USB ----- RX65N GR-ROSE CN4
          1             -----
          2(TxD)        ----- 10pin
          3             -----
@@ -441,20 +441,13 @@ Board: RX65N GR-ROSE proto1
          6(VCC)        ----- 6pin
 
          [How to connect E2 Emulator Lite]
-         GR-ROSE CN2-TH 4pins are connected to RX65N Debug Interface called FINE.
+         GR-ROSE CN3 4pins are connected to RX65N Debug Interface called FINE.
          You can connect E2 Emulator Lite to this pins as following.
-         GR-ROSE CN2-TH ----- Emulator 14pin connector
+         GR-ROSE CN3 ----- Emulator 14pin connector
          pin1(VCC)      ----- pin8
          pin2(GND)      ----- pin2, pin12, pin14
          pin3(MD)       ----- pin7
          pin4(#RES)     ----- pin13
-
-         Workaround for circuit bug:
-           You have to connect ESP-WROOM-02D pin4 to GND (CN1 pin1)
-           before connecting debugger from IDE operation (e2 studio has "BUG" icon for start debugging).
-           And, you have to release ESP-WROOM-02D pin4 from GND after connecting.
-           You can see pin1 on left-upper corner nearby "E" character on "ESPRESSIF" logo.
-           Pin4 is lower 4pins from pin1.
 
 Board: RX64M GR-KAEDE
     [en] http://gadget.renesas.com/en/product/kaede.html
