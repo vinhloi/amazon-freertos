@@ -621,7 +621,7 @@ Configuration Options
 
 /* This macro is used to select which SCI channel used for debug serial terminal.
  */
-#define MY_BSP_CFG_SERIAL_TERM_SCI                  (6)
+#define MY_BSP_CFG_SERIAL_TERM_SCI                  (5)
 
 /* This macro is used to select which SCI channel used for UART WiFi module.
  */
