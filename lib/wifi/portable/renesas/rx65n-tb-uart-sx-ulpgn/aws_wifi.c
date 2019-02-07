@@ -131,7 +131,7 @@ WIFIReturnCode_t WIFI_ConnectAP(
     int32_t ret;
     uint32_t convert_security;
 
-    if( NULL == pxNetworkParams || NULL == pxNetworkParams->pcSSID )
+    if( NULL == pxNetworkParams || NULL == pxNetworkParams->pcSSID || NULL == pxNetworkParams->pcPassword )
     {
         return eWiFiFailure;
     }
@@ -188,7 +188,16 @@ WIFIReturnCode_t WIFI_Reset(void) {
 /*-----------------------------------------------------------*/
 
 WIFIReturnCode_t WIFI_Scan(WIFIScanResult_t *pxBuffer, uint8_t ucNumNetworks) {
-    return sx_ulpgn_wifi_scan(pxBuffer, ucNumNetworks);
+
+    WIFIReturnCode_t result = eWiFiFailure;
+    uint32_t ret;
+
+	ret = sx_ulpgn_wifi_scan(pxBuffer, ucNumNetworks);
+	if(0 == ret)
+	{
+		result = eWiFiSuccess;
+	}
+	return result;
 }
 /*-----------------------------------------------------------*/
 

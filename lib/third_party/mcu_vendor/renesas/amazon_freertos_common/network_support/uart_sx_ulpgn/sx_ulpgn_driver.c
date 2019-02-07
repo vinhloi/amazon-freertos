@@ -340,7 +340,7 @@ int32_t sx_ulpgn_wifi_init(void)
     ULPGN_RESET_PORT_PODR = 0; /* Low */
     R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
     ULPGN_RESET_PORT_PODR = 1; /* High */
-//  R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
+    R_BSP_SoftwareDelay(200, BSP_DELAY_MILLISECS); /*  */
 
     for (uint8_t i = 0; i < CREATEABLE_SOCKETS; i++)
     {
@@ -378,9 +378,6 @@ int32_t sx_ulpgn_wifi_init(void)
     }
 
 
-    /* reboots the system */
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATZ\r", 2000, 4000, ULPGN_RETURN_OK);
-//  ret = sx_ulpgn_serial_send_basic(ULPGN_UART_DATA_PORT, NULL, 2000, 200, ULPGN_RETURN_OK); //yomisute
 
     g_sx_ulpgn_return_mode = 0;
 
@@ -484,6 +481,8 @@ int32_t sx_ulpgn_wifi_init(void)
         ULPGN_RESET_PORT_PODR = 0; /* Low */
         R_BSP_SoftwareDelay(26, BSP_DELAY_MILLISECS); /* 5us mergin 1us */
         ULPGN_RESET_PORT_PODR = 1; /* High */
+        R_BSP_SoftwareDelay(200, BSP_DELAY_MILLISECS); /*  */
+
         g_sx_ulpgn_return_mode = 0;
 
         ret = sx_ulpgn_serial_open_for_initial();
@@ -492,8 +491,6 @@ int32_t sx_ulpgn_wifi_init(void)
             return ret;
         }
 
-        /* reboots the system */
-        ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATZ\r", 1000, 2000, ULPGN_RETURN_OK);
 
         /* no echo */
         ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATE0\r", 3, 200, ULPGN_RETURN_OK);
@@ -525,6 +522,7 @@ int32_t sx_ulpgn_wifi_init(void)
 
     }
 
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATS108?\r", 3, 200, ULPGN_RETURN_OK);
 
     ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATS108=1\r", 3, 200, ULPGN_RETURN_OK);
     if(ret != 0)
@@ -715,7 +713,7 @@ int32_t is_sx_ulpgn_wifi_connect(void)
 {
 	int32_t ret = -1;
 
-	if(g_sx_ulpgn_subnetmask[0] != 0)
+	if((g_sx_ulpgn_ipaddress[0] | g_sx_ulpgn_ipaddress[1] | g_sx_ulpgn_ipaddress[2] | g_sx_ulpgn_ipaddress[3])!= 0)
 	{
 		ret = 0;
 	}
@@ -791,6 +789,11 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
     char *ptr = recvbuff + 2;
 	uint8_t mutex_flag;
 
+    if ((NULL == results) || (0 == maxNetworks))
+    {
+    	return -1;
+    }
+
     mutex_flag = (MUTEX_TX | MUTEX_RX);
     if(0 != sx_ulpgn_serial_send_basic_take_mutex(mutex_flag))
 	{
@@ -798,7 +801,7 @@ int32_t sx_ulpgn_wifi_scan(WIFIScanResult_t *results, uint8_t maxNetworks)
 	}
 
     // TODO investigate why this never returns the full response
-    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATWS\r", 5000, 8000, ULPGN_RETURN_OK);
+    ret = sx_ulpgn_serial_send_basic(ULPGN_UART_COMMAND_PORT, "ATWS\r", 500, 8000, ULPGN_RETURN_OK);
     if (strlen(recvbuff) < 10)
     {
     	sx_ulpgn_serial_send_basic_give_mutex(mutex_flag);
@@ -1343,7 +1346,7 @@ int32_t sx_ulpgn_tcp_recv(uint8_t socket_no, uint8_t *pdata, int32_t length, uin
 	            {
 	#if DEBUGLOG == 1
 	                R_BSP_CpuInterruptLevelWrite (13);
-	                printf("recv timeout.%d received. requestsize=%d,lastdata=%02x,data1=%02x\r\n",recvcnt,length,*(pdata + (recvcnt-1)),data1);
+//	                printf("recv timeout.%d received. requestsize=%d,lastdata=%02x,data1=%02x\r\n",recvcnt,length,*(pdata + (recvcnt-1)),data1);
 	                R_BSP_CpuInterruptLevelWrite (0);
 	#endif
 	                R_NOP();
@@ -1620,7 +1623,7 @@ int32_t sx_ulpgn_get_ipaddress(void)
     {
         return -1;
     }
-    if(subnetmask[0] == 0)
+    if((ipaddr[0] | ipaddr[1] | ipaddr[2] | ipaddr[3]) == 0)
     {
         return -1;
     }

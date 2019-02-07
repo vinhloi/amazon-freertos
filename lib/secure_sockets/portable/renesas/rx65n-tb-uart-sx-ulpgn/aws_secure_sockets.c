@@ -335,11 +335,12 @@ int32_t SOCKETS_Recv( Socket_t xSocket,
     int32_t lStatus = SOCKETS_SOCKET_ERROR;
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
 
-    pxContext->xRecvFlags = ( BaseType_t ) ulFlags;
 
     if( ( xSocket != SOCKETS_INVALID_SOCKET ) &&
         ( pvBuffer != NULL ) )
     {
+        pxContext->xRecvFlags = ( BaseType_t ) ulFlags;
+
         if( pdTRUE == pxContext->xRequireTLS )
         {
             /* Receive through TLS pipe, if negotiated. */
@@ -416,7 +417,7 @@ int32_t SOCKETS_Shutdown( Socket_t xSocket,
 {
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
 
-    if((pxContext == SOCKETS_INVALID_SOCKET) || (pxContext->xSocket >= MAX_NUM_SSOCKETS))
+    if(( NULL == pxContext ) || (pxContext == SOCKETS_INVALID_SOCKET) || (pxContext->xSocket >= MAX_NUM_SSOCKETS))
     {
     	return SOCKETS_EINVAL;
     }
@@ -442,7 +443,7 @@ int32_t SOCKETS_Close( Socket_t xSocket )
 {
     SSOCKETContextPtr_t pxContext = ( SSOCKETContextPtr_t ) xSocket; /*lint !e9087 cast used for portability. */
 
-    if( NULL != pxContext )
+    if( ( NULL != pxContext ) && ( SOCKETS_INVALID_SOCKET != pxContext ) && (pxContext->xSocket < MAX_NUM_SSOCKETS))
     {
         if( NULL != pxContext->pcDestination )
         {
@@ -461,6 +462,10 @@ int32_t SOCKETS_Close( Socket_t xSocket )
 
         sx_ulpgn_tcp_disconnect(pxContext->xSocket);
         vPortFree( pxContext );
+    }
+    else
+    {
+    	return SOCKETS_EINVAL;
     }
 
 	if(ssockets_num_allocated > 0)
