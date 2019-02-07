@@ -492,35 +492,31 @@ Board: RX63N GR-SAKURA II
          Please confirm your GR-SAKURA is GR-SAKURA II that has 256KB-RAM RX63N (R5F563NYDDFP).
          Because Amazon FreeRTOS needs RAM size 128KB over.
          
-Board: RX65N Target Board
+Board: RX65N Target Board + Cloud Option Board (with Silex SX-ULPGN)	
     [en] https://www.renesas.com/us/en/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
     [ja] https://www.renesas.com/jp/ja/products/software-tools/boards-and-kits/cpu-mpu-boards/rx-family-target-board.html
 
-         The log will be output from J2 16pin=TxD5(PA4) connector as UART.
+         The log will be output from Cloud Option Board CN18 connector as UART.
          Please set baud-rate as 115200bps, 8bit-data, no-parity, 1 stop-bit,
          and "LF" only as return code for your console.
-         PMOD UART/USB convertor is provided by Digilent.
-         https://store.digilentinc.com/pmod-usbuart-usb-to-uart-interface/
 
-         Please contact as following.
-         PMOD UART/USB ----- RX65N Target Board J2
-         1             -----
-         2(TxD)        ----- 16pin
-         3             -----
-         4             -----
-         5(GND)        ----- 12pin
-         6(VCC)        ----- 10pin
-
-         The communication will be output/input from/to J1 45pin=TxD(PC7) and 46pin=RxD(PC6) as UART.
+         The communication will be output/input from/to Cloud Option Board CN5(PMOD) as UART.
          Silex SX-ULPGN PMOD can be connected.
          Please contact as following.
-         PMOD UART     ----- RX65N Target Board J1
-         1             -----
-         2(TxD)        ----- 45pin
-         3(RxD)        ----- 46pin
-         4             -----
-         5(GND)        ----- 12pin
-         6(VCC)        ----- 14pin
+         SX-ULPGN PMOD                ----- RX65N Cloud Option Board (PMOD)
+         HSUART1-CTS(PMOD 1pin)       ----- PMOD 1pin
+         HSUART1-MOSI(PMOD 2pin)      ----- PMOD 2pin
+         HSUART1-MISO(PMOD 3pin)      ----- PMOD 3pin
+         HSUART1-RTS(PMOD 4pin)       ----- PMOD 4pin
+         GND(PMOD 5pin)               ----- PMOD 5pin
+         VCC(PMOD 6pin)               ----- PMOD 6pin
+         GPIO                         ----- PMOD 7pin
+         PWD_L(PMOD 8pin)             ----- PMOD 8pin
+         HSUART2-MOSI(SX-ULPGN 15pin) ----- PMOD 9pin(P26)
+         HSUART2-MISO(SX-ULPGN 16pin) ----- PMOD 10pin(P30)
+         GND(PMOD 11pin)              ----- PMOD 11pin
+         VCC(PMOD 12pin)              ----- PMOD 12pin
+         
          
 WIFI Module: Silex SX-ULPGN PMOD
     [en] https://www.renesas.com/us/en/products/synergy/gallery/partner-projects/silex-wifi-pmod.html
