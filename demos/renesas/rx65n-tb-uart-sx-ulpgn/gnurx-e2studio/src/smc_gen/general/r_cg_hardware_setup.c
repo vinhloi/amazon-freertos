@@ -14,15 +14,15 @@
 * following link:
 * http://www.renesas.com/disclaimer
 *
-* Copyright (C) 2016, 2017 Renesas Electronics Corporation. All rights reserved.
+* Copyright (C) 2018 Renesas Electronics Corporation. All rights reserved.
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
 * File Name    : r_cg_hardware_setup.c
-* Version      : 1.2.0
+* Version      : 1.2.3
 * Device(s)    : R5F565NEDxFP
 * Description  : Initialization file for code generation configurations.
-* Creation Date: 2018-08-29
+* Creation Date: 2019-02-07
 ***********************************************************************************************************************/
 
 /***********************************************************************************************************************
@@ -100,9 +100,6 @@ void R_Systeminit(void)
 
     /* Initialize clocks settings */
     R_CGC_Create();
-
-    /* Set interrupt settings */
-    R_Interrupt_Create();
 
     /* Register undefined interrupt */
     R_BSP_InterruptWrite(BSP_INT_SRC_UNDEFINED_INTERRUPT,(bsp_int_cb_t)r_undefined_exception);

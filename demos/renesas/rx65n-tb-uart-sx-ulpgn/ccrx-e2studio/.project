@@ -107,17 +107,17 @@
 		<link>
 			<name>lib/aws/ota</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/portable/renesas/rx65n-tb-uart-sx-ulpgn</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/ota/portable/renesas/rx65n-cloud-kit-uart-sx-ulpgn</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/pkcs11</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/pkcs11/portable/renesas/rx65n-tb-uart-sx-ulpgn</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/pkcs11/portable/renesas/rx65n-cloud-kit-uart-sx-ulpgn</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/secure_sockets</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/secure_sockets/portable/renesas/rx65n-tb-uart-sx-ulpgn</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/secure_sockets/portable/renesas/rx65n-cloud-kit-uart-sx-ulpgn</locationURI>
 		</link>
 		<link>
 			<name>lib/aws/shadow</name>
@@ -137,7 +137,7 @@
 		<link>
 			<name>lib/aws/wifi</name>
 			<type>2</type>
-			<locationURI>AWS_IOT_MCU_ROOT/lib/wifi/portable/renesas/rx65n-tb-uart-sx-ulpgn</locationURI>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/wifi/portable/renesas/rx65n-cloud-kit-uart-sx-ulpgn</locationURI>
 		</link>
 		<link>
 			<name>lib/third_party/jsmn</name>

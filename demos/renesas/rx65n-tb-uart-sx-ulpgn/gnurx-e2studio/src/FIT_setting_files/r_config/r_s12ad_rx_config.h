@@ -14,46 +14,40 @@
 * following link:
 * http://www.renesas.com/disclaimer 
 *
-* Copyright (C) 2013-2015 Renesas Electronics Corporation. All rights reserved.    
+* Copyright (C) 2014 Renesas Electronics Corporation. All rights reserved.    
 ***********************************************************************************************************************/
 /***********************************************************************************************************************
-* File Name     : r_byteq_config.h
-* Description   : Configures the byte queue memory allocation
+* File Name     : r_s12ad_rx_config.h
+* Description   : Configures the 12-bit A/D driver
 ************************************************************************************************************************
-* History : DD.MM.YYYY Version Description  
-*         : 24.07.2013 1.00     Initial Release
-*         : 11.21.2014 1.20     Removed dependency to BSP
-*         : 30.09.2015 1.50     Added dependency to BSP
+* History : DD.MM.YYYY Version Description
+*           22.07.2013 1.00    Initial Release.
+*           21.04.2014 1.20    Updated for RX210 advanced features; RX110/63x support.
 ***********************************************************************************************************************/
-#ifndef BYTEQ_CONFIG_H
-#define BYTEQ_CONFIG_H
-
-/***********************************************************************************************************************
-Includes   <System Includes> , "Project Includes"
-***********************************************************************************************************************/
-#include "platform.h"
+#ifndef S12AD_CONFIG_H
+#define S12AD_CONFIG_H
 
 /***********************************************************************************************************************
 Configuration Options
 ***********************************************************************************************************************/
 
-/* SPECIFY WHETHER TO INCLUDE CODE FOR API PARAMETER CHECKING
-   Available settings:
-   BSP_CFG_PARAM_CHECKING_ENABLE:
-       Utilizes the system default setting
-   1:
-       Includes parameter checking
-   0:
-       Compiles out parameter checking
-*/
-#define BYTEQ_CFG_PARAM_CHECKING_ENABLE     (BSP_CFG_PARAM_CHECKING_ENABLE)
-
-/* SPECIFY IF SHOULD USE MALLOC() TO ALLOCATE MEMORY FOR QUEUE CONTROL BLOCKS */
-#define BYTEQ_CFG_USE_HEAP_FOR_CTRL_BLKS    (0)
-
-/* SPECIFY NUMBER OF STATIC QUEUE CONTROL BLOCKS TO SUPPORT */
-/* valid only when BYTEQ_USE_HEAP_FOR_CTRL_BLKS is set to 0 */
-#define BYTEQ_CFG_MAX_CTRL_BLKS             (6 + 4)
+/*
+ * SPECIFY WHETHER TO INCLUDE CODE FOR API PARAMETER CHECKING
+ * Setting to BSP_CFG_PARAM_CHECKING_ENABLE utilizes the system default setting.
+ * Setting to 1 includes parameter checking; 0 compiles out parameter checking.
+ */
+#define ADC_CFG_PARAM_CHECKING_ENABLE   BSP_CFG_PARAM_CHECKING_ENABLE
 
 
-#endif /* BYTEQ_CONFIG_H */
+/*
+ * RX210 Series only; Temperature Sensor Programmable Gain Amplifier (PGA)
+ * SELECT PGA GAIN TO MATCH AVCC0 VOLTAGE RANGE:
+ *   0:   1.8V <= AVcc0 <  2.7V; default; good for all actual voltages
+ *   1:   2.7V <= AVcc0 <  3.6V
+ *   2:   3.6V <= AVcc0 <  4.5V
+ *   3:   4.5V <= AVcc0 <= 5.5V
+ */
+#define ADC_CFG_PGA_GAIN    (0)
+
+
+#endif /* S12AD_CONFIG_H */

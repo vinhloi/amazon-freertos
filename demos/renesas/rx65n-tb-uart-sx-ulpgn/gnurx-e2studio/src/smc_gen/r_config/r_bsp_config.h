@@ -625,7 +625,12 @@ Configuration Options
 
 /* This macro is used to select which SCI channel used for UART WiFi module.
  */
-#define MY_BSP_CFG_UART_WIFI_SCI                    (10)
+#define MY_BSP_CFG_UART_WIFI_SCI                    (0)
+#define ULPGN_HSUART1_RTS_PDR   PORT2.PDR.BIT.B2     /*PMOD PinNo.4 */
+#define ULPGN_HSUART1_RTS_PODR  PORT2.PODR.BIT.B2    /*PMOD PinNo.4 */
+#define MY_BSP_CFG_UART_WIFI_SECOND_SCI             (1)
+#define ULPGN_RESET_PORT_PDR    PORTD.PDR.BIT.B0     /*PMOD PinNo.8 */
+#define ULPGN_RESET_PORT_PODR   PORTD.PODR.BIT.B0    /*PMOD PinNo.8 */
 
 #endif /* R_BSP_CONFIG_REF_HEADER_FILE */
 

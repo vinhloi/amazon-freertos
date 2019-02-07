@@ -1,10 +1,19 @@
 MEMORY
 {
 	RAM : ORIGIN = 0x0, LENGTH = 262144
+	DATAFLASH (!rx) : ORIGIN = 0x100000, LENGTH = 32768
 	RAMHI : ORIGIN = 0x800000, LENGTH = 393216
 	ROM : ORIGIN = 0xFFF00000, LENGTH = 1048576
 	OFS : ORIGIN = 0xFE7F5D00, LENGTH = 256
 }
+
+
+
+
+
+
+
+
 SECTIONS
 {
 	.exvectors 0xFFFFFF80 : AT(0xFFFFFF80)
@@ -96,20 +105,20 @@ SECTIONS
 		. += 0x100;
 		_r_bsp_NULL_end = .;
 	} >RAM
-	.r_bsp_ustack BLOCK(4) :
+	/*
+	 * .r_bsp_ustack BLOCK(4) :
+	 * {
+	 * 	KEEP(*(.r_bsp_ustack))
+	 * } > RAM
+	 * .ustack :
+	 * {
+	 * 	_ustack = .;
+	 * } > RAM
+	 */
+	.r_bsp_istack BLOCK(4) :
 	{
-		KEEP(*(.r_bsp_ustack))
+		KEEP(*(.r_bsp_istack))
 	} >RAM
-/*
- *	.r_bsp_ustack BLOCK(4) :
- *	{
- *		KEEP(*(.r_bsp_ustack))
- *	} > RAM
- *	.ustack :
- *	{
- *		_ustack = .;
- *	} > RAM
- */
 	.istack :
 	{
 		_istack = .;
@@ -128,7 +137,7 @@ SECTIONS
 	{
 		*(.gcc_exc)
 	} >RAM
-	.bss :
+	.bss 0x800000 : AT(0x800000)
 	{
 		_bss = .;
 		*(.bss)
@@ -139,7 +148,25 @@ SECTIONS
 		*(B_2)
 		_ebss = .;
 		_end = .;
-	} >RAM
+	} >RAMHI
+	B_ETHERNET_BUFFERS_1 BLOCK(32) :
+	{
+		_B_ETHERNET_BUFFERS_1_start = .;
+		*(B_ETHERNET_BUFFERS_1)
+		_B_ETHERNET_BUFFERS_1_end = .;
+	} >RAMHI
+	B_RX_DESC_1 :
+	{
+		_B_RX_DESC_1_start = .;
+		*(B_RX_DESC_1)
+		_B_RX_DESC_1_end = .;
+	} >RAMHI
+	B_TX_DESC_1 :
+	{
+		_B_TX_DESC_1_start = .;
+		*(B_TX_DESC_1)
+		_B_TX_DESC_1_end = .;
+	} >RAMHI
 	.ofs1 0xFE7F5D40 : AT(0xFE7F5D00)
 	{
 		KEEP(*(.ofs1))
@@ -168,4 +195,19 @@ SECTIONS
 	{
 		KEEP(*(.ofs7))
 	} >OFS
+	C_PKCS11_STORAGE_1 :
+	{
+	} >DATAFLASH
+	C_PKCS11_STORAGE_MIRROR_1 :
+	{
+	} >DATAFLASH
 }
+
+
+
+
+
+
+
+
+

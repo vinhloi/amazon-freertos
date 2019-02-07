@@ -215,12 +215,18 @@
 <Item current="vcc2_7-3_6" id="vccSetting.OutputValue"/>
 <Item current="3.3" id="vccSetting.vccTxt"/>
 <Item current="20" id="cachclk.CurrentValue"/>
+<Item current="true" id="uckdivider.selectBox"/>
 </tool>
 <tool id="Pins" version="1.0.0.0">
-<pinItem allocation="45" direction="None" id="TXD10" locked="false" status="512"/>
-<pinItem allocation="46" direction="None" id="RXD10" locked="false" status="512"/>
-<pinItem allocation="66" direction="None" id="TXD5" locked="false" status="512"/>
-<pinItem allocation="67" direction="None" id="RXD5" locked="false" status="512"/>
+<pinItem allocation="" comments="" direction="None" id="TXD10" locked="false" status="0"/>
+<pinItem allocation="" comments="" direction="None" id="RXD10" locked="false" status="0"/>
+<pinItem allocation="66" comments="" direction="None" id="TXD5" locked="false" status="512"/>
+<pinItem allocation="67" comments="" direction="None" id="RXD5" locked="false" status="512"/>
+<pinItem allocation="25" comments="" direction="None" id="CTS0#" locked="false" status="512"/>
+<pinItem allocation="27" comments="" direction="None" id="RXD0" locked="false" status="512"/>
+<pinItem allocation="20" comments="" direction="None" id="RXD1" locked="false" status="512"/>
+<pinItem allocation="22" comments="" direction="None" id="TXD1" locked="false" status="512"/>
+<pinItem allocation="28" comments="" direction="None" id="TXD0" locked="false" status="512"/>
 </tool>
 <tool id="Interrupt">
 <Item id="BSC_BUSERR" priority="15"/>
@@ -476,8 +482,8 @@
 <gridItem id="BSP_CFG_EBMAPCR_4TH_PRIORITY" selectedIndex="2"/>
 <gridItem id="BSP_CFG_EBMAPCR_5TH_PRIORITY" selectedIndex="4"/>
 </component>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
-<source description="Firmware Integration Technology (FIT) に対応するコンポーネントは、RXファミリのマイコン間での高い移行性を特徴とします。" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+<source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
+<source description="Components supporting Firmware Integration Technology" display="Firmware Integration Technology" id="com.renesas.smc.tools.swcomponent.fit.source"/>
 </configuration>
 </tool>
 </smc>
