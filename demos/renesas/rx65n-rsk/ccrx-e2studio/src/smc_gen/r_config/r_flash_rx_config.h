@@ -53,7 +53,7 @@
  * type 3 (see section 2.14 in App Note). See section 2.13 in the App Note for
  * details on how to set up code and the linker to execute code from RAM.
  */
-#define FLASH_CFG_CODE_FLASH_ENABLE (0)
+#define FLASH_CFG_CODE_FLASH_ENABLE (1)
 
 
 /******************************************************************************
@@ -90,7 +90,7 @@
  * segment in ROM (possible only with RX64M, RX71M, RX65N-2 groups).
  * See section 2.14 in the App Note.
  */
-#define FLASH_CFG_CODE_FLASH_RUN_FROM_ROM   (0)
+#define FLASH_CFG_CODE_FLASH_RUN_FROM_ROM   (1)
 
 
 /******************************************************************************
