@@ -310,6 +310,11 @@
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_flash_rx</locationURI>
 		</link>
 		<link>
+			<name>application_code/renesas_code/src/FIT_modified_code/r_fw_up_rx</name>
+			<type>2</type>
+			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_fw_up_rx</locationURI>
+		</link>
+		<link>
 			<name>application_code/renesas_code/src/FIT_modified_code/r_riic_rx</name>
 			<type>2</type>
 			<locationURI>AWS_IOT_MCU_ROOT/lib/third_party/mcu_vendor/renesas/FIT/RDP_v1.15_modified/r_riic_rx</locationURI>
