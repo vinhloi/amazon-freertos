@@ -34,6 +34,7 @@
 
 /* Renesas RX platform includes */
 #include "platform.h"
+#include "r_fw_up_rx_if.h"
 
 /* Specify the OTA signature algorithm we support on this platform. */
 const char pcOTA_JSON_FileSignatureKey[ OTA_FILE_SIG_KEY_STR_MAX_LENGTH ] = "sig-sha256-ecdsa";   /* FIX ME. */
@@ -87,12 +88,49 @@ OTA_Err_t prvPAL_CreateFileForRx( OTA_FileContext_t * const C )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_CreateFileForRx" );
 
-    /* Avoid compiler warnings about unused variables for a release including source code. */
-    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
-    R_INTERNAL_NOT_USED(C);
+    OTA_LOG_L1("Function call: [%s].\r\n", OTA_METHOD_NAME);
 
-    /* FIX ME. */
-    return kOTA_Err_RxFileCreateFailed;
+	OTA_Err_t eResult = kOTA_Err_Uninitialized; /* For MISRA mandatory. */
+	fw_up_return_t flash_status;
+
+	if( C != NULL )
+	{
+		/* No need for pacFilepath, we write directly to ROM instead of file system
+		 * But still check for its existence because it is required by AWS */
+		if ( C->pacFilepath != NULL )
+		{
+			flash_status = fw_up_open();
+			if (FW_UP_SUCCESS != flash_status)
+			{
+				OTA_LOG_L1( "[%s] ERROR - Failed to initialize firmware update.\r\n", OTA_METHOD_NAME );
+				return eResult;
+			}
+
+			flash_status = erase_another_bank();
+			if (FW_UP_SUCCESS != flash_status)
+			{
+				OTA_LOG_L1("[%s] ERROR - Failed to erase another bank.\r\n", OTA_METHOD_NAME);
+				return eResult;
+			}
+			else
+			{
+				eResult = kOTA_Err_None;
+				OTA_LOG_L1( "[%s] Firmware update initialized.\r\n", OTA_METHOD_NAME );
+			}
+		}
+		else
+		{
+			eResult = kOTA_Err_RxFileCreateFailed;
+			OTA_LOG_L1( "[%s] ERROR - Invalid context provided.\r\n", OTA_METHOD_NAME );
+		}
+	}
+	else
+	{
+		eResult = kOTA_Err_RxFileCreateFailed;
+		OTA_LOG_L1( "[%s] ERROR - Invalid context provided.\r\n", OTA_METHOD_NAME );
+	}
+
+	return eResult;
 }
 /*-----------------------------------------------------------*/
 
@@ -109,7 +147,9 @@ OTA_Err_t prvPAL_Abort( OTA_FileContext_t * const C )
 }
 /*-----------------------------------------------------------*/
 
-/* Write a block of data to the specified file. */
+/* Write a block of data to the specified file.
+ * Returns the most recent number of bytes written upon success or an error code.
+ */
 int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
                            uint32_t ulOffset,
                            uint8_t * const pacData,
@@ -117,28 +157,89 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_WriteBlock" );
 
-    /* Avoid compiler warnings about unused variables for a release including source code. */
-    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
-    R_INTERNAL_NOT_USED(C);
-    R_INTERNAL_NOT_USED(ulOffset);
-    R_INTERNAL_NOT_USED(pacData);
-    R_INTERNAL_NOT_USED(ulBlockSize);
+    int32_t lResult = 0;
+    fw_up_return_t status;
 
-    /* FIX ME. */
-    return -1;
+	if( C != NULL )
+	{
+		status = analyze_and_write_data(pacData, ulBlockSize);
+
+		if (FW_UP_SUCCESS == status)
+		{
+			lResult = ulBlockSize;
+		}
+		else
+		{
+			OTA_LOG_L1( "[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME );
+			lResult = ( status | ( errno & kOTA_PAL_ErrMask ) );
+		}
+
+	}
+	else /* Invalid context provided. */
+	{
+		OTA_LOG_L1( "[%s] ERROR - Invalid context.\r\n", OTA_METHOD_NAME );
+		lResult = ( kOTA_Err_NoFreeContext | ( errno & kOTA_PAL_ErrMask ) );
+	}
+
+	return ( int16_t ) lResult;
 }
 /*-----------------------------------------------------------*/
+
+/* Close the specified file. This will also authenticate the file if it is marked as secure. */
 
 OTA_Err_t prvPAL_CloseFile( OTA_FileContext_t * const C )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_CloseFile" );
 
-    /* Avoid compiler warnings about unused variables for a release including source code. */
-    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
-    R_INTERNAL_NOT_USED(C);
+	OTA_LOG_L1("Function call: [%s].\r\n", OTA_METHOD_NAME);
 
-    /* FIX ME. */
-    return kOTA_Err_FileClose;
+    OTA_Err_t eResult = kOTA_Err_None;
+    int32_t lWindowsError = 0;
+    fw_up_return_t flash_status;
+
+    if( C != NULL )
+    {
+        if( C->pxSignature != NULL )
+        {
+            /* Verify the file signature, close the file and return the signature verification result. */
+            eResult = prvPAL_CheckFileSignature( C );
+        }
+        else
+        {
+            OTA_LOG_L1( "[%s] ERROR - NULL OTA Signature structure.\r\n", OTA_METHOD_NAME );
+            eResult = kOTA_Err_SignatureCheckFailed;
+        }
+
+        /* Close the file. */
+        flash_status = fw_up_close();
+        if (FW_UP_SUCCESS != flash_status)
+		{
+        	OTA_LOG_L1( "[%s] ERROR - Failed to close firmware update.\r\n", OTA_METHOD_NAME );
+        	eResult = ( kOTA_Err_FileClose | ( errno & kOTA_PAL_ErrMask ) );
+		}
+
+        if( eResult == kOTA_Err_None )
+        {
+            OTA_LOG_L1( "[%s] %s signature verification passed.\r\n", OTA_METHOD_NAME, pcOTA_JSON_FileSignatureKey );
+        }
+        else
+        {
+            OTA_LOG_L1( "[%s] ERROR - Failed to pass %s signature verification: %d.\r\n", OTA_METHOD_NAME,
+                        pcOTA_JSON_FileSignatureKey, eResult );
+
+			/* If we fail to verify the file signature that means the image is not valid. We need to set the image state to aborted. */
+			prvPAL_SetPlatformImageState( eOTA_ImageState_Aborted );
+
+        }
+    }
+    else /* Invalid OTA Context. */
+    {
+        /* FIXME: Invalid error code for a null file context and file handle. */
+        OTA_LOG_L1( "[%s] ERROR - Invalid context.\r\n", OTA_METHOD_NAME );
+        eResult = kOTA_Err_FileClose;
+    }
+
+    return eResult;
 }
 /*-----------------------------------------------------------*/
 
@@ -212,11 +313,8 @@ OTA_PAL_ImageState_t prvPAL_GetPlatformImageState( void )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_GetPlatformImageState" );
 
-    /* Avoid compiler warnings about unused variables for a release including source code. */
-    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
-
-    /* FIX ME. */
-    return (OTA_PAL_ImageState_t)eOTA_ImageState_Unknown;
+    /* No image state file exists, assume a factory image. */
+    return (OTA_PAL_ImageState_t)eOTA_PAL_ImageState_Valid;
 }
 /*-----------------------------------------------------------*/
 
