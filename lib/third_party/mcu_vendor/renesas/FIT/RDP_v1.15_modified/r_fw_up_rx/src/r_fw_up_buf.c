@@ -117,14 +117,14 @@ void fw_up_buf_init(void)
         /* Clear initial address of allocated memory for address */
         if (NULL != pmot_s_buf->paddress)
         {
-            free(pmot_s_buf->paddress);
+        	vPortFree(pmot_s_buf->paddress);
             pmot_s_buf->paddress = NULL;
         }
 
         /* Clear initial address of allocated memory for data */
         if (NULL != pmot_s_buf->pdata)
         {
-            free(pmot_s_buf->pdata);
+        	vPortFree(pmot_s_buf->pdata);
             pmot_s_buf->pdata = NULL;
         }
 
@@ -294,7 +294,7 @@ fw_up_return_t fw_up_put_mot_s(uint8_t mot_s_data)
 
             /* Allocate memory of the address data */
             /* Casting is valid because conversion of void pointer to concrete type pointer. */
-            papp_put_mot_s_buf->paddress = (uint8_t *)malloc(papp_put_mot_s_buf->addr_length);
+            papp_put_mot_s_buf->paddress = pvPortMalloc(papp_put_mot_s_buf->addr_length);
             if (NULL == papp_put_mot_s_buf->paddress)
             {
                 return FW_UP_ERR_INTERNAL;
@@ -309,7 +309,7 @@ fw_up_return_t fw_up_put_mot_s(uint8_t mot_s_data)
             if ((uint8_t)0 != papp_put_mot_s_buf->data_length)
             {
                 /* Casting is valid because conversion of void pointer to concrete type pointer. */
-                papp_put_mot_s_buf->pdata = (uint8_t *)malloc(papp_put_mot_s_buf->data_length);
+                papp_put_mot_s_buf->pdata = pvPortMalloc(papp_put_mot_s_buf->data_length);
                 if (NULL == papp_put_mot_s_buf->pdata)
                 {
                     return FW_UP_ERR_INTERNAL;
@@ -591,8 +591,8 @@ fw_up_return_t fw_up_get_binary(fw_up_fl_data_t *p_fl_data)
         }
 
         /* Release address and data memory */
-        free(papp_get_mot_s_buf->paddress);
-        free(papp_get_mot_s_buf->pdata);
+        vPortFree(papp_get_mot_s_buf->paddress);
+        vPortFree(papp_get_mot_s_buf->pdata);
 
         /* Set NULL */
         papp_get_mot_s_buf->paddress = NULL;
