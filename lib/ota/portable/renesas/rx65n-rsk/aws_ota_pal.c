@@ -86,8 +86,70 @@ static uint8_t * prvPAL_ReadAndAssumeCertificate( const uint8_t * const pucCertN
                                                   uint32_t * const ulSignerCertSize );
 
 /*-----------------------------------------------------------*/
+// Linked list, used to contain block data which is not ready to write to firmware
+typedef struct node
+{
+	uint32_t ulBlockIndex;
+	uint8_t *pBlockData;
+	uint32_t ulBlockSize;
+	struct node *next;
+} NODE;
+NODE *head = NULL;
+
+static void insertNodeFirst(uint32_t index, uint8_t *data, uint32_t size);
+static NODE* getNode(uint32_t index);
+
+static void insertNodeFirst(uint32_t index, uint8_t *data, uint32_t size)
+{
+	NODE *new_node = pvPortMalloc(sizeof(NODE));
+
+	new_node->ulBlockIndex = index;
+	new_node->pBlockData = pvPortMalloc(size);
+	memcpy(new_node->pBlockData, data, size);
+	new_node->ulBlockSize = size;
+
+	new_node->next = head;
+	head = new_node;
+}
+
+static NODE* getNode(uint32_t index)
+{
+	NODE* current = head;
+	NODE *previous = NULL;
+
+	if (head == NULL)
+	{
+		return NULL;
+	}
+
+	while (current->ulBlockIndex != index)
+	{
+		if (current->next == NULL)
+		{
+			return NULL;
+		}
+		else
+		{
+			previous = current;
+			current = current->next;
+		}
+	}
+
+	if (current == head)
+	{
+		head = head->next;
+	}
+	else
+	{
+		previous->next = current->next;
+	}
+
+	return current;
+}
+/*-----------------------------------------------------------*/
 
 OTA_ImageState_t eSavedAgentState = eOTA_ImageState_Unknown;
+uint32_t ulWriteIndex = 0;
 
 /* Size of buffer used in file operations on this platform. */
 #define OTA_PAL_RX_BUF_SIZE ( ( size_t ) 4096UL )
@@ -103,6 +165,7 @@ OTA_Err_t prvPAL_CreateFileForRx( OTA_FileContext_t * const C )
 
 	if( C != NULL )
 	{
+		ulWriteIndex = 0;
 		/* No need for pacFilepath, we write directly to ROM instead of file system
 		 * But still check for its existence because it is required by AWS */
 		if ( C->pacFilepath != NULL )
@@ -186,18 +249,54 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 
 	if( C != NULL )
 	{
-		status = analyze_and_write_data(pacData, ulBlockSize);
-
-		if (FW_UP_SUCCESS == status)
+		uint32_t ulBlockIndex = ulOffset / OTA_FILE_BLOCK_SIZE;
+		if (ulWriteIndex == ulBlockIndex)
 		{
-			lResult = ulBlockSize;
+			OTA_LOG_L1("[%s] Normal - write %d.\r\n", OTA_METHOD_NAME, ulWriteIndex);
+			status = analyze_and_write_data(pacData, ulBlockSize);
+			if (FW_UP_SUCCESS == status)
+			{
+				lResult = ulBlockSize;
+			}
+			else
+			{
+				OTA_LOG_L1("[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME);
+				return ( status | ( errno & kOTA_PAL_ErrMask ) );
+			}
+
+			ulWriteIndex++;
 		}
 		else
 		{
-			OTA_LOG_L1( "[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME );
-			lResult = ( status | ( errno & kOTA_PAL_ErrMask ) );
+			OTA_LOG_L1("[%s] linklist - insert %d.\r\n", OTA_METHOD_NAME, ulBlockIndex);
+			insertNodeFirst(ulBlockIndex, pacData, ulBlockSize);
 		}
 
+		// Find in the linked list if there is any node need to be written.
+		NODE* p = getNode(ulWriteIndex);
+		while (p != NULL)
+		{
+			// Write data to firmware
+			OTA_LOG_L1("[%s] linklist - write %d.\r\n", OTA_METHOD_NAME, ulWriteIndex);
+			status = analyze_and_write_data(p->pBlockData, p->ulBlockSize);
+			if (FW_UP_SUCCESS == status)
+			{
+				lResult = ulBlockSize;
+			}
+			else
+			{
+				OTA_LOG_L1("[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME);
+				return ( status | ( errno & kOTA_PAL_ErrMask ) );
+			}
+
+			// Free memory
+			vPortFree(p->pBlockData);
+			vPortFree(p);
+
+			// Find the next node to write
+			ulWriteIndex++;
+			p = getNode(ulWriteIndex);
+		}
 	}
 	else /* Invalid context provided. */
 	{
