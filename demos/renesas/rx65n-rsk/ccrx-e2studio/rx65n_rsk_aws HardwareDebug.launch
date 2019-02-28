@@ -16,13 +16,13 @@
 <listEntry value="61234"/>
 </listAttribute>
 <booleanAttribute key="com.renesas.cdt.core.loadImage" value="true"/>
-<stringAttribute key="com.renesas.cdt.core.optionInitCommands" value=""/>
+<stringAttribute key="com.renesas.cdt.core.optionInitCommands" value="monitor set_external_mem 1,false,8&#10;monitor set_external_mem 2,false,8&#10;monitor set_external_mem 3,false,8&#10;monitor set_external_mem 4,false,8&#10;monitor set_external_mem 5,false,8&#10;monitor set_external_mem 6,false,8&#10;monitor set_external_mem 7,false,8&#10;monitor set_external_mem 8,false,8&#10;"/>
 <intAttribute key="com.renesas.cdt.core.portNumber" value="61234"/>
 <stringAttribute key="com.renesas.cdt.core.runCommands" value=""/>
 <stringAttribute key="com.renesas.cdt.core.secondGDBExe" value="green_dsp-elf-gdb"/>
 <booleanAttribute key="com.renesas.cdt.core.secondGDBSupport" value="false"/>
 <intAttribute key="com.renesas.cdt.core.secondGdbPortNumber" value="61237"/>
-<stringAttribute key="com.renesas.cdt.core.serverParam" value="-g E1  -t R5F565NE_DUAL  -uClockSrcHoco= 0 -uInputClock= 27.0 -uAllowClockSourceInternal= 1 -uUseFine= 0 -uJTagClockFreq= 16.5 -w 1 -z 0 -uRegisterSetting= 0 -uModePin= 0 -uChangeStartupBank= 0 -uStartupBank= 0 -uDebugMode= 0 -uExecuteProgram= 0 -uIdCode= FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF -uresetOnReload= 1 -n 0 -uWorkRamAddress= 1000 -uProgReWriteIRom= 1 -uProgReWriteDFlash= 0 -uhookWorkRamAddr= 0x3fdd0 -uhookWorkRamSize= 0x230"/>
+<stringAttribute key="com.renesas.cdt.core.serverParam" value="-g E1  -t R5F565NE_DUAL  -uClockSrcHoco= 0 -uInputClock= 24.0000 -uAllowClockSourceInternal= 1 -uUseFine= 0 -uJTagClockFreq= 16.5 -w 1 -z 0 -uRegisterSetting= 1 -uModePin= 0 -uChangeStartupBank= 0 -uStartupBank= 0 -uDebugMode= 0 -uExecuteProgram= 0 -uIdCode= FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF -uresetOnReload= 1 -n 0 -uWorkRamAddress= 1000 -uProgReWriteIRom= 1 -uProgReWriteDFlash= 0 -uhookWorkRamAddr= 0x3fdd0 -uhookWorkRamSize= 0x230"/>
 <booleanAttribute key="com.renesas.cdt.core.setResume" value="true"/>
 <booleanAttribute key="com.renesas.cdt.core.setStopAt" value="true"/>
 <booleanAttribute key="com.renesas.cdt.core.startServer" value="true"/>
@@ -56,7 +56,7 @@
 <booleanAttribute key="com.renesas.hardwaredebug.e1.execute.program" value="false"/>
 <listAttribute key="com.renesas.hardwaredebug.e1.ext_flash_definitions"/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.ext_flash_registers" value="2.1,0,"/>
-<stringAttribute key="com.renesas.hardwaredebug.e1.external_memory" value=""/>
+<stringAttribute key="com.renesas.hardwaredebug.e1.external_memory" value="1,false,8|2,false,8|3,false,8|4,false,8|5,false,8|6,false,8|7,false,8|8,false,8"/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.fine.baud.rate" value="2.00"/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.flash_overwrite_blocks" value=""/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.hook_Stop_func" value="0x0"/>
@@ -66,11 +66,11 @@
 <intAttribute key="com.renesas.hardwaredebug.e1.hook_work_ram_Addr" value="261584"/>
 <intAttribute key="com.renesas.hardwaredebug.e1.hook_work_ram_Size" value="560"/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.id_code" value="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"/>
-<stringAttribute key="com.renesas.hardwaredebug.e1.inputclock" value="27.0"/>
+<stringAttribute key="com.renesas.hardwaredebug.e1.inputclock" value="24.0000"/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.jtag.clock.freq" value="16.5"/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.jtag.or.fine" value="0"/>
 <booleanAttribute key="com.renesas.hardwaredebug.e1.le" value="true"/>
-<stringAttribute key="com.renesas.hardwaredebug.e1.mode" value="0"/>
+<stringAttribute key="com.renesas.hardwaredebug.e1.mode" value="1"/>
 <stringAttribute key="com.renesas.hardwaredebug.e1.mode_pin" value="0"/>
 <booleanAttribute key="com.renesas.hardwaredebug.e1.prog_rewrite_dflash" value="false"/>
 <booleanAttribute key="com.renesas.hardwaredebug.e1.prog_rewrite_irom" value="true"/>
