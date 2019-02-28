@@ -39,6 +39,66 @@ static OTA_Err_t prvPAL_CheckFileSignature( OTA_FileContext_t * const C );
 static uint8_t * prvPAL_ReadAndAssumeCertificate( const uint8_t * const pucCertName,
                                                   uint32_t * const ulSignerCertSize );
 
+// Linked list, used to contain block data which is not ready to write to firmware
+typedef struct node
+{
+	uint32_t ulBlockIndex;
+	uint8_t *pBlockData;
+	uint32_t ulBlockSize;
+	struct node *next;
+} NODE;
+NODE *head = NULL;
+
+static void insertNodeFirst(uint32_t index, uint8_t *data, uint32_t size);
+static NODE* getNode(uint32_t index);
+
+static void insertNodeFirst(uint32_t index, uint8_t *data, uint32_t size)
+{
+	NODE *new_node = pvPortMalloc(sizeof(NODE));
+
+	new_node->ulBlockIndex = index;
+	new_node->pBlockData = pvPortMalloc(size);
+	memcpy(new_node->pBlockData, data, size);
+	new_node->ulBlockSize = size;
+
+	new_node->next = head;
+	head = new_node;
+}
+
+static NODE* getNode(uint32_t index) 
+{
+	NODE* current = head;
+	NODE *previous = NULL;
+
+	if (head == NULL)
+	{
+		return NULL;
+	}
+
+	while (current->ulBlockIndex != index) 
+	{
+		if (current->next == NULL) 
+		{
+			return NULL;
+		}
+		else 
+		{
+			previous = current;
+			current = current->next;
+		}
+	}
+
+	if (current == head) 
+	{
+		head = head->next;
+	}
+	else 
+	{
+		previous->next = current->next;
+	}
+
+	return current;
+}
 /*-----------------------------------------------------------*/
 
 static inline BaseType_t prvContextValidate( OTA_FileContext_t * C )
@@ -53,6 +113,8 @@ static inline BaseType_t prvContextValidate( OTA_FileContext_t * C )
 /* Size of buffer used in file operations on this platform (Windows). */
 #define OTA_PAL_WIN_BUF_SIZE ( ( size_t ) 4096UL )
 
+uint32_t ulWriteIndex = 0;
+
 /* Attempt to create a new receive file for the file chunks as they come in. */
 
 OTA_Err_t prvPAL_CreateFileForRx( OTA_FileContext_t * const C )
@@ -63,6 +125,8 @@ OTA_Err_t prvPAL_CreateFileForRx( OTA_FileContext_t * const C )
 
     if( C != NULL )
     {
+		ulWriteIndex = 0;
+
         if ( C->pacFilepath != NULL )
         {
             C->pstFile = fopen( ( const char * )C->pacFilepath, "w+b" ); /*lint !e586
@@ -157,37 +221,54 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 
     if( prvContextValidate( C ) == pdTRUE )
     {
-        lResult = fseek( C->pstFile, ulOffset, SEEK_SET ); /*lint !e586 !e713 !e9034
-                                                            * C standard library call is being used for portability. */
+		uint32_t ulBlockIndex = ulOffset / OTA_FILE_BLOCK_SIZE;
+		if (ulWriteIndex == ulBlockIndex)
+		{
+			OTA_LOG_L1("[%s] Normal - write %d.\r\n", OTA_METHOD_NAME, ulWriteIndex);
+			lResult = fwrite(pacData, 1, ulBlockSize, C->pstFile); 
+			if (lResult < 0)
+			{
+				OTA_LOG_L1("[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME);
+				return OTA_PAL_INT16_NEGATIVE_MASK | errno;
+			}
 
-        if( 0 == lResult )
-        {
-            lResult = fwrite( pacData, 1, ulBlockSize, C->pstFile ); /*lint !e586 !e713 !e9034
-                                                                      * C standard library call is being used for portability. */
+			ulWriteIndex++;
+		}
+		else
+		{
+			OTA_LOG_L1("[%s] linklist - insert %d.\r\n", OTA_METHOD_NAME, ulBlockIndex);
+			insertNodeFirst(ulBlockIndex, pacData, ulBlockSize);
+		}
 
-            if( lResult < 0 )
-            {
-                OTA_LOG_L1( "[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME );
-                /* Mask to return a negative value. */
-                lResult = OTA_PAL_INT16_NEGATIVE_MASK | errno; /*lint !e40 !e9027
-                                                                * Errno is being used in accordance with host API documentation.
-                                                                * Bitmasking is being used to preserve host API error with library status code. */
-            }
-        }
-        else
-        {
-            OTA_LOG_L1( "[%s] ERROR - fseek failed\r\n", OTA_METHOD_NAME );
-            /* Mask to return a negative value. */
-            lResult = OTA_PAL_INT16_NEGATIVE_MASK | errno; /*lint !e40 !e9027
-                                                            * Errno is being used in accordance with host API documentation.
-                                                            * Bitmasking is being used to preserve host API error with library status code. */
-        }
+		// Find in the linked list if there is any node need to be written.
+		NODE* p = getNode(ulWriteIndex);
+		while (p != NULL)
+		{
+			// Write data to firmware
+			OTA_LOG_L1("[%s] linklist - write %d.\r\n", OTA_METHOD_NAME, ulWriteIndex);
+			lResult = fwrite(p->pBlockData, 1, p->ulBlockSize, C->pstFile);
+			if (lResult < 0)
+			{
+				OTA_LOG_L1("[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME);
+				return OTA_PAL_INT16_NEGATIVE_MASK | errno;
+			}
+
+			// Free memory
+			vPortFree(p->pBlockData);
+			vPortFree(p);
+
+			// Find the next node to write
+			ulWriteIndex++;
+			p = getNode(ulWriteIndex);
+		}
     }
     else /* Invalid context or file pointer provided. */
     {
         OTA_LOG_L1( "[%s] ERROR - Invalid context.\r\n", OTA_METHOD_NAME );
         lResult = -1; /*TODO: Need a negative error code from the PAL here. */
     }
+
+	
 
     return ( int16_t ) lResult;
 }
