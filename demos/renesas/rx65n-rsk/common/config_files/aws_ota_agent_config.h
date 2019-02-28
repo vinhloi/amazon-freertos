@@ -39,7 +39,7 @@
 /**
  * @brief The number of words allocated to the stack for the OTA agent.
  */
-#define otaconfigSTACK_SIZE                     3584U
+#define otaconfigSTACK_SIZE                     630U
 
 /**
  * @brief Log base 2 of the size of the file data block message (excluding the header).
@@ -59,7 +59,7 @@
  * The wait timer is reset whenever a data block is received from the OTA service so we will only send
  * the request message after being idle for this amount of time.
  */
-#define otaconfigFILE_REQUEST_WAIT_MS           2500U
+#define otaconfigFILE_REQUEST_WAIT_MS           10000U
 
 /**
  * @brief The OTA agent task priority. Normally it runs at a low priority.
