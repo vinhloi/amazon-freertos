@@ -26,6 +26,7 @@
 /* C Runtime includes. */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Amazon FreeRTOS include. */
 #include "FreeRTOS.h"
@@ -42,13 +43,7 @@
 /* Specify the OTA signature algorithm we support on this platform. */
 const char pcOTA_JSON_FileSignatureKey[ OTA_FILE_SIG_KEY_STR_MAX_LENGTH ] = "sig-sha256-ecdsa";   /* FIX ME. */
 
-
-/* The static functions below (prvPAL_CheckFileSignature and prvPAL_ReadAndAssumeCertificate) 
- * are optionally implemented. If these functions are implemented then please set the following macros in 
- * aws_test_ota_config.h to 1:
- * otatestpalCHECK_FILE_SIGNATURE_SUPPORTED
- * otatestpalREAD_AND_ASSUME_CERTIFICATE_SUPPORTED
- */
+#define OTA_HALF_SECOND_DELAY            pdMS_TO_TICKS( 500UL )
 
 /**
  * @brief Verify the signature of the specified file.
@@ -252,7 +247,7 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 		uint32_t ulBlockIndex = ulOffset / OTA_FILE_BLOCK_SIZE;
 		if (ulWriteIndex == ulBlockIndex)
 		{
-			OTA_LOG_L1("[%s] Normal - write %d.\r\n", OTA_METHOD_NAME, ulWriteIndex);
+			//OTA_LOG_L1("write %d.\r\n", ulWriteIndex);
 			status = analyze_and_write_data(pacData, ulBlockSize);
 			if (FW_UP_SUCCESS == status)
 			{
@@ -260,7 +255,7 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 			}
 			else
 			{
-				OTA_LOG_L1("[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME);
+				OTA_LOG_L1("[%s] ERROR - Failed to write data\r\n", OTA_METHOD_NAME);
 				return ( status | ( errno & kOTA_PAL_ErrMask ) );
 			}
 
@@ -268,7 +263,7 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 		}
 		else
 		{
-			OTA_LOG_L1("[%s] linklist - insert %d.\r\n", OTA_METHOD_NAME, ulBlockIndex);
+			//OTA_LOG_L1("insert %d.\r\n", ulBlockIndex);
 			insertNodeFirst(ulBlockIndex, pacData, ulBlockSize);
 		}
 
@@ -277,7 +272,7 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 		while (p != NULL)
 		{
 			// Write data to firmware
-			OTA_LOG_L1("[%s] linklist - write %d.\r\n", OTA_METHOD_NAME, ulWriteIndex);
+			//OTA_LOG_L1("write %d.\r\n", ulWriteIndex);
 			status = analyze_and_write_data(p->pBlockData, p->ulBlockSize);
 			if (FW_UP_SUCCESS == status)
 			{
@@ -285,7 +280,7 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
 			}
 			else
 			{
-				OTA_LOG_L1("[%s] ERROR - fwrite failed\r\n", OTA_METHOD_NAME);
+				OTA_LOG_L1("[%s] ERROR - Failed to write data\r\n", OTA_METHOD_NAME);
 				return ( status | ( errno & kOTA_PAL_ErrMask ) );
 			}
 
@@ -319,7 +314,13 @@ OTA_Err_t prvPAL_CloseFile( OTA_FileContext_t * const C )
     OTA_Err_t eResult = kOTA_Err_None;
     fw_up_return_t flash_status;
 
-    if( C != NULL )
+    if( C == NULL )
+	{
+		eResult = kOTA_Err_FileClose;
+	}
+
+
+    if( kOTA_Err_None == eResult )
     {
         if( C->pxSignature != NULL )
         {
@@ -328,17 +329,8 @@ OTA_Err_t prvPAL_CloseFile( OTA_FileContext_t * const C )
         }
         else
         {
-            OTA_LOG_L1( "[%s] ERROR - NULL OTA Signature structure.\r\n", OTA_METHOD_NAME );
             eResult = kOTA_Err_SignatureCheckFailed;
         }
-
-        /* Close the file. */
-        flash_status = fw_up_close();
-        if (FW_UP_SUCCESS != flash_status)
-		{
-        	OTA_LOG_L1( "[%s] ERROR - Failed to close firmware update.\r\n", OTA_METHOD_NAME );
-        	eResult = ( kOTA_Err_FileClose | ( errno & kOTA_PAL_ErrMask ) );
-		}
 
         if( eResult == kOTA_Err_None )
         {
@@ -351,14 +343,16 @@ OTA_Err_t prvPAL_CloseFile( OTA_FileContext_t * const C )
 
 			/* If we fail to verify the file signature that means the image is not valid. We need to set the image state to aborted. */
 			prvPAL_SetPlatformImageState( eOTA_ImageState_Aborted );
-
         }
-    }
-    else /* Invalid OTA Context. */
-    {
-        /* FIXME: Invalid error code for a null file context and file handle. */
-        OTA_LOG_L1( "[%s] ERROR - Invalid context.\r\n", OTA_METHOD_NAME );
-        eResult = kOTA_Err_FileClose;
+
+        /* Close the file. */
+		flash_status = fw_up_close();
+		if (FW_UP_SUCCESS != flash_status)
+		{
+			OTA_LOG_L1("[%s] ERROR - Failed to close firmware update.\r\n",
+					OTA_METHOD_NAME);
+			eResult = ( kOTA_Err_FileClose | ( errno & kOTA_PAL_ErrMask));
+		}
     }
 
     return eResult;
@@ -370,115 +364,83 @@ OTA_Err_t prvPAL_CloseFile( OTA_FileContext_t * const C )
 
 static OTA_Err_t prvPAL_CheckFileSignature( OTA_FileContext_t * const C )
 {
-    DEFINE_OTA_METHOD_NAME( "prvPAL_CheckFileSignature" );
+	DEFINE_OTA_METHOD_NAME( "prvPAL_CheckFileSignature" );
 
-	OTA_LOG_L1("Function call: [%s].\r\n", OTA_METHOD_NAME);
+	/* Avoid compiler warnings about unused variables for a release including source code. */
+	R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+	R_INTERNAL_NOT_USED(C);
 
-    OTA_Err_t eResult = kOTA_Err_None;
-    uint32_t ulBytesRead;
-    uint32_t ulSignerCertSize;
-    uint8_t * pucBuf, * pucSignerCert;
-    void * pvSigVerifyContext;
+	// Note: We don't implement this function.
+	// The *.mot file is analyzed and written directly to ROM
+	// Therefore, we don't have the original mot file to check the signature
 
-    if( C != NULL )
-    {
-        /* Verify an ECDSA-SHA256 signature. */
-        if( pdFALSE == CRYPTO_SignatureVerificationStart( &pvSigVerifyContext, cryptoASYMMETRIC_ALGORITHM_ECDSA, cryptoHASH_ALGORITHM_SHA256 ) )
-        {
-            eResult = kOTA_Err_SignatureCheckFailed;
-        }
-        else
-        {
-            OTA_LOG_L1( "[%s] Started %s signature verification\r\n", OTA_METHOD_NAME, pcOTA_JSON_FileSignatureKey );
-            pucSignerCert = signingcredentialSIGNING_CERTIFICATE_PEM;
-
-            if( pucSignerCert != NULL )
-            {
-                pucBuf = pvPortMalloc( OTA_PAL_RX_BUF_SIZE ); /*lint !e9079 Allow conversion. */
-
-                if( pucBuf != NULL )
-                {
-                    /* Rewind the received file to the beginning. */
-                    if( fseek( C->pucFile, 0L, SEEK_SET ) == 0 ) /*lint !e586
-                                                                  * C standard library call is being used for portability. */
-                    {
-                        do
-                        {
-                            ulBytesRead = fread( pucBuf, 1, OTA_PAL_RX_BUF_SIZE, C->pucFile ); /*lint !e586
-                                                                                               * C standard library call is being used for portability. */
-                            /* Include the file chunk in the signature validation. Zero size is OK. */
-                            CRYPTO_SignatureVerificationUpdate( pvSigVerifyContext, pucBuf, ulBytesRead );
-                        } while( ulBytesRead > 0UL );
-
-                        if( pdFALSE == CRYPTO_SignatureVerificationFinal( pvSigVerifyContext,
-                                                                          ( char * ) pucSignerCert,
-                                                                          ( size_t ) ulSignerCertSize,
-                                                                          C->pxSignature->ucData,
-                                                                          C->pxSignature->usSize ) ) /*lint !e732 !e9034 Allow comparison in this context. */
-                        {
-                            eResult = kOTA_Err_SignatureCheckFailed;
-                        }
-						pvSigVerifyContext = NULL;	/* The context has been freed by CRYPTO_SignatureVerificationFinal(). */
-                    }
-                    else
-                    {
-                        /* Nothing special to do. */
-                    }
-
-                    /* Free the temporary file page buffer. */
-                    vPortFree( pucBuf );
-                }
-                else
-                {
-                    OTA_LOG_L1( "[%s] ERROR - Failed to allocate buffer memory.\r\n", OTA_METHOD_NAME );
-                    eResult = kOTA_Err_OutOfMemory;
-                }
-
-                /* Free the signer certificate that we now own after prvReadAndAssumeCertificate(). */
-                vPortFree( pucSignerCert );
-            }
-            else
-            {
-                eResult = kOTA_Err_BadSignerCert;
-            }
-        }
-    }
-    else
-    {
-        /* FIXME: Invalid error code for a NULL file context. */
-        OTA_LOG_L1( "[%s] ERROR - Invalid OTA file context.\r\n", OTA_METHOD_NAME );
-        /* Invalid OTA context or file pointer. */
-        eResult = kOTA_Err_NullFilePtr;
-    }
-
-    return eResult;
+	return kOTA_Err_None;
 }
 /*-----------------------------------------------------------*/
 
 static uint8_t * prvPAL_ReadAndAssumeCertificate( const uint8_t * const pucCertName,
                                                   uint32_t * const ulSignerCertSize )
 {
+	// Note: We use the aws_ota_codesigner_certificate.h instead of pucCertName
+
     DEFINE_OTA_METHOD_NAME( "prvPAL_ReadAndAssumeCertificate" );
 
-    /* Avoid compiler warnings about unused variables for a release including source code. */
-    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
-    R_INTERNAL_NOT_USED(pucCertName);
-    R_INTERNAL_NOT_USED(ulSignerCertSize);
+    uint8_t * pucCertData;
+    uint32_t ulCertSize;
+    uint8_t * pucSignerCert = NULL;
 
-    /* FIX ME. */
-    return NULL;
+	OTA_LOG_L1( "[%s] : Using aws_ota_codesigner_certificate.h.\r\n", OTA_METHOD_NAME);
+
+	/* Allocate memory for the signer certificate plus a terminating zero so we can copy it and return to the caller. */
+	ulCertSize = sizeof( signingcredentialSIGNING_CERTIFICATE_PEM );
+	pucSignerCert = pvPortMalloc( ulCertSize + 1 );                       /*lint !e9029 !e9079 !e838 malloc proto requires void*. */
+	pucCertData = ( uint8_t * ) signingcredentialSIGNING_CERTIFICATE_PEM; /*lint !e9005 we don't modify the cert but it could be set by PKCS11 so it's not const. */
+
+	if( pucSignerCert != NULL )
+	{
+		memcpy( pucSignerCert, pucCertData, ulCertSize );
+		/* The crypto code requires the terminating zero to be part of the length so add 1 to the size. */
+		pucSignerCert[ ulCertSize ] = 0U;
+		*ulSignerCertSize = ulCertSize + 1U;
+	}
+	else
+	{
+		OTA_LOG_L1( "[%s] Error: No memory for certificate of size %d!\r\n", OTA_METHOD_NAME, ulCertSize );
+	}
+
+    return pucSignerCert;
 }
+
 /*-----------------------------------------------------------*/
 
 OTA_Err_t prvPAL_ResetDevice( void )
 {
     DEFINE_OTA_METHOD_NAME("prvPAL_ResetDevice");
 
-    /* Avoid compiler warnings about unused variables for a release including source code. */
-    R_INTERNAL_NOT_USED(OTA_METHOD_NAME);
+    OTA_LOG_L1( "[%s] Resetting the device.\r\n", OTA_METHOD_NAME );
 
-    /* FIX ME. */
-    return kOTA_Err_ResetNotSupported;
+	bool reset_vector_ok;
+
+	reset_vector_ok = fw_up_check_reset_vector();
+
+	if (reset_vector_ok)
+	{
+		/* Short delay for debug log output before reset. */
+		vTaskDelay( OTA_HALF_SECOND_DELAY );
+
+		/* soft reset */
+		fw_up_soft_reset();
+	}
+	else
+	{
+		OTA_LOG_L1( "[%s] ERROR - Reset vector is invalid.\r\n", OTA_METHOD_NAME );
+		return kOTA_Err_ResetNotSupported;
+	}
+
+	/* We shouldn't actually get here if the board supports the auto reset.
+	* But, it doesn't hurt anything if we do although someone will need to
+	* reset the device for the new image to boot. */
+	return kOTA_Err_None;
 }
 /*-----------------------------------------------------------*/
 
@@ -486,36 +448,19 @@ OTA_Err_t prvPAL_ActivateNewImage( void )
 {
     DEFINE_OTA_METHOD_NAME("prvPAL_ActivateNewImage");
 
-    OTA_LOG_L1("Function call: prvPAL_ActivateNewImage.\r\n");
-
     fw_up_return_t flash_status;
-	bool reset_vector_ok;
+    OTA_LOG_L1( "[%s] Changing the Startup Bank\r\n", OTA_METHOD_NAME );
 
-	reset_vector_ok = fw_up_check_reset_vector();
-
-	if (reset_vector_ok)
+	flash_status = bank_toggle();
+	if (FW_UP_SUCCESS == flash_status)
 	{
-		OTA_LOG_L1( "[%s] Changing the Startup Bank\r\n", OTA_METHOD_NAME );
-
-		flash_status = bank_toggle();
-		if (FW_UP_SUCCESS == flash_status)
-		{
-			OTA_LOG_L1( "[%s] Reset\r\n", OTA_METHOD_NAME );
-
-			/* soft reset */
-			fw_up_soft_reset();
-		}
-		else
-		{
-			OTA_LOG_L1( "[%s] ERROR - Flash error\r\n", OTA_METHOD_NAME );
-		}
+		return prvPAL_ResetDevice();
 	}
 	else
 	{
-		OTA_LOG_L1( "[%s] ERROR - Reset vector is invalid.\r\n", OTA_METHOD_NAME );
+		OTA_LOG_L1("[%s] ERROR - Failed to change the Startup Bank\r\n", OTA_METHOD_NAME);
+		return kOTA_Err_ActivateFailed;
 	}
-
-    return kOTA_Err_Uninitialized;
 }
 /*-----------------------------------------------------------*/
 
@@ -527,7 +472,7 @@ OTA_Err_t prvPAL_SetPlatformImageState( OTA_ImageState_t eState )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_SetPlatformImageState" );
 
-    OTA_LOG_L1("Function call: prvPAL_GetPlatformImageState: [%d]\r\n", eState);
+    OTA_LOG_L1("Function call: prvPAL_SetPlatformImageState: [%d]\r\n", eState);
 
     OTA_Err_t eResult = kOTA_Err_None;
 

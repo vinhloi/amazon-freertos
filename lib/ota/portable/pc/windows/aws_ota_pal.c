@@ -268,8 +268,6 @@ int16_t prvPAL_WriteBlock( OTA_FileContext_t * const C,
         lResult = -1; /*TODO: Need a negative error code from the PAL here. */
     }
 
-	
-
     return ( int16_t ) lResult;
 }
 
@@ -530,6 +528,8 @@ OTA_Err_t prvPAL_SetPlatformImageState( OTA_ImageState_t eState )
 {
     DEFINE_OTA_METHOD_NAME( "prvPAL_SetPlatformImageState" );
 
+	OTA_LOG_L1("Function call: prvPAL_SetPlatformImageState: [%d]\r\n", eState);
+
     OTA_Err_t eResult = kOTA_Err_None;
     FILE * pstPlatformImageState;
 
@@ -640,7 +640,7 @@ OTA_PAL_ImageState_t prvPAL_GetPlatformImageState( void )
         /* If no image state file exists, assume a factory image. */
 		ePalState = eOTA_PAL_ImageState_Valid; /*lint !e64 Allow assignment. */
     }
-
+	OTA_LOG_L1("Function call: prvPAL_GetPlatformImageState: [%d]\r\n", ePalState);
     return ePalState; /*lint !e64 !e480 !e481 I/O calls and return type are used per design. */
 }
 
